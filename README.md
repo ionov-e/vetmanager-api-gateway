@@ -13,7 +13,7 @@
 
 ## Пример использования:
 
-```
+```php
 use VetmanagerApiGateway\ApiGateway;
 use Otis22\VetmanagerRestApi\Query\Builder;
 
@@ -38,7 +38,9 @@ $comboManualItems = ComboManualItem::fromRequestByQueryBuilder(
 
 $comboManualItemTitle = $crmComboManualItems[0]->title;
 ```
-## Пакет будет дополняться и расширяться
+## Пакет будет дополняться и расширяться.
+
+Тесты, новые модели и т.д.
 
 Честно.
 
