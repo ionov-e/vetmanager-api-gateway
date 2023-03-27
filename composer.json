@@ -1,0 +1,33 @@
+{
+  "name": "ioncurly/vetmanager-api-gateway",
+  "description": "Vetmanager API Gateway",
+  "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/ionov-e/vetmanager-api-gateway",
+  "authors": [
+    {
+      "name": "Eugene Ionov",
+      "email": "ioncurly@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "guzzlehttp/guzzle": "^7.5",
+    "otis22/vetmanager-rest-api": "^0.1.11",
+    "ext-mbstring": "*"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:ionov-e/vetmanager-api-gateway.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VetmanagerApiGateway\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": { "VetmanagerApiGateway\\": "tests/" }
+  }
+}
