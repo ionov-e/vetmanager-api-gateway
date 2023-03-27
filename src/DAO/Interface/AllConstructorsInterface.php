@@ -14,9 +14,7 @@ interface AllConstructorsInterface
     /** Реализация возможности прямого обращения по АПИ используя имя модели и ID */
     public static function fromRequestById(ApiGateway $apiGateway, int $id): static;
 
-    /** Реализация возможности прямого обращения по АПИ используя имя модели и результат Builder {@see \Otis22\VetmanagerRestApi\Query\Builder}
-     * @return static[]
-     */
+    /** Реализация возможности прямого обращения по АПИ используя имя модели и результат Builder {@see \Otis22\VetmanagerRestApi\Query\Builder} */
     public static function fromRequestByQueryBuilder(ApiGateway $apiGateway, PagedQuery $pagedQuery): array;
 
     /** @param array{"totalCount": int, MODEL_NAME: array<int, array>} $arrayOfObjectsAsDecodedJsons Ключом второго элемента будет название модели (а в нем массивы с моделями) */

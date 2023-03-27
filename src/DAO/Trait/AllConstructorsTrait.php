@@ -39,6 +39,7 @@ trait AllConstructorsTrait
     }
 
     /** @inheritDoc
+     * @return static[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
@@ -46,27 +47,29 @@ trait AllConstructorsTrait
     {
         $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery);
 
-        return self::fromMultipleDecodedJsons($apiGateway, $response);
+        return static::fromMultipleDecodedJsons($apiGateway, $response);
     }
 
     /** @inheritDoc
+     * @return static[]
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
     public static function fromMultipleDecodedJsons(ApiGateway $apiGateway, array $arrayOfObjectsAsDecodedJsons): array
     {
-        return self::fromInnerContentsOfDecodedJsons(
+        return static::fromInnerContentsOfDecodedJsons(
             $apiGateway,
             $arrayOfObjectsAsDecodedJsons[static::getApiModel()->getApiModelResponseKey()]
         );
     }
 
     /** @inheritDoc
+     * @return static[]
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
     public static function fromInnerContentsOfDecodedJsons(ApiGateway $apiGateway, array $arrayOfDtosContentsAsDecodedJsons): array
     {
         return array_map(
-            fn(array $modelAsDecodedJson): self => self::fromDecodedJson($apiGateway, $modelAsDecodedJson),
+            fn(array $modelAsDecodedJson): static => static::fromDecodedJson($apiGateway, $modelAsDecodedJson),
             $arrayOfDtosContentsAsDecodedJsons
         );
     }
