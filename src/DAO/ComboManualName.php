@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -9,12 +11,11 @@ use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-
 class ComboManualName extends DTO\ComboManualName implements AllConstructorsInterface
 {
     use AllConstructorsTrait;
 
-    /** @var ComboManualItem[] $comboManualItems*/
+    /** @var ComboManualItem[] $comboManualItems */
     public array $comboManualItems;
     /** @var array{
      *       "id": string,
@@ -34,7 +35,7 @@ class ComboManualName extends DTO\ComboManualName implements AllConstructorsInte
      *                                  >
      *   } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -65,7 +66,7 @@ class ComboManualName extends DTO\ComboManualName implements AllConstructorsInte
         $comboManualNameArray = parent::getOriginalArray();
 
         return array_map(
-            fn(array $comboManualItemDecodedJson): ComboManualItem => ComboManualItem::fromDecodedJson(
+            fn (array $comboManualItemDecodedJson): ComboManualItem => ComboManualItem::fromDecodedJson(
                 $this->apiGateway,
                 $comboManualItemDecodedJson
             ),

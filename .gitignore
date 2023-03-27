@@ -1,4 +1,6 @@
 /.idea/
+/.php-cs-fixer.cache
+/composer.lock
+/composer.phar
+/tools
 /vendor/
-composer.lock
-composer.phar

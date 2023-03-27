@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -8,8 +10,7 @@ class FullName
         public ?string $first = null,
         public ?string $middle = null,
         public ?string $last = null
-    )
-    {
+    ) {
     }
 
     public function __get(string $name): mixed
@@ -30,13 +31,20 @@ class FullName
         return $this->getAsStringSeperatedBySpaces($this->first, $this->middle, $this->last);
     }
 
+    private function getAsStringSeperatedBySpaces(...$arguments): string
+    {
+        return array_reduce(
+            $arguments,
+            [$this, 'addItemToStringSeperatedBySpaces']
+        );
+    }
+
     /** Возвращает: "Фамилия Имя Отчество"
      * Но если чего-то не будет - вернет без этого слова и без лишних пробелов */
     public function getFullStartingWithLast(): string
     {
         return $this->getAsStringSeperatedBySpaces($this->last, $this->first, $this->middle);
     }
-
 
     /** Возвращает: "Фамилия И. О."
      * Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
@@ -49,6 +57,11 @@ class FullName
         );
     }
 
+    private function getFirstLetterWithDotOrNothing(?string $string): string
+    {
+        return ($string) ? mb_substr($string, 0, 1) . '.' : '';
+    }
+
     /** Возвращает: "Ф. И. О."
      * Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
     public function getInitials(): string
@@ -58,19 +71,6 @@ class FullName
             $this->getFirstLetterWithDotOrNothing($this->first),
             $this->getFirstLetterWithDotOrNothing($this->middle)
         );
-    }
-
-    private function getAsStringSeperatedBySpaces(...$arguments): string
-    {
-        return array_reduce(
-            $arguments,
-            [$this, 'addItemToStringSeperatedBySpaces']
-        );
-    }
-
-    private function getFirstLetterWithDotOrNothing(?string $string): string
-    {
-        return ($string) ? mb_substr($string, 0, 1) . '.' : '';
     }
 
     private function addItemToStringSeperatedBySpaces(?string $carry, ?string $item): string

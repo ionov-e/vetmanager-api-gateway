@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Exception;
 

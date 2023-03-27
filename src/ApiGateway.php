@@ -1,12 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway;
 
-use VetmanagerApiGateway\Enum\ApiRoute;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
@@ -20,6 +18,11 @@ use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
+use VetmanagerApiGateway\Enum\ApiRoute;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use function Otis22\VetmanagerUrl\url as vetmanager_url;
 use function Otis22\VetmanagerUrl\url_test_env as vetmanager_url_test_env;
 
@@ -28,17 +31,17 @@ class ApiGateway
     public function __construct(
         protected Client            $guzzleClient,
         protected WithAuthAndParams $allHeaders
-    )
-    {
+    ) {
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    public static function fromDomainAndServiceNameAndApiKey(string $domainName,
-                                                             string $serviceName,
-                                                             string $apiKey,
-                                                             bool   $isProduction,
-                                                             string $timezone = '+03:00'): static
-    {
+    public static function fromDomainAndServiceNameAndApiKey(
+        string $domainName,
+        string $serviceName,
+        string $apiKey,
+        bool   $isProduction,
+        string $timezone = '+03:00'
+    ): static {
         try {
             $baseApiUrl = $isProduction
                 ? vetmanager_url($domainName)->asString()
@@ -70,11 +73,12 @@ class ApiGateway
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    public static function fromDomainAndApiKey(string $domainName,
-                                               string $apiKey,
-                                               bool   $isProduction,
-                                               string $timezone = '+03:00'): static
-    {
+    public static function fromDomainAndApiKey(
+        string $domainName,
+        string $apiKey,
+        bool   $isProduction,
+        string $timezone = '+03:00'
+    ): static {
         try {
             $baseApiUrl = ($isProduction)
                 ? vetmanager_url($domainName)->asString()
@@ -108,7 +112,6 @@ class ApiGateway
      */
     public function getWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
     {
-
         try {
             $url = (new RestApiPrefix())->asString() . $apiRouteKey->value . '?' . $getParameters;
         } catch (\Exception $e) {
@@ -117,6 +120,61 @@ class ApiGateway
 
         $request = $this->getResponseFromGuzzleClient('GET', $url);
         return $this->getDataContentsFromResponseOrThrowOnFail($request);
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    private function getResponseFromGuzzleClient(string $method, string $url, array $data = [], ?PagedQuery $pagedQuery = null): ResponseInterface
+    {
+        $options = $this->getOptionsForGuzzleRequest($data, $pagedQuery);
+        try {
+            return $this->guzzleClient->request($method, $url, $options);
+        } catch (GuzzleException $e) {
+            throw new VetmanagerApiGatewayResponseException($e->getMessage());
+        }
+    }
+
+    /** @throws VetmanagerApiGatewayRequestException */
+    private function getOptionsForGuzzleRequest(array $data = [], ?PagedQuery $pagedQuery = null): array
+    {
+        $options = ['headers' => $this->allHeaders->asKeyValue()];
+
+        if ($data) {
+            $options['body'] = json_encode($data);
+        }
+
+        try {
+            if ($pagedQuery) {
+                $options['query'] = $pagedQuery->asKeyValue();
+            }
+        } catch (\Exception $e) {
+            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+        }
+
+        return $options;
+    }
+
+    /** @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели. При некоторых запросах "totalCount" не будет
+     * @throws VetmanagerApiGatewayResponseEmptyException
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    private function getDataContentsFromResponseOrThrowOnFail(ResponseInterface $response): array
+    {
+        $contents = json_decode($response->getBody()->getContents(), true);
+
+        if (empty($contents) || !array_key_exists('success', $contents)) {
+            throw new VetmanagerApiGatewayResponseEmptyException('Пустой ответ апи');
+        }
+
+        $success = filter_var($contents['success'], FILTER_VALIDATE_BOOLEAN);
+
+        if (!$success) {
+            throw new VetmanagerApiGatewayResponseException($contents['message'] ?? 'Неизвестная ошибка работы с апи');
+        }
+
+        return (array)$contents['data'];
     }
 
     /**
@@ -166,6 +224,20 @@ class ApiGateway
         return $this->getDataContentsFromResponseOrThrowOnFail($response);
     }
 
+    /** @throws VetmanagerApiGatewayRequestException */
+    private function getUrlForGuzzleRequest(ApiRoute $apiRouteKey, int $modelId = 0): string
+    {
+        $modelKey = $apiRouteKey->value;
+
+        $uri = ($modelId) ? new WithId(new Model($modelKey), $modelId) : new OnlyModel(new Model($modelKey));
+
+        try {
+            return $uri->asString();
+        } catch (\Exception $e) {
+            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+        }
+    }
+
     /**
      * @return array Содержимое модели (например: ['id' => 1, ... ]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
@@ -174,6 +246,18 @@ class ApiGateway
     public function getWithId(ApiRoute $apiRouteKey, int $modelId): array
     {
         return $this->getModelsContentsAfterMakingRequest('GET', $apiRouteKey, $modelId);
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    private function getModelsContentsAfterMakingRequest(string $method, ApiRoute $apiRouteKey, int $modelId = 0, array $data = []): array
+    {
+        $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
+        $response = $this->getResponseFromGuzzleClient($method, $url, $data);
+        $apiDataContents = $this->getDataContentsFromResponseOrThrowOnFail($response);
+        return $apiDataContents[$apiRouteKey->value];
     }
 
     /**
@@ -200,95 +284,11 @@ class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    private function getModelsContentsAfterMakingRequest(string $method, ApiRoute $apiRouteKey, int $modelId = 0, array $data = []): array
-    {
-        $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
-        $response = $this->getResponseFromGuzzleClient($method, $url, $data);
-        $apiDataContents = $this->getDataContentsFromResponseOrThrowOnFail($response);
-        return $apiDataContents[$apiRouteKey->value];
-    }
-
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
     public function delete(ApiRoute $apiRouteKey, int $modelId): void
     {
         $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
         $response = $this->getResponseFromGuzzleClient('DELETE', $url);
         $this->getDataContentsFromResponseOrThrowOnFail($response);
         // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
-    }
-
-    /** @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели. При некоторых запросах "totalCount" не будет
-     * @throws VetmanagerApiGatewayResponseEmptyException
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getDataContentsFromResponseOrThrowOnFail(ResponseInterface $response): array
-    {
-        $contents = json_decode($response->getBody()->getContents(), true);
-
-        if (empty($contents) || !array_key_exists('success', $contents)) {
-            throw new VetmanagerApiGatewayResponseEmptyException('Пустой ответ апи');
-        }
-
-        $success = filter_var($contents['success'], FILTER_VALIDATE_BOOLEAN);
-
-        if (!$success) {
-            throw new VetmanagerApiGatewayResponseException($contents['message'] ?? 'Неизвестная ошибка работы с апи');
-        }
-
-        return (array)$contents['data'];
-    }
-
-    /**
-     * @throws VetmanagerApiGatewayRequestException
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getResponseFromGuzzleClient(string $method, string $url, array $data = [], ?PagedQuery $pagedQuery = null): ResponseInterface
-    {
-        $options = $this->getOptionsForGuzzleRequest($data, $pagedQuery);
-        try {
-            return $this->guzzleClient->request($method, $url, $options);
-        } catch (GuzzleException $e) {
-            throw new VetmanagerApiGatewayResponseException($e->getMessage());
-        }
-
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    private function getUrlForGuzzleRequest(ApiRoute $apiRouteKey, int $modelId = 0): string
-    {
-        $modelKey = $apiRouteKey->value;
-
-        $uri = ($modelId) ? new WithId(new Model($modelKey), $modelId) : new OnlyModel(new Model($modelKey));
-
-        try {
-            return $uri->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    private function getOptionsForGuzzleRequest(array $data = [], ?PagedQuery $pagedQuery = null): array
-    {
-        $options = ['headers' => $this->allHeaders->asKeyValue()];
-
-        if ($data) {
-            $options['body'] = json_encode($data);
-        }
-
-        try {
-
-            if ($pagedQuery) {
-                $options['query'] = $pagedQuery->asKeyValue();
-            }
-
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
-
-        return $options;
     }
 }

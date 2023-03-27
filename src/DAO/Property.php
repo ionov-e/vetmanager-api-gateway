@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -32,7 +34,7 @@ class Property extends AbstractDTO implements AllConstructorsInterface
      *     "clinic_id": string
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)

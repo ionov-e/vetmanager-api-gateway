@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -95,7 +97,7 @@ class Client extends AbstractDTO
      *      "phone_prefix": ?string
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -155,10 +157,11 @@ class Client extends AbstractDTO
 
     /** @return DAO\MedicalCardsByClient[]
      * @throws VetmanagerApiGatewayException
+     * @noinspection PhpUnnecessaryCurlyVarSyntaxInspection
      */
     private function getMedcards(): array #TODO check, redo
     {
-        $medcards = $this->apiGateway->getWithGetParametersAsString(ApiRoute::MedicalCardsByClient,"client_id={$this->id}");
+        $medcards = $this->apiGateway->getWithGetParametersAsString(ApiRoute::MedicalCardsByClient, "client_id={$this->id}");
 
 //        $medcards = $this->apiGateway->getModelsContentsUsingApiPagedQuery(
 //            ApiRoute::MedicalCardsByClient,

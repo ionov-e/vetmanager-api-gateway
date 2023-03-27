@@ -1,7 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
@@ -9,8 +13,6 @@ use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Enum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 #TODO magical properties
 class Medcard extends AbstractDTO implements AllConstructorsInterface
@@ -97,7 +99,7 @@ class Medcard extends AbstractDTO implements AllConstructorsInterface
      *          }
      *      } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      */
@@ -133,6 +135,11 @@ class Medcard extends AbstractDTO implements AllConstructorsInterface
         }
     }
 
+    public static function getApiModel(): Enum\ApiRoute
+    {
+        return Enum\ApiRoute::MedicalCard;
+    }
+
     /** @throws VetmanagerApiGatewayException
      */
     public function __get(string $name): mixed
@@ -146,10 +153,5 @@ class Medcard extends AbstractDTO implements AllConstructorsInterface
 
             default => $this->$name,
         };
-    }
-
-    public static function getApiModel(): Enum\ApiRoute
-    {
-        return Enum\ApiRoute::MedicalCard;
     }
 }

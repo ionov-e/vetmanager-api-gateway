@@ -1,7 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
@@ -9,8 +13,6 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\DTO\FullName;
 use VetmanagerApiGateway\Enum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 #TODO magical properties
 class MedicalCardsByClient extends AbstractDTO implements AllConstructorsInterface
@@ -90,7 +92,7 @@ class MedicalCardsByClient extends AbstractDTO implements AllConstructorsInterfa
      *     "admission_type_title": string
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -130,6 +132,11 @@ class MedicalCardsByClient extends AbstractDTO implements AllConstructorsInterfa
         }
     }
 
+    public static function getApiModel(): Enum\ApiRoute
+    {
+        return Enum\ApiRoute::MedicalCardsByClient;
+    }
+
     /** @throws VetmanagerApiGatewayException
      */
     public function __get(string $name): mixed
@@ -143,10 +150,5 @@ class MedicalCardsByClient extends AbstractDTO implements AllConstructorsInterfa
             'user' => $this->userId ? User::fromRequestById($this->apiGateway, $this->userId) : null,
             default => $this->$name,
         };
-    }
-
-    public static function getApiModel(): Enum\ApiRoute
-    {
-        return Enum\ApiRoute::MedicalCardsByClient;
     }
 }

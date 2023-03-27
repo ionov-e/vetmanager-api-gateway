@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -9,9 +11,9 @@ abstract class AbstractDTO
 {
     /** @throws VetmanagerApiGatewayResponseEmptyException */
     protected function __construct(
-        protected ApiGateway $apiGateway,
-        readonly protected array $originalData)
-    {
+        protected ApiGateway     $apiGateway,
+        readonly protected array $originalData
+    ) {
         if (empty($this->originalData)) {
             throw new VetmanagerApiGatewayResponseEmptyException();
         }

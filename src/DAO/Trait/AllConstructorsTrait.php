@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\DAO\Trait;
 
+use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\Enum\ApiRoute;
@@ -9,7 +10,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use Otis22\VetmanagerRestApi\Query\PagedQuery;
 
 /**
  * Реализация интерфейса {@see AllConstructorsInterface}. Используется только в дочерних классах DTO {@see AbstractDTO} этой библиотеки.
@@ -32,7 +32,7 @@ trait AllConstructorsTrait
      */
     public static function fromRequestById(ApiGateway $apiGateway, int $modelId): static
     {
-        return new self (
+        return new self(
             $apiGateway,
             $apiGateway->getWithId(static::getApiModel(), $modelId)
         );
@@ -69,7 +69,7 @@ trait AllConstructorsTrait
     public static function fromInnerContentsOfDecodedJsons(ApiGateway $apiGateway, array $arrayOfDtosContentsAsDecodedJsons): array
     {
         return array_map(
-            fn(array $modelAsDecodedJson): static => static::fromDecodedJson($apiGateway, $modelAsDecodedJson),
+            fn (array $modelAsDecodedJson): static => static::fromDecodedJson($apiGateway, $modelAsDecodedJson),
             $arrayOfDtosContentsAsDecodedJsons
         );
     }

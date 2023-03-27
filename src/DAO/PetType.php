@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -29,7 +31,7 @@ class PetType extends DTO\PetType implements AllConstructorsInterface
      *     }
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -49,7 +51,7 @@ class PetType extends DTO\PetType implements AllConstructorsInterface
     private function getBreeds(): array
     {
         return array_map(
-            fn(array $breedArray): DTO\Breed => DTO\Breed::fromDecodedJson($this->apiGateway, $breedArray),
+            fn (array $breedArray): DTO\Breed => DTO\Breed::fromDecodedJson($this->apiGateway, $breedArray),
             $this->originalData['breeds']
         );
     }

@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 /** @property-read DAO\Good $self */
 class Good extends AbstractDTO
@@ -49,7 +51,7 @@ class Good extends AbstractDTO
      *     "category_id": ?string,
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      */

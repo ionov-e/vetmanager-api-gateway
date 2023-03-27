@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use Exception;
 
 class Good extends DTO\Good implements AllConstructorsInterface
 {
@@ -65,7 +67,7 @@ class Good extends DTO\Good implements AllConstructorsInterface
      *     }
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      * @throws Exception
@@ -91,7 +93,7 @@ class Good extends DTO\Good implements AllConstructorsInterface
     private function getGoodSaleParams(): array
     {
         return array_map(
-            fn(array $goodSaleParam): GoodSaleParam => GoodSaleParam::fromDecodedJson(
+            fn (array $goodSaleParam): GoodSaleParam => GoodSaleParam::fromDecodedJson(
                 $this->apiGateway,
                 array_merge(
                     $goodSaleParam,

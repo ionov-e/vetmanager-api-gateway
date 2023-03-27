@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use Exception;
 
 class GoodSaleParam extends DTO\GoodSaleParam implements AllConstructorsInterface
 {
@@ -53,7 +55,7 @@ class GoodSaleParam extends DTO\GoodSaleParam implements AllConstructorsInterfac
      *     }
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      * @throws Exception

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -48,7 +51,7 @@ class GoodSaleParam extends AbstractDTO
      *     "price_formation": ?string
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      * @throws \Exception

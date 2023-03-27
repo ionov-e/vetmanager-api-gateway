@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Enum\Invoice\PaymentStatus;
 use VetmanagerApiGateway\Enum\Invoice\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 /** @property-read DAO\Invoice $self */
 class Invoice extends AbstractDTO
@@ -64,10 +66,9 @@ class Invoice extends AbstractDTO
      *     "fiscal_section_id": string,
      *  }
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
-    /** @throws VetmanagerApiGatewayException
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -18,13 +20,13 @@ class ComboManualName extends AbstractDTO
     public string $name;
 
     /** @var array{
-    *       "id": string,
-    *       "title": string,
-    *       "is_readonly": string,
-    *       "name": string
-    *   } $originalData
+     *       "id": string,
+     *       "title": string,
+     *       "is_readonly": string,
+     *       "name": string
+     *   } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)

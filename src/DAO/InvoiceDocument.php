@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -8,12 +10,21 @@ use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use Exception;
 
 class InvoiceDocument extends DTO\InvoiceDocument implements AllConstructorsInterface
 {
     use AllConstructorsTrait;
 
+    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
+    public ?float $minPrice;
+    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
+    public ?float $maxPrice;
+    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
+    public ?float $minPriceInPercents;
+    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
+    public ?float $maxPriceInPercents;
+    public DTO\Invoice $invoice;
+    public DTO\Good $good;
     /** @var array{
      *     "id": string,
      *     "document_id": string,
@@ -99,21 +110,9 @@ class InvoiceDocument extends DTO\InvoiceDocument implements AllConstructorsInte
      *     }
      * }
      */
-    readonly protected array $originalData;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $minPrice;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $maxPrice;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $minPriceInPercents;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $maxPriceInPercents;
-    public DTO\Invoice $invoice;
-    public DTO\Good $good;
+    protected readonly array $originalData;
 
-    /** @throws VetmanagerApiGatewayException
-     * @throws Exception
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

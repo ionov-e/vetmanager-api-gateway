@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -33,7 +35,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
      *       }
      *   } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -41,11 +43,6 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
         parent::__construct($apiGateway, $originalData);
 
         $this->comboManualName = DTO\ComboManualName::fromDecodedJson($this->apiGateway, $this->originalData['comboManualName']);
-    }
-
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::ComboManualItem;
     }
 
     /**
@@ -64,6 +61,11 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
         );
 
         return $return[0];
+    }
+
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::ComboManualItem;
     }
 
     /**
@@ -96,5 +98,4 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
 //            )
 //        );
     }
-
 }

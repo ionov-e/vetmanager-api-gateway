@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -57,7 +59,7 @@ class Clinic extends AbstractDTO implements AllConstructorsInterface
      *     "email": string
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /**
      * @param ApiGateway $apiGateway

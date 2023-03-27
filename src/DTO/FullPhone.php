@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection PhpUnnecessaryCurlyVarSyntaxInspection */
 declare(strict_types=1);
 
@@ -18,8 +19,7 @@ class FullPhone
         public string $countryCode,
         public string $number,
         public string $mask
-    )
-    {
+    ) {
     }
 
     public function getAsMaskedWithCountryCode(): string

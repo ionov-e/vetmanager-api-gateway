@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use Exception;
 
 class Invoice extends DTO\Invoice implements AllConstructorsInterface
 {
@@ -175,10 +177,11 @@ class Invoice extends DTO\Invoice implements AllConstructorsInterface
      *          }>
      *  }
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
-     * @throws Exception */
+     * @throws Exception
+     */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
@@ -191,11 +194,6 @@ class Invoice extends DTO\Invoice implements AllConstructorsInterface
         $this->invoiceDocuments = $this->getInvoiceDocuments();
     }
 
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Invoice;
-    }
-
     /**
      * @return DTO\InvoiceDocument[]
      * @throws VetmanagerApiGatewayException
@@ -203,11 +201,16 @@ class Invoice extends DTO\Invoice implements AllConstructorsInterface
     private function getInvoiceDocuments(): array
     {
         return array_map(
-            fn(array $invoiceDocument): DTO\InvoiceDocument => DTO\InvoiceDocument::fromDecodedJson(
+            fn (array $invoiceDocument): DTO\InvoiceDocument => DTO\InvoiceDocument::fromDecodedJson(
                 $this->apiGateway,
                 $invoiceDocument
             ),
             $this->originalData['invoiceDocuments']
         );
+    }
+
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Invoice;
     }
 }

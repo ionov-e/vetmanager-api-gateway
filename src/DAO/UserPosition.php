@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use DateInterval;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateInterval;
-use Exception;
 
 class UserPosition extends AbstractDTO implements AllConstructorsInterface
 {
@@ -26,7 +28,7 @@ class UserPosition extends AbstractDTO implements AllConstructorsInterface
      *     "admission_length": string,
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      * @throws Exception

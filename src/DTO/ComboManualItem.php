@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
@@ -29,17 +31,17 @@ class ComboManualItem extends AbstractDTO
     public bool $isActive;
 
     /** @var array{
-    *       "id": string,
-    *       "combo_manual_id": string,
-    *       "title": string,
-    *       "value": string,
-    *       "dop_param1": string,
-    *       "dop_param2": string,
-    *       "dop_param3": string,
-    *       "is_active": string
-    *   } $originalData
+     *       "id": string,
+     *       "combo_manual_id": string,
+     *       "title": string,
+     *       "value": string,
+     *       "dop_param1": string,
+     *       "dop_param2": string,
+     *       "dop_param3": string,
+     *       "is_active": string
+     *   } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)

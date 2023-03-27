@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO\ComboManualItem;
 use VetmanagerApiGateway\DAO;
+use VetmanagerApiGateway\DAO\ComboManualItem;
 use VetmanagerApiGateway\Enum\Pet\Sex;
 use VetmanagerApiGateway\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 /**
  * @property-read DAO\Pet $self
@@ -20,31 +22,6 @@ use Exception;
  */
 class Pet extends AbstractDTO
 {
-    /**
-     * @var array{
-     * "id": string,
-     * "owner_id": ?string,
-     * "type_id": ?string,
-     * "alias": string,
-     * "sex": ?string,
-     * "date_register": string,
-     * "birthday": ?string,
-     * "note": string,
-     * "breed_id": ?string,
-     * "old_id": ?string,
-     * "color_id": ?string,
-     * "deathnote": ?string,
-     * "deathdate": ?string,
-     * "chip_number": string,
-     * "lab_number": string,
-     * "status": string,
-     * "picture": ?string,
-     * "weight": ?string,
-     * "edit_date": string,
-     * } $originalData
-     */
-    readonly protected array $originalData;
-
     public int $id;
     /** Ни в одной БД не нашел "null" или "0" */
     public int $ownerId;
@@ -69,6 +46,30 @@ class Pet extends AbstractDTO
     public string $picture;
     public ?float $weight;
     public DateTime $editDate;
+    /**
+     * @var array{
+     * "id": string,
+     * "owner_id": ?string,
+     * "type_id": ?string,
+     * "alias": string,
+     * "sex": ?string,
+     * "date_register": string,
+     * "birthday": ?string,
+     * "note": string,
+     * "breed_id": ?string,
+     * "old_id": ?string,
+     * "color_id": ?string,
+     * "deathnote": ?string,
+     * "deathdate": ?string,
+     * "chip_number": string,
+     * "lab_number": string,
+     * "status": string,
+     * "picture": ?string,
+     * "weight": ?string,
+     * "edit_date": string,
+     * } $originalData
+     */
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(ApiGateway $api, array $originalData)

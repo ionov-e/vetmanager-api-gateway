@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
@@ -38,7 +40,7 @@ class Street extends AbstractDTO implements AllConstructorsInterface
      *     }
      * } $originalData
      */
-    readonly protected array $originalData;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -50,7 +52,12 @@ class Street extends AbstractDTO implements AllConstructorsInterface
         $this->cityId = (int)$this->originalData['city_id'];
         $this->type = Type::from($this->originalData['type']);
         $this->city = $this->originalData['city_id'] ? City::fromDecodedJson($this->apiGateway, $this->originalData['city']) : null;
-  }
+    }
+
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Street;
+    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
@@ -59,10 +66,5 @@ class Street extends AbstractDTO implements AllConstructorsInterface
             'cityType' => $this->originalData['city']['type_id'] ? CityType::fromRequestById($this->apiGateway, $this->originalData['city']['type_id']) : null,
             default => $this->$name,
         };
-    }
-
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Street;
     }
 }

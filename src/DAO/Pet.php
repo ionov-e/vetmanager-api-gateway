@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DAO;
 
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
 use VetmanagerApiGateway\DAO\Trait\AllConstructorsTrait;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use Exception;
 
 /**
  * @property-read ?City $ownerCity
@@ -18,6 +20,14 @@ class Pet extends DTO\Pet implements AllConstructorsInterface
 {
     use AllConstructorsTrait;
 
+    /** Уже получен */
+    public ?DTO\Client $client;
+    /** Уже получен */
+    public ?DTO\PetType $type;
+    /** Уже получен */
+    public ?Breed $breed;
+    /** Уже получен */
+    public ?DTO\ComboManualItem $color;
     /**
      * @var array{
      * "id": string,
@@ -94,16 +104,7 @@ class Pet extends DTO\Pet implements AllConstructorsInterface
      *      }
      * } $originalData
      */
-    readonly protected array $originalData;
-
-    /** Уже получен */
-    public ?DTO\Client $client;
-    /** Уже получен */
-    public ?DTO\PetType $type;
-    /** Уже получен */
-    public ?Breed $breed;
-    /** Уже получен */
-    public ?DTO\ComboManualItem $color;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      * @throws Exception
@@ -118,16 +119,16 @@ class Pet extends DTO\Pet implements AllConstructorsInterface
         $this->color = $this->colorId ? DTO\ComboManualItem::fromDecodedJson($this->apiGateway, $this->originalData['color']) : null;
     }
 
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Pet;
-    }
-
     private function getBreedApiData(): array
     {
         return array_merge(
             $this->originalData['breed'],
             ["petType" => $this->originalData['type']]
         );
+    }
+
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Pet;
     }
 }

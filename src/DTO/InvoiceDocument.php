@@ -1,17 +1,61 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use DateTime;
+use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use DateTime;
-use Exception;
 
 /** @property-read DAO\InvoiceDocument $self */
 class InvoiceDocument extends AbstractDTO
 {
+    public int $id;
+    public int $documentId;
+    public int $goodId;
+    public ?float $quantity;
+    /** Приходит сейчас int, но поручиться, что float не стоит исключать*/
+    public ?float $price;
+    /** Default: '0' */
+    public int $responsibleUserId;
+    public int $isDefaultResponsible;
+    /** Default: '0' */
+    public int $saleParamId;
+    /** Default: '0' */
+    public int $tagId;
+    public ?DiscountType $discountType;
+    public ?int $discountDocumentId;
+    public ?float $discountPercent;
+    public ?float $defaultPrice;
+    public DateTime $createDate;
+    public ?string $discountCause;
+    /** Default: '0' */
+    public ?int $fixedDiscountId;
+    /** Default: '0' */
+    public int $fixedDiscountPercent;
+    /** Default: '0' */
+    public int $fixedIncreaseId;
+    /** Default: '0' */
+    public int $fixedIncreasePercent;
+    /** Default: "0.0000000000" */
+    public float $primeCost;
+
+    public array $partyInfo;
+    /** @var array<int, array{
+     *                        "party_id": string,
+     *                        "party_exec_date": string,
+     *                        "store_id": string,
+     *                        "good_id": string,
+     *                        "characteristic_id": string,
+     *                        "quantity": ?string,
+     *                        "price": ?string
+     *                        }
+     *            > Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ
+     */ #TODO find out expected response    public GoodSaleParam $goodSaleParam;
     /** @var array{
      *     "id": string,
      *     "document_id": string,
@@ -55,49 +99,7 @@ class InvoiceDocument extends AbstractDTO
      *       }
      * }
      */
-    readonly protected array $originalData;
-    public int $id;
-    public int $documentId;
-    public int $goodId;
-    public ?float $quantity;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать*/
-    public ?float $price;
-    /** Default: '0' */
-    public int $responsibleUserId;
-    public int $isDefaultResponsible;
-    /** Default: '0' */
-    public int $saleParamId;
-    /** Default: '0' */
-    public int $tagId;
-    public ?DiscountType $discountType;
-    public ?int $discountDocumentId;
-    public ?float $discountPercent;
-    public ?float $defaultPrice;
-    public DateTime $createDate;
-    public ?string $discountCause;
-    /** Default: '0' */
-    public ?int $fixedDiscountId;
-    /** Default: '0' */
-    public int $fixedDiscountPercent;
-    /** Default: '0' */
-    public int $fixedIncreaseId;
-    /** Default: '0' */
-    public int $fixedIncreasePercent;
-    /** Default: "0.0000000000" */
-    public float $primeCost;
-    /** @var array<int, array{
-     *                        "party_id": string,
-     *                        "party_exec_date": string,
-     *                        "store_id": string,
-     *                        "good_id": string,
-     *                        "characteristic_id": string,
-     *                        "quantity": ?string,
-     *                        "price": ?string
-     *                        }
-     *            > Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ
-     */ #TODO find out expected response
-    public array $partyInfo;
-    public GoodSaleParam $goodSaleParam;
+    protected readonly array $originalData;
 
     /** @throws VetmanagerApiGatewayException
      */
@@ -135,7 +137,7 @@ class InvoiceDocument extends AbstractDTO
         }
     }
 
-    /** @throws VetmanagerApiGatewayException*/
+    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
