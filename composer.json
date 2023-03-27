@@ -1,7 +1,6 @@
 {
   "name": "ioncurly/vetmanager-api-gateway",
   "description": "Vetmanager API Gateway",
-  "version": "0.1.0",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/ionov-e/vetmanager-api-gateway",
   "authors": [
