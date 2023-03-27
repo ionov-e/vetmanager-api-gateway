@@ -15,12 +15,6 @@
     "otis22/vetmanager-rest-api": "^0.1.11",
     "ext-mbstring": "*"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:ionov-e/vetmanager-api-gateway.git"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "VetmanagerApiGateway\\": "src/"
@@ -28,5 +22,14 @@
   },
   "autoload-dev": {
     "psr-4": { "VetmanagerApiGateway\\": "tests/" }
-  }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:ionov-e/vetmanager-api-gateway.git"
+    }
+  ]
 }

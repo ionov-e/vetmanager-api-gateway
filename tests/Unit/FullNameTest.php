@@ -1,0 +1,112 @@
+<?php declare(strict_types=1);
+
+namespace VetmanagerApiGateway\Unit;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use VetmanagerApiGateway\DTO\FullName;
+
+#[CoversClass(FullName::class)]
+class FullNameTest extends TestCase
+{
+    #[DataProvider('casesProviderForFullStartingWithLast')]
+    public function testFullStartingWithLast
+    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getFullStartingWithLast(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    public static function casesProviderForFullStartingWithLast(): array
+    {
+        return [
+            ['Имя', 'Отчество', 'Фамилия', 'Фамилия Имя Отчество'],
+            ['Имя', 'Отчество', '', 'Имя Отчество'],
+            ['Имя', '', 'Фамилия', 'Фамилия Имя'],
+            ['', 'Отчество', 'Фамилия', 'Фамилия Отчество'],
+            ['', '', 'Фамилия', 'Фамилия'],
+            ['Имя', '', '', 'Имя'],
+            ['', 'Отчество', '', 'Отчество'],
+            ['', '', '', ''],
+        ];
+    }
+
+    #[DataProvider('casesProviderForFullStartingWithFirst')]
+    public function testFullStartingWithFirst
+    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getFullStartingWithFirst(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    public static function casesProviderForFullStartingWithFirst(): array
+    {
+        return [
+            ['Имя', 'Отчество', 'Фамилия', 'Имя Отчество Фамилия'],
+            ['Имя', 'Отчество', '', 'Имя Отчество'],
+            ['Имя', '', 'Фамилия', 'Имя Фамилия'],
+            ['', 'Отчество', 'Фамилия', 'Отчество Фамилия'],
+            ['', '', 'Фамилия', 'Фамилия'],
+            ['Имя', '', '', 'Имя'],
+            ['', 'Отчество', '', 'Отчество'],
+            ['', '', '', ''],
+        ];
+    }
+
+    #[DataProvider('casesProviderForLastPlusInitials')]
+    public function testLastPlusInitials
+    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getLastPlusInitials(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    public static function casesProviderForLastPlusInitials(): array
+    {
+        return [
+            ['Имя', 'Отчество', 'Фамилия', 'Фамилия И. О.'],
+            ['Имя', 'Отчество', '', 'И. О.'],
+            ['Имя', '', 'Фамилия', 'Фамилия И.'],
+            ['', 'Отчество', 'Фамилия', 'Фамилия О.'],
+            ['', '', 'Фамилия', 'Фамилия'],
+            ['Имя', '', '', 'И.'],
+            ['', 'Отчество', '', 'О.'],
+            ['', '', '', ''],
+        ];
+    }
+
+    #[DataProvider('casesProviderForInitials')]
+    public function testInitials
+    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getInitials(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    public static function casesProviderForInitials(): array
+    {
+        return [
+            ['Имя', 'Отчество', 'Фамилия', 'Ф. И. О.'],
+            ['Имя', 'Отчество', '', 'И. О.'],
+            ['Имя', '', 'Фамилия', 'Ф. И.'],
+            ['', 'Отчество', 'Фамилия', 'Ф. О.'],
+            ['', '', 'Фамилия', 'Ф.'],
+            ['Имя', '', '', 'И.'],
+            ['', 'Отчество', '', 'О.'],
+            ['', '', '', ''],
+        ];
+    }
+}
