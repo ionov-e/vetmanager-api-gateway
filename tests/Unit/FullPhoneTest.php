@@ -10,17 +10,6 @@ use VetmanagerApiGateway\DTO\FullPhone;
 #[CoversClass(FullPhone::class)]
 class FullPhoneTest extends TestCase
 {
-    #[DataProvider('casesProvider')]
-    public function testFullMasked
-    (string $countryCode, string $number, string $mask, string $expected, string $messageInCaseOfError = ''): void
-    {
-        $this->assertEquals(
-            (string)new FullPhone($countryCode, $number, $mask),
-            $expected,
-            $messageInCaseOfError
-        );
-    }
-
     public static function casesProvider(): array
     {
         return [
@@ -35,5 +24,15 @@ class FullPhoneTest extends TestCase
             ['7', '', '(___)___-__-__', ''],
             ['7', '', '____-____', ''],
         ];
+    }
+
+    #[DataProvider('casesProvider')]
+    public function testFullMasked(string $countryCode, string $number, string $mask, string $expected, string $messageInCaseOfError = ''): void
+    {
+        $this->assertEquals(
+            (string)new FullPhone($countryCode, $number, $mask),
+            $expected,
+            $messageInCaseOfError
+        );
     }
 }

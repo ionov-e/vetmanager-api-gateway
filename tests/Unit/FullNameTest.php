@@ -10,17 +10,6 @@ use VetmanagerApiGateway\DTO\FullName;
 #[CoversClass(FullName::class)]
 class FullNameTest extends TestCase
 {
-    #[DataProvider('casesProviderForFullStartingWithLast')]
-    public function testFullStartingWithLast
-    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
-    {
-        $this->assertEquals(
-            (new FullName($first, $middle, $last))->getFullStartingWithLast(),
-            $expected,
-            $errorMessage
-        );
-    }
-
     public static function casesProviderForFullStartingWithLast(): array
     {
         return [
@@ -33,17 +22,6 @@ class FullNameTest extends TestCase
             ['', 'Отчество', '', 'Отчество'],
             ['', '', '', ''],
         ];
-    }
-
-    #[DataProvider('casesProviderForFullStartingWithFirst')]
-    public function testFullStartingWithFirst
-    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
-    {
-        $this->assertEquals(
-            (new FullName($first, $middle, $last))->getFullStartingWithFirst(),
-            $expected,
-            $errorMessage
-        );
     }
 
     public static function casesProviderForFullStartingWithFirst(): array
@@ -60,17 +38,6 @@ class FullNameTest extends TestCase
         ];
     }
 
-    #[DataProvider('casesProviderForLastPlusInitials')]
-    public function testLastPlusInitials
-    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
-    {
-        $this->assertEquals(
-            (new FullName($first, $middle, $last))->getLastPlusInitials(),
-            $expected,
-            $errorMessage
-        );
-    }
-
     public static function casesProviderForLastPlusInitials(): array
     {
         return [
@@ -85,17 +52,6 @@ class FullNameTest extends TestCase
         ];
     }
 
-    #[DataProvider('casesProviderForInitials')]
-    public function testInitials
-    (string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
-    {
-        $this->assertEquals(
-            (new FullName($first, $middle, $last))->getInitials(),
-            $expected,
-            $errorMessage
-        );
-    }
-
     public static function casesProviderForInitials(): array
     {
         return [
@@ -108,5 +64,45 @@ class FullNameTest extends TestCase
             ['', 'Отчество', '', 'О.'],
             ['', '', '', ''],
         ];
+    }
+
+    #[DataProvider('casesProviderForFullStartingWithLast')]
+    public function testFullStartingWithLast(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getFullStartingWithLast(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    #[DataProvider('casesProviderForFullStartingWithFirst')]
+    public function testFullStartingWithFirst(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getFullStartingWithFirst(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    #[DataProvider('casesProviderForLastPlusInitials')]
+    public function testLastPlusInitials(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getLastPlusInitials(),
+            $expected,
+            $errorMessage
+        );
+    }
+
+    #[DataProvider('casesProviderForInitials')]
+    public function testInitials(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            (new FullName($first, $middle, $last))->getInitials(),
+            $expected,
+            $errorMessage
+        );
     }
 }
