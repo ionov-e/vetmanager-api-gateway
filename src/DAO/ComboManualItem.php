@@ -52,12 +52,12 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
      */
     public static function getAdmissionTypeFromApiAndId(ApiGateway $apiGateway, int $id): static
     {
-        $return = $apiGateway->getContentsWithPagedQuery(
+        $return = $apiGateway->getWithQueryBuilder(
             self::getApiModel(),
             (new Builder())
                 ->where('combo_manual_id', '2')
-                ->where('id', (string)$id)
-                ->top(1)
+                ->where('id', (string)$id),
+            1
         );
 
         return $return[0];
@@ -75,12 +75,12 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
      */
     public static function getAdmissionResultFromApiAndResultId(ApiGateway $apiGateway, int $resultId): static
     {
-        $return = $apiGateway->getContentsWithPagedQuery(
+        $return = $apiGateway->getContentsWithQueryBuilder(
             self::getApiModel(),
             (new Builder())
                 ->where('combo_manual_id', '2')
-                ->where('value', (string)$resultId)
-                ->top(1)
+                ->where('value', (string)$resultId),
+            1
         );
 
         return $return[0];

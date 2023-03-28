@@ -106,11 +106,11 @@ class Pet extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Pet::fromRequestById($this->apiGateway, $this->id),
-            'breed' => $this->typeId ? DAO\Breed::fromRequestById($this->apiGateway, $this->breedId) : null,
-            'color' => $this->colorId ? ComboManualItem::fromRequestById($this->apiGateway, $this->colorId) : null,
-            'owner' => $this->ownerId ? DAO\Client::fromRequestById($this->apiGateway, $this->ownerId) : null,
-            'type' => $this->typeId ? DAO\PetType::fromRequestById($this->apiGateway, $this->typeId) : null,
+            'self' => DAO\Pet::fromRequestGetById($this->apiGateway, $this->id),
+            'breed' => $this->typeId ? DAO\Breed::fromRequestGetById($this->apiGateway, $this->breedId) : null,
+            'color' => $this->colorId ? ComboManualItem::fromRequestGetById($this->apiGateway, $this->colorId) : null,
+            'owner' => $this->ownerId ? DAO\Client::fromRequestGetById($this->apiGateway, $this->ownerId) : null,
+            'type' => $this->typeId ? DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId) : null,
             default => $this->$name,
         };
     }

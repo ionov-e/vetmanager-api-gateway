@@ -13,6 +13,7 @@ use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ServiceName;
 use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use Otis22\VetmanagerRestApi\Model;
+use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
@@ -107,6 +108,7 @@ class ApiGateway
 
     /**
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
+     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели. При некоторых запросах "totalCount" не будет
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
@@ -123,6 +125,7 @@ class ApiGateway
     }
 
     /**
+     * @param array $data Только для POST/PUT методов
      * @throws VetmanagerApiGatewayRequestException
      * @throws VetmanagerApiGatewayResponseException
      */
@@ -177,17 +180,34 @@ class ApiGateway
         return (array)$contents['data'];
     }
 
-    /**
-     * Вернет в виде массива либо содержимое модели, либо массивы с моделями
+    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getContentsWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getContentsWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        $apiResponse = $this->getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-
+        $apiResponse = $this->getWithQueryBuilder($apiRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
         return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
+    }
+
+    /**
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @param int $pageNumber При использовании пагинации
+     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели.
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    {
+        $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
+
+        return self::getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+    }
+
+    private function getPagedQueryFromQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): PagedQuery
+    {
+        return $builder->paginate($maxLimitOfReturnedModels, $pageNumber);
     }
 
     /**
@@ -198,7 +218,7 @@ class ApiGateway
      */
     public function getWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $modelResponseKeyInJson = $apiRouteKey->getApiModelResponseKey(); #TODO another
+        $modelResponseKeyInJson = $apiRouteKey->getApiModelResponseKey();
         $arrayOfModelsWithTheirContents = [];
 
         do {
@@ -228,7 +248,6 @@ class ApiGateway
     private function getUrlForGuzzleRequest(ApiRoute $apiRouteKey, int $modelId = 0): string
     {
         $modelKey = $apiRouteKey->value;
-
         $uri = ($modelId) ? new WithId(new Model($modelKey), $modelId) : new OnlyModel(new Model($modelKey));
 
         try {
@@ -236,6 +255,17 @@ class ApiGateway
         } catch (\Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
+    }
+
+    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getContentsWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    {
+        $apiResponse = $this->getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
     }
 
     /**

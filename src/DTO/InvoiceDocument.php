@@ -44,18 +44,19 @@ class InvoiceDocument extends AbstractDTO
     /** Default: "0.0000000000" */
     public float $primeCost;
 
-    public array $partyInfo;
     /** @var array<int, array{
-     *                        "party_id": string,
-     *                        "party_exec_date": string,
-     *                        "store_id": string,
-     *                        "good_id": string,
-     *                        "characteristic_id": string,
-     *                        "quantity": ?string,
-     *                        "price": ?string
-     *                        }
-     *            > Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ
-     */ #TODO find out expected response    public GoodSaleParam $goodSaleParam;
+     *           "party_id": string,
+     *           "party_exec_date": string,
+     *           "store_id": string,
+     *           "good_id": string,
+     *           "characteristic_id": string,
+     *           "quantity": ?string,
+     *           "price": ?string
+     *           } $partyInfo
+     * Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
+     */
+    public array $partyInfo;
+    public GoodSaleParam $goodSaleParam;
     /** @var array{
      *     "id": string,
      *     "document_id": string,
@@ -141,7 +142,7 @@ class InvoiceDocument extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\InvoiceDocument::fromRequestById($this->apiGateway, $this->id),
+            'self' => DAO\InvoiceDocument::fromRequestGetById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

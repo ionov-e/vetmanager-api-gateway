@@ -145,9 +145,9 @@ class Medcard extends AbstractDTO implements AllConstructorsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'clinic' => $this->clinicId ? Clinic::fromRequestById($this->apiGateway, $this->clinicId) : null,
-            'invoice' => $this->invoice ? Invoice::fromRequestById($this->apiGateway, $this->invoice) : null,
-            'user' => $this->userId ? User::fromRequestById($this->apiGateway, $this->userId) : null,
+            'clinic' => $this->clinicId ? Clinic::fromRequestGetById($this->apiGateway, $this->clinicId) : null,
+            'invoice' => $this->invoice ? Invoice::fromRequestGetById($this->apiGateway, $this->invoice) : null,
+            'user' => $this->userId ? User::fromRequestGetById($this->apiGateway, $this->userId) : null,
 
 //            LEFT JOIN vaccine_pets vp ON vp.medcard_id = m.id AND vp.status != 'deleted'
 

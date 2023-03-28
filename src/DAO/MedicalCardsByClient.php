@@ -142,12 +142,12 @@ class MedicalCardsByClient extends AbstractDTO implements AllConstructorsInterfa
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => Medcard::fromRequestById($this->apiGateway, $this->id),
+            'self' => Medcard::fromRequestGetById($this->apiGateway, $this->id),
             'admissionType' => $this->admissionType ? ComboManualItem::getAdmissionTypeFromApiAndId($this->apiGateway, $this->admissionType) : null,
             'meetResult' => $this->meetResultId ? ComboManualItem::getAdmissionResultFromApiAndResultId($this->apiGateway, $this->meetResultId) : null,
-            'client' => $this->clientId ? Client::fromRequestById($this->apiGateway, $this->clientId) : null,
-            'pet' => Pet::fromRequestById($this->apiGateway, $this->petId),
-            'user' => $this->userId ? User::fromRequestById($this->apiGateway, $this->userId) : null,
+            'client' => $this->clientId ? Client::fromRequestGetById($this->apiGateway, $this->clientId) : null,
+            'pet' => Pet::fromRequestGetById($this->apiGateway, $this->petId),
+            'user' => $this->userId ? User::fromRequestGetById($this->apiGateway, $this->userId) : null,
             default => $this->$name,
         };
     }

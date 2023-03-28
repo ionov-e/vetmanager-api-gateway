@@ -81,11 +81,6 @@ class Good extends DTO\Good implements AllConstructorsInterface
         $this->goodSaleParams = $this->getGoodSaleParams();
     }
 
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Good;
-    }
-
     /**
      * @return GoodSaleParam[]
      * @throws VetmanagerApiGatewayException
@@ -110,5 +105,10 @@ class Good extends DTO\Good implements AllConstructorsInterface
         $originalData = $this->originalData;
         unset($originalData['group'], $originalData['unitStorage'], $originalData['goodSaleParams']);
         return $originalData;
+    }
+
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Good;
     }
 }

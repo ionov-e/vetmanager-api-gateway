@@ -108,7 +108,7 @@ class User extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\User::fromRequestById($this->apiGateway, $this->id),
+            'self' => DAO\User::fromRequestGetById($this->apiGateway, $this->id),
             'fullName' => new FullName($this->originalData['first_name'], $this->originalData['middle_name'], $this->originalData['last_name']),
             default => $this->$name,
         };

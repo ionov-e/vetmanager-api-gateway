@@ -49,7 +49,7 @@ class City extends AbstractDTO implements AllConstructorsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => CityType::fromRequestById($this->apiGateway, $this->typeId),
+            'type' => CityType::fromRequestGetById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

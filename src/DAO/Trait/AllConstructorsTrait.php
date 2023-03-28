@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VetmanagerApiGateway\DAO\Trait;
 
+use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DAO\Interface\AllConstructorsInterface;
@@ -27,10 +30,20 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 trait AllConstructorsTrait
 {
     /** @inheritDoc
+     * @return static[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestById(ApiGateway $apiGateway, int $modelId): static
+    public static function fromRequestGetAll(ApiGateway $apiGateway, int $maxLimitOfReturnedModels = 100): array
+    {
+        return self::fromRequestGetByQueryBuilder($apiGateway, (new Builder())->top($maxLimitOfReturnedModels), $maxLimitOfReturnedModels);
+    }
+
+    /** @inheritDoc
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public static function fromRequestGetById(ApiGateway $apiGateway, int $modelId): static
     {
         return new self(
             $apiGateway,
@@ -39,14 +52,25 @@ trait AllConstructorsTrait
     }
 
     /** @inheritDoc
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public static function fromRequestGetByParametersAsString(ApiGateway $apiGateway, string $getParameters): array
+    {
+        return self::fromMultipleDecodedJsons(
+            $apiGateway,
+            $apiGateway->getWithGetParametersAsString(static::getApiModel(), $getParameters)
+        );
+    }
+
+    /** @inheritDoc
      * @return static[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestByQueryBuilder(ApiGateway $apiGateway, PagedQuery $pagedQuery): array
+    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery);
-
+        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
         return static::fromMultipleDecodedJsons($apiGateway, $response);
     }
 
@@ -56,7 +80,7 @@ trait AllConstructorsTrait
      */
     public static function fromMultipleDecodedJsons(ApiGateway $apiGateway, array $arrayOfObjectsAsDecodedJsons): array
     {
-        return static::fromInnerContentsOfDecodedJsons(
+        return static::fromMultipleInnerContentsOfDecodedJsons(
             $apiGateway,
             $arrayOfObjectsAsDecodedJsons[static::getApiModel()->getApiModelResponseKey()]
         );
@@ -66,7 +90,7 @@ trait AllConstructorsTrait
      * @return static[]
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
-    public static function fromInnerContentsOfDecodedJsons(ApiGateway $apiGateway, array $arrayOfDtosContentsAsDecodedJsons): array
+    public static function fromMultipleInnerContentsOfDecodedJsons(ApiGateway $apiGateway, array $arrayOfDtosContentsAsDecodedJsons): array
     {
         return array_map(
             fn (array $modelAsDecodedJson): static => static::fromDecodedJson($apiGateway, $modelAsDecodedJson),

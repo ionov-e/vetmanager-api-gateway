@@ -63,7 +63,7 @@ class Street extends AbstractDTO implements AllConstructorsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'cityType' => $this->originalData['city']['type_id'] ? CityType::fromRequestById($this->apiGateway, $this->originalData['city']['type_id']) : null,
+            'cityType' => $this->originalData['city']['type_id'] ? CityType::fromRequestGetById($this->apiGateway, $this->originalData['city']['type_id']) : null,
             default => $this->$name,
         };
     }

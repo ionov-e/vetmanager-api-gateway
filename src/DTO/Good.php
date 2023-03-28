@@ -84,7 +84,7 @@ class Good extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Good::fromRequestById($this->apiGateway, $this->id),
+            'self' => DAO\Good::fromRequestGetById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

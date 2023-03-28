@@ -80,7 +80,7 @@ class GoodSaleParam extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\GoodSaleParam::fromRequestById($this->apiGateway, $this->id),
+            'self' => DAO\GoodSaleParam::fromRequestGetById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

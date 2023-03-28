@@ -146,11 +146,11 @@ class Client extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Client::fromRequestById($this->apiGateway, $this->id),
+            'self' => DAO\Client::fromRequestGetById($this->apiGateway, $this->id),
             'medcards' => $this->getMedcards(),
             'petsAlive' => $this->getPetsAlive(),
-            'street' => $this->streetId ? DAO\Street::fromRequestById($this->apiGateway, $this->streetId) : null,
-            'city' => $this->cityId ? DAO\City::fromRequestById($this->apiGateway, $this->cityId) : null,
+            'street' => $this->streetId ? DAO\Street::fromRequestGetById($this->apiGateway, $this->streetId) : null,
+            'city' => $this->cityId ? DAO\City::fromRequestGetById($this->apiGateway, $this->cityId) : null,
             default => $this->$name
         };
     }
@@ -178,12 +178,11 @@ class Client extends AbstractDTO
      */
     private function getPetsAlive(): array
     {
-        $pets = $this->apiGateway->getWithPagedQuery(
+        $pets = $this->apiGateway->getWithQueryBuilder(
             ApiRoute::Pet,
             (new Builder())
                 ->where('owner_id', (string)$this->id)
                 ->where('status', Enum\Pet\Status::Alive->value)
-                ->top(100)
         );
 
         return DAO\Pet::fromMultipleDecodedJsons($this->apiGateway, $pets);
