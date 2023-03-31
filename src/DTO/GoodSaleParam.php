@@ -6,9 +6,8 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
-use VetmanagerApiGateway\Enum\GoodSaleParam\PriceFormation;
-use VetmanagerApiGateway\Enum\GoodSaleParam\Status;
+use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
+use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\GoodSaleParam $self */
@@ -34,7 +33,7 @@ class GoodSaleParam extends AbstractDTO
     public PriceFormation $priceFormation;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public DAO\Unit $unit;
+    public \VetmanagerApiGateway\DTO\DAO\Unit $unit;
 
     /** @var array{
      *     "id": string,
@@ -72,7 +71,7 @@ class GoodSaleParam extends AbstractDTO
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->markup = $this->originalData['markup'] ? (float)$this->originalData['markup'] : null;
         $this->priceFormation = PriceFormation::from($this->originalData['price_formation']);
-        $this->unit = DAO\Unit::fromDecodedJson($this->apiGateway, $this->originalData['unitSale']);
+        $this->unit = \VetmanagerApiGateway\DTO\DAO\Unit::fromDecodedJson($this->apiGateway, $this->originalData['unitSale']);
     }
 
     /** @throws VetmanagerApiGatewayException

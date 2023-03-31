@@ -7,9 +7,8 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
-use VetmanagerApiGateway\Enum\Invoice\PaymentStatus;
-use VetmanagerApiGateway\Enum\Invoice\Status;
+use VetmanagerApiGateway\DTO\Enum\Invoice\PaymentStatus;
+use VetmanagerApiGateway\DTO\Enum\Invoice\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\Invoice $self */

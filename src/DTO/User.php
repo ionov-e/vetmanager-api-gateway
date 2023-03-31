@@ -7,10 +7,9 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\PetType $self
+/** @property-read \VetmanagerApiGateway\DTO\DAO\PetType $self
  * @property-read FullName $fullName
  */
 class User extends AbstractDTO

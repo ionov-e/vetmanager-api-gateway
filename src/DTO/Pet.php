@@ -7,18 +7,17 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
-use VetmanagerApiGateway\DAO\ComboManualItem;
-use VetmanagerApiGateway\Enum\Pet\Sex;
-use VetmanagerApiGateway\Enum\Pet\Status;
+use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
+use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
+use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read DAO\Pet $self
- * @property-read ?DAO\Client $owner
- * @property-read ?DAO\PetType $type
- * @property-read ?DAO\Breed $breed
- * @property-read ?DAO\ComboManualItem $color
+ * @property-read ?\VetmanagerApiGateway\DTO\DAO\Client $owner
+ * @property-read ?\VetmanagerApiGateway\DTO\DAO\PetType $type
+ * @property-read ?\VetmanagerApiGateway\DTO\DAO\Breed $breed
+ * @property-read ?ComboManualItem $color
  */
 class Pet extends AbstractDTO
 {
@@ -107,10 +106,10 @@ class Pet extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\Pet::fromRequestGetById($this->apiGateway, $this->id),
-            'breed' => $this->typeId ? DAO\Breed::fromRequestGetById($this->apiGateway, $this->breedId) : null,
+            'breed' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\Breed::fromRequestGetById($this->apiGateway, $this->breedId) : null,
             'color' => $this->colorId ? ComboManualItem::fromRequestGetById($this->apiGateway, $this->colorId) : null,
-            'owner' => $this->ownerId ? DAO\Client::fromRequestGetById($this->apiGateway, $this->ownerId) : null,
-            'type' => $this->typeId ? DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId) : null,
+            'owner' => $this->ownerId ? \VetmanagerApiGateway\DTO\DAO\Client::fromRequestGetById($this->apiGateway, $this->ownerId) : null,
+            'type' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId) : null,
             default => $this->$name,
         };
     }

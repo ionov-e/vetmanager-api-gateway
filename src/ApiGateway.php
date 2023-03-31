@@ -19,7 +19,7 @@ use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
-use VetmanagerApiGateway\Enum\ApiRoute;
+use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -117,126 +117,6 @@ class ApiGateway
     }
 
     /**
-     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @return array Содержимое модели (например: ['id' => 1, ... ]
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
-    {
-        $apiResponse = $this->getWithGetParametersAsString($apiRouteKey, $getParameters);
-        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
-    }
-
-    /**
-     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели. При некоторых запросах "totalCount" не будет
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
-    {
-        try {
-            $url = (new RestApiPrefix())->asString() . $apiRouteKey->value . '?' . $getParameters;
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
-
-        $request = $this->getResponseFromGuzzleClient('GET', $url);
-        return $this->getDataContentsFromResponseOrThrowOnFail($request);
-    }
-
-    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
-    {
-        $apiResponse = $this->getWithQueryBuilder($apiRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
-    }
-
-    /**
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @param int $pageNumber При использовании пагинации
-     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели.
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
-    {
-        $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
-        return self::getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-    }
-
-    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
-    {
-        $apiResponse = $this->getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
-    }
-
-    /**
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели.
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
-    {
-        $modelResponseKeyInJson = $apiRouteKey->getApiModelResponseKey();
-        $arrayOfModelsWithTheirContents = [];
-
-        do {
-            $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
-            $pagedQuery->next();
-            $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
-        } while (count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels);
-
-        return [
-            'totalCount' => $modelDataContents['totalCount'],
-            $modelResponseKeyInJson => $arrayOfModelsWithTheirContents
-        ];
-    }
-
-    /**
-     * @return array Содержимое модели (например: ['id' => 1, ... ]
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function post(ApiRoute $apiRouteKey, array $data): array
-    {
-        return $this->getModelsInnerContentsFromApi('POST', $apiRouteKey, data: $data);
-    }
-
-    /**
-     * @return array Содержимое модели (например: ['id' => 1, ... ]
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function put(ApiRoute $apiRouteKey, int $modelId, array $data): array
-    {
-        return $this->getModelsInnerContentsFromApi('PUT', $apiRouteKey, $modelId, $data);
-    }
-
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function delete(ApiRoute $apiRouteKey, int $modelId): void
-    {
-        $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
-        $response = $this->getResponseFromGuzzleClient('DELETE', $url);
-        $this->getDataContentsFromResponseOrThrowOnFail($response);
-        // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
-    }
-
-    /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
@@ -246,17 +126,6 @@ class ApiGateway
         $response = $this->getResponseFromGuzzleClient($method, $url, $data);
         $apiDataContents = $this->getDataContentsFromResponseOrThrowOnFail($response);
         return $apiDataContents[$apiRouteKey->value];
-    }
-
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    private function getModelsDataContentsUsingPagedQueryWithOneRequest(ApiRoute $apiRouteKey, PagedQuery $pagedQuery): array
-    {
-        $url = $this->getUrlForGuzzleRequest($apiRouteKey);
-        $response = $this->getResponseFromGuzzleClient('GET', $url, pagedQuery: $pagedQuery);
-        return $this->getDataContentsFromResponseOrThrowOnFail($response);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -328,8 +197,139 @@ class ApiGateway
         return (array)$contents['data'];
     }
 
+    /**
+     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
+     * @return array Содержимое модели (например: ['id' => 1, ... ]
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getContentsWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
+    {
+        $apiResponse = $this->getWithGetParametersAsString($apiRouteKey, $getParameters);
+        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
+    }
+
+    /**
+     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
+     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели. При некоторых запросах "totalCount" не будет
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
+    {
+        try {
+            $url = (new RestApiPrefix())->asString() . $apiRouteKey->value . '?' . $getParameters;
+        } catch (\Exception $e) {
+            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+        }
+
+        $request = $this->getResponseFromGuzzleClient('GET', $url);
+        return $this->getDataContentsFromResponseOrThrowOnFail($request);
+    }
+
+    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getContentsWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    {
+        $apiResponse = $this->getWithQueryBuilder($apiRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
+    }
+
+    /**
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @param int $pageNumber При использовании пагинации
+     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели.
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    {
+        $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
+        return self::getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+    }
+
     private function getPagedQueryFromQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): PagedQuery
     {
         return $builder->paginate($maxLimitOfReturnedModels, $pageNumber);
+    }
+
+    /**
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @return array{"totalCount": int, MODEL_NAME: array} Ключом второго элемента будет название модели.
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    {
+        $modelResponseKeyInJson = $apiRouteKey->getApiModelResponseKey();
+        $arrayOfModelsWithTheirContents = [];
+
+        do {
+            $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
+            $pagedQuery->next();
+            $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
+        } while (count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels);
+
+        return [
+            'totalCount' => $modelDataContents['totalCount'],
+            $modelResponseKeyInJson => $arrayOfModelsWithTheirContents
+        ];
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    private function getModelsDataContentsUsingPagedQueryWithOneRequest(ApiRoute $apiRouteKey, PagedQuery $pagedQuery): array
+    {
+        $url = $this->getUrlForGuzzleRequest($apiRouteKey);
+        $response = $this->getResponseFromGuzzleClient('GET', $url, pagedQuery: $pagedQuery);
+        return $this->getDataContentsFromResponseOrThrowOnFail($response);
+    }
+
+    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getContentsWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    {
+        $apiResponse = $this->getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return $apiResponse[$apiRouteKey->getApiModelResponseKey()];
+    }
+
+    /**
+     * @return array Содержимое модели (например: ['id' => 1, ... ]
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function post(ApiRoute $apiRouteKey, array $data): array
+    {
+        return $this->getModelsInnerContentsFromApi('POST', $apiRouteKey, data: $data);
+    }
+
+    /**
+     * @return array Содержимое модели (например: ['id' => 1, ... ]
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function put(ApiRoute $apiRouteKey, int $modelId, array $data): array
+    {
+        return $this->getModelsInnerContentsFromApi('PUT', $apiRouteKey, $modelId, $data);
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function delete(ApiRoute $apiRouteKey, int $modelId): void
+    {
+        $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
+        $response = $this->getResponseFromGuzzleClient('DELETE', $url);
+        $this->getDataContentsFromResponseOrThrowOnFail($response);
+        // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
     }
 }

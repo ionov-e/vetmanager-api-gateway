@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read DAO\Breed $self
- * @property-read DAO\PetType $type
+ * @property-read \VetmanagerApiGateway\DTO\DAO\PetType $type
  */
 class Breed extends AbstractDTO
 {
@@ -42,7 +41,7 @@ class Breed extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\Breed::fromRequestGetById($this->apiGateway, $this->id),
-            'type' => DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId),
+            'type' => \VetmanagerApiGateway\DTO\DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

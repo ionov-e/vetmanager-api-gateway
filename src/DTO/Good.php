@@ -7,7 +7,6 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DAO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\Good $self */

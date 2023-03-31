@@ -2,26 +2,29 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DTO;
+namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\PetType $self */
-class PetType extends AbstractDTO
+/** @property-read CityType $type */
+class City extends AbstractDTO implements AllConstructorsInterface
 {
+    use AllConstructorsTrait;
+
     public int $id;
     public string $title;
-    /** Default: '' */
-    public string $picture;
-    public ?string $type;
+    /** Default: 1 */
+    public int $typeId;
 
     /** @var array{
      *     "id": string,
      *     "title": string,
-     *     "picture": string,
-     *     "type": ?string,
-     *     }
+     *     "type_id": string,
      * } $originalData
      */
     protected readonly array $originalData;
@@ -33,15 +36,20 @@ class PetType extends AbstractDTO
 
         $this->id = (int)$this->originalData['id'];
         $this->title = (string)$this->originalData['title'];
-        $this->picture = (string)$this->originalData['picture'];
-        $this->type = $this->originalData['type'] ? (string)$this->originalData['type'] : null;
+        $this->typeId = (int)$this->originalData['type_id'];
     }
 
-    /** @throws VetmanagerApiGatewayException */
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::City;
+    }
+
+    /** @throws VetmanagerApiGatewayException
+     */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\PetType::fromRequestGetById($this->apiGateway, $this->id),
+            'type' => CityType::fromRequestGetById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }
