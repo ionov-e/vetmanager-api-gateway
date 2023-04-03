@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\DAO\Interface;
 
+use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
@@ -20,13 +21,22 @@ interface AllConstructorsInterface
     /** Получение модели (используя ID модели) по АПИ Get-запросу */
     public static function fromRequestGetById(ApiGateway $apiGateway, int $id): static;
 
-    /** Получения результата по Get-запросу для упертых людей, которые не хотят использовать Query Builder {@see \Otis22\VetmanagerRestApi\Query\Builder}
+    /** Реализация возможности прямого обращения по АПИ, формируя фильтры/сортировку/лимит с помощью с Query Builder
+     *
+     * Пример работы с Query Builder: (new Builder())->where('clinic_id', (string)$clinicId)->orderBy('property_name','desc')*/
+    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): array;
+
+    /** Реализация возможности прямого обращения по АПИ, формируя фильтры/сортировку/лимит с помощью PagedQuery (результат вызова методов Query Builder):
+     * {@see Builder::top()}, {@see Builder::paginate()}, {@see Builder::paginateAll()}).
+     *
+     * Пример получения PagedQuery: (new Builder())->where('clinic_id', (string)$clinicId)->orderBy('property_name','desc')->top(10)
+     */
+    public static function fromRequestGetByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels): array;
+
+    /** Получения результата по Get-запросу для упертых людей, которые не хотят использовать Query Builder {@see Builder}
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
      */
     public static function fromRequestGetByParametersAsString(ApiGateway $apiGateway, string $getParameters): array;
-
-    /** Реализация возможности прямого обращения по АПИ используя имя модели и результат Query Builder {@see \Otis22\VetmanagerRestApi\Query\Builder} */
-    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels): array;
 
     /** @param array{"totalCount": int, MODEL_NAME: array<int, array>} $arrayOfObjectsAsDecodedJsons Ключом второго элемента будет название модели (а в нем массивы с моделями) */
     public static function fromMultipleDecodedJsons(ApiGateway $apiGateway, array $arrayOfObjectsAsDecodedJsons): array;

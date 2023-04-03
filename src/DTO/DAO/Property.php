@@ -54,7 +54,7 @@ class Property extends AbstractDTO implements AllConstructorsInterface
      */
     public static function fromApiAndClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): self
     {
-        $filteredProperties = self::fromRequestGetByQueryBuilder(
+        $filteredProperties = self::fromRequestGetByPagedQuery(
             $api,
             (new Builder())
                 ->where('property_name', $propertyName)

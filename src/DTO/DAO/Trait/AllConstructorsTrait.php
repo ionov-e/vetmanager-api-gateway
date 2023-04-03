@@ -36,7 +36,7 @@ trait AllConstructorsTrait
      */
     public static function fromRequestGetAll(ApiGateway $apiGateway, int $maxLimitOfReturnedModels = 100): array
     {
-        return self::fromRequestGetByQueryBuilder($apiGateway, (new Builder())->top($maxLimitOfReturnedModels), $maxLimitOfReturnedModels);
+        return self::fromRequestGetByPagedQuery($apiGateway, (new Builder())->top($maxLimitOfReturnedModels), $maxLimitOfReturnedModels);
     }
 
     /** @inheritDoc
@@ -52,6 +52,28 @@ trait AllConstructorsTrait
     }
 
     /** @inheritDoc
+     * @return static[]
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    {
+        $response = $apiGateway->getWithQueryBuilder(static::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return static::fromMultipleDecodedJsons($apiGateway, $response);
+    }
+
+    /** @inheritDoc
+     * @return static[]
+     * @throws VetmanagerApiGatewayException - общее родительское исключение
+     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public static function fromRequestGetByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    {
+        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
+        return static::fromMultipleDecodedJsons($apiGateway, $response);
+    }
+
+    /** @inheritDoc
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
@@ -61,17 +83,6 @@ trait AllConstructorsTrait
             $apiGateway,
             $apiGateway->getWithGetParametersAsString(static::getApiModel(), $getParameters)
         );
-    }
-
-    /** @inheritDoc
-     * @return static[]
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
-    {
-        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
-        return static::fromMultipleDecodedJsons($apiGateway, $response);
     }
 
     /** @inheritDoc
