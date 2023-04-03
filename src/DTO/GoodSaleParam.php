@@ -71,7 +71,7 @@ class GoodSaleParam extends AbstractDTO
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->markup = $this->originalData['markup'] ? (float)$this->originalData['markup'] : null;
         $this->priceFormation = PriceFormation::from($this->originalData['price_formation']);
-        $this->unit = \VetmanagerApiGateway\DTO\DAO\Unit::fromDecodedJson($this->apiGateway, $this->originalData['unitSale']);
+        $this->unit = \VetmanagerApiGateway\DTO\DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitSale']);
     }
 
     /** @throws VetmanagerApiGatewayException

@@ -7,16 +7,17 @@ namespace VetmanagerApiGateway\DTO\DAO;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
 /** @property-read ?Clinic $clinic */
-class Property extends AbstractDTO implements AllConstructorsInterface
+class Property extends AbstractDTO implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public int $id;
     /** Default: '' */

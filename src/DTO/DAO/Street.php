@@ -6,8 +6,9 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\DTO\Enum\Street\Type;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -15,9 +16,9 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 /**
  * @property-read CityType $cityType
  */
-class Street extends AbstractDTO implements AllConstructorsInterface
+class Street extends AbstractDTO implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public int $id;
     /** Default: '' */
@@ -51,7 +52,7 @@ class Street extends AbstractDTO implements AllConstructorsInterface
         $this->title = (string)$this->originalData['title'];
         $this->cityId = (int)$this->originalData['city_id'];
         $this->type = Type::from($this->originalData['type']);
-        $this->city = $this->originalData['city_id'] ? City::fromDecodedJson($this->apiGateway, $this->originalData['city']) : null;
+        $this->city = $this->originalData['city_id'] ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city']) : null;
     }
 
     public static function getApiModel(): ApiRoute

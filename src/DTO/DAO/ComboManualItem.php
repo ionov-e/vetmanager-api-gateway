@@ -7,14 +7,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInterface
+class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public DTO\ComboManualName $comboManualName;
 
@@ -42,7 +43,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllConstructorsInte
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualName = DTO\ComboManualName::fromDecodedJson($this->apiGateway, $this->originalData['comboManualName']);
+        $this->comboManualName = DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $this->originalData['comboManualName']);
     }
 
     /**

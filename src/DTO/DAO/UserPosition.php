@@ -8,14 +8,15 @@ use DateInterval;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class UserPosition extends AbstractDTO implements AllConstructorsInterface
+class UserPosition extends AbstractDTO implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public int $id;
     public string $title;

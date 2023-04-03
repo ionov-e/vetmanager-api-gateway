@@ -7,14 +7,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Invoice extends DTO\Invoice implements AllConstructorsInterface
+class Invoice extends DTO\Invoice implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public Client $client;
     public DTO\Pet $pet;
@@ -186,11 +187,11 @@ class Invoice extends DTO\Invoice implements AllConstructorsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->client = Client::fromDecodedJson($this->apiGateway, $this->originalData['client']);
-        $this->pet = DTO\Pet::fromDecodedJson($this->apiGateway, $this->originalData['pet']);
-        $this->petBreed = DTO\Breed::fromDecodedJson($this->apiGateway, $this->originalData['pet']['breed_data']);
-        $this->petType = DTO\PetType::fromDecodedJson($this->apiGateway, $this->originalData['pet']['pet_type_data']);
-        $this->doctor = DTO\User::fromDecodedJson($this->apiGateway, $this->originalData['doctor']);
+        $this->client = Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']);
+        $this->petBreed = DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data']);
+        $this->petType = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data']);
+        $this->doctor = DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor']);
         $this->invoiceDocuments = $this->getInvoiceDocuments();
     }
 
@@ -201,7 +202,7 @@ class Invoice extends DTO\Invoice implements AllConstructorsInterface
     private function getInvoiceDocuments(): array
     {
         return array_map(
-            fn (array $invoiceDocument): DTO\InvoiceDocument => DTO\InvoiceDocument::fromDecodedJson(
+            fn (array $invoiceDocument): DTO\InvoiceDocument => DTO\InvoiceDocument::fromSingleObjectContents(
                 $this->apiGateway,
                 $invoiceDocument
             ),

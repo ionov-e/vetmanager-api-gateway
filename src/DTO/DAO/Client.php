@@ -6,14 +6,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Client extends DTO\Client implements AllConstructorsInterface
+class Client extends DTO\Client implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
     public ?City $city;
@@ -68,7 +69,7 @@ class Client extends DTO\Client implements AllConstructorsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->city = $this->cityId ? City::fromDecodedJson($this->apiGateway, $this->originalData['city_data']) : null;
+        $this->city = $this->cityId ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city_data']) : null;
 
         $typeTitle = $this->originalData['client_type_data']['title'] ?? null;
         $this->typeTitle = $typeTitle ? (string)$typeTitle : null;

@@ -128,7 +128,7 @@ class InvoiceDocument extends AbstractDTO
         $this->primeCost = (int)$this->originalData['prime_cost'];
         $this->partyInfo = (array)$this->originalData['party_info'];
 
-        $this->goodSaleParam = GoodSaleParam::fromDecodedJson($this->apiGateway, $this->originalData['goodSaleParam']);
+        $this->goodSaleParam = GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
 
         try {
             $this->createDate = new DateTime($this->originalData['create_date']);

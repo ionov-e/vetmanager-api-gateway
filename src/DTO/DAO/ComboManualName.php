@@ -6,14 +6,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class ComboManualName extends DTO\ComboManualName implements AllConstructorsInterface
+class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** @var ComboManualItem[] $comboManualItems */
     public array $comboManualItems;
@@ -63,10 +64,10 @@ class ComboManualName extends DTO\ComboManualName implements AllConstructorsInte
     private function getComboManualItems(): array
     {
         /** @see parent::$originalData */
-        $comboManualNameArray = parent::getOriginalArray();
+        $comboManualNameArray = parent::getOriginalObjectData();
 
         return array_map(
-            fn (array $comboManualItemDecodedJson): ComboManualItem => ComboManualItem::fromDecodedJson(
+            fn (array $comboManualItemDecodedJson): ComboManualItem => ComboManualItem::fromSingleObjectContents(
                 $this->apiGateway,
                 $comboManualItemDecodedJson
             ),

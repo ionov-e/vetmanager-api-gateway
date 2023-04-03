@@ -19,20 +19,28 @@ abstract class AbstractDTO
         }
     }
 
-    /** @throws VetmanagerApiGatewayResponseEmptyException */
-    public static function fromDecodedJson(ApiGateway $apiGateway, array $array): static
+    /** @param array{string: string} $objectContents Содержимое: {id: 13, ...}
+     * @throws VetmanagerApiGatewayResponseEmptyException
+     */
+    public static function fromSingleObjectContents(ApiGateway $apiGateway, array $objectContents): static
     {
-        return new static ($apiGateway, $array);
+        return new static ($apiGateway, $objectContents);
     }
 
-    /** @throws VetmanagerApiGatewayResponseEmptyException */
-    public static function fromJson(ApiGateway $apiGateway, string $json): static
+    /** @param array<int, array{string: string}> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+     * @return static[]
+     * @throws VetmanagerApiGatewayResponseEmptyException
+     */
+    public static function fromMultipleObjectsContents(ApiGateway $apiGateway, array $objects): array
     {
-        return static::fromDecodedJson($apiGateway, json_decode($json));
+        return array_map(
+            fn (array $objectContents): static => static::fromSingleObjectContents($apiGateway, $objectContents),
+            $objects
+        );
     }
 
     /** Возвращение данных в том же виде, в котором и были получены (массив из раздекодированного JSON) */
-    public function getOriginalArray(): array
+    public function getOriginalObjectData(): array
     {
         return $this->originalData;
     }

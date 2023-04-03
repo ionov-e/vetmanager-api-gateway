@@ -6,14 +6,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Breed extends DTO\Breed implements AllConstructorsInterface
+class Breed extends DTO\Breed implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Уже получен. Не будет дополнительного АПИ запроса */
     public DTO\PetType $type;
@@ -37,7 +38,7 @@ class Breed extends DTO\Breed implements AllConstructorsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->type = DTO\PetType::fromDecodedJson($this->apiGateway, $this->originalData['petType']);
+        $this->type = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['petType']);
     }
 
     public static function getApiModel(): ApiRoute

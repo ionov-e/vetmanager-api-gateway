@@ -9,14 +9,15 @@ use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 #TODO magical properties
-class Medcard extends AbstractDTO implements AllConstructorsInterface
+class Medcard extends AbstractDTO implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     public int $id;
     public DateTime $dateCreate;
@@ -124,7 +125,7 @@ class Medcard extends AbstractDTO implements AllConstructorsInterface
         $this->diagnoseText = (string)$this->originalData['diagnos_text'];
         $this->diagnoseTypeText = (string)$this->originalData['diagnos_type_text'];
         $this->clinicId = (int)$this->originalData['clinic_id'];
-        $this->pet = DTO\Pet::fromDecodedJson($this->apiGateway, $this->originalData['patient']);
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
 
         try {
             $this->dateEdit = $this->originalData['date_edit'] ? new DateTime($this->originalData['date_edit']) : null;

@@ -7,14 +7,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Good extends DTO\Good implements AllConstructorsInterface
+class Good extends DTO\Good implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
     public GoodGroup $group;
@@ -76,8 +77,8 @@ class Good extends DTO\Good implements AllConstructorsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->group = GoodGroup::fromDecodedJson($this->apiGateway, $this->originalData['group']);
-        $this->unit = Unit::fromDecodedJson($this->apiGateway, $this->originalData['unitStorage']);
+        $this->group = GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
+        $this->unit = Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage']);
         $this->goodSaleParams = $this->getGoodSaleParams();
     }
 
@@ -88,7 +89,7 @@ class Good extends DTO\Good implements AllConstructorsInterface
     private function getGoodSaleParams(): array
     {
         return array_map(
-            fn (array $goodSaleParam): GoodSaleParam => GoodSaleParam::fromDecodedJson(
+            fn (array $goodSaleParam): GoodSaleParam => GoodSaleParam::fromSingleObjectContents(
                 $this->apiGateway,
                 array_merge(
                     $goodSaleParam,

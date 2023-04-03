@@ -7,8 +7,9 @@ namespace VetmanagerApiGateway\DTO\DAO;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -16,9 +17,9 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?City $ownerCity
  * @property-read ?Street $ownerStreet
  */
-class Pet extends DTO\Pet implements AllConstructorsInterface
+class Pet extends DTO\Pet implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Уже получен */
     public ?DTO\Client $client;
@@ -113,10 +114,10 @@ class Pet extends DTO\Pet implements AllConstructorsInterface
     {
         parent::__construct($api, $originalData);
 
-        $this->client = $this->ownerId ? DTO\Client::fromDecodedJson($this->apiGateway, $this->originalData['owner']) : null;
-        $this->type = $this->typeId ? DTO\PetType::fromDecodedJson($this->apiGateway, $this->originalData['type']) : null;
-        $this->breed = $this->breedId ? Breed::fromDecodedJson($this->apiGateway, $this->getBreedApiData()) : null;
-        $this->color = $this->colorId ? DTO\ComboManualItem::fromDecodedJson($this->apiGateway, $this->originalData['color']) : null;
+        $this->client = $this->ownerId ? DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['owner']) : null;
+        $this->type = $this->typeId ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['type']) : null;
+        $this->breed = $this->breedId ? Breed::fromSingleObjectContents($this->apiGateway, $this->getBreedApiData()) : null;
+        $this->color = $this->colorId ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['color']) : null;
     }
 
     private function getBreedApiData(): array

@@ -6,14 +6,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class InvoiceDocument extends DTO\InvoiceDocument implements AllConstructorsInterface
+class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
     public ?float $minPrice;
@@ -122,8 +123,8 @@ class InvoiceDocument extends DTO\InvoiceDocument implements AllConstructorsInte
         $this->minPriceInPercents = (float)$this->originalData['min_price_percent'];
         $this->maxPriceInPercents = (float)$this->originalData['max_price_percent'];
 
-        $this->invoice = DTO\Invoice::fromDecodedJson($this->apiGateway, $this->originalData['document']);
-        $this->good = DTO\Good::fromDecodedJson($this->apiGateway, $this->originalData['good']);
+        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
     }
 
     public static function getApiModel(): ApiRoute

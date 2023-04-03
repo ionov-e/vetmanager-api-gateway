@@ -6,14 +6,15 @@ namespace VetmanagerApiGateway\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllConstructorsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllConstructorsTrait;
+use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class PetType extends DTO\PetType implements AllConstructorsInterface
+class PetType extends DTO\PetType implements AllGetRequestsInterface
 {
-    use AllConstructorsTrait;
+    use BasicDAOTrait, AllGetRequestsTrait;
 
     /** @var DTO\Breed[] $breeds Уже получен при получении PetType. Нового АПИ-запроса не будет */
     public array $breeds;
@@ -51,7 +52,7 @@ class PetType extends DTO\PetType implements AllConstructorsInterface
     private function getBreeds(): array
     {
         return array_map(
-            fn (array $breedArray): DTO\Breed => DTO\Breed::fromDecodedJson($this->apiGateway, $breedArray),
+            fn (array $breedArray): DTO\Breed => DTO\Breed::fromSingleObjectContents($this->apiGateway, $breedArray),
             $this->originalData['breeds']
         );
     }

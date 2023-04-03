@@ -172,7 +172,7 @@ class Client extends AbstractDTO
 //                ->top(100)
 //        );
 
-        return MedicalCardsByClient::fromMultipleDecodedJsons($this->apiGateway, $medcards);
+        return MedicalCardsByClient::fromResponse($this->apiGateway, $medcards);
     }
 
     /** @return \VetmanagerApiGateway\DTO\DAO\Pet[]
@@ -187,6 +187,6 @@ class Client extends AbstractDTO
                 ->where('status', Enum\Pet\Status::Alive->value)
         );
 
-        return \VetmanagerApiGateway\DTO\DAO\Pet::fromMultipleDecodedJsons($this->apiGateway, $pets);
+        return \VetmanagerApiGateway\DTO\DAO\Pet::fromResponse($this->apiGateway, $pets);
     }
 }
