@@ -66,17 +66,23 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
     }
 
     /**
-     * @param DTO\Enum\ComboManualName\Name|string $comboManualName Удобней пользоваться Enum, но можно и строкой (напрмер: "admission_type")
+     * @param string $comboManualName Вместо строки можно пользоваться методом, принимающий Enum {@see getIdFromNameAsEnum}
      * @throws VetmanagerApiGatewayException - родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */
-    public static function getIdFromName(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name|string $comboManualName): int
+    public static function getIdFromNameAsString(ApiGateway $apiGateway, string $comboManualName): int
     {
-        if ($comboManualName instanceof DTO\Enum\ComboManualName\Name) {
-            $comboManualName = $comboManualName->value;
-        }
-
         return self::fromName($apiGateway, $comboManualName)->id;
+    }
+
+    /**
+     * @param DTO\Enum\ComboManualName\Name $comboManualName Не нравится пользоваться Enum или не хватает значения - другой метод {@see getIdFromNameAsString}
+     * @throws VetmanagerApiGatewayException - родительское исключение
+     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
+     */
+    public static function getIdFromNameAsEnum(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name $comboManualName): int
+    {
+        return self::getIdFromNameAsString($apiGateway, $comboManualName->value);
     }
 
     /**
