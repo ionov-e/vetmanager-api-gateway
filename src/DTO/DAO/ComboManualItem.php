@@ -48,15 +48,19 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
 
     /**
      * @param int $id Например: {@see Medcard::admissionType}. По факту это id из таблицы combo_manual_items
-     * Первые строки данной таблицы и заполнены admissionType
+     * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставить самостоятельно с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getAdmissionTypeFromApiAndId(ApiGateway $apiGateway, int $id): static
+    public static function getAdmissionTypeFromApiAndId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): static
     {
+        if ($comboManualIdOfAdmissionType == 0) {
+            $comboManualIdOfAdmissionType = ComboManualName::getIdFromNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionType);
+        }
+
         $return = $apiGateway->getWithQueryBuilder(
             self::getApiModel(),
             (new Builder())
-                ->where('combo_manual_id', '2')
+                ->where('combo_manual_id', (string)$comboManualIdOfAdmissionType)
                 ->where('id', (string)$id),
             1
         );
