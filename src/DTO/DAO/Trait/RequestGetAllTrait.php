@@ -16,8 +16,8 @@ trait RequestGetAllTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestGetAll(ApiGateway $apiGateway, int $maxLimitOfReturnedModels = 100): array
+    public static function getAll(ApiGateway $apiGateway, int $maxLimitOfReturnedModels = 100): array
     {
-        return self::fromRequestGetByPagedQuery($apiGateway, (new Builder())->top($maxLimitOfReturnedModels), $maxLimitOfReturnedModels);
+        return self::getByPagedQuery($apiGateway, (new Builder())->top($maxLimitOfReturnedModels), $maxLimitOfReturnedModels);
     }
 }

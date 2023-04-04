@@ -147,12 +147,12 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => Medcard::fromRequestGetById($this->apiGateway, $this->id),
-            'admissionType' => $this->admissionType ? ComboManualItem::getAdmissionTypeFromApiAndId($this->apiGateway, $this->admissionType) : null,
-            'meetResult' => $this->meetResultId ? ComboManualItem::getAdmissionResultFromApiAndResultId($this->apiGateway, $this->meetResultId) : null,
-            'client' => $this->clientId ? Client::fromRequestGetById($this->apiGateway, $this->clientId) : null,
-            'pet' => Pet::fromRequestGetById($this->apiGateway, $this->petId),
-            'user' => $this->userId ? User::fromRequestGetById($this->apiGateway, $this->userId) : null,
+            'self' => Medcard::getById($this->apiGateway, $this->id),
+            'admissionType' => $this->admissionType ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
+            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
+            'client' => $this->clientId ? Client::getById($this->apiGateway, $this->clientId) : null,
+            'pet' => Pet::getById($this->apiGateway, $this->petId),
+            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
             default => $this->$name,
         };
     }

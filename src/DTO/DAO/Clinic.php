@@ -109,14 +109,14 @@ class Clinic extends AbstractDTO implements AllGetRequestsInterface
     private function getFullPhone(int $clinicId): FullPhone
     {
         try {
-            $phonePrefixProperty = Property::fromApiAndClinicIdAndPropertyName($this->apiGateway, $clinicId, "unisender_phone_pristavka");
+            $phonePrefixProperty = Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "unisender_phone_pristavka");
             $phonePrefix = $phonePrefixProperty->value;
         } catch (VetmanagerApiGatewayResponseEmptyException) {
             $phonePrefix = "";
         }
 
         try {
-            $phoneMaskProperty = Property::fromApiAndClinicIdAndPropertyName($this->apiGateway, $clinicId, "phone_mask");
+            $phoneMaskProperty = Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "phone_mask");
             $phoneMask = $phoneMaskProperty->value;
         } catch (VetmanagerApiGatewayResponseEmptyException) {
             $phoneMask = "";

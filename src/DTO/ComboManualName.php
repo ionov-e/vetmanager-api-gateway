@@ -43,7 +43,7 @@ class ComboManualName extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\ComboManualName::fromRequestGetById($this->apiGateway, $this->id),
+            'self' => DAO\ComboManualName::getById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

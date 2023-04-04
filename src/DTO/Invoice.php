@@ -104,7 +104,7 @@ class Invoice extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Invoice::fromRequestGetById($this->apiGateway, $this->id),
+            'self' => DAO\Invoice::getById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

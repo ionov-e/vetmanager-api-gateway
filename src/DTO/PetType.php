@@ -41,7 +41,7 @@ class PetType extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\PetType::fromRequestGetById($this->apiGateway, $this->id),
+            'self' => DAO\PetType::getById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

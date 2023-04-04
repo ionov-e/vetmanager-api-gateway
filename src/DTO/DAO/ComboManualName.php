@@ -59,30 +59,30 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
      * @throws VetmanagerApiGatewayException - родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */
-    public static function fromName(ApiGateway $apiGateway, string $comboManualName): self
+    public static function getByName(ApiGateway $apiGateway, string $comboManualName): self
     {
-        $comboManualNames = self::fromRequestGetByQueryBuilder($apiGateway, (new Builder())->where("name", $comboManualName), 1);
+        $comboManualNames = self::getByQueryBuilder($apiGateway, (new Builder())->where("name", $comboManualName), 1);
         return $comboManualNames[0];
     }
 
     /**
-     * @param string $comboManualName Вместо строки можно пользоваться методом, принимающий Enum {@see getIdFromNameAsEnum}
+     * @param string $comboManualName Вместо строки можно пользоваться методом, принимающий Enum {@see getIdByNameAsEnum}
      * @throws VetmanagerApiGatewayException - родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */
-    public static function getIdFromNameAsString(ApiGateway $apiGateway, string $comboManualName): int
+    public static function getIdByNameAsString(ApiGateway $apiGateway, string $comboManualName): int
     {
-        return self::fromName($apiGateway, $comboManualName)->id;
+        return self::getByName($apiGateway, $comboManualName)->id;
     }
 
     /**
-     * @param DTO\Enum\ComboManualName\Name $comboManualName Не нравится пользоваться Enum или не хватает значения - другой метод {@see getIdFromNameAsString}
+     * @param DTO\Enum\ComboManualName\Name $comboManualName Не нравится пользоваться Enum или не хватает значения - другой метод {@see getIdByNameAsString}
      * @throws VetmanagerApiGatewayException - родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */
-    public static function getIdFromNameAsEnum(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name $comboManualName): int
+    public static function getIdByNameAsEnum(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name $comboManualName): int
     {
-        return self::getIdFromNameAsString($apiGateway, $comboManualName->value);
+        return self::getIdByNameAsString($apiGateway, $comboManualName->value);
     }
 
     /**
@@ -92,7 +92,7 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
     private function getComboManualItems(): array
     {
         return array_map(
-            fn(array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
+            fn (array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
                 $this->apiGateway,
                 $comboManualItemContents
             ),

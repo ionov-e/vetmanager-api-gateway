@@ -53,9 +53,9 @@ class Property extends AbstractDTO implements AllGetRequestsInterface
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
      * @throws VetmanagerApiGatewayException
      */
-    public static function fromApiAndClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): self
+    public static function getByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): self
     {
-        $filteredProperties = self::fromRequestGetByPagedQuery(
+        $filteredProperties = self::getByPagedQuery(
             $api,
             (new Builder())
                 ->where('property_name', $propertyName)
@@ -75,7 +75,7 @@ class Property extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'clinic' => $this->clinicId ? Clinic::fromRequestGetById($this->apiGateway, $this->clinicId) : null,
+            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
             default => $this->$name,
         };
     }

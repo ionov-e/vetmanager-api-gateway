@@ -40,8 +40,8 @@ class Breed extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Breed::fromRequestGetById($this->apiGateway, $this->id),
-            'type' => \VetmanagerApiGateway\DTO\DAO\PetType::fromRequestGetById($this->apiGateway, $this->typeId),
+            'self' => DAO\Breed::getById($this->apiGateway, $this->id),
+            'type' => \VetmanagerApiGateway\DTO\DAO\PetType::getById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

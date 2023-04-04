@@ -14,7 +14,7 @@ trait RequestGetByIdTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestGetById(ApiGateway $apiGateway, int $id): static
+    public static function getById(ApiGateway $apiGateway, int $id): static
     {
         return new self(
             $apiGateway,

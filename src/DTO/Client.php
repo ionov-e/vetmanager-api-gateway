@@ -148,11 +148,11 @@ class Client extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\Client::fromRequestGetById($this->apiGateway, $this->id),
+            'self' => DAO\Client::getById($this->apiGateway, $this->id),
             'medcards' => $this->getMedcards(),
             'petsAlive' => $this->getPetsAlive(),
-            'street' => $this->streetId ? Street::fromRequestGetById($this->apiGateway, $this->streetId) : null,
-            'city' => $this->cityId ? City::fromRequestGetById($this->apiGateway, $this->cityId) : null,
+            'street' => $this->streetId ? Street::getById($this->apiGateway, $this->streetId) : null,
+            'city' => $this->cityId ? City::getById($this->apiGateway, $this->cityId) : null,
             default => $this->$name
         };
     }

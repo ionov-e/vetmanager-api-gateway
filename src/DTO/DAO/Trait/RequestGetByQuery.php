@@ -17,7 +17,7 @@ trait RequestGetByQuery
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestGetByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public static function getByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
         $response = $apiGateway->getWithQueryBuilder(static::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
         return static::fromResponse($apiGateway, $response);
@@ -28,7 +28,7 @@ trait RequestGetByQuery
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestGetByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public static function getByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
         $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
         return static::fromResponse($apiGateway, $response);
@@ -38,7 +38,7 @@ trait RequestGetByQuery
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function fromRequestGetByParametersAsString(ApiGateway $apiGateway, string $getParameters): array
+    public static function getByParametersAsString(ApiGateway $apiGateway, string $getParameters): array
     {
         return self::fromResponse(
             $apiGateway,

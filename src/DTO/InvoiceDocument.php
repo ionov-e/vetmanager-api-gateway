@@ -141,7 +141,7 @@ class InvoiceDocument extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\InvoiceDocument::fromRequestGetById($this->apiGateway, $this->id),
+            'self' => DAO\InvoiceDocument::getById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

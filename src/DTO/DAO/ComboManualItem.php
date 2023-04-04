@@ -47,14 +47,14 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
     }
 
     /**
-     * @param int $id Например: {@see Medcard::admissionType}. По факту это id из таблицы combo_manual_items
-     * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставить самостоятельно с помощью отдельного АПИ-запроса
+     * @param int $id Скорее всего тут будет значение из медкарты: {@see Medcard::admissionType}
+     * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getAdmissionTypeFromApiAndId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): static
+    public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): static
     {
         if ($comboManualIdOfAdmissionType == 0) {
-            $comboManualIdOfAdmissionType = ComboManualName::getIdFromNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionType);
+            $comboManualIdOfAdmissionType = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionType);
         }
 
         $return = $apiGateway->getWithQueryBuilder(
@@ -74,14 +74,14 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
     }
 
     /**
-     * @param int $resultId Например: {@see Medcard::admissionType}. По факту это id из таблицы combo_manual_items
-     * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставить самостоятельно с помощью отдельного АПИ-запроса
+     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see Medcard::meetResultId}
+     * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getAdmissionResultFromApiAndResultId(ApiGateway $apiGateway, int $resultId, int $comboManualIdOfAdmissionResult = 0): static
+    public static function getByAdmissionResultId(ApiGateway $apiGateway, int $resultId, int $comboManualIdOfAdmissionResult = 0): static
     {
         if ($comboManualIdOfAdmissionResult == 0) {
-            $comboManualIdOfAdmissionResult = ComboManualName::getIdFromNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionResult);
+            $comboManualIdOfAdmissionResult = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionResult);
         }
 
         $return = $apiGateway->getContentsWithQueryBuilder(
@@ -89,6 +89,50 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
             (new Builder())
                 ->where('combo_manual_id', (string)$comboManualIdOfAdmissionResult)
                 ->where('value', (string)$resultId),
+            1
+        );
+
+        return $return[0];
+    }
+
+    /**
+     * @param int $colorId Например: {@see Pet::colorId}. По факту это id из таблицы combo_manual_items
+     * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getByPetColorId(ApiGateway $apiGateway, int $colorId, int $comboManualIdOfPetColors = 0): static
+    {
+        if ($comboManualIdOfPetColors == 0) {
+            $comboManualIdOfPetColors = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::PetColors);
+        }
+
+        $return = $apiGateway->getContentsWithQueryBuilder(
+            self::getApiModel(),
+            (new Builder())
+                ->where('combo_manual_id', (string)$comboManualIdOfPetColors)
+                ->where('value', (string)$colorId),
+            1
+        );
+
+        return $return[0];
+    }
+
+    /**
+     * @param int $vaccineTypeId vaccine_type из таблицы vaccine_pets
+     * @param int $comboManualIdOfVaccineTypes Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getByVaccineTypeId(ApiGateway $apiGateway, int $vaccineTypeId, int $comboManualIdOfVaccineTypes = 0): static
+    {
+        if ($comboManualIdOfVaccineTypes == 0) {
+            $comboManualIdOfVaccineTypes = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::VaccinationType);
+        }
+
+        $return = $apiGateway->getContentsWithQueryBuilder(
+            self::getApiModel(),
+            (new Builder())
+                ->where('combo_manual_id', (string)$comboManualIdOfVaccineTypes)
+                ->where('value', (string)$vaccineTypeId),
             1
         );
 

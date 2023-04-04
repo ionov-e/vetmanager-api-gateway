@@ -50,7 +50,7 @@ class City extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => CityType::fromRequestGetById($this->apiGateway, $this->typeId),
+            'type' => CityType::getById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }
