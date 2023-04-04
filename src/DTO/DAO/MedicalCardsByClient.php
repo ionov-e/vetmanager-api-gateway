@@ -24,11 +24,13 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
 
     public int $id;
     public ?DateTime $dateEdit;
+    /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]"  */
     public string $diagnose;
     /** Default: 0 */
     public int $userId;
     /** Default: 'active' */
     public Status $status;
+    /** Может быть просто строка, а может HTML-блок */
     public string $description;
     public string $recommendation;
     public ?float $weight;
@@ -68,7 +70,7 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
      *     "diagnos": string,
      *     "doctor_id": string,
      *     "medical_card_status": string,
-     *     "healing_process": string,
+     *     "healing_process": ?string,
      *     "recomendation": string,
      *     "weight": ?string,
      *     "temperature": ?string,
@@ -102,15 +104,15 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->diagnose = (string)$this->originalData['diagnos'];
+        $this->diagnose = $this->originalData['diagnos'] ? (string)$this->originalData['diagnos'] : null;
         $this->recommendation = (string)$this->originalData['recomendation'];
-        $this->admissionType = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;    #TODO get?
+        $this->admissionType = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;
         $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
         $this->temperature = $this->originalData['temperature'] ? (float)$this->originalData['temperature'] : null;
-        $this->meetResultId = (int)$this->originalData['meet_result_id'];    #TODO get?
+        $this->meetResultId = (int)$this->originalData['meet_result_id'];
         $this->userId = (int)$this->originalData['doctor_id'];
         $this->id = (int)$this->originalData['medical_card_id'];
-        $this->description = (string)$this->originalData['healing_process'];
+        $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : null;
         $this->status = Status::from($this->originalData['medical_card_status']);
         $this->petId = (int)$this->originalData['pet_id'];
         $this->petAlias = (string)$this->originalData['alias'];

@@ -22,6 +22,7 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
     public int $id;
     public DateTime $dateCreate;
     public ?DateTime $dateEdit;
+    /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]" */
     public string $diagnose;
     public string $recommendation;
     /** Invoice ID (таблица invoice) */
@@ -34,6 +35,7 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
     public ?float $temperature;
     /** Default: 0    LEFT JOIN combo_manual_items ci2 ON ci2.combo_manual_id = 2 AND ci2.value = m.meet_result_id */
     public int $meetResultId;
+    /** Может быть просто строка, а может HTML-блок */
     public string $description;
     /** Default: 0    LEFT JOIN admission ad ON ad.id = m.next_meet_id   */
     public int $nextMeetId;
@@ -48,8 +50,10 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
     public int $callingId;
     /** Default: 0 */
     public int $admissionId;
+    /** Пример: "Анемия;\nАнорексия, кахексия;\nАтопия" */
     public string $diagnoseText;
-    public string $diagnoseTypeText;
+    /** Пример: "Анемия (Окончательные);\nАнорексия, кахексия (Окончательные);\nАтопия (Окончательные)" */
+    public ?string $diagnoseTypeText;
     /** Default: 0 */
     public int $clinicId;
     public DTO\Pet $pet;
@@ -107,12 +111,12 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->diagnose = (string)$this->originalData['diagnos'];
+        $this->diagnose = $this->originalData['diagnos'] ? (string)$this->originalData['diagnos'] : null;
         $this->recommendation = (string)$this->originalData['recomendation'];
-        $this->admissionType = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;    #TODO get?
+        $this->admissionType = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;
         $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
         $this->temperature = $this->originalData['temperature'] ? (float)$this->originalData['temperature'] : null;
-        $this->meetResultId = (int)$this->originalData['meet_result_id'];    #TODO get?
+        $this->meetResultId = (int)$this->originalData['meet_result_id'];
         $this->userId = (int)$this->originalData['doctor_id'];
         $this->id = (int)$this->originalData['id'];
         $this->invoice = $this->originalData['invoice'] ? (int)$this->originalData['invoice'] : null;
@@ -123,7 +127,7 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
         $this->callingId = (int)$this->originalData['calling_id'];
         $this->admissionId = (int)$this->originalData['admission_id'];    #TODO get?
         $this->diagnoseText = (string)$this->originalData['diagnos_text'];
-        $this->diagnoseTypeText = (string)$this->originalData['diagnos_type_text'];
+        $this->diagnoseTypeText = $this->originalData['diagnos_type_text'] ? (string)$this->originalData['diagnos_type_text'] : null;
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
 
@@ -149,7 +153,7 @@ class Medcard extends AbstractDTO implements AllGetRequestsInterface
             'invoice' => $this->invoice ? Invoice::fromRequestGetById($this->apiGateway, $this->invoice) : null,
             'user' => $this->userId ? User::fromRequestGetById($this->apiGateway, $this->userId) : null,
 
-//            LEFT JOIN vaccine_pets vp ON vp.medcard_id = m.id AND vp.status != 'deleted'
+//            #TODO Vaccines: LEFT JOIN vaccine_pets vp ON vp.medcard_id = m.id AND vp.status != 'deleted'
 
             default => $this->$name,
         };
