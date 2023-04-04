@@ -20,7 +20,7 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
-    /** @var ComboManualItem[] $comboManualItems */
+    /** @var DTO\ComboManualItem[] $comboManualItems */
     public array $comboManualItems;
     /** @var array{
      *       "id": string,
@@ -86,13 +86,13 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
     }
 
     /**
-     * @return ComboManualItem[]
+     * @return DTO\ComboManualItem[]
      * @throws VetmanagerApiGatewayException
      */
     private function getComboManualItems(): array
     {
         return array_map(
-            fn (array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
+            fn(array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
                 $this->apiGateway,
                 $comboManualItemContents
             ),
