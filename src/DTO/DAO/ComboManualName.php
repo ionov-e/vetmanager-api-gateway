@@ -85,18 +85,12 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
      */
     private function getComboManualItems(): array
     {
-        /** @see parent::$originalData */
-        $comboManualNameArray = parent::getOriginalObjectData();
-
         return array_map(
-            fn(array $comboManualItemDecodedJson): ComboManualItem => ComboManualItem::fromSingleObjectContents(
+            fn (array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
                 $this->apiGateway,
-                $comboManualItemDecodedJson
+                $comboManualItemContents
             ),
-            array_merge(
-                $this->originalData['comboManualItems'],
-                ['comboManualName' => $comboManualNameArray]
-            )
+            $this->originalData['comboManualItems']
         );
     }
 }
