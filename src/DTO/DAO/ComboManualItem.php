@@ -71,32 +71,23 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
 
     /**
      * @param int $resultId Например: {@see Medcard::admissionType}. По факту это id из таблицы combo_manual_items
-     * Первые строки данной таблицы и заполнены admissionType
+     * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставить самостоятельно с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getAdmissionResultFromApiAndResultId(ApiGateway $apiGateway, int $resultId): static
+    public static function getAdmissionResultFromApiAndResultId(ApiGateway $apiGateway, int $resultId, int $comboManualIdOfAdmissionResult = 0): static
     {
+        if ($comboManualIdOfAdmissionResult == 0) {
+            $comboManualIdOfAdmissionResult = ComboManualName::getIdFromNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionResult);
+        }
+
         $return = $apiGateway->getContentsWithQueryBuilder(
             self::getApiModel(),
             (new Builder())
-                ->where('combo_manual_id', '2')
+                ->where('combo_manual_id', (string)$comboManualIdOfAdmissionResult)
                 ->where('value', (string)$resultId),
             1
         );
 
         return $return[0];
-
-        #TODO Check if code above works
-
-//        return new static (
-//            $apiGateway,
-//            $apiGateway->getResultUsingPagedQuery(
-//                self::getApiModel(),
-//                (new Builder())
-//                    ->where('combo_manual_id', '2')
-//                    ->where('id', (string)$value)
-//                    ->top(1)
-//            )
-//        );
     }
 }
