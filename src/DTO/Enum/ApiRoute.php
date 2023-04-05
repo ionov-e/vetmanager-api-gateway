@@ -21,6 +21,8 @@ enum ApiRoute: string
     case ClosingOfInvoice = 'closingOfInvoices';
     case ComboManualItem = 'comboManualItem';
     case ComboManualName = 'comboManualName';
+    case Departments = 'departments';
+    case DepartmentToDocument = 'departmentToDocument';
     case Diagnose = 'diagnoses';
     case DoctorsResponsible = 'doctorsResponsible';
     case FailedHook = 'failedHook';
