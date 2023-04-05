@@ -47,7 +47,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
     }
 
     /**
-     * @param int $id Скорее всего тут будет значение из медкарты: {@see Medcard::admissionType}
+     * @param int $id Скорее всего тут будет значение из медкарты: {@see MedicalCard::admissionType}
      * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -74,7 +74,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
     }
 
     /**
-     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see Medcard::meetResultId}
+     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see MedicalCard::meetResultId}
      * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */

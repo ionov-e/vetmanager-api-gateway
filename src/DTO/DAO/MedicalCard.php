@@ -14,8 +14,14 @@ use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-#TODO magical properties
-class Medcard extends AbstractDTO implements AllGetRequestsInterface
+/**
+ * @property-read ?Clinic clinic
+ * @property-read ?ComboManualItem admissionType
+ * @property-read ?ComboManualItem meetResult
+ * @property-read ?Invoice invoice
+ * @property-read ?User user
+ */
+class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 

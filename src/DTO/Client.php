@@ -159,20 +159,10 @@ class Client extends AbstractDTO
 
     /** @return MedicalCardsByClient[]
      * @throws VetmanagerApiGatewayException
-     * @noinspection PhpUnnecessaryCurlyVarSyntaxInspection
      */
-    private function getMedcards(): array #TODO check, redo
+    private function getMedcards(): array
     {
-        $medcards = $this->apiGateway->getWithGetParametersAsString(ApiRoute::MedicalCardsByClient, "client_id={$this->id}");
-
-//        $medcards = $this->apiGateway->getModelsContentsUsingApiPagedQuery(
-//            ApiRoute::MedicalCardsByClient,
-//            (new Builder())
-//                ->where('client_id', (string)$this->id)
-//                ->top(100)
-//        );
-
-        return MedicalCardsByClient::fromResponse($this->apiGateway, $medcards);
+        return MedicalCardsByClient::getByClientId($this->apiGateway, $this->id);
     }
 
     /** @return \VetmanagerApiGateway\DTO\DAO\Pet[]

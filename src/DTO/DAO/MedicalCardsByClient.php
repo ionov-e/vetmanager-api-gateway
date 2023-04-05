@@ -8,19 +8,27 @@ use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\FullName;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-#TODO magical properties
-class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterface
+/**
+ * @property-read MedicalCard self
+ * @property-read ?ComboManualItem admissionType
+ * @property-read ?ComboManualItem meetResult
+ * @property-read ?Client client
+ * @property-read Pet pet
+ * @property-read ?User user
+ */
+class MedicalCardsByClient extends AbstractDTO
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
 
     public int $id;
     public ?DateTime $dateEdit;
@@ -37,7 +45,7 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
     public ?float $temperature;
     /** Default: 0 */
     public int $meetResultId;
-    /** {@see Medcard::admissionType} */
+    /** {@see MedicalCard::admissionType} */
     public ?int $admissionType;
     public int $petId;
     public string $petAlias;
@@ -142,12 +150,27 @@ class MedicalCardsByClient extends AbstractDTO implements AllGetRequestsInterfac
         return ApiRoute::MedicalCardsByClient;
     }
 
+    /**
+     * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
+     * @return self []
+     * @throws VetmanagerApiGatewayException Родительское исключение
+     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
+     */
+    public static function getByClientId(ApiGateway $apiGateway, int $clientId, string $additionalGetParameters = ''): array
+    {
+        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
+        return $apiGateway->getWithGetParametersAsString(
+            ApiRoute::MedicalCardsByClient,
+            "client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}"
+        );
+    }
+
     /** @throws VetmanagerApiGatewayException
      */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => Medcard::getById($this->apiGateway, $this->id),
+            'self' => MedicalCard::getById($this->apiGateway, $this->id),
             'admissionType' => $this->admissionType ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
             'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'client' => $this->clientId ? Client::getById($this->apiGateway, $this->clientId) : null,
