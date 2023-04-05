@@ -57,15 +57,15 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
             $comboManualIdOfAdmissionType = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionType);
         }
 
-        $return = $apiGateway->getWithQueryBuilder(
-            self::getApiModel(),
+        $comboManualItems = self::getByQueryBuilder(
+            $apiGateway,
             (new Builder())
                 ->where('combo_manual_id', (string)$comboManualIdOfAdmissionType)
                 ->where('id', (string)$id),
             1
         );
 
-        return $return[0];
+        return $comboManualItems[0];
     }
 
     public static function getApiModel(): ApiRoute
@@ -78,21 +78,13 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
      * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByAdmissionResultId(ApiGateway $apiGateway, int $resultId, int $comboManualIdOfAdmissionResult = 0): static
+    public static function getByAdmissionResultId(ApiGateway $apiGateway, int $resultId, int $comboManualIdOfAdmissionResult = 0): self
     {
-        if ($comboManualIdOfAdmissionResult == 0) {
-            $comboManualIdOfAdmissionResult = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::AdmissionResult);
+        if ($comboManualIdOfAdmissionResult) {
+            return self::getOneByValueAndComboManualId($apiGateway, (string)$resultId, $comboManualIdOfAdmissionResult);
         }
 
-        $return = $apiGateway->getContentsWithQueryBuilder(
-            self::getApiModel(),
-            (new Builder())
-                ->where('combo_manual_id', (string)$comboManualIdOfAdmissionResult)
-                ->where('value', (string)$resultId),
-            1
-        );
-
-        return $return[0];
+        return self::getOneByValueAndComboManualName($apiGateway, (string)$resultId, DTO\Enum\ComboManualName\Name::AdmissionResult);
     }
 
     /**
@@ -100,21 +92,13 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
      * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByPetColorId(ApiGateway $apiGateway, int $colorId, int $comboManualIdOfPetColors = 0): static
+    public static function getByPetColorId(ApiGateway $apiGateway, int $colorId, int $comboManualIdOfPetColors = 0): self
     {
-        if ($comboManualIdOfPetColors == 0) {
-            $comboManualIdOfPetColors = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::PetColors);
+        if ($comboManualIdOfPetColors) {
+            return self::getOneByValueAndComboManualId($apiGateway, (string)$colorId, $comboManualIdOfPetColors);
         }
 
-        $return = $apiGateway->getContentsWithQueryBuilder(
-            self::getApiModel(),
-            (new Builder())
-                ->where('combo_manual_id', (string)$comboManualIdOfPetColors)
-                ->where('value', (string)$colorId),
-            1
-        );
-
-        return $return[0];
+        return self::getOneByValueAndComboManualName($apiGateway, (string)$colorId, DTO\Enum\ComboManualName\Name::PetColors);
     }
 
     /**
@@ -122,20 +106,40 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
      * @param int $comboManualIdOfVaccineTypes Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByVaccineTypeId(ApiGateway $apiGateway, int $vaccineTypeId, int $comboManualIdOfVaccineTypes = 0): static
+    public static function getByVaccineTypeId(ApiGateway $apiGateway, int $vaccineTypeId, int $comboManualIdOfVaccineTypes = 0): self
     {
-        if ($comboManualIdOfVaccineTypes == 0) {
-            $comboManualIdOfVaccineTypes = ComboManualName::getIdByNameAsEnum($apiGateway, DTO\Enum\ComboManualName\Name::VaccinationType);
+        if ($comboManualIdOfVaccineTypes) {
+            return self::getOneByValueAndComboManualId($apiGateway, (string)$vaccineTypeId, $comboManualIdOfVaccineTypes);
         }
 
-        $return = $apiGateway->getContentsWithQueryBuilder(
-            self::getApiModel(),
+        return self::getOneByValueAndComboManualName($apiGateway, (string)$vaccineTypeId, DTO\Enum\ComboManualName\Name::VaccinationType);
+    }
+
+    /** @throws VetmanagerApiGatewayException Родительское исключение */
+    public static function getOneByValueAndComboManualName(ApiGateway $apiGateway, string $comboManualValue, DTO\Enum\ComboManualName\Name $comboManualName): self
+    {
+        $comboManualId = self::getComboManualIdFromComboManualName($apiGateway, $comboManualName);
+
+        return self::getOneByValueAndComboManualId($apiGateway, $comboManualValue, $comboManualId);
+    }
+
+    /** @throws VetmanagerApiGatewayException Родительское исключение */
+    private static function getComboManualIdFromComboManualName(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name $comboManualName): int
+    {
+        return ComboManualName::getIdByNameAsEnum($apiGateway, $comboManualName);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    private static function getOneByValueAndComboManualId(ApiGateway $apiGateway, string $comboManualValue, int $comboManualId): self
+    {
+        $comboManualItems = self::getByQueryBuilder(
+            $apiGateway,
             (new Builder())
-                ->where('combo_manual_id', (string)$comboManualIdOfVaccineTypes)
-                ->where('value', (string)$vaccineTypeId),
+                ->where('combo_manual_id', (string)$comboManualId)
+                ->where('value', $comboManualValue),
             1
         );
 
-        return $return[0];
+        return $comboManualItems[0];
     }
 }
