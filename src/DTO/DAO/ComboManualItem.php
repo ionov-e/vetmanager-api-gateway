@@ -96,7 +96,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
     }
 
     /**
-     * @param int $colorId Например: {@see Pet::colorId}. По факту это id из таблицы combo_manual_items
+     * @param int $colorId Например: {@see Pet::colorId}. По факту это value из таблицы combo_manual_items
      * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */

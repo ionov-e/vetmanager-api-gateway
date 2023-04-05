@@ -107,7 +107,7 @@ class Pet extends AbstractDTO
         return match ($name) {
             'self' => DAO\Pet::getById($this->apiGateway, $this->id),
             'breed' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
-            'color' => $this->colorId ? ComboManualItem::getById($this->apiGateway, $this->colorId) : null,
+            'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
             'owner' => $this->ownerId ? \VetmanagerApiGateway\DTO\DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
             'type' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
             default => $this->$name,
