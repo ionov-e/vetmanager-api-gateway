@@ -117,7 +117,7 @@ class Pet extends DTO\Pet implements AllGetRequestsInterface
         $this->client = $this->ownerId ? DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['owner']) : null;
         $this->type = $this->typeId ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['type']) : null;
         $this->breed = $this->breedId ? Breed::fromSingleObjectContents($this->apiGateway, $this->getBreedApiData()) : null;
-        $this->color = $this->colorId ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['color']) : null;
+        $this->color = !empty($this->originalData['color']) ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['color']) : null;
     }
 
     private function getBreedApiData(): array
