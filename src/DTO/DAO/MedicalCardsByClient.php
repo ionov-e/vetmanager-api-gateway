@@ -160,7 +160,7 @@ class MedicalCardsByClient extends AbstractDTO
     {
         $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
         return $apiGateway->getWithGetParametersAsString(
-            ApiRoute::MedicalCardsByClient,
+            self::getApiModel(),
             "client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
     }
