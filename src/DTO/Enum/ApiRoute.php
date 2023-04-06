@@ -69,7 +69,7 @@ enum ApiRoute: string
     public function getApiModelResponseKey(): string
     {
         return match ($this) {
-            self::MedicalCardsByClient => 'medicalcards',
+            self::MedicalCardsByClient, self::MedicalCardsVaccinations => 'medicalcards',
             default => $this->value
         };
     }

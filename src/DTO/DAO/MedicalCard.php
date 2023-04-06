@@ -160,9 +160,6 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
             'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'invoice' => $this->invoice ? Invoice::getById($this->apiGateway, $this->invoice) : null,
             'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
-
-//            #TODO Vaccines: LEFT JOIN vaccine_pets vp ON vp.medcard_id = m.id AND vp.status != 'deleted'
-
             default => $this->$name,
         };
     }

@@ -8,6 +8,7 @@ use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
+use VetmanagerApiGateway\DTO\DAO\MedicalCardAsVaccination;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -110,6 +111,7 @@ class Pet extends AbstractDTO
             'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
             'owner' => $this->ownerId ? \VetmanagerApiGateway\DTO\DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
             'type' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
+            'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }
