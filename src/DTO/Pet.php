@@ -6,19 +6,21 @@ namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
 use Exception;
+use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
-use VetmanagerApiGateway\DTO\DAO\MedicalCardAsVaccination;
+use VetmanagerApiGateway\DTO\DAO;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read DAO\Pet $self
- * @property-read ?\VetmanagerApiGateway\DTO\DAO\Client $owner
- * @property-read ?\VetmanagerApiGateway\DTO\DAO\PetType $type
- * @property-read ?\VetmanagerApiGateway\DTO\DAO\Breed $breed
- * @property-read ?ComboManualItem $color
+ * @property-read DAO\Pet self
+ * @property-read ?DAO\Client owner
+ * @property-read ?DAO\PetType type
+ * @property-read ?DAO\Breed breed
+ * @property-read ?DAO\ComboManualItem $color
+ * @property-read ?DAO\MedicalCard[] medicalCards
+ * @property-read ?DAO\MedicalCardAsVaccination[] vaccines
  */
 class Pet extends AbstractDTO
 {
@@ -107,11 +109,12 @@ class Pet extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\Pet::getById($this->apiGateway, $this->id),
-            'breed' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
-            'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
-            'owner' => $this->ownerId ? \VetmanagerApiGateway\DTO\DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
-            'type' => $this->typeId ? \VetmanagerApiGateway\DTO\DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
-            'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
+            'breed' => $this->typeId ? DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
+            'color' => $this->colorId ? DAO\ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
+            'owner' => $this->ownerId ? DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
+            'type' => $this->typeId ? DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
+            'medicalCards' => DAO\MedicalCard::getByPagedQuery($this->apiGateway, (new Builder())->where('patient_id', (string)$this->id)->paginateAll()),
+            'vaccines' => DAO\MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }
