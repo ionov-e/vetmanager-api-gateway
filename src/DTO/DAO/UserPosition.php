@@ -13,6 +13,7 @@ use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateIntervalService;
 
 class UserPosition extends AbstractDTO implements AllGetRequestsInterface
 {
@@ -20,8 +21,8 @@ class UserPosition extends AbstractDTO implements AllGetRequestsInterface
 
     public int $id;
     public string $title;
-    /** Default: '00:30:00'. Type in DB: 'time' */
-    public DateInterval $admissionLength;
+    /** Default: '00:30:00'. Type in DB: 'time'. Null if '00:00:00' */
+    public ?DateInterval $admissionLength;
 
     /** @var array{
      *     "id": string,
@@ -40,8 +41,7 @@ class UserPosition extends AbstractDTO implements AllGetRequestsInterface
 
         $this->id = (int)$this->originalData['id'];
         $this->title = (string)$this->originalData['title'];
-        list($hours, $minutes, $seconds) = sscanf($this->originalData['admission_length'], '%d:%d:%d');
-        $this->admissionLength = new DateInterval(sprintf('PT%dH%dM%dS', $hours, $minutes, $seconds));
+        $this->admissionLength = (DateIntervalService::fromStringHMS($this->originalData['admission_length']))->dateInterval;
     }
 
 

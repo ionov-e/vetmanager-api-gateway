@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\DAO\City;
@@ -15,6 +14,7 @@ use VetmanagerApiGateway\DTO\Enum;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\DTO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read DAO\Client $self
@@ -38,7 +38,7 @@ class Client extends AbstractDTO
     public string $email;
     public string $cityTitle;
     public ?int $cityId;
-    public DateTime $dateRegister;
+    public ?DateTime $dateRegister;
     public string $cellPhone;
     public string $zip;
     public ?string $registrationIndex;
@@ -117,6 +117,7 @@ class Client extends AbstractDTO
         $this->email = (string)$this->originalData['email'];
         $this->cityTitle = (string)$this->originalData['city'];
         $this->cityId = $this->originalData['city_id'] ? (int)$this->originalData['city_id'] : null;
+        $this->dateRegister = (DateTimeService::fromFullDateTimeString($this->originalData['date_register']))->dateTime;
         $this->cellPhone = (string)$this->originalData['cell_phone'];
         $this->zip = (string)$this->originalData['zip'];
         $registrationIndex = $this->originalData['registration_index'];
@@ -133,14 +134,9 @@ class Client extends AbstractDTO
         $this->apartment = (string)$this->originalData['apartment'];
         $this->isUnsubscribed = (bool)$this->originalData['unsubscribe'];
         $this->isBlacklisted = (bool)$this->originalData['in_blacklist'];
+        $this->lastVisitDate = (DateTimeService::fromFullDateTimeString($this->originalData['last_visit_date']))->dateTime;
         $this->numberOfJournal = (string)$this->originalData['number_of_journal'];
         $this->phonePrefix = (string)$this->originalData['phone_prefix'];
-        try {
-            $this->dateRegister = new DateTime($this->originalData['date_register']);
-            $this->lastVisitDate = new DateTime($this->originalData['last_visit_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     /** @throws VetmanagerApiGatewayException

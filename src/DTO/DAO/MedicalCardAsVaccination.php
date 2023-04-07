@@ -15,6 +15,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read MedicalCard medicalCard
@@ -89,6 +90,12 @@ class MedicalCardAsVaccination extends AbstractDTO
         $this->vaccineId = (int)$this->originalData['id'];
         $this->name = (string)$this->originalData['name'];
         $this->petId = (int)$this->originalData['pet_id'];
+        $this->date = (DateTimeService::fromFullDateTimeString($this->originalData['date']))->dateTime;
+
+        $dateTimeService = (DateTimeService::fromFullDateTimeString($this->originalData['create_date']));
+        $this->nextDateTime = $dateTimeService->dateTime;
+        $this->isTimePresentInNextDateTime = $dateTimeService->isTimePresent();
+
         $this->goodId = (int)$this->originalData['vaccine_id'];
         $this->medcardId = (int)$this->originalData['medcard_id'];
         $this->doseTypeId = (int)$this->originalData['doza_type_id'];
@@ -98,23 +105,9 @@ class MedicalCardAsVaccination extends AbstractDTO
         $this->vaccineDescription = (string)$this->originalData['vaccine_description'];
         $this->vaccineTypeTitle = (string)$this->originalData['vaccine_type_title'];
         $this->nextAdmissionId = (int)$this->originalData['next_admission_id'];
-
-        try {
-            $this->date = $this->originalData['date'] ? new DateTime($this->originalData['date']) : null;
-            $this->nextDateTime = $this->originalData['date_nexttime'] ? new DateTime($this->originalData['date_nexttime']) : null;
-            $this->petBirthday = $this->originalData['birthday'] ? new DateTime($this->originalData['birthday']) : null;
-
-            list($this->nextDateTime, $this->isTimePresentInNextDateTime) =
-                $this->getDateTimeWithTimeIndicationForNextAdmission(
-                    $this->originalData['date_nexttime'],
-                    $this->originalData['next_visit_time']
-                );
-
-            // "birthday_at_time" игнорируем. Бред присылается
-            // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
+        $this->petBirthday = (DateTimeService::fromOnlyDateString($this->originalData['birthday']))->dateTime;
+        // "birthday_at_time" игнорируем. Бред присылается
+        // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }
 
     /**

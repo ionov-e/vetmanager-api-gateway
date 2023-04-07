@@ -27,7 +27,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 
     public int $id;
     public DateTime $dateCreate;
-    public ?DateTime $dateEdit;
+    public DateTime $dateEdit;
     /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]" */
     public string $diagnose;
     public string $recommendation;
@@ -138,7 +138,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
 
         try {
-            $this->dateEdit = $this->originalData['date_edit'] ? new DateTime($this->originalData['date_edit']) : null;
+            $this->dateEdit = new DateTime($this->originalData['date_edit']);
             $this->dateCreate = new DateTime($this->originalData['date_create']);
         } catch (Exception $e) {
             throw new VetmanagerApiGatewayException($e->getMessage());

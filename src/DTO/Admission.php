@@ -40,7 +40,7 @@ class Admission extends AbstractDTO
     public bool $isDirectDirection;
     /** @var ?positive-int */
     public ?int $creatorId;
-    /** "0000-00-00 00:00:00", "2015-07-08 06:43:44" */
+    /** Приходит: "2015-07-08 06:43:44", но бывает и "0000-00-00 00:00:00". Последнее переводится в null */
     public ?DateTime $createDate;
     /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see DAO\User}. Какой-то врач-помощник что ли.
      * Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать */
@@ -79,7 +79,7 @@ class Admission extends AbstractDTO
         parent::__construct($apiGateway, $originalData);
 
         $this->id = (int)$this->originalData['id'];
-        $this->date = (new DateTimeService($this->originalData['admission_date']))->dateTime;
+        $this->date = (DateTimeService::fromFullDateTimeString($this->originalData['admission_date']))->dateTime;
         $this->description = (string)$this->originalData['description'];
         $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
         $this->petId = $this->originalData['patient_id'] ? (int)$this->originalData['patient_id'] : null;
@@ -90,7 +90,7 @@ class Admission extends AbstractDTO
         $this->clinicId = $this->originalData['clinic_id'] ? (int)$this->originalData['clinic_id'] : null;
         $this->isDirectDirection = (bool)$this->originalData['direct_direction'];
         $this->creatorId = $this->originalData['creator_id'] ? (int)$this->originalData['creator_id'] : null;
-        $this->createDate = (new DateTimeService($this->originalData['create_date']))->dateTime;
+        $this->createDate = (DateTimeService::fromFullDateTimeString($this->originalData['create_date']))->dateTime;
         $this->escorterId = $this->originalData['escorter_id'] ? (int)$this->originalData['escorter_id'] : null;
         $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
         $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];
