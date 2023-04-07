@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /** @property-read \VetmanagerApiGateway\DTO\DAO\PetType $self
  * @property-read FullName $fullName
@@ -91,16 +91,11 @@ class User extends AbstractDTO
         $this->nickname = $this->originalData['nickname'] ? (string)$this->originalData['nickname'] : null;
         $this->youtrackLogin = (string)$this->originalData['youtrack_login'];
         $this->youtrackPassword = (string)$this->originalData['youtrack_password'];
+        $this->lastChangePwdDate = (DateTimeService::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTime;
         $this->isLimited = (bool)$this->originalData['is_limited'];
         $this->carrotquestId = $this->originalData['carrotquest_id'] ? (string)$this->originalData['carrotquest_id'] : null;
         $this->sipNumber = (string)$this->originalData['sip_number'];
         $this->userInn = (string)$this->originalData['user_inn'];
-
-        try {
-            $this->lastChangePwdDate = new DateTime($this->originalData['last_change_pwd_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     /** @throws VetmanagerApiGatewayException */

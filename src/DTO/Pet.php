@@ -12,6 +12,7 @@ use VetmanagerApiGateway\DTO\DAO;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read DAO\Pet self
@@ -94,10 +95,10 @@ class Pet extends AbstractDTO
         $this->status = Status::from($this->originalData['status']);
         $this->picture = (string)$this->originalData['picture'];
         $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
+        $this->birthday = (DateTimeService::fromOnlyDateString($this->originalData['birthday']))->dateTime;
 
         try {
             $this->dateRegister = new DateTime($this->originalData['date_register']);
-            $this->birthday = $this->originalData['birthday'] ? new DateTime($this->originalData['birthday']) : null;
             $this->editDate = new DateTime($this->originalData['edit_date']);
         } catch (Exception $e) {
             throw new VetmanagerApiGatewayException($e->getMessage());
