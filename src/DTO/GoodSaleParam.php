@@ -33,7 +33,7 @@ class GoodSaleParam extends AbstractDTO
     public PriceFormation $priceFormation;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public \VetmanagerApiGateway\DTO\DAO\Unit $unit;
+    public DAO\Unit $unit;
 
     /** @var array{
      *     "id": string,
@@ -71,7 +71,7 @@ class GoodSaleParam extends AbstractDTO
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->markup = $this->originalData['markup'] ? (float)$this->originalData['markup'] : null;
         $this->priceFormation = PriceFormation::from($this->originalData['price_formation']);
-        $this->unit = \VetmanagerApiGateway\DTO\DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitSale']);
+        $this->unit = DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitSale']);
     }
 
     /** @throws VetmanagerApiGatewayException
