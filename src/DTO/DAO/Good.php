@@ -79,25 +79,13 @@ class Good extends DTO\Good implements AllGetRequestsInterface
 
         $this->group = GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
         $this->unit = Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage']);
-        $this->goodSaleParams = $this->getGoodSaleParams();
-    }
-
-    /**
-     * @return GoodSaleParam[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getGoodSaleParams(): array
-    {
-        return array_map(
-            fn (array $goodSaleParam): GoodSaleParam => GoodSaleParam::fromSingleObjectContents(
-                $this->apiGateway,
-                array_merge(
-                    $goodSaleParam,
-                    ["unitSale" => $this->originalData['unitStorage']],
-                    ["good" => $this->getOnlyGoodArray()],
-                )
-            ),
-            $this->originalData['goodSaleParams']
+        $this->goodSaleParams = GoodSaleParam::fromMultipleObjectsContents(
+            $this->apiGateway,
+            array_merge(
+                $this->originalData['goodSaleParams'],
+                ['unitSale' => $this->originalData['unitStorage']],
+                ['good' => $this->getOnlyGoodArray()],
+            )
         );
     }
 

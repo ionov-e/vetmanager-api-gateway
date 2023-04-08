@@ -47,7 +47,10 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualItems = $this->getComboManualItems();
+        $this->comboManualItems = DTO\ComboManualItem::fromMultipleObjectsContents(
+            $this->apiGateway,
+            $this->originalData['comboManualItems']
+        );
     }
 
     public static function getApiModel(): ApiRoute
@@ -83,20 +86,5 @@ class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInter
     public static function getIdByNameAsEnum(ApiGateway $apiGateway, DTO\Enum\ComboManualName\Name $comboManualName): int
     {
         return self::getIdByNameAsString($apiGateway, $comboManualName->value);
-    }
-
-    /**
-     * @return DTO\ComboManualItem[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getComboManualItems(): array
-    {
-        return array_map(
-            fn (array $comboManualItemContents): DTO\ComboManualItem => DTO\ComboManualItem::fromSingleObjectContents(
-                $this->apiGateway,
-                $comboManualItemContents
-            ),
-            $this->originalData['comboManualItems']
-        );
     }
 }

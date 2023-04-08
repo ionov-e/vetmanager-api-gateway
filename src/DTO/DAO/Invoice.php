@@ -192,20 +192,8 @@ class Invoice extends DTO\Invoice implements AllGetRequestsInterface
         $this->petBreed = DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data']);
         $this->petType = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data']);
         $this->doctor = DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor']);
-        $this->invoiceDocuments = $this->getInvoiceDocuments();
-    }
-
-    /**
-     * @return DTO\InvoiceDocument[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getInvoiceDocuments(): array
-    {
-        return array_map(
-            fn (array $invoiceDocument): DTO\InvoiceDocument => DTO\InvoiceDocument::fromSingleObjectContents(
-                $this->apiGateway,
-                $invoiceDocument
-            ),
+        $this->invoiceDocuments = DTO\InvoiceDocument::fromMultipleObjectsContents(
+            $this->apiGateway,
             $this->originalData['invoiceDocuments']
         );
     }

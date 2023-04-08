@@ -38,22 +38,11 @@ class PetType extends DTO\PetType implements AllGetRequestsInterface
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
-        $this->breeds = $this->getBreeds();
+        $this->breeds = DTO\Breed::fromMultipleObjectsContents($this->apiGateway, $this->originalData['breeds']);
     }
 
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::PetType;
-    }
-
-    /** @return DTO\Breed[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getBreeds(): array
-    {
-        return array_map(
-            fn (array $breedArray): DTO\Breed => DTO\Breed::fromSingleObjectContents($this->apiGateway, $breedArray),
-            $this->originalData['breeds']
-        );
     }
 }
