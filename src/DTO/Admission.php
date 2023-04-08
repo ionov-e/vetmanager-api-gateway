@@ -7,14 +7,17 @@ namespace VetmanagerApiGateway\DTO;
 use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\Enum\Admission\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Service\DateIntervalService;
 use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
- * @property-read DAO\Breed $self
- * @property-read \VetmanagerApiGateway\DTO\DAO\PetType $type
+ * @property-read DAO\Breed self
+ * @property-read ?DAO\User user
+ * @property-read ?DAO\Clinic clinic
+ * @property-read ?DAO\ComboManualItem type
  */
 class Admission extends AbstractDTO
 {
@@ -69,9 +72,108 @@ class Admission extends AbstractDTO
      *          "reception_write_channel": ?string,
      *          "is_auto_create": string,
      *          "invoices_sum": string,
+     *          "client": array{
+     *                      "id": string,
+     *                      "address": string,
+     *                      "home_phone": string,
+     *                      "work_phone": string,
+     *                      "note": string,
+     *                      "type_id": ?string,
+     *                      "how_find": ?string,
+     *                      "balance": string,
+     *                      "email": string,
+     *                      "city": string,
+     *                      "city_id": ?string,
+     *                      "date_register": string,
+     *                      "cell_phone": string,
+     *                      "zip": string,
+     *                      "registration_index": ?string,
+     *                      "vip": string,
+     *                      "last_name": string,
+     *                      "first_name": string,
+     *                      "middle_name": string,
+     *                      "status": string,
+     *                      "discount": string,
+     *                      "passport_series": string,
+     *                      "lab_number": string,
+     *                      "street_id": string,
+     *                      "apartment": string,
+     *                      "unsubscribe": string,
+     *                      "in_blacklist": string,
+     *                      "last_visit_date": string,
+     *                      "number_of_journal": string,
+     *                      "phone_prefix": ?string
+     *          },
+     *          ?"pet": array{
+     *                      "id": string,
+     *                      "owner_id": ?string,
+     *                      "type_id": ?string,
+     *                      "alias": string,
+     *                      "sex": ?string,
+     *                      "date_register": string,
+     *                      "birthday": ?string,
+     *                      "note": string,
+     *                      "breed_id": ?string,
+     *                      "old_id": ?string,
+     *                      "color_id": ?string,
+     *                      "deathnote": ?string,
+     *                      "deathdate": ?string,
+     *                      "chip_number": string,
+     *                      "lab_number": string,
+     *                      "status": string,
+     *                      "picture": ?string,
+     *                      "weight": ?string,
+     *                      "edit_date": string,
+     *                      "pet_type_data": array{}|array{
+     *                              "id": string,
+     *                              "title": string,
+     *                              "picture": string,
+     *                              "type": ?string,
+     *                      },
+     *                      "breed_data": array{
+     *                              "id": string,
+     *                              "title": string,
+     *                              "pet_type_id": string,
+     *                      }
+     *          },
+     *          ?"wait_time": string,
+     *          ?"invoices": array<int, array{
+     *                              "id": string,
+     *                              "doctor_id": ?string,
+     *                              "client_id": string,
+     *                              "pet_id": string,
+     *                              "description": string,
+     *                              "percent": ?string,
+     *                              "amount": ?string,
+     *                              "status": string,
+     *                              "invoice_date": string,
+     *                              "old_id": ?string,
+     *                              "night": string,
+     *                              "increase": ?string,
+     *                              "discount": ?string,
+     *                              "call": string,
+     *                              "paid_amount": string,
+     *                              "create_date": string,
+     *                              "payment_status": string,
+     *                              "clinic_id": string,
+     *                              "creator_id": ?string,
+     *                              "fiscal_section_id": string,
+     *                              "d": string
+     *           }>
      *     } $originalData
      */
     protected readonly array $originalData;
+
+    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
+    public ?DTO\Pet $pet;
+    public ?DTO\PetType $petType;
+    public ?DTO\Pet $petBreed;
+    public DTO\Client $client;
+    /** Все время пустая строка приходит - перевожу в null */
+    public ?string $waitTime;
+    /** @var DTO\Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
+     * При других запросах такого элемента нет */
+    public array $invoices;
 
     /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
@@ -95,5 +197,33 @@ class Admission extends AbstractDTO
         $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
         $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];
         $this->invoicesSum = (float)$this->originalData['invoices_sum'];
+
+        $this->pet = !empty($this->originalData['pet'])
+            ? DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet'])
+            : null;
+        $this->petType = !empty($this->originalData['pet']['pet_type_data'])
+            ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data'])
+            : null;
+        $this->petBreed = !empty($this->originalData['pet']['breed_data'])
+            ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data'])
+            : null;
+        $this->client = DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
+        $this->waitTime = (string)$this->originalData['wait_time'] ?: null;
+        $this->invoices = DTO\Invoice::fromMultipleObjectsContents(
+            $this->apiGateway,
+            $this->originalData['invoices'] ?? []
+        );
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'self' => DAO\AdmissionFromGetById::getById($this->apiGateway, $this->id),
+            'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
+            'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'type' => $this->typeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            default => $this->$name,
+        };
     }
 }
