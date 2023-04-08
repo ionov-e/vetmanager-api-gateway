@@ -9,6 +9,7 @@ use DateTime;
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\DAO;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DTO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -19,6 +20,7 @@ use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read MedicalCard medicalCard
+ * @property-read ?DAO\AdmissionFromGetById nextAdmission
  * @property-read ?DateInterval petAgeAtVaccinationMoment
  * @property-read ?DateInterval currentPetAgeIfStillAlive
  */
@@ -154,6 +156,9 @@ class MedicalCardAsVaccination extends AbstractDTO
     {
         return match ($name) {
             'medicalCard' => MedicalCard::getById($this->apiGateway, $this->medcardId),
+            'nextAdmission' => $this->nextAdmissionId
+                ? DAO\AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
+                : null,
             'petAgeAtVaccinationMoment' => $this->getPetAgeAtVaccinationMoment(),
             'currentPetAgeIfStillAlive' => $this->getCurrentPetAgeIfStillAlive(),
             default => $this->$name,

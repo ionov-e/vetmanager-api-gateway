@@ -17,6 +17,7 @@ use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read ?DAO\Clinic clinic
+ * @property-read ?DAO\AdmissionFromGetById admission
  * @property-read ?DAO\ComboManualItem admissionType
  * @property-read ?DAO\ComboManualItem meetResult
  * @property-read ?DAO\Invoice invoice
@@ -134,7 +135,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->creatorId = (int)$this->originalData['creator_id'];    #TODO get?
         $this->status = DTO\Enum\MedicalCard\Status::from($this->originalData['status']);
         $this->callingId = (int)$this->originalData['calling_id'];
-        $this->admissionId = (int)$this->originalData['admission_id'];    #TODO get?
+        $this->admissionId = (int)$this->originalData['admission_id'];
         $this->diagnoseText = (string)$this->originalData['diagnos_text'];
         $this->diagnoseTypeText = $this->originalData['diagnos_type_text'] ? (string)$this->originalData['diagnos_type_text'] : null;
         $this->clinicId = (int)$this->originalData['clinic_id'];
@@ -152,6 +153,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'admission' => $this->admissionId ? DAO\AdmissionFromGetById::getById($this->apiGateway, $this->admissionId) : null,
             'admissionType' => $this->admissionType ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
             'meetResult' => $this->meetResultId ? DAO\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'invoice' => $this->invoice ? DAO\Invoice::getById($this->apiGateway, $this->invoice) : null,
