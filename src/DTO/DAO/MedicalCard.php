@@ -8,6 +8,7 @@ use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\DAO;
 use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
@@ -15,11 +16,11 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
- * @property-read ?Clinic clinic
- * @property-read ?ComboManualItem admissionType
- * @property-read ?ComboManualItem meetResult
- * @property-read ?Invoice invoice
- * @property-read ?User user
+ * @property-read ?DAO\Clinic clinic
+ * @property-read ?DAO\ComboManualItem admissionType
+ * @property-read ?DAO\ComboManualItem meetResult
+ * @property-read ?DAO\Invoice invoice
+ * @property-read ?DAO\User user
  */
 class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
@@ -151,10 +152,10 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'admissionType' => $this->admissionType ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
-            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
-            'invoice' => $this->invoice ? Invoice::getById($this->apiGateway, $this->invoice) : null,
-            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            'admissionType' => $this->admissionType ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
+            'meetResult' => $this->meetResultId ? DAO\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
+            'invoice' => $this->invoice ? DAO\Invoice::getById($this->apiGateway, $this->invoice) : null,
+            'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
             default => $this->$name,
         };
     }
