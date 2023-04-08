@@ -41,7 +41,7 @@ class UserPosition extends AbstractDTO implements AllGetRequestsInterface
 
         $this->id = (int)$this->originalData['id'];
         $this->title = (string)$this->originalData['title'];
-        $this->admissionLength = (DateIntervalService::fromStringHMS($this->originalData['admission_length']))->dateInterval;
+        $this->admissionLength = (DateIntervalService::fromStringHMS($this->originalData['admission_length']))->dateIntervalNullable;
     }
 
 

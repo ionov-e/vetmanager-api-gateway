@@ -69,7 +69,7 @@ class Client extends DTO\Client implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->city = $this->cityId ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city_data']) : null;
+        $this->city = $this->originalData['city_data'] ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city_data']) : null;
 
         $typeTitle = $this->originalData['client_type_data']['title'] ?? null;
         $this->typeTitle = $typeTitle ? (string)$typeTitle : null;

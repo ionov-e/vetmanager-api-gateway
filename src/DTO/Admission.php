@@ -19,8 +19,8 @@ use VetmanagerApiGateway\Service\DateTimeService;
 class Admission extends AbstractDTO
 {
     public int $id;
-    /** Пример "2020-12-31 17:51:18" */
-    public DateTime $date;
+    /** Пример "2020-12-31 17:51:18". Может быть: "0000-00-00 00:00:00" - переводится в null */
+    public ?DateTime $date;
     /** Примеры: "На основании медкарты", "Запись из модуля, к свободному доктору, по услуге Ампутация пальцев" */
     public string $description;
     /** @var ?positive-int */
@@ -79,18 +79,18 @@ class Admission extends AbstractDTO
         parent::__construct($apiGateway, $originalData);
 
         $this->id = (int)$this->originalData['id'];
-        $this->date = (DateTimeService::fromFullDateTimeString($this->originalData['admission_date']))->dateTime;
+        $this->date = (DateTimeService::fromFullDateTimeString($this->originalData['admission_date']))->dateTimeNullable;
         $this->description = (string)$this->originalData['description'];
         $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
         $this->petId = $this->originalData['patient_id'] ? (int)$this->originalData['patient_id'] : null;
         $this->userId = $this->originalData['user_id'] ? (int)$this->originalData['user_id'] : null;
         $this->typeId = $this->originalData['type_id'] ? (int)$this->originalData['type_id'] : null;
-        $this->admissionLength = (DateIntervalService::fromStringHMS($this->originalData['admission_length']))->dateInterval;
+        $this->admissionLength = (DateIntervalService::fromStringHMS($this->originalData['admission_length']))->dateIntervalNullable;
         $this->status = Status::from($this->originalData['status']);
         $this->clinicId = $this->originalData['clinic_id'] ? (int)$this->originalData['clinic_id'] : null;
         $this->isDirectDirection = (bool)$this->originalData['direct_direction'];
         $this->creatorId = $this->originalData['creator_id'] ? (int)$this->originalData['creator_id'] : null;
-        $this->createDate = (DateTimeService::fromFullDateTimeString($this->originalData['create_date']))->dateTime;
+        $this->createDate = (DateTimeService::fromFullDateTimeString($this->originalData['create_date']))->dateTimeNullable;
         $this->escorterId = $this->originalData['escorter_id'] ? (int)$this->originalData['escorter_id'] : null;
         $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
         $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];

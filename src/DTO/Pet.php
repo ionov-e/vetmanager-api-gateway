@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\DAO;
@@ -84,6 +83,8 @@ class Pet extends AbstractDTO
         $this->typeId = $this->originalData['type_id'] ? (int)$this->originalData['type_id'] : null;
         $this->alias = (string)$this->originalData['alias'];
         $this->sex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
+        $this->dateRegister = (DateTimeService::fromOnlyDateString($this->originalData['date_register']))->dateTime;
+        $this->birthday = (DateTimeService::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
         $this->note = (string)$this->originalData['note'];
         $this->breedId = $this->originalData['breed_id'] ? (int)$this->originalData['breed_id'] : null;
         $this->oldId = $this->originalData['old_id'] ? (int)$this->originalData['old_id'] : null;
@@ -95,14 +96,7 @@ class Pet extends AbstractDTO
         $this->status = Status::from($this->originalData['status']);
         $this->picture = (string)$this->originalData['picture'];
         $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
-        $this->birthday = (DateTimeService::fromOnlyDateString($this->originalData['birthday']))->dateTime;
-
-        try {
-            $this->dateRegister = new DateTime($this->originalData['date_register']);
-            $this->editDate = new DateTime($this->originalData['edit_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
+        $this->editDate = (DateTimeService::fromOnlyDateString($this->originalData['edit_date']))->dateTime;
     }
 
     /** @throws VetmanagerApiGatewayException */

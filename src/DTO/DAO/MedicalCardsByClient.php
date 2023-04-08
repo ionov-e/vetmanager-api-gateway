@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\DAO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
@@ -17,6 +16,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read MedicalCard self
@@ -50,7 +50,7 @@ class MedicalCardsByClient extends AbstractDTO
     public int $petId;
     public string $petAlias;
     /** Дата без времени */
-    public DateTime $petBirthday;
+    public ?DateTime $petBirthday;
     public Sex $petSex;
     public string $petNote;
     public ?string $petTypeTitle;
@@ -120,10 +120,12 @@ class MedicalCardsByClient extends AbstractDTO
         $this->meetResultId = (int)$this->originalData['meet_result_id'];
         $this->userId = (int)$this->originalData['doctor_id'];
         $this->id = (int)$this->originalData['medical_card_id'];
+        $this->dateEdit = (DateTimeService::fromOnlyDateString($this->originalData['date_edit']))->dateTimeNullable;
         $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : null;
         $this->status = Status::from($this->originalData['medical_card_status']);
         $this->petId = (int)$this->originalData['pet_id'];
         $this->petAlias = (string)$this->originalData['alias'];
+        $this->petBirthday = (DateTimeService::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
         $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
         $this->petSex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
         $this->petNote = $this->originalData['note'] ? (string)$this->originalData['note'] : null;
@@ -136,13 +138,6 @@ class MedicalCardsByClient extends AbstractDTO
         $this->isEditable = (bool)$this->originalData['editable'];
         $this->meetResultTitle = (string)$this->originalData['meet_result_title'];
         $this->admissionTypeTitle = (string)$this->originalData['admission_type_title'];
-
-        try {
-            $this->dateEdit = $this->originalData['date_edit'] ? new DateTime($this->originalData['date_edit']) : null;
-            $this->petBirthday = $this->originalData['birthday'] ? new DateTime($this->originalData['birthday']) : null;
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     public static function getApiModel(): ApiRoute

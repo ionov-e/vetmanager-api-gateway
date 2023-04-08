@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /** @property-read DAO\InvoiceDocument $self */
 class InvoiceDocument extends AbstractDTO
@@ -120,6 +120,7 @@ class InvoiceDocument extends AbstractDTO
         $this->discountDocumentId = $this->originalData['discount_document_id'] ? (int)$this->originalData['discount_document_id'] : null;
         $this->discountPercent = $this->originalData['discount_percent'] ? (float)$this->originalData['discount_percent'] : null;
         $this->defaultPrice = $this->originalData['default_price'] ? (float)$this->originalData['default_price'] : null;
+        $this->createDate = (DateTimeService::fromOnlyDateString($this->originalData['create_date']))->dateTime;
         $this->discountCause = $this->originalData['discount_cause'] ? (string)$this->originalData['discount_cause'] : null;
         $this->fixedDiscountId = (int)$this->originalData['fixed_discount_id'];
         $this->fixedDiscountPercent = (int)$this->originalData['fixed_discount_percent'];
@@ -129,12 +130,6 @@ class InvoiceDocument extends AbstractDTO
         $this->partyInfo = (array)$this->originalData['party_info'];
 
         $this->goodSaleParam = GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
-
-        try {
-            $this->createDate = new DateTime($this->originalData['create_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     /** @throws VetmanagerApiGatewayException */

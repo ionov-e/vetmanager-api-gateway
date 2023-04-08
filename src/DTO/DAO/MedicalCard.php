@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\DAO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\AbstractDTO;
@@ -13,6 +12,7 @@ use VetmanagerApiGateway\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /**
  * @property-read ?Clinic clinic
@@ -125,6 +125,8 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->meetResultId = (int)$this->originalData['meet_result_id'];
         $this->userId = (int)$this->originalData['doctor_id'];
         $this->id = (int)$this->originalData['id'];
+        $this->dateCreate = (DateTimeService::fromOnlyDateString($this->originalData['date_create']))->dateTime;
+        $this->dateEdit = (DateTimeService::fromOnlyDateString($this->originalData['date_edit']))->dateTime;
         $this->invoice = $this->originalData['invoice'] ? (int)$this->originalData['invoice'] : null;
         $this->description = (string)$this->originalData['description'];
         $this->nextMeetId = (int)$this->originalData['next_meet_id'];    #TODO get?
@@ -136,13 +138,6 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->diagnoseTypeText = $this->originalData['diagnos_type_text'] ? (string)$this->originalData['diagnos_type_text'] : null;
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
-
-        try {
-            $this->dateEdit = new DateTime($this->originalData['date_edit']);
-            $this->dateCreate = new DateTime($this->originalData['date_create']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     public static function getApiModel(): DTO\Enum\ApiRoute

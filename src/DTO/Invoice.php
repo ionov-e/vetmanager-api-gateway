@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\Enum\Invoice\PaymentStatus;
 use VetmanagerApiGateway\DTO\Enum\Invoice\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /** @property-read DAO\Invoice $self */
 class Invoice extends AbstractDTO
@@ -80,23 +80,18 @@ class Invoice extends AbstractDTO
         $this->percent = !is_null($this->originalData['percent']) ? (float)$this->originalData['percent'] : null;
         $this->amount = !is_null($this->originalData['amount']) ? (float)$this->originalData['amount'] : null;
         $this->status = Status::from($this->originalData['status']);
+        $this->invoiceDate = (DateTimeService::fromOnlyDateString($this->originalData['invoice_date']))->dateTime;
         $this->oldId = $this->originalData['old_id'] ? (int)$this->originalData['old_id'] : null;
         $this->night = (int)$this->originalData['night'];
         $this->increase = !is_null($this->originalData['increase']) ? (float)$this->originalData['increase'] : null;
         $this->discount = !is_null($this->originalData['discount']) ? (float)$this->originalData['discount'] : null;
         $this->call = (int)$this->originalData['call'];
         $this->paidAmount = (float)$this->originalData['paid_amount'];
+        $this->createDate = (DateTimeService::fromOnlyDateString($this->originalData['create_date']))->dateTime;
         $this->paymentStatus = PaymentStatus::from($this->originalData['payment_status']);
         $this->clinicId = (int)$this->originalData['clinic_id'];
         $this->creatorId = $this->originalData['creator_id'] ? (int)$this->originalData['creator_id'] : null;
         $this->fiscalSectionId = (int)$this->originalData['fiscal_section_id'];
-
-        try {
-            $this->invoiceDate = new DateTime($this->originalData['invoice_date']);
-            $this->createDate = new DateTime($this->originalData['create_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
     }
 
     /** @throws VetmanagerApiGatewayException

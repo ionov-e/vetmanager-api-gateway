@@ -91,7 +91,7 @@ class User extends AbstractDTO
         $this->nickname = $this->originalData['nickname'] ? (string)$this->originalData['nickname'] : null;
         $this->youtrackLogin = (string)$this->originalData['youtrack_login'];
         $this->youtrackPassword = (string)$this->originalData['youtrack_password'];
-        $this->lastChangePwdDate = (DateTimeService::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTime;
+        $this->lastChangePwdDate = (DateTimeService::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTimeNullable;
         $this->isLimited = (bool)$this->originalData['is_limited'];
         $this->carrotquestId = $this->originalData['carrotquest_id'] ? (string)$this->originalData['carrotquest_id'] : null;
         $this->sipNumber = (string)$this->originalData['sip_number'];

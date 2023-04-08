@@ -38,6 +38,7 @@ class Client extends AbstractDTO
     public string $email;
     public string $cityTitle;
     public ?int $cityId;
+    /** В БД бывает дефолтное значение: '0000-00-00 00:00:00' - переводится в null */
     public ?DateTime $dateRegister;
     public string $cellPhone;
     public string $zip;
@@ -61,8 +62,8 @@ class Client extends AbstractDTO
     public bool $isUnsubscribed;
     /** Default: 0 */
     public bool $isBlacklisted;
-    /** Default: '0000-00-00 00:00:00' */
-    public DateTime $lastVisitDate;
+    /** В БД бывает дефолтное значение: '0000-00-00 00:00:00' - переводится в null */
+    public ?DateTime $lastVisitDate;
     /** Default: '' */
     public string $numberOfJournal;
     public string $phonePrefix;
@@ -117,7 +118,7 @@ class Client extends AbstractDTO
         $this->email = (string)$this->originalData['email'];
         $this->cityTitle = (string)$this->originalData['city'];
         $this->cityId = $this->originalData['city_id'] ? (int)$this->originalData['city_id'] : null;
-        $this->dateRegister = (DateTimeService::fromFullDateTimeString($this->originalData['date_register']))->dateTime;
+        $this->dateRegister = (DateTimeService::fromFullDateTimeString($this->originalData['date_register']))->dateTimeNullable;
         $this->cellPhone = (string)$this->originalData['cell_phone'];
         $this->zip = (string)$this->originalData['zip'];
         $registrationIndex = $this->originalData['registration_index'];
@@ -134,7 +135,7 @@ class Client extends AbstractDTO
         $this->apartment = (string)$this->originalData['apartment'];
         $this->isUnsubscribed = (bool)$this->originalData['unsubscribe'];
         $this->isBlacklisted = (bool)$this->originalData['in_blacklist'];
-        $this->lastVisitDate = (DateTimeService::fromFullDateTimeString($this->originalData['last_visit_date']))->dateTime;
+        $this->lastVisitDate = (DateTimeService::fromFullDateTimeString($this->originalData['last_visit_date']))->dateTimeNullable;
         $this->numberOfJournal = (string)$this->originalData['number_of_journal'];
         $this->phonePrefix = (string)$this->originalData['phone_prefix'];
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Service\DateTimeService;
 
 /** @property-read DAO\Good $self */
 class Good extends AbstractDTO
@@ -65,18 +65,13 @@ class Good extends AbstractDTO
         $this->isWarehouseAccount = (bool)$this->originalData['is_warehouse_account'];
         $this->isActive = (bool)$this->originalData['is_active'];
         $this->code = $this->originalData['code'] ? (string)$this->originalData['code'] : null;
-        $this->categoryId = $this->originalData['category_id'] ? (int)$this->originalData['category_id'] : null;
         $this->isCall = (bool)$this->originalData['is_call'];
         $this->isForSale = (bool)$this->originalData['is_for_sale'];
         $this->barcode = $this->originalData['barcode'] ? (string)$this->originalData['barcode'] : null;
+        $this->createDate = (DateTimeService::fromOnlyDateString($this->originalData['create_date']))->dateTime;
         $this->description = (string)$this->originalData['description'];
         $this->primeCost = (float)$this->originalData['prime_cost'];
-
-        try {
-            $this->createDate = new DateTime($this->originalData['create_date']);
-        } catch (Exception $e) {
-            throw new VetmanagerApiGatewayException($e->getMessage());
-        }
+        $this->categoryId = $this->originalData['category_id'] ? (int)$this->originalData['category_id'] : null;
     }
 
     /** @throws VetmanagerApiGatewayException */

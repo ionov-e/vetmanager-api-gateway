@@ -8,9 +8,10 @@ use DateTime;
 use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
+/** @property-read DateTime $dateTime Для тех случаев, когда уверены, что null и пустых значений не будет */
 class DateTimeService
 {
-    public function __construct(public readonly ?DateTime $dateTime)
+    public function __construct(public readonly ?DateTime $dateTimeNullable)
     {
     }
 
@@ -48,8 +49,16 @@ class DateTimeService
         }
     }
 
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'dateTime' => $this->dateTimeNullable,
+            default => $this->$name,
+        };
+    }
+
     public function isTimePresent(): bool
     {
-        return ($this->dateTime && $this->dateTime->format('H:i:s') !== '01:00:00');
+        return ($this->dateTimeNullable && $this->dateTimeNullable->format('H:i:s') !== '01:00:00');
     }
 }
