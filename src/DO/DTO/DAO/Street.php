@@ -19,7 +19,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class Street extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     /** Default: '' */

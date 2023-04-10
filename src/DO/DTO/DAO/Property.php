@@ -18,7 +18,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 /** @property-read ?DAO\Clinic $clinic */
 class Property extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     /** Default: '' */

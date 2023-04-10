@@ -14,7 +14,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
     public ?float $minPrice;

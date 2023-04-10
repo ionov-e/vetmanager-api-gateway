@@ -15,7 +15,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class User extends DTO\User implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
     public ?DAO\Role $role;

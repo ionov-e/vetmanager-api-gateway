@@ -19,7 +19,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 /** @property-read FullPhone $phoneWithPrefixAndNumberAndMask */
 class Clinic extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     public ?string $title;

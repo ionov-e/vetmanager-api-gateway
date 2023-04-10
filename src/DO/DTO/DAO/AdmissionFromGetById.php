@@ -15,7 +15,8 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
  */
 class AdmissionFromGetById extends DTO\Admission implements RequestGetByIdInterface
 {
-    use BasicDAOTrait, RequestGetByIdTrait;
+    use BasicDAOTrait;
+    use RequestGetByIdTrait;
 
     /** @var array{
      *          "id": string,

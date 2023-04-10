@@ -15,7 +15,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Good extends DTO\Good implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
     public GoodGroup $group;

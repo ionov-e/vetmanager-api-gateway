@@ -13,5 +13,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
  */
 trait AllGetRequestsTrait
 {
-    use RequestGetAllTrait, RequestGetByIdTrait, RequestGetByQuery;
+    use RequestGetAllTrait;
+    use RequestGetByIdTrait;
+    use RequestGetByQuery;
 }

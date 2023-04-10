@@ -14,7 +14,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
     public DTO\Good $good;

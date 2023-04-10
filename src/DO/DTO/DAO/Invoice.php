@@ -14,7 +14,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Invoice extends DTO\Invoice implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public DTO\Client $client;
     public DTO\Pet $pet;

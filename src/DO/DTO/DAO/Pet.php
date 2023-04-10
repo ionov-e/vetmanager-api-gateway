@@ -19,7 +19,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class Pet extends DTO\Pet implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Уже получен */
     public ?DTO\Client $client;

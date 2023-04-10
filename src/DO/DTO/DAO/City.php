@@ -16,7 +16,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 /** @property-read DAO\CityType $type */
 class City extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     public string $title;

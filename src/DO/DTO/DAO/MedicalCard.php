@@ -28,7 +28,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     public DateTime $dateCreate;

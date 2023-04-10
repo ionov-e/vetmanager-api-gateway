@@ -19,7 +19,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** @var \VetmanagerApiGateway\DO\DTO\ComboManualItem[] $comboManualItems */
     public array $comboManualItems;

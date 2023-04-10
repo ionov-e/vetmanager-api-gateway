@@ -11,7 +11,8 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 
 class AdmissionFromGetAll extends Admission implements RequestGetAllInterface
 {
-    use BasicDAOTrait, RequestGetAllTrait;
+    use BasicDAOTrait;
+    use RequestGetAllTrait;
 
     /** @var array{
      *          "id": string,

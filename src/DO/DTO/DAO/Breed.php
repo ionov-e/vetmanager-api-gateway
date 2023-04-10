@@ -14,7 +14,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Breed extends DTO\Breed implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     /** Уже получен. Не будет дополнительного АПИ запроса */
     public DTO\PetType $type;

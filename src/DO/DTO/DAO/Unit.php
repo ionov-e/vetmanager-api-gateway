@@ -15,7 +15,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Unit extends AbstractDTO implements AllGetRequestsInterface
 {
-    use BasicDAOTrait, AllGetRequestsTrait;
+    use BasicDAOTrait;
+    use AllGetRequestsTrait;
 
     public int $id;
     public string $title;
