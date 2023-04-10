@@ -6,7 +6,6 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use DateInterval;
 use DateTime;
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
@@ -116,7 +115,6 @@ class MedicalCardAsVaccination extends AbstractDTO
      * @param ?string $date Приходят строки типа: "0000-00-00", "2023-06-06"
      * @param ?string $time Приходят строки типа: "12:20", ""
      * @return array{?DateTime, bool}
-     * @throws Exception
      */
     private function getDateTimeWithTimeIndicationForNextAdmission(?string $date, ?string $time): array
     {

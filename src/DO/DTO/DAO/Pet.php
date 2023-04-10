@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
-use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO;
@@ -108,9 +107,7 @@ class Pet extends DTO\Pet implements AllGetRequestsInterface
      */
     protected readonly array $originalData;
 
-    /** @throws VetmanagerApiGatewayException
-     * @throws Exception
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function __construct(ApiGateway $api, array $originalData)
     {
         parent::__construct($api, $originalData);
