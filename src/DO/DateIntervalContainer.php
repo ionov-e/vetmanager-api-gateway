@@ -20,8 +20,8 @@ class DateIntervalContainer
      */
     public static function fromStringHMS(?string $hms): ?self
     {
-        if (!$hms || $hms = "00:00:00") {
-            return null;
+        if (!$hms || "00:00:00" == $hms) {
+            return new self(null);
         }
 
         try {

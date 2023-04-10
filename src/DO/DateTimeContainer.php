@@ -20,8 +20,8 @@ class DateTimeContainer
      */
     public static function fromFullDateTimeString(?string $fullDateTime): ?self
     {
-        if (!$fullDateTime || $fullDateTime = "0000-00-00 00:00:00") {
-            return null;
+        if (!$fullDateTime || "0000-00-00 00:00:00" == $fullDateTime) {
+            return new self(null);
         }
 
         try {
