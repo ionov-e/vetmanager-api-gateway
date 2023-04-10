@@ -17,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInterface
+final class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

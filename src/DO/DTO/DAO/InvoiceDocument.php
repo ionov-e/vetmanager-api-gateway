@@ -12,7 +12,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
+final class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

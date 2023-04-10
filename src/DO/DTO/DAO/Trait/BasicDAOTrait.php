@@ -12,9 +12,9 @@ trait BasicDAOTrait
      */
     public static function fromResponse(ApiGateway $apiGateway, array $apiResponse): array
     {
-        return static::fromMultipleObjectsContents(
+        return self::fromMultipleObjectsContents(
             $apiGateway,
-            $apiResponse[static::getApiModel()->getApiModelResponseKey()]
+            $apiResponse[self::getApiModel()->getApiModelResponseKey()]
         );
     }
 }

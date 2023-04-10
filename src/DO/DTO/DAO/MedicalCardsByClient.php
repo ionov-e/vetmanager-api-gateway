@@ -29,7 +29,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read DAO\Pet pet
  * @property-read ?DAO\User user
  */
-class MedicalCardsByClient extends AbstractDTO
+final class MedicalCardsByClient extends AbstractDTO
 {
     use BasicDAOTrait;
 

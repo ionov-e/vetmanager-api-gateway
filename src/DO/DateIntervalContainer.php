@@ -9,7 +9,7 @@ use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @property-read DateInterval $dateInterval Для тех случаев, когда уверены, что null и пустых значений не будет */
-class DateIntervalContainer
+final class DateIntervalContainer
 {
     public function __construct(public readonly ?DateInterval $dateIntervalNullable)
     {

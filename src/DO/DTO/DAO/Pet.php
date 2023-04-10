@@ -17,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\City $ownerCity
  * @property-read ?DAO\Street $ownerStreet
  */
-class Pet extends DTO\Pet implements AllGetRequestsInterface
+final class Pet extends DTO\Pet implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

@@ -26,7 +26,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\Invoice invoice
  * @property-read ?DAO\User user
  */
-class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
+final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

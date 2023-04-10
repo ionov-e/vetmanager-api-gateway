@@ -12,7 +12,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInterface
+final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

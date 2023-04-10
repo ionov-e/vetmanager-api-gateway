@@ -25,7 +25,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read ?DateInterval petAgeAtVaccinationMoment
  * @property-read ?DateInterval currentPetAgeIfStillAlive
  */
-class MedicalCardAsVaccination extends AbstractDTO
+final class MedicalCardAsVaccination extends AbstractDTO
 {
     use BasicDAOTrait;
 

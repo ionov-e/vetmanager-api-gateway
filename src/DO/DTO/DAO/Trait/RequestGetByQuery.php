@@ -13,25 +13,25 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 trait RequestGetByQuery
 {
     /** @inheritDoc
-     * @return static[]
+     * @return self[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
     public static function getByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        $response = $apiGateway->getWithQueryBuilder(static::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return static::fromResponse($apiGateway, $response);
+        $response = $apiGateway->getWithQueryBuilder(self::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return self::fromResponse($apiGateway, $response);
     }
 
     /** @inheritDoc
-     * @return static[]
+     * @return self[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
     public static function getByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
-        return static::fromResponse($apiGateway, $response);
+        $response = $apiGateway->getWithPagedQuery(self::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
+        return self::fromResponse($apiGateway, $response);
     }
 
     /** @inheritDoc
@@ -42,7 +42,7 @@ trait RequestGetByQuery
     {
         return self::fromResponse(
             $apiGateway,
-            $apiGateway->getWithGetParametersAsString(static::getApiModel(), $getParameters)
+            $apiGateway->getWithGetParametersAsString(self::getApiModel(), $getParameters)
         );
     }
 }

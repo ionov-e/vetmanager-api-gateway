@@ -13,7 +13,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\Unit\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Unit extends AbstractDTO implements AllGetRequestsInterface
+final class Unit extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

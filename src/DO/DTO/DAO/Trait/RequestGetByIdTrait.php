@@ -14,11 +14,11 @@ trait RequestGetByIdTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function getById(ApiGateway $apiGateway, int $id): static
+    public static function getById(ApiGateway $apiGateway, int $id): self
     {
         return new self(
             $apiGateway,
-            $apiGateway->getWithId(static::getApiModel(), $id)
+            $apiGateway->getWithId(self::getApiModel(), $id)
         );
     }
 }

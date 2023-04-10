@@ -13,7 +13,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
  * 1) {@see self::$type} из элемента admission_type_data
  * 2) {@see self::$user} из элемента doctor_data
  */
-class AdmissionFromGetById extends DTO\Admission implements RequestGetByIdInterface
+final class AdmissionFromGetById extends DTO\Admission implements RequestGetByIdInterface
 {
     use BasicDAOTrait;
     use RequestGetByIdTrait;

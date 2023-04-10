@@ -12,7 +12,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 trait RequestGetAllTrait
 {
     /** @inheritDoc
-     * @return static[]
+     * @return self[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */

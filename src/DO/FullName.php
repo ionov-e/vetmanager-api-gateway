@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO;
 
-class FullName
+final class FullName
 {
     public function __construct(
         public ?string $first = null,

@@ -9,7 +9,7 @@ use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @property-read DateTime $dateTime Для тех случаев, когда уверены, что null и пустых значений не будет */
-class DateTimeContainer
+final class DateTimeContainer
 {
     public function __construct(public readonly ?DateTime $dateTimeNullable)
     {

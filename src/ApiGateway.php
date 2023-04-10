@@ -27,7 +27,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use function Otis22\VetmanagerUrl\url as vetmanager_url;
 use function Otis22\VetmanagerUrl\url_test_env as vetmanager_url_test_env;
 
-class ApiGateway
+final class ApiGateway
 {
     public function __construct(
         protected Client            $guzzleClient,
@@ -42,7 +42,7 @@ class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): static {
+    ): self {
         try {
             $baseApiUrl = $isProduction
                 ? vetmanager_url($domainName)->asString()
@@ -70,7 +70,7 @@ class ApiGateway
             ]
         );
 
-        return new static($guzzleClient, $allHeaders);
+        return new self($guzzleClient, $allHeaders);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -79,7 +79,7 @@ class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): static {
+    ): self {
         try {
             $baseApiUrl = ($isProduction)
                 ? vetmanager_url($domainName)->asString()
@@ -103,7 +103,7 @@ class ApiGateway
             ]
         );
 
-        return new static($guzzleClient, $allHeaders);
+        return new self($guzzleClient, $allHeaders);
     }
 
     /**

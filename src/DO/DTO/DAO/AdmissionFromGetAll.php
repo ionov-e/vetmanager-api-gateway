@@ -9,7 +9,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetAllTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 
-class AdmissionFromGetAll extends Admission implements RequestGetAllInterface
+final class AdmissionFromGetAll extends Admission implements RequestGetAllInterface
 {
     use BasicDAOTrait;
     use RequestGetAllTrait;

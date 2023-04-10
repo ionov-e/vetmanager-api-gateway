@@ -17,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 /**
  * @property-read CityType $cityType
  */
-class Street extends AbstractDTO implements AllGetRequestsInterface
+final class Street extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;

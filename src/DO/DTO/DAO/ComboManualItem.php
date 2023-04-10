@@ -15,7 +15,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInterface
+final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;
@@ -54,7 +54,7 @@ class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInter
      * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): static
+    public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): self
     {
         if ($comboManualIdOfAdmissionType == 0) {
             $comboManualIdOfAdmissionType = DAO\ComboManualName::getIdByNameAsEnum($apiGateway, Name::AdmissionType);

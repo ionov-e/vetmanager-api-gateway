@@ -14,7 +14,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\CityType $type */
-class City extends AbstractDTO implements AllGetRequestsInterface
+final class City extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;
