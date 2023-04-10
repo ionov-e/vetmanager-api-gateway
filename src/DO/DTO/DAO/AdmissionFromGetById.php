@@ -3,7 +3,7 @@
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\DTO\Admission;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetByIdInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetByIdTrait;
@@ -13,7 +13,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
  * 1) {@see self::$type} из элемента admission_type_data
  * 2) {@see self::$user} из элемента doctor_data
  */
-class AdmissionFromGetById extends Admission implements RequestGetByIdInterface
+class AdmissionFromGetById extends DTO\Admission implements RequestGetByIdInterface
 {
     use BasicDAOTrait, RequestGetByIdTrait;
 
@@ -161,8 +161,8 @@ class AdmissionFromGetById extends Admission implements RequestGetByIdInterface
      */
     protected readonly array $originalData;
 
-    public readonly ?\VetmanagerApiGateway\DO\DTO\User $user;
-    public readonly ?\VetmanagerApiGateway\DO\DTO\ComboManualItem $type;
+    public readonly ?DTO\User $user;
+    public readonly ?DTO\ComboManualItem $type;
 
     public static function getApiModel(): ApiRoute
     {
@@ -174,10 +174,10 @@ class AdmissionFromGetById extends Admission implements RequestGetByIdInterface
         parent::__construct($apiGateway, $originalData);
 
         $this->user = !empty($this->originalData['doctor_data'])
-            ? \VetmanagerApiGateway\DO\DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor_data'])
+            ? DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor_data'])
             : null;
         $this->type = !empty($this->originalData['admission_type_data'])
-            ? \VetmanagerApiGateway\DO\DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['admission_type_data'])
+            ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['admission_type_data'])
             : null;
     }
 }

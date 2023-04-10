@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Client extends \VetmanagerApiGateway\DO\DTO\Client implements AllGetRequestsInterface
+class Client extends DTO\Client implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
@@ -68,7 +70,7 @@ class Client extends \VetmanagerApiGateway\DO\DTO\Client implements AllGetReques
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->city = $this->originalData['city_data'] ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city_data']) : null;
+        $this->city = $this->originalData['city_data'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $this->originalData['city_data']) : null;
 
         $typeTitle = $this->originalData['client_type_data']['title'] ?? null;
         $this->typeTitle = $typeTitle ? (string)$typeTitle : null;

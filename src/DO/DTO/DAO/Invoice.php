@@ -6,22 +6,23 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Invoice extends \VetmanagerApiGateway\DO\DTO\Invoice implements AllGetRequestsInterface
+class Invoice extends DTO\Invoice implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
-    public Client $client;
-    public \VetmanagerApiGateway\DO\DTO\Pet $pet;
-    public \VetmanagerApiGateway\DO\DTO\PetType $petType;
-    public \VetmanagerApiGateway\DO\DTO\Breed $petBreed;
-    public \VetmanagerApiGateway\DO\DTO\User $doctor;
-    /** @var \VetmanagerApiGateway\DO\DTO\InvoiceDocument[] */
+    public DTO\Client $client;
+    public DTO\Pet $pet;
+    public DTO\PetType $petType;
+    public DTO\Breed $petBreed;
+    public DTO\User $doctor;
+    /** @var DTO\InvoiceDocument[] */
     public array $invoiceDocuments;
 
     /** @var array{
@@ -186,12 +187,12 @@ class Invoice extends \VetmanagerApiGateway\DO\DTO\Invoice implements AllGetRequ
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->client = Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
-        $this->pet = \VetmanagerApiGateway\DO\DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']);
-        $this->petBreed = \VetmanagerApiGateway\DO\DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data']);
-        $this->petType = \VetmanagerApiGateway\DO\DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data']);
-        $this->doctor = \VetmanagerApiGateway\DO\DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor']);
-        $this->invoiceDocuments = \VetmanagerApiGateway\DO\DTO\InvoiceDocument::fromMultipleObjectsContents(
+        $this->client = DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']);
+        $this->petBreed = DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data']);
+        $this->petType = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data']);
+        $this->doctor = DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor']);
+        $this->invoiceDocuments = DTO\InvoiceDocument::fromMultipleObjectsContents(
             $this->apiGateway,
             $this->originalData['invoiceDocuments']
         );

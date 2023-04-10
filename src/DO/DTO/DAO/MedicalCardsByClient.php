@@ -8,6 +8,7 @@ use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\MedicalCard\Status;
@@ -19,12 +20,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
- * @property-read MedicalCard self
- * @property-read ?ComboManualItem admissionType
- * @property-read ?ComboManualItem meetResult
- * @property-read ?Client client
- * @property-read Pet pet
- * @property-read ?User user
+ * @property-read DAO\MedicalCard self
+ * @property-read ?DAO\ComboManualItem admissionType
+ * @property-read ?DAO\ComboManualItem meetResult
+ * @property-read ?DAO\Client client
+ * @property-read DAO\Pet pet
+ * @property-read ?DAO\User user
  */
 class MedicalCardsByClient extends AbstractDTO
 {
@@ -165,12 +166,12 @@ class MedicalCardsByClient extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => MedicalCard::getById($this->apiGateway, $this->id),
-            'admissionType' => $this->admissionType ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
-            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
-            'client' => $this->clientId ? Client::getById($this->apiGateway, $this->clientId) : null,
-            'pet' => Pet::getById($this->apiGateway, $this->petId),
-            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            'self' => DAO\MedicalCard::getById($this->apiGateway, $this->id),
+            'admissionType' => $this->admissionType ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
+            'meetResult' => $this->meetResultId ? DAO\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
+            'client' => $this->clientId ? DAO\Client::getById($this->apiGateway, $this->clientId) : null,
+            'pet' => DAO\Pet::getById($this->apiGateway, $this->petId),
+            'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
             default => $this->$name,
         };
     }

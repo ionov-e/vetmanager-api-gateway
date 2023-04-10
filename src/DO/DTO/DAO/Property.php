@@ -7,6 +7,7 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -14,7 +15,7 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
-/** @property-read ?Clinic $clinic */
+/** @property-read ?DAO\Clinic $clinic */
 class Property extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
@@ -75,7 +76,7 @@ class Property extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
             default => $this->$name,
         };
     }

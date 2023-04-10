@@ -7,6 +7,7 @@ namespace VetmanagerApiGateway\DO\DTO;
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -129,7 +130,7 @@ class InvoiceDocument extends AbstractDTO
         $this->primeCost = (int)$this->originalData['prime_cost'];
         $this->partyInfo = (array)$this->originalData['party_info'];
 
-        $this->goodSaleParam = GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
+        $this->goodSaleParam = DTO\GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
     }
 
     /** @throws VetmanagerApiGatewayException */

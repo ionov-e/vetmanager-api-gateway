@@ -6,13 +6,14 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read CityType $type */
+/** @property-read DAO\CityType $type */
 class City extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
@@ -50,7 +51,7 @@ class City extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => CityType::getById($this->apiGateway, $this->typeId),
+            'type' => DAO\CityType::getById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

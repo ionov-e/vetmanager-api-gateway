@@ -6,18 +6,20 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class User extends \VetmanagerApiGateway\DO\DTO\User implements AllGetRequestsInterface
+class User extends DTO\User implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
-    public ?Role $role;
+    public ?DAO\Role $role;
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
     public ?UserPosition $position;
     /** @var array{
@@ -64,8 +66,8 @@ class User extends \VetmanagerApiGateway\DO\DTO\User implements AllGetRequestsIn
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->role = $this->originalData['role_id'] ? Role::fromSingleObjectContents($this->apiGateway, $this->originalData['role']) : null;
-        $this->position = $this->originalData['position_id'] ? UserPosition::fromSingleObjectContents($this->apiGateway, $this->originalData['position']) : null;
+        $this->role = $this->originalData['role_id'] ? DAO\Role::fromSingleObjectContents($this->apiGateway, $this->originalData['role']) : null;
+        $this->position = $this->originalData['position_id'] ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $this->originalData['position']) : null;
     }
 
     public static function getApiModel(): ApiRoute

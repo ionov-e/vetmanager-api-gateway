@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -109,14 +110,14 @@ class Clinic extends AbstractDTO implements AllGetRequestsInterface
     private function getFullPhone(int $clinicId): FullPhone
     {
         try {
-            $phonePrefixProperty = Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "unisender_phone_pristavka");
+            $phonePrefixProperty = DAO\Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "unisender_phone_pristavka");
             $phonePrefix = $phonePrefixProperty->value;
         } catch (VetmanagerApiGatewayResponseEmptyException) {
             $phonePrefix = "";
         }
 
         try {
-            $phoneMaskProperty = Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "phone_mask");
+            $phoneMaskProperty = DAO\Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "phone_mask");
             $phoneMask = $phoneMaskProperty->value;
         } catch (VetmanagerApiGatewayResponseEmptyException) {
             $phoneMask = "";

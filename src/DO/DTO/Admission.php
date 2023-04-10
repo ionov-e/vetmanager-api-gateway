@@ -9,16 +9,15 @@ use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateIntervalContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\DTO\DAO\AdmissionFromGetById;
-use VetmanagerApiGateway\DO\DTO\DAO\Clinic;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\Admission\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read \VetmanagerApiGateway\DO\DTO\DAO\Breed self
- * @property-read ?\VetmanagerApiGateway\DO\DTO\DAO\User user
- * @property-read ?Clinic clinic
- * @property-read ?\VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem type
+ * @property-read DAO\Breed self
+ * @property-read ?DAO\User user
+ * @property-read ?DAO\Clinic clinic
+ * @property-read ?DAO\ComboManualItem type
  */
 class Admission extends AbstractDTO
 {
@@ -172,7 +171,7 @@ class Admission extends AbstractDTO
     public Client $client;
     /** Все время пустая строка приходит - перевожу в null */
     public ?string $waitTime;
-    /** @var Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
+    /** @var DTO\Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
      * При других запросах такого элемента нет */
     public array $invoices;
 
@@ -200,13 +199,13 @@ class Admission extends AbstractDTO
         $this->invoicesSum = (float)$this->originalData['invoices_sum'];
 
         $this->pet = !empty($this->originalData['pet'])
-            ? Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet'])
+            ? DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet'])
             : null;
         $this->petType = !empty($this->originalData['pet']['pet_type_data'])
-            ? PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data'])
+            ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data'])
             : null;
         $this->petBreed = !empty($this->originalData['pet']['breed_data'])
-            ? Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data'])
+            ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data'])
             : null;
         $this->client = Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
         $this->waitTime = (string)$this->originalData['wait_time'] ?: null;
@@ -220,10 +219,10 @@ class Admission extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => AdmissionFromGetById::getById($this->apiGateway, $this->id),
-            'user' => $this->userId ? \VetmanagerApiGateway\DO\DTO\DAO\User::getById($this->apiGateway, $this->userId) : null,
-            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'type' => $this->typeId ? \VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            'self' => DAO\AdmissionFromGetById::getById($this->apiGateway, $this->id),
+            'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
+            'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'type' => $this->typeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
             default => $this->$name,
         };
     }

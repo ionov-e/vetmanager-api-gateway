@@ -6,6 +6,8 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -13,11 +15,11 @@ use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class ComboManualItem extends \VetmanagerApiGateway\DO\DTO\ComboManualItem implements AllGetRequestsInterface
+class ComboManualItem extends DTO\ComboManualItem implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
-    public \VetmanagerApiGateway\DO\DTO\ComboManualName $comboManualName;
+    public DTO\ComboManualName $comboManualName;
 
     /** @var array{
      *       "id": string,
@@ -43,18 +45,18 @@ class ComboManualItem extends \VetmanagerApiGateway\DO\DTO\ComboManualItem imple
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualName = \VetmanagerApiGateway\DO\DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $this->originalData['comboManualName']);
+        $this->comboManualName = DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $this->originalData['comboManualName']);
     }
 
     /**
-     * @param int $id Скорее всего тут будет значение из медкарты: {@see MedicalCard::admissionType}
+     * @param int $id Скорее всего тут будет значение из медкарты: {@see DAO\MedicalCard::admissionType}
      * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
     public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): static
     {
         if ($comboManualIdOfAdmissionType == 0) {
-            $comboManualIdOfAdmissionType = ComboManualName::getIdByNameAsEnum($apiGateway, Name::AdmissionType);
+            $comboManualIdOfAdmissionType = DAO\ComboManualName::getIdByNameAsEnum($apiGateway, Name::AdmissionType);
         }
 
         $comboManualItems = self::getByQueryBuilder(
@@ -74,7 +76,7 @@ class ComboManualItem extends \VetmanagerApiGateway\DO\DTO\ComboManualItem imple
     }
 
     /**
-     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see MedicalCard::meetResultId}
+     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see DAO\MedicalCard::meetResultId}
      * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -88,7 +90,7 @@ class ComboManualItem extends \VetmanagerApiGateway\DO\DTO\ComboManualItem imple
     }
 
     /**
-     * @param int $colorId Например: {@see Pet::colorId}. По факту это value из таблицы combo_manual_items
+     * @param int $colorId Например: {@see DTO\Pet::colorId}. По факту это value из таблицы combo_manual_items
      * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -126,7 +128,7 @@ class ComboManualItem extends \VetmanagerApiGateway\DO\DTO\ComboManualItem imple
     /** @throws VetmanagerApiGatewayException Родительское исключение */
     private static function getComboManualIdFromComboManualName(ApiGateway $apiGateway, Name $comboManualName): int
     {
-        return ComboManualName::getIdByNameAsEnum($apiGateway, $comboManualName);
+        return DAO\ComboManualName::getIdByNameAsEnum($apiGateway, $comboManualName);
     }
 
     /** @throws VetmanagerApiGatewayException */

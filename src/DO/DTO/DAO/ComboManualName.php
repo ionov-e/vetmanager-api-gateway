@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -16,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class ComboManualName extends \VetmanagerApiGateway\DO\DTO\ComboManualName implements AllGetRequestsInterface
+class ComboManualName extends DTO\ComboManualName implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
@@ -47,7 +48,7 @@ class ComboManualName extends \VetmanagerApiGateway\DO\DTO\ComboManualName imple
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualItems = \VetmanagerApiGateway\DO\DTO\ComboManualItem::fromMultipleObjectsContents(
+        $this->comboManualItems = DTO\ComboManualItem::fromMultipleObjectsContents(
             $this->apiGateway,
             $this->originalData['comboManualItems']
         );

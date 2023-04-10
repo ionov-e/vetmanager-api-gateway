@@ -10,6 +10,7 @@ use Exception;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -18,8 +19,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
- * @property-read MedicalCard medicalCard
- * @property-read ?AdmissionFromGetById nextAdmission
+ * @property-read DAO\MedicalCard medicalCard
+ * @property-read ?DAO\AdmissionFromGetById nextAdmission
  * @property-read ?DateInterval petAgeAtVaccinationMoment
  * @property-read ?DateInterval currentPetAgeIfStillAlive
  */
@@ -154,9 +155,9 @@ class MedicalCardAsVaccination extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'medicalCard' => MedicalCard::getById($this->apiGateway, $this->medcardId),
+            'medicalCard' => DAO\MedicalCard::getById($this->apiGateway, $this->medcardId),
             'nextAdmission' => $this->nextAdmissionId
-                ? AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
+                ? DAO\AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
                 : null,
             'petAgeAtVaccinationMoment' => $this->getPetAgeAtVaccinationMoment(),
             'currentPetAgeIfStillAlive' => $this->getCurrentPetAgeIfStillAlive(),

@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -52,7 +53,7 @@ class Street extends AbstractDTO implements AllGetRequestsInterface
         $this->title = (string)$this->originalData['title'];
         $this->cityId = (int)$this->originalData['city_id'];
         $this->type = Type::from($this->originalData['type']);
-        $this->city = $this->originalData['city_id'] ? City::fromSingleObjectContents($this->apiGateway, $this->originalData['city']) : null;
+        $this->city = $this->originalData['city_id'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $this->originalData['city']) : null;
     }
 
     public static function getApiModel(): ApiRoute
@@ -64,7 +65,7 @@ class Street extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'cityType' => $this->originalData['city']['type_id'] ? CityType::getById($this->apiGateway, $this->originalData['city']['type_id']) : null,
+            'cityType' => $this->originalData['city']['type_id'] ? DAO\CityType::getById($this->apiGateway, $this->originalData['city']['type_id']) : null,
             default => $this->$name,
         };
     }

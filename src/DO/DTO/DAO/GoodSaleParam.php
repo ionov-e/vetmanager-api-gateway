@@ -6,18 +6,19 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class GoodSaleParam extends \VetmanagerApiGateway\DO\DTO\GoodSaleParam implements AllGetRequestsInterface
+class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public \VetmanagerApiGateway\DO\DTO\Good $good;
+    public DTO\Good $good;
 
     /** @var array{
      *     "id": string,
@@ -64,7 +65,7 @@ class GoodSaleParam extends \VetmanagerApiGateway\DO\DTO\GoodSaleParam implement
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->good = \VetmanagerApiGateway\DO\DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
     }
 
     public static function getApiModel(): ApiRoute

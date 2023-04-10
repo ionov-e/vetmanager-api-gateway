@@ -9,7 +9,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read DAO\Breed $self
- * @property-read \VetmanagerApiGateway\DO\DTO\DAO\PetType $type
+ * @property-read DAO\PetType $type
  */
 class Breed extends AbstractDTO
 {
@@ -41,7 +41,7 @@ class Breed extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\Breed::getById($this->apiGateway, $this->id),
-            'type' => \VetmanagerApiGateway\DO\DTO\DAO\PetType::getById($this->apiGateway, $this->typeId),
+            'type' => DAO\PetType::getById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

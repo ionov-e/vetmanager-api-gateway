@@ -7,10 +7,11 @@ namespace VetmanagerApiGateway\DO\DTO;
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read \VetmanagerApiGateway\DO\DTO\DAO\PetType $self
+/** @property-read DAO\PetType $self
  * @property-read FullName $fullName
  */
 class User extends AbstractDTO

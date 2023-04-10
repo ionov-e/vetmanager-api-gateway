@@ -6,13 +6,15 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use Exception;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class Good extends \VetmanagerApiGateway\DO\DTO\Good implements AllGetRequestsInterface
+class Good extends DTO\Good implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
@@ -76,9 +78,9 @@ class Good extends \VetmanagerApiGateway\DO\DTO\Good implements AllGetRequestsIn
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->group = GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
-        $this->unit = Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage']);
-        $this->goodSaleParams = GoodSaleParam::fromMultipleObjectsContents(
+        $this->group = DAO\GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
+        $this->unit = DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage']);
+        $this->goodSaleParams = DAO\GoodSaleParam::fromMultipleObjectsContents(
             $this->apiGateway,
             array_merge(
                 $this->originalData['goodSaleParams'],

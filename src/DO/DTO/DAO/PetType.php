@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class PetType extends \VetmanagerApiGateway\DO\DTO\PetType implements AllGetRequestsInterface
+class PetType extends DTO\PetType implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
-    /** @var \VetmanagerApiGateway\DO\DTO\Breed[] $breeds Уже получен при получении PetType. Нового АПИ-запроса не будет */
+    /** @var DTO\Breed[] $breeds Уже получен при получении PetType. Нового АПИ-запроса не будет */
     public array $breeds;
 
     /** @var array{
@@ -37,7 +38,7 @@ class PetType extends \VetmanagerApiGateway\DO\DTO\PetType implements AllGetRequ
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
-        $this->breeds = \VetmanagerApiGateway\DO\DTO\Breed::fromMultipleObjectsContents($this->apiGateway, $this->originalData['breeds']);
+        $this->breeds = DTO\Breed::fromMultipleObjectsContents($this->apiGateway, $this->originalData['breeds']);
     }
 
     public static function getApiModel(): ApiRoute

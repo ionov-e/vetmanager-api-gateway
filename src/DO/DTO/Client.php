@@ -8,19 +8,17 @@ use DateTime;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\DTO\DAO\City;
-use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardsByClient;
-use VetmanagerApiGateway\DO\DTO\DAO\Street;
+use VetmanagerApiGateway\DO\Enum;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read DAO\Client $self
- * @property-read MedicalCardsByClient[] $medcards
- * @property-read \VetmanagerApiGateway\DO\DTO\DAO\Pet[] $petsAlive
- * @property-read ?City $city
- * @property-read ?Street $street
+ * @property-read DAO\MedicalCardsByClient[] $medcards
+ * @property-read DAO\Pet[] $petsAlive
+ * @property-read ?DAO\City $city
+ * @property-read ?DAO\Street $street
  */
 class Client extends AbstractDTO
 {
@@ -147,21 +145,21 @@ class Client extends AbstractDTO
             'self' => DAO\Client::getById($this->apiGateway, $this->id),
             'medcards' => $this->getMedcards(),
             'petsAlive' => $this->getPetsAlive(),
-            'street' => $this->streetId ? Street::getById($this->apiGateway, $this->streetId) : null,
-            'city' => $this->cityId ? City::getById($this->apiGateway, $this->cityId) : null,
+            'street' => $this->streetId ? DAO\Street::getById($this->apiGateway, $this->streetId) : null,
+            'city' => $this->cityId ? DAO\City::getById($this->apiGateway, $this->cityId) : null,
             default => $this->$name
         };
     }
 
-    /** @return MedicalCardsByClient[]
+    /** @return DAO\MedicalCardsByClient[]
      * @throws VetmanagerApiGatewayException
      */
     private function getMedcards(): array
     {
-        return MedicalCardsByClient::getByClientId($this->apiGateway, $this->id);
+        return DAO\MedicalCardsByClient::getByClientId($this->apiGateway, $this->id);
     }
 
-    /** @return \VetmanagerApiGateway\DO\DTO\DAO\Pet[]
+    /** @return DAO\Pet[]
      * @throws VetmanagerApiGatewayException
      */
     private function getPetsAlive(): array
@@ -170,9 +168,9 @@ class Client extends AbstractDTO
             ApiRoute::Pet,
             (new Builder())
                 ->where('owner_id', (string)$this->id)
-                ->where('status', \VetmanagerApiGateway\DO\Enum\Pet\Status::Alive->value)
+                ->where('status', Enum\Pet\Status::Alive->value)
         );
 
-        return \VetmanagerApiGateway\DO\DTO\DAO\Pet::fromResponse($this->apiGateway, $pets);
+        return DAO\Pet::fromResponse($this->apiGateway, $pets);
     }
 }

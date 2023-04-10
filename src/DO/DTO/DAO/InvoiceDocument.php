@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class InvoiceDocument extends \VetmanagerApiGateway\DO\DTO\InvoiceDocument implements AllGetRequestsInterface
+class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
 {
     use BasicDAOTrait, AllGetRequestsTrait;
 
@@ -23,8 +24,8 @@ class InvoiceDocument extends \VetmanagerApiGateway\DO\DTO\InvoiceDocument imple
     public ?float $minPriceInPercents;
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
     public ?float $maxPriceInPercents;
-    public \VetmanagerApiGateway\DO\DTO\Invoice $invoice;
-    public \VetmanagerApiGateway\DO\DTO\Good $good;
+    public DTO\Invoice $invoice;
+    public DTO\Good $good;
     /** @var array{
      *     "id": string,
      *     "document_id": string,
@@ -122,8 +123,8 @@ class InvoiceDocument extends \VetmanagerApiGateway\DO\DTO\InvoiceDocument imple
         $this->minPriceInPercents = (float)$this->originalData['min_price_percent'];
         $this->maxPriceInPercents = (float)$this->originalData['max_price_percent'];
 
-        $this->invoice = \VetmanagerApiGateway\DO\DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
-        $this->good = \VetmanagerApiGateway\DO\DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
+        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
     }
 
     public static function getApiModel(): ApiRoute
