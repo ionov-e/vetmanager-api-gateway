@@ -5,7 +5,7 @@ namespace VetmanagerApiGateway\Unit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\DTO\FullName;
+use VetmanagerApiGateway\DO\FullName;
 
 #[CoversClass(FullName::class)]
 class FullNameTest extends TestCase

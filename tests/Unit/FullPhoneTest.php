@@ -5,7 +5,7 @@ namespace VetmanagerApiGateway\Unit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\DTO\FullPhone;
+use VetmanagerApiGateway\DO\FullPhone;
 
 #[CoversClass(FullPhone::class)]
 class FullPhoneTest extends TestCase
