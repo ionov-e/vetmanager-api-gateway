@@ -113,24 +113,6 @@ class MedicalCardAsVaccination extends AbstractDTO
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }
 
-    /**
-     * @param ?string $date Приходят строки типа: "0000-00-00", "2023-06-06"
-     * @param ?string $time Приходят строки типа: "12:20", ""
-     * @return array{?DateTime, bool}
-     */
-    private function getDateTimeWithTimeIndicationForNextAdmission(?string $date, ?string $time): array
-    {
-        if (!$date || $date == "0000-00-00") {
-            return [null, false];
-        }
-
-        if (!$time || $time == "") {
-            return [new DateTime($date), false];
-        }
-
-        return [new DateTime("{$date} {$time}"), true];
-    }
-
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::MedicalCardsVaccinations;

@@ -34,7 +34,7 @@ class Admission extends AbstractDTO
     public ?int $userId;
     /** @var ?positive-int */
     public ?int $typeId;
-    /** Примеры: "00:15:00", "00:00:00" (последнее переводжу в null) */
+    /** Примеры: "00:15:00", "00:00:00" (последнее перевожу в null) */
     public ?DateInterval $admissionLength;
     public Status $status;
     /** @var ?positive-int В БД встречается "0" - переводим в null */
