@@ -7,7 +7,9 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
+use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
+use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
@@ -16,12 +18,13 @@ use VetmanagerApiGateway\DO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read ?Clinic clinic
- * @property-read ?AdmissionFromGetById admission
- * @property-read ?ComboManualItem admissionType
- * @property-read ?ComboManualItem meetResult
- * @property-read ?Invoice invoice
- * @property-read ?User user
+ * @property-read ?DAO\Clinic clinic
+ * @property-read ?DAO\AdmissionFromGetById admission
+ * @property-read ?DAO\AdmissionFromGetById nextMeet
+ * @property-read ?DAO\ComboManualItem admissionType
+ * @property-read ?DAO\ComboManualItem meetResult
+ * @property-read ?DAO\Invoice invoice
+ * @property-read ?DAO\User user
  */
 class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
@@ -64,7 +67,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     public ?string $diagnoseTypeText;
     /** Default: 0 */
     public int $clinicId;
-    public \VetmanagerApiGateway\DO\DTO\Pet $pet;
+    public DTO\Pet $pet;
 
     /** @var array{
      *     "id": string,
@@ -131,7 +134,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->dateEdit = (DateTimeContainer::fromOnlyDateString($this->originalData['date_edit']))->dateTime;
         $this->invoice = $this->originalData['invoice'] ? (int)$this->originalData['invoice'] : null;
         $this->description = (string)$this->originalData['description'];
-        $this->nextMeetId = (int)$this->originalData['next_meet_id'];    #TODO get?
+        $this->nextMeetId = (int)$this->originalData['next_meet_id'];
         $this->creatorId = (int)$this->originalData['creator_id'];    #TODO get?
         $this->status = Status::from($this->originalData['status']);
         $this->callingId = (int)$this->originalData['calling_id'];
@@ -139,7 +142,7 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->diagnoseText = (string)$this->originalData['diagnos_text'];
         $this->diagnoseTypeText = $this->originalData['diagnos_type_text'] ? (string)$this->originalData['diagnos_type_text'] : null;
         $this->clinicId = (int)$this->originalData['clinic_id'];
-        $this->pet = \VetmanagerApiGateway\DO\DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
     }
 
     public static function getApiModel(): ApiRoute
@@ -147,13 +150,13 @@ class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         return ApiRoute::MedicalCard;
     }
 
-    /** @throws VetmanagerApiGatewayException
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
             'admission' => $this->admissionId ? AdmissionFromGetById::getById($this->apiGateway, $this->admissionId) : null,
+            'nextMeet' => $this->nextMeetId ? AdmissionFromGetById::getById($this->apiGateway, $this->nextMeetId) : null,
             'admissionType' => $this->admissionType ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
             'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'invoice' => $this->invoice ? Invoice::getById($this->apiGateway, $this->invoice) : null,
