@@ -3,6 +3,5 @@
 /.phpunit.result.cache
 /composer.lock
 /composer.phar
-/tools/php-cs-fixer/vendor
-/tools/php-cs-fixer/composer.lock
+/psalm-report.json
 /vendor/
