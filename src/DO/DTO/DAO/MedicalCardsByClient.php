@@ -35,29 +35,32 @@ class MedicalCardsByClient extends AbstractDTO
 
     public int $id;
     public ?DateTime $dateEdit;
-    /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]"  */
+    /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]". 0 переводим в '' */
     public string $diagnose;
-    /** Default: 0 */
-    public int $userId;
+    /** Default: 0 - переводим в null */
+    public ?int $userId;
     /** Default: 'active' */
     public Status $status;
     /** Может быть просто строка, а может HTML-блок */
     public string $description;
+    /** Может прийти пустая строка, может просто строка, может HTML */
     public string $recommendation;
     public ?float $weight;
     public ?float $temperature;
-    /** Default: 0 */
+    /** Default: 0    LEFT JOIN combo_manual_items ci2 ON ci2.combo_manual_id = 2 AND ci2.value = m.meet_result_id. 0 переводим в null */
     public int $meetResultId;
-    /** {@see MedicalCard::admissionType} */
-    public ?int $admissionType;
+    /** {@see MedicalCard::admissionType} Тип приема
+     * LEFT JOIN combo_manual_items ci ON ci.combo_manual_id = {$reasonId} AND ci.value = m.admission_type
+     */
+    public ?int $admissionTypeId;
     public int $petId;
     public string $petAlias;
     /** Дата без времени */
     public ?DateTime $petBirthday;
     public Sex $petSex;
     public string $petNote;
-    public ?string $petTypeTitle;
-    public ?string $petBreedTitle;
+    public string $petTypeTitle;
+    public string $petBreedTitle;
     public ?int $clientId;
     public FullName $ownerFullName;
     public string $ownerPhone;
@@ -115,31 +118,32 @@ class MedicalCardsByClient extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->diagnose = $this->originalData['diagnos'] ? (string)$this->originalData['diagnos'] : null;
+        $diagnose = $this->originalData['diagnos'];
+        $this->diagnose = ($diagnose && $diagnose == '0') ? (string)$diagnose : '';
         $this->recommendation = (string)$this->originalData['recomendation'];
-        $this->admissionType = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;
+        $this->admissionTypeId = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;
         $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
         $this->temperature = $this->originalData['temperature'] ? (float)$this->originalData['temperature'] : null;
-        $this->meetResultId = (int)$this->originalData['meet_result_id'];
-        $this->userId = (int)$this->originalData['doctor_id'];
+        $this->meetResultId = $this->originalData['meet_result_id'] ? (int)$this->originalData['meet_result_id'] : null;
+        $this->userId = $this->originalData['doctor_id'] ? (int)$this->originalData['doctor_id'] : null;
         $this->id = (int)$this->originalData['medical_card_id'];
         $this->dateEdit = (DateTimeContainer::fromOnlyDateString($this->originalData['date_edit']))->dateTimeNullable;
-        $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : null;
+        $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : '';
         $this->status = Status::from($this->originalData['medical_card_status']);
         $this->petId = (int)$this->originalData['pet_id'];
         $this->petAlias = (string)$this->originalData['alias'];
         $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
         $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
         $this->petSex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
-        $this->petNote = $this->originalData['note'] ? (string)$this->originalData['note'] : null;
-        $this->petTypeTitle = $this->originalData['pet_type'] ? (string)$this->originalData['pet_type'] : null;
-        $this->petBreedTitle = $this->originalData['breed'] ? (string)$this->originalData['breed'] : null;
+        $this->petNote = $this->originalData['note'] ? (string)$this->originalData['note'] : '';
+        $this->petTypeTitle = $this->originalData['pet_type'] ? (string)$this->originalData['pet_type'] : '';
+        $this->petBreedTitle = $this->originalData['breed'] ? (string)$this->originalData['breed'] : '';
         $this->ownerFullName = new FullName($this->originalData['first_name'], $this->originalData['middle_name'], $this->originalData['last_name']);
         $this->ownerPhone = (string)$this->originalData['phone'];
         $this->userLogin = (string)$this->originalData['doctor_nickname'];
         $this->userFullName = new FullName($this->originalData['doctor_first_name'], $this->originalData['doctor_middle_name'], $this->originalData['doctor_last_name']);
         $this->isEditable = (bool)$this->originalData['editable'];
-        $this->meetResultTitle = (string)$this->originalData['meet_result_title'];
+        $this->meetResultTitle = $this->originalData['meet_result_title'] ? (string)$this->originalData['meet_result_title'] : '';
         $this->admissionTypeTitle = (string)$this->originalData['admission_type_title'];
     }
 
@@ -169,7 +173,7 @@ class MedicalCardsByClient extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\MedicalCard::getById($this->apiGateway, $this->id),
-            'admissionType' => $this->admissionType ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionType) : null,
+            'admissionType' => $this->admissionTypeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
             'meetResult' => $this->meetResultId ? DAO\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'client' => $this->clientId ? DAO\Client::getById($this->apiGateway, $this->clientId) : null,
             'pet' => DAO\Pet::getById($this->apiGateway, $this->petId),
