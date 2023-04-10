@@ -38,8 +38,8 @@ class DateTimeContainer
      */
     public static function fromOnlyDateString(?string $onlyDate): ?self
     {
-        if (!$onlyDate || $onlyDate = "0000-00-00") {
-            return null;
+        if (!$onlyDate || "0000-00-00" == $onlyDate) {
+            return new self(null);
         }
 
         try {
