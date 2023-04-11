@@ -5,14 +5,17 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\Admission;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetAllInterface;
+use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetByQueryInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetAllTrait;
+use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetByQuery;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 
-final class AdmissionFromGetAll extends Admission implements RequestGetAllInterface
+final class AdmissionFromGetAll extends Admission implements RequestGetAllInterface, RequestGetByQueryInterface
 {
     use BasicDAOTrait;
     use RequestGetAllTrait;
+    use RequestGetByQuery;
 
     /** @var array{
      *          "id": string,
