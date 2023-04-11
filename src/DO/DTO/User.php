@@ -33,10 +33,6 @@ class User extends AbstractDTO
     /** Default: 1 */
     public int $calcPercents;
     public ?string $nickname;
-    /** Default: '' */
-    public string $youtrackLogin;
-    /** Default: '' */
-    public string $youtrackPassword;
     /** Дата без времени */
     public DateTime $lastChangePwdDate;
     /** Default: 0 */
@@ -62,8 +58,6 @@ class User extends AbstractDTO
      *     "is_active": string,
      *     "calc_percents": string,
      *     "nickname": ?string ,
-     *     "youtrack_login": string,
-     *     "youtrack_password": string,
      *     "last_change_pwd_date": string,
      *     "is_limited": string,
      *     "carrotquest_id": ?string,
@@ -91,8 +85,6 @@ class User extends AbstractDTO
         $this->isActive = (bool)$this->originalData['is_active'];
         $this->calcPercents = (int)$this->originalData['calc_percents'];
         $this->nickname = $this->originalData['nickname'] ? (string)$this->originalData['nickname'] : null;
-        $this->youtrackLogin = (string)$this->originalData['youtrack_login'];
-        $this->youtrackPassword = (string)$this->originalData['youtrack_password'];
         $this->lastChangePwdDate = (DateTimeContainer::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTimeNullable;
         $this->isLimited = (bool)$this->originalData['is_limited'];
         $this->carrotquestId = $this->originalData['carrotquest_id'] ? (string)$this->originalData['carrotquest_id'] : null;
