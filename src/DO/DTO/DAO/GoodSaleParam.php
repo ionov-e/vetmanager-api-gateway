@@ -33,7 +33,7 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
      *     "clinic_id": string,
      *     "markup": string,
      *     "price_formation": ?string,
-     *     "unitSale": array{
+     *     ?"unitSale": array{
      *             "id": string,
      *             "title": string,
      *             "status": string,

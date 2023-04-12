@@ -19,9 +19,9 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
     use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public GoodGroup $group;
+    public DAO\GoodGroup $group;
     /** Предзагружен. Нового АПИ запроса не будет */
-    public Unit $unit;
+    public ?DAO\Unit $unit;
     /** @var GoodSaleParam[] Предзагружены. Нового АПИ запроса не будет */
     public array $goodSaleParams;
 
@@ -48,7 +48,7 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
      *              "is_show_in_vaccines": string,
      *              "price_id": ?string
      *     },
-     *     "unitStorage": array{
+     *     ?"unitStorage": array{
      *              "id": string,
      *              "title": string,
      *              "status": string
@@ -66,6 +66,11 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
      *              "clinic_id": string,
      *              "markup": string,
      *              "price_formation": ?string,
+     *              ?"unitSale": array{
+     *                      "id": string,
+     *                      "title": string,
+     *                      "status": string,
+     *              }
      *     }
      * } $originalData
      */
@@ -77,25 +82,37 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
         parent::__construct($apiGateway, $originalData);
 
         $this->group = DAO\GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
-        $this->unit = DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage']);
+
+        $this->unit = !empty($this->originalData['unitStorage'])
+            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage'])
+            : null;
+
         $this->goodSaleParams = DAO\GoodSaleParam::fromMultipleObjectsContents(
             $this->apiGateway,
-            array_merge(
-                $this->originalData['goodSaleParams'],
-                ['unitSale' => $this->originalData['unitStorage']],
-                ['good' => $this->getOnlyGoodArray()],
-            )
+            $this->getContentsForGoodSaleParamDAOs()
         );
     }
 
-    private function getOnlyGoodArray(): array
+    private function getContentsForGoodSaleParamDAOs(): array
+    {
+        return array_map(
+            fn (array $goodSaleParamObject): array => array_merge(
+                $goodSaleParamObject,
+                !empty($this->originalData['unitStorage']) ? ['unitSale' => $this->originalData['unitStorage']] : [],
+                ['good' => $this->getOnlyGoodContentsArray()]
+            ),
+            $this->originalData['goodSaleParams']
+        );
+    }
+
+    /** @return array<string, ?string> */
+    private function getOnlyGoodContentsArray(): array
     {
         $originalData = $this->originalData;
         unset($originalData['group'], $originalData['unitStorage'], $originalData['goodSaleParams']);
         return $originalData;
     }
 
-    /** @return ApiRoute::Good */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Good;
