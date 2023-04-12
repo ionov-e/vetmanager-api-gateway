@@ -71,6 +71,7 @@ final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequest
         return $comboManualItems[0];
     }
 
+    /** @return ApiRoute::ComboManualItem */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::ComboManualItem;

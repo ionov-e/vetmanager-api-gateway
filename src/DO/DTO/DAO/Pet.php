@@ -127,6 +127,7 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
         );
     }
 
+    /** @return ApiRoute::Pet */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Pet;

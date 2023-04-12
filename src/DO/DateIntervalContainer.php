@@ -15,10 +15,12 @@ final class DateIntervalContainer
     {
     }
 
-    /** @param ?string $hms Example: "14:45:00"
+    /**
+     * @param ?string $hms Example: "14:45:00"
+     *
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromStringHMS(?string $hms): ?self
+    public static function fromStringHMS(?string $hms): self
     {
         if (!$hms || "00:00:00" == $hms) {
             return new self(null);

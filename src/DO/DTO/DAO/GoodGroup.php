@@ -50,6 +50,7 @@ final class GoodGroup extends AbstractDTO implements AllGetRequestsInterface
         $this->isShowInVaccines = (bool)$this->originalData['is_show_in_vaccines'];
     }
 
+    /** @return ApiRoute::GoodGroup */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::GoodGroup;

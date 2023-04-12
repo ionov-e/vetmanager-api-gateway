@@ -41,6 +41,7 @@ final class Unit extends AbstractDTO implements AllGetRequestsInterface
         $this->status = Status::from($this->originalData['status']);
     }
 
+    /** @return ApiRoute::Unit */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Unit;

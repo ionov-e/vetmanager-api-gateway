@@ -42,6 +42,7 @@ final class City extends AbstractDTO implements AllGetRequestsInterface
         $this->typeId = (int)$this->originalData['type_id'];
     }
 
+    /** @return ApiRoute::City */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::City;

@@ -148,6 +148,7 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
     }
 
+    /** @return ApiRoute::MedicalCard */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::MedicalCard;

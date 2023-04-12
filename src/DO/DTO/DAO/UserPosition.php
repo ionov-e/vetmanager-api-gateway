@@ -42,6 +42,7 @@ final class UserPosition extends AbstractDTO implements AllGetRequestsInterface
         $this->admissionLength = (DateIntervalContainer::fromStringHMS($this->originalData['admission_length']))->dateIntervalNullable;
     }
 
+    /** @return ApiRoute::UserPosition */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::UserPosition;

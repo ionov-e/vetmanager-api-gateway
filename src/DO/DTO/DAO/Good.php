@@ -95,6 +95,7 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
         return $originalData;
     }
 
+    /** @return ApiRoute::Good */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Good;

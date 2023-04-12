@@ -91,6 +91,7 @@ final class Clinic extends AbstractDTO implements AllGetRequestsInterface
         $this->email = (string)$this->originalData['email'];
     }
 
+    /** @return ApiRoute::Clinic */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Clinic;

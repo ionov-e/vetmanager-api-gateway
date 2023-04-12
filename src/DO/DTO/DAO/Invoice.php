@@ -196,6 +196,7 @@ final class Invoice extends DTO\Invoice implements AllGetRequestsInterface
         );
     }
 
+    /** @return ApiRoute::Invoice */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Invoice;

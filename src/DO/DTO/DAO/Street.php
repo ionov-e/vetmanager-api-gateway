@@ -57,6 +57,7 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
         $this->city = $this->originalData['city_id'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $this->originalData['city']) : null;
     }
 
+    /** @return ApiRoute::Street */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Street;

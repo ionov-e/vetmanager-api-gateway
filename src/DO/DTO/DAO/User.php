@@ -68,6 +68,7 @@ final class User extends DTO\User implements AllGetRequestsInterface
         $this->position = $this->originalData['position_id'] ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $this->originalData['position']) : null;
     }
 
+    /** @return ApiRoute::User */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::User;

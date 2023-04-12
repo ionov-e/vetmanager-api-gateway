@@ -31,7 +31,7 @@ final class FullName
         return $this->getAsStringSeperatedBySpaces($this->first, $this->middle, $this->last);
     }
 
-    private function getAsStringSeperatedBySpaces(...$arguments): string
+    private function getAsStringSeperatedBySpaces(string|null ...$arguments): string
     {
         return array_reduce(
             $arguments,

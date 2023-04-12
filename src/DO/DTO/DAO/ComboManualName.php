@@ -55,6 +55,7 @@ final class ComboManualName extends DTO\ComboManualName implements AllGetRequest
         );
     }
 
+    /** @return ApiRoute::ComboManualName */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::ComboManualName;

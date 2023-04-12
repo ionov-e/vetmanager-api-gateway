@@ -113,6 +113,7 @@ final class MedicalCardAsVaccination extends AbstractDTO
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }
 
+    /** @return ApiRoute::MedicalCardsVaccinations */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::MedicalCardsVaccinations;
@@ -127,10 +128,11 @@ final class MedicalCardAsVaccination extends AbstractDTO
     public static function getByPetId(ApiGateway $apiGateway, int $petId, string $additionalGetParameters = ''): array
     {
         $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-        return $apiGateway->getWithGetParametersAsString(
+        $petsFromApiResponse = $apiGateway->getWithGetParametersAsString(
             self::getApiModel(),
             "pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
+        return self::fromMultipleObjectsContents($apiGateway, $petsFromApiResponse);
     }
 
     /** @throws VetmanagerApiGatewayException Родительский */

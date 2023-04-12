@@ -147,6 +147,7 @@ final class MedicalCardsByClient extends AbstractDTO
         $this->admissionTypeTitle = (string)$this->originalData['admission_type_title'];
     }
 
+    /** @return ApiRoute::MedicalCardsByClient */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::MedicalCardsByClient;
@@ -161,10 +162,11 @@ final class MedicalCardsByClient extends AbstractDTO
     public static function getByClientId(ApiGateway $apiGateway, int $clientId, string $additionalGetParameters = ''): array
     {
         $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-        return $apiGateway->getWithGetParametersAsString(
+        $medcardsFromApiResponse = $apiGateway->getContentsWithGetParametersAsString(
             self::getApiModel(),
             "client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
+        return self::fromMultipleObjectsContents($apiGateway, $medcardsFromApiResponse);
     }
 
     /** @throws VetmanagerApiGatewayException

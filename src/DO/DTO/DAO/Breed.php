@@ -42,6 +42,7 @@ final class Breed extends DTO\Breed implements AllGetRequestsInterface
         $this->type = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['petType']);
     }
 
+    /** @return ApiRoute::Breed */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Breed;

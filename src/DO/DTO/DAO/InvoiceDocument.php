@@ -128,6 +128,7 @@ final class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequest
         $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
     }
 
+    /** @return ApiRoute::InvoiceDocument */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::InvoiceDocument;

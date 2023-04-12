@@ -66,6 +66,7 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
         $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
     }
 
+    /** @return ApiRoute::GoodSaleParam */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::GoodSaleParam;

@@ -19,7 +19,7 @@ abstract class AbstractDTO
         }
     }
 
-    /** @param array{string: string} $objectContents Содержимое: {id: 13, ...}
+    /** @param array $objectContents Содержимое: {id: 13, ...}
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
     public static function fromSingleObjectContents(ApiGateway $apiGateway, array $objectContents): static
@@ -27,9 +27,14 @@ abstract class AbstractDTO
         return new static ($apiGateway, $objectContents);
     }
 
-    /** @param array<int, array{string: string}> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+    /**
+     * @param array<int, array{string: string}> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+     *
      * @return static[]
+     *
      * @throws VetmanagerApiGatewayResponseEmptyException
+     *
+     * @psalm-return list<static>
      */
     public static function fromMultipleObjectsContents(ApiGateway $apiGateway, array $objects): array
     {

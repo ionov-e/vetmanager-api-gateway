@@ -77,6 +77,7 @@ final class Client extends DTO\Client implements AllGetRequestsInterface
         $this->typeTitle = $typeTitle ? (string)$typeTitle : null;
     }
 
+    /** @return ApiRoute::Client */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Client;

@@ -68,6 +68,7 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
         return $filteredProperties[0];
     }
 
+    /** @return ApiRoute::Property */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Property;

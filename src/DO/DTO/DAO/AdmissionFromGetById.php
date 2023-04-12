@@ -165,6 +165,7 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
     public readonly ?DTO\User $user;
     public readonly ?DTO\ComboManualItem $type;
 
+    /** @return ApiRoute::Admission */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Admission;

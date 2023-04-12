@@ -127,6 +127,7 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
      */
     protected readonly array $originalData;
 
+    /** @return ApiRoute::Admission */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Admission;

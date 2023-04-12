@@ -15,10 +15,12 @@ final class DateTimeContainer
     {
     }
 
-    /** @param ?string $fullDateTime Example: "2020-12-14 13:51:42", "0000-00-00 00:00:00"
+    /**
+     * @param ?string $fullDateTime Example: "2020-12-14 13:51:42", "0000-00-00 00:00:00"
+     *
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromFullDateTimeString(?string $fullDateTime): ?self
+    public static function fromFullDateTimeString(?string $fullDateTime): self
     {
         if (!$fullDateTime || "0000-00-00 00:00:00" == $fullDateTime) {
             return new self(null);
@@ -33,10 +35,12 @@ final class DateTimeContainer
         }
     }
 
-    /** @param ?string $onlyDate Example: "2020-12-14", "0000-00-00"
+    /**
+     * @param ?string $onlyDate Example: "2020-12-14", "0000-00-00"
+     *
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromOnlyDateString(?string $onlyDate): ?self
+    public static function fromOnlyDateString(?string $onlyDate): self
     {
         if (!$onlyDate || "0000-00-00" == $onlyDate) {
             return new self(null);

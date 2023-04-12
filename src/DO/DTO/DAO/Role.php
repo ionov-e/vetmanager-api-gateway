@@ -40,6 +40,7 @@ final class Role extends AbstractDTO implements AllGetRequestsInterface
         $this->isSuper = (bool)$this->originalData['super'];
     }
 
+    /** @return ApiRoute::Role */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Role;
