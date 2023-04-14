@@ -66,12 +66,12 @@ enum ApiRoute: string
      * Почти всегда этот ключ написан точно так же, как и название модели, используемом в роутах АПИ (перечислены выше).
      *
      * Но есть исключения у некоторых запросов (т.е. имя модели в роуте и имя модели в ответе JSON отличаются)
-     * @return value-of{ApiRoute}
+     * @return value-of{ApiRoute}|value-of{DifferentModelResponseKey}
      */
     public function getApiModelResponseKey(): string
     {
         return match ($this) {
-            self::MedicalCardsByClient, self::MedicalCardsVaccinations => 'medicalcards',
+            self::MedicalCardsByClient, self::MedicalCardsVaccinations => (DifferentModelResponseKey::MedicalCards->value),
             default => $this->value
         };
     }

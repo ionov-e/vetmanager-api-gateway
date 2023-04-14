@@ -9,18 +9,24 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
 abstract class AbstractDTO
 {
-    /** @throws VetmanagerApiGatewayResponseEmptyException */
+    /**
+     * @param ApiGateway $apiGateway
+     * @param array<string, mixed> $originalData
+     * @throws VetmanagerApiGatewayResponseEmptyException
+     */
     protected function __construct(
         protected ApiGateway     $apiGateway,
         readonly protected array $originalData
-    ) {
+    )
+    {
         if (empty($this->originalData)) {
             throw new VetmanagerApiGatewayResponseEmptyException();
         }
     }
 
-    /** @param array $objectContents Содержимое: {id: 13, ...}
+    /** @param array<string, mixed> $objectContents Содержимое: {id: 13, ...}
      * @throws VetmanagerApiGatewayResponseEmptyException
+     * @psalm-suppress UnsafeInstantiation
      */
     public static function fromSingleObjectContents(ApiGateway $apiGateway, array $objectContents): static
     {
@@ -28,18 +34,16 @@ abstract class AbstractDTO
     }
 
     /**
-     * @param array<int, array{string: string}> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+     * @param list<array<string, mixed>> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
      *
      * @return static[]
      *
      * @throws VetmanagerApiGatewayResponseEmptyException
-     *
-     * @psalm-return list<static>
      */
     public static function fromMultipleObjectsContents(ApiGateway $apiGateway, array $objects): array
     {
         return array_map(
-            fn (array $objectContents): static => static::fromSingleObjectContents($apiGateway, $objectContents),
+            fn(array $objectContents): static => static::fromSingleObjectContents($apiGateway, $objectContents),
             $objects
         );
     }
