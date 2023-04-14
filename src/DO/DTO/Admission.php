@@ -11,6 +11,7 @@ use VetmanagerApiGateway\DO\DateIntervalContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\Admission\Status;
+use VetmanagerApiGateway\DO\PositiveIntContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -53,8 +54,18 @@ class Admission extends AbstractDTO
     public bool $isAutoCreate;
     /** Default: 0.0000000000 */
     public float $invoicesSum;
+    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
+    public ?Pet $pet;
+    public ?PetType $petType;
+    public ?Pet $petBreed;
+    public Client $client;
+    /** Все время пустая строка приходит - перевожу в null */
+    public ?string $waitTime;
+    /** @var DTO\Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
+     * При других запросах такого элемента нет */
+    public array $invoices;
 
-    /** @var array{
+    /** @param array{
      *          "id": numeric-string,
      *          "admission_date": string,
      *          "description": string,
@@ -104,7 +115,7 @@ class Admission extends AbstractDTO
      *                      "number_of_journal": string,
      *                      "phone_prefix": ?string
      *          },
-     *          ?"pet": array{
+     *          "pet"?: array{
      *                      "id": string,
      *                      "owner_id": ?string,
      *                      "type_id": ?string,
@@ -136,8 +147,8 @@ class Admission extends AbstractDTO
      *                              "pet_type_id": string,
      *                      }
      *          },
-     *          ?"wait_time": string,
-     *          ?"invoices": array<int, array{
+     *          "wait_time"?: string,
+     *          "invoices"?: array<int, array{
      *                              "id": string,
      *                              "doctor_id": ?string,
      *                              "client_id": string,
@@ -161,41 +172,28 @@ class Admission extends AbstractDTO
      *                              "d": string
      *           }>
      *     } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
-    public ?Pet $pet;
-    public ?PetType $petType;
-    public ?Pet $petBreed;
-    public Client $client;
-    /** Все время пустая строка приходит - перевожу в null */
-    public ?string $waitTime;
-    /** @var DTO\Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
-     * При других запросах такого элемента нет */
-    public array $invoices;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->date = (DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date']))->dateTimeNullable;
+        $this->id = PositiveIntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeNullable;
         $this->description = (string)$this->originalData['description'];
-        $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
-        $this->petId = $this->originalData['patient_id'] ? (int)$this->originalData['patient_id'] : null;
-        $this->userId = $this->originalData['user_id'] ? (int)$this->originalData['user_id'] : null;
-        $this->typeId = $this->originalData['type_id'] ? (int)$this->originalData['type_id'] : null;
-        $this->admissionLength = (DateIntervalContainer::fromStringHMS($this->originalData['admission_length']))->dateIntervalNullable;
+        $this->clientId = PositiveIntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
+        $this->petId = PositiveIntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
+        $this->userId = PositiveIntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
+        $this->typeId = PositiveIntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
+        $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalNullable;
         $this->status = Status::from($this->originalData['status']);
-        $this->clinicId = $this->originalData['clinic_id'] ? (int)$this->originalData['clinic_id'] : null;
+        $this->clinicId = PositiveIntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
         $this->isDirectDirection = (bool)$this->originalData['direct_direction'];
-        $this->creatorId = $this->originalData['creator_id'] ? (int)$this->originalData['creator_id'] : null;
-        $this->createDate = (DateTimeContainer::fromFullDateTimeString($this->originalData['create_date']))->dateTimeNullable;
-        $this->escorterId = $this->originalData['escorter_id'] ? (int)$this->originalData['escorter_id'] : null;
+        $this->creatorId = PositiveIntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
+        $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeNullable;
+        $this->escorterId = PositiveIntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
         $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
-        $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];
+        $this->isAutoCreate = $this->originalData['is_auto_create'] ?? (bool)$this->originalData['is_auto_create'];
         $this->invoicesSum = (float)$this->originalData['invoices_sum'];
 
         $this->pet = !empty($this->originalData['pet'])

@@ -53,12 +53,23 @@ final class DateTimeContainer
         }
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'dateTime' => $this->dateTimeNullable,
+            'dateTime' => $this->getDateTime(),
             default => $this->$name,
         };
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    private function getDateTime(): DateTime
+    {
+        if (is_null($this->dateTimeNullable)) {
+            throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
+        }
+
+        return $this->dateTimeNullable;
     }
 
     public function isTimePresent(): bool
