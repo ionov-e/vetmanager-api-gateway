@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO;
 
-use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/** @property-read float $float Для тех случаев, когда уверены, что null не будет */
+/**
+ * @property-read float $float Для тех случаев, когда уверены, что null и пустых значений не будет
+ * @property-read ?float $nonZeroFloatOrNull Преобразует 0 в null
+ */
 class FloatContainer
 {
     public function __construct(public readonly ?float $floatOrNull)
@@ -15,45 +17,50 @@ class FloatContainer
     }
 
     /**
-     * @param ?string $intAsStringOrNull null, '0' - переводит в null. Строку '13' переведет int
+     * @param ?string $floatAsStringOrNull Строка содержащая null или float (Например: '13.13')
      *
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromStringOrNull(?string $intAsStringOrNull): self
+    public static function fromStringOrNull(?string $floatAsStringOrNull): self
     {
-        if (!$intAsStringOrNull || "0" == $intAsStringOrNull) {
+        if (is_null($floatAsStringOrNull())) {
             return new self(null);
         }
 
-        try {
-            if (!is_numeric($intAsStringOrNull)) {
-                return new self((int)$intAsStringOrNull);
-            }
-        } catch (Exception) {
+        if (is_numeric($floatAsStringOrNull)) {
+            return new self((float)$floatAsStringOrNull);
         }
-        throw new VetmanagerApiGatewayResponseException(
-            "Ожидали int больше 0 или null. А получили: '$intAsStringOrNull'"
-        );
+
+        throw new VetmanagerApiGatewayResponseException("Ожидали float или null. Получено: $floatAsStringOrNull");
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'positiveInt' => $this->getPositiveInt(),
+            'float' => $this->getFloat(),
+            'nonZeroFloatOrNull' => $this->getNonZeroFloatOrNull(),
             default => $this->$name,
         };
     }
 
-    /** @return positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getPositiveInt(): int
+    private function getNonZeroFloatOrNull(): ?float
     {
-        if (is_null($this->positiveIntOrNull)) {
+        return ($this->floatOrNull === 0) ? null : $this->floatOrNull;
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    private function getFloat(): float
+    {
+        $this->throwIfNullProvided();
+        return $this->floatOrNull;
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    private function throwIfNullProvided(): void
+    {
+        if (is_null($this->floatOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
-
-        return $this->positiveIntOrNull;
     }
 }
