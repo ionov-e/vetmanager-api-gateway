@@ -41,16 +41,11 @@ class StringContainer
     /** @throws VetmanagerApiGatewayResponseException */
     private function getStringOrThrowIfNull(): string
     {
-        $this->throwIfNullProvided();
-        return $this->stringOrNull;
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNullProvided(): void
-    {
         if (is_null($this->stringOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
+
+        return $this->stringOrNull;
     }
 
     /** @return non-empty-string

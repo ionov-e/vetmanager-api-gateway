@@ -22,7 +22,7 @@ class BoolContainer
      */
     public static function fromStringOrNull(?string $boolAsStringOrNull): self
     {
-        if (is_null($boolAsStringOrNull())) {
+        if (is_null($boolAsStringOrNull)) {
             return new self(null);
         }
 
@@ -47,15 +47,10 @@ class BoolContainer
     /** @throws VetmanagerApiGatewayResponseException */
     private function getBool(): bool
     {
-        $this->throwIfNullProvided();
-        return $this->boolOrNull;
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNullProvided(): void
-    {
         if (is_null($this->boolOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
+
+        return $this->boolOrNull;
     }
 }

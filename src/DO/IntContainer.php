@@ -25,7 +25,7 @@ class IntContainer
      */
     public static function fromStringOrNull(?string $intAsStringOrNull): self
     {
-        if (is_null($intAsStringOrNull())) {
+        if (is_null($intAsStringOrNull)) {
             return new self(null);
         }
 
@@ -58,7 +58,10 @@ class IntContainer
     /** @throws VetmanagerApiGatewayResponseException */
     private function getInt(): int
     {
-        $this->throwIfNullProvided();
+        if (is_null($this->intOrNull)) {
+            throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
+        }
+
         return $this->intOrNull;
     }
 
@@ -67,9 +70,15 @@ class IntContainer
      */
     private function getPositiveInt(): int
     {
-        $this->throwIfNullProvided();
-        $this->throwIfNotPositiveNumber();
-        return $this->getInt();
+        if (is_null($this->intOrNull)) {
+            throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
+        }
+
+        if ($this->intOrNull <= 0) {
+            throw new VetmanagerApiGatewayResponseException("Не ожидали не positive-int");
+        }
+
+        return $this->intOrNull;
     }
 
     /** @return ?positive-int Вместо 0 - вернет null
@@ -77,31 +86,10 @@ class IntContainer
      */
     private function getPositiveIntOrNull(): ?int
     {
-        $this->throwIfNotPositiveNumberOrNull();
+        if (!is_null($this->intOrNull) && $this->intOrNull < 0) {
+            throw new VetmanagerApiGatewayResponseException("Не ожидали не positive-int");
+        }
+
         return ($this->intOrNull === 0) ? null : $this->intOrNull;
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNullProvided(): void
-    {
-        if (is_null($this->intOrNull)) {
-            throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
-        }
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNotPositiveNumberOrNull(): void
-    {
-        if (!is_null($this->intOrNull)) {
-            $this->throwIfNotPositiveNumber();
-        }
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNotPositiveNumber(): void
-    {
-        if ($this->intOrNull <= 0) {
-            throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
-        }
     }
 }

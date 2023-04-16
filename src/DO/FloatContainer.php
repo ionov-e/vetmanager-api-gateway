@@ -23,7 +23,7 @@ class FloatContainer
      */
     public static function fromStringOrNull(?string $floatAsStringOrNull): self
     {
-        if (is_null($floatAsStringOrNull())) {
+        if (is_null($floatAsStringOrNull)) {
             return new self(null);
         }
 
@@ -46,21 +46,16 @@ class FloatContainer
 
     private function getNonZeroFloatOrNull(): ?float
     {
-        return ($this->floatOrNull === 0) ? null : $this->floatOrNull;
+        return ($this->floatOrNull === 0.0) ? null : $this->floatOrNull;
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
     private function getFloat(): float
     {
-        $this->throwIfNullProvided();
-        return $this->floatOrNull;
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function throwIfNullProvided(): void
-    {
         if (is_null($this->floatOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
+
+        return $this->floatOrNull;
     }
 }
