@@ -7,11 +7,14 @@ namespace VetmanagerApiGateway\DO\DTO;
 use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateIntervalContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\Admission\Status;
+use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -46,21 +49,20 @@ class Admission extends AbstractDTO
     public ?int $creatorId;
     /** Приходит: "2015-07-08 06:43:44", но бывает и "0000-00-00 00:00:00". Последнее переводится в null */
     public ?DateTime $createDate;
-    /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see \VetmanagerApiGateway\DO\DTO\DAO\User}. Какой-то врач-помощник что ли.
+    /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see DAO\User}. Какой-то врач-помощник что ли.
      * Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать */
-    public int $escorterId;
+    public ?int $escorterId;
     /** Искал по всем БД: находил только "vetmanager" и "" или null (редко. Пустые перевожу в null) */
-    public ?string $receptionWriteChannel;
+    public string $receptionWriteChannel;
     public bool $isAutoCreate;
     /** Default: 0.0000000000 */
     public float $invoicesSum;
     /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
     public ?Pet $pet;
     public ?PetType $petType;
-    public ?Pet $petBreed;
+    public ?Breed $petBreed;
     public Client $client;
-    /** Все время пустая строка приходит - перевожу в null */
-    public ?string $waitTime;
+    public string $waitTime;
     /** @var DTO\Invoice[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
      * При других запросах такого элемента нет */
     public array $invoices;
@@ -180,7 +182,7 @@ class Admission extends AbstractDTO
 
         $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
         $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeNullable;
-        $this->description = (string)$this->originalData['description'];
+        $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
         $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
         $this->petId = IntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
         $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
@@ -188,13 +190,13 @@ class Admission extends AbstractDTO
         $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalNullable;
         $this->status = Status::from($this->originalData['status']);
         $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
-        $this->isDirectDirection = (bool)$this->originalData['direct_direction'];
+        $this->isDirectDirection = BoolContainer::fromStringOrNull($this->originalData['direct_direction'])->bool;
         $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
         $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeNullable;
         $this->escorterId = IntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
-        $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
-        $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];
-        $this->invoicesSum = (float)$this->originalData['invoices_sum'];
+        $this->receptionWriteChannel = StringContainer::fromStringOrNull($this->originalData['reception_write_channel'])->string;
+        $this->isAutoCreate = BoolContainer::fromStringOrNull($this->originalData['is_auto_create'])->bool;
+        $this->invoicesSum = FloatContainer::fromStringOrNull($this->originalData['invoices_sum'])->float;
 
         $this->pet = !empty($this->originalData['pet'])
             ? DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet'])
@@ -206,7 +208,7 @@ class Admission extends AbstractDTO
             ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data'])
             : null;
         $this->client = Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
-        $this->waitTime = (string)$this->originalData['wait_time'] ?: null;
+        $this->waitTime = StringContainer::fromStringOrNull($this->originalData['wait_time'])->string;
         $this->invoices = Invoice::fromMultipleObjectsContents(
             $this->apiGateway,
             $this->originalData['invoices'] ?? []
