@@ -8,7 +8,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
  * @property-read int $int Для тех случаев, когда уверены, что null и пустых значений не будет
- * @property-read ?int $intOrNull Преобразует 0 в null
+ * @property-read ?int $noneZeroIntOrNull Преобразует 0 в null
  * @property-read positive-int $positiveInt Для тех случаев, когда уверены, что null и пустых значений не будет
  * @property-read ?positive-int $positiveIntOrNull Преобразует 0 в null
  */
@@ -29,8 +29,10 @@ class IntContainer
             return new self(null);
         }
 
-        if (is_numeric($intAsStringOrNull)) {
-            return new self((int)$intAsStringOrNull);
+        $filteredIntOrFalse = filter_var($intAsStringOrNull, FILTER_VALIDATE_INT);
+
+        if ($filteredIntOrFalse !== false) {
+            return new self($filteredIntOrFalse);
         }
 
         throw new VetmanagerApiGatewayResponseException("Ожидали int или null. Получено: $intAsStringOrNull");
@@ -41,14 +43,14 @@ class IntContainer
     {
         return match ($name) {
             'int' => $this->getInt(),
-            'intOrNull' => $this->getIntOrNull(),
+            'noneZeroIntOrNull' => $this->getNonZeroIntOrNull(),
             'positiveInt' => $this->getPositiveInt(),
             'positiveIntOrNull' => $this->getPositiveIntOrNull(),
             default => $this->$name,
         };
     }
 
-    private function getIntOrNull(): ?int
+    private function getNonZeroIntOrNull(): ?int
     {
         return ($this->intOrNull === 0) ? null : $this->intOrNull;
     }
