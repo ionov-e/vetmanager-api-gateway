@@ -11,7 +11,7 @@ use VetmanagerApiGateway\DO\DateIntervalContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\Admission\Status;
-use VetmanagerApiGateway\DO\PositiveIntContainer;
+use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -178,22 +178,22 @@ class Admission extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = PositiveIntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
         $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeNullable;
         $this->description = (string)$this->originalData['description'];
-        $this->clientId = PositiveIntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
-        $this->petId = PositiveIntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
-        $this->userId = PositiveIntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
-        $this->typeId = PositiveIntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
+        $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
+        $this->petId = IntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
+        $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
+        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
         $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalNullable;
         $this->status = Status::from($this->originalData['status']);
-        $this->clinicId = PositiveIntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
+        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
         $this->isDirectDirection = (bool)$this->originalData['direct_direction'];
-        $this->creatorId = PositiveIntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
+        $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
         $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeNullable;
-        $this->escorterId = PositiveIntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
+        $this->escorterId = IntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
         $this->receptionWriteChannel = $this->originalData['reception_write_channel'] ? (string)$this->originalData['reception_write_channel'] : null;
-        $this->isAutoCreate = $this->originalData['is_auto_create'] ?? (bool)$this->originalData['is_auto_create'];
+        $this->isAutoCreate = (bool)$this->originalData['is_auto_create'];
         $this->invoicesSum = (float)$this->originalData['invoices_sum'];
 
         $this->pet = !empty($this->originalData['pet'])
