@@ -6,12 +6,16 @@ namespace VetmanagerApiGateway\DO\DTO;
 
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\Enum\InvoiceDocument\DiscountType;
+use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\InvoiceDocument $self */
+/** @property-read DAO\InvoiceDocumentFromGetById $self */
 class InvoiceDocument extends AbstractDTO
 {
     /** @var positive-int */
@@ -21,12 +25,11 @@ class InvoiceDocument extends AbstractDTO
     /** @var positive-int */
     public int $goodId;
     public ?float $quantity;
-    /** Приходит сейчас int, но поручиться, что float не стоит исключать*/
-    public ?float $price;
+    public float $price;
     /** @var ?positive-int Default: '0' */
     public ?int $responsibleUserId;
     /** @var ?positive-int */
-    public ?int $isDefaultResponsible;
+    public bool $isDefaultResponsible;
     /** @var ?positive-int Default: '0' */
     public ?int $saleParamId;
     /** @var ?positive-int Default: '0' */
@@ -35,7 +38,8 @@ class InvoiceDocument extends AbstractDTO
     /** @var ?positive-int */
     public ?int $discountDocumentId;
     public ?float $discountPercent;
-    public ?float $defaultPrice;
+    /** Default: 0.00000000 */
+    public float $defaultPrice;
     public DateTime $createDate;
     public string $discountCause;
     /** @var ?positive-int Default: '0' */
@@ -48,27 +52,14 @@ class InvoiceDocument extends AbstractDTO
     public ?int $fixedIncreasePercent;
     /** Default: "0.0000000000" */
     public float $primeCost;
-
-    /** @var array<int, array{
-     *           "party_id": string,
-     *           "party_exec_date": string,
-     *           "store_id": string,
-     *           "good_id": string,
-     *           "characteristic_id": string,
-     *           "quantity": ?string,
-     *           "price": ?string
-     *           } $partyInfo
-     * Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
-     */
-    public array $partyInfo;
     public GoodSaleParam $goodSaleParam;
 
     /** @param array{
      *     "id": numeric-string,
      *     "document_id": string,
      *     "good_id": string,
-     *     "quantity": ?int,
-     *     "price": ?float,
+     *     "quantity": ?int|numeric-string,
+     *     "price": numeric|numeric-string,
      *     "responsible_user_id": string,
      *     "is_default_responsible": string,
      *     "sale_param_id": string,
@@ -84,7 +75,6 @@ class InvoiceDocument extends AbstractDTO
      *     "fixed_increase_id": string,
      *     "fixed_increase_percent": string,
      *     "prime_cost": string,
-     *     "party_info": array,
      *     "goodSaleParam": array{
      *              "id": string,
      *              "good_id": string,
@@ -103,7 +93,14 @@ class InvoiceDocument extends AbstractDTO
      *                       "title": string,
      *                       "status": string
      *              }
-     *       }
+     *       },
+     *     document?: mixed,
+     *     good?: mixed,
+     *     party_info?: mixed,
+     *     min_price?: mixed,
+     *     max_price?: mixed,
+     *     min_price_percent?: mixed,
+     *     max_price_percent?: mixed
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
@@ -111,27 +108,26 @@ class InvoiceDocument extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->documentId = (int)$this->originalData['document_id'];
-        $this->goodId = (int)$this->originalData['good_id'];
-        $this->quantity = $this->originalData['quantity'] ? (float)$this->originalData['quantity'] : null;
-        $this->price = $this->originalData['price'] ? (float)$this->originalData['price'] : null;
-        $this->responsibleUserId = (int)$this->originalData['responsible_user_id'];
-        $this->isDefaultResponsible = (int)$this->originalData['is_default_responsible'];
-        $this->saleParamId = (int)$this->originalData['sale_param_id'];
-        $this->tagId = (int)$this->originalData['tag_id'];
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->documentId = IntContainer::fromStringOrNull($this->originalData['document_id'])->positiveInt;
+        $this->goodId = IntContainer::fromStringOrNull($this->originalData['good_id'])->positiveInt;
+        $this->quantity = FloatContainer::fromStringOrNull((string)$this->originalData['quantity'])->floatOrNull;
+        $this->price = FloatContainer::fromStringOrNull((string)$this->originalData['price'])->float;
+        $this->responsibleUserId = IntContainer::fromStringOrNull($this->originalData['responsible_user_id'])->positiveIntOrNull;
+        $this->isDefaultResponsible = BoolContainer::fromStringOrNull($this->originalData['is_default_responsible'])->bool;
+        $this->saleParamId = IntContainer::fromStringOrNull($this->originalData['sale_param_id'])->positiveIntOrNull;
+        $this->tagId = IntContainer::fromStringOrNull($this->originalData['tag_id'])->positiveIntOrNull;
         $this->discountType = $this->originalData['discount_type'] ? DiscountType::from($this->originalData['discount_type']) : null;
-        $this->discountDocumentId = $this->originalData['discount_document_id'] ? (int)$this->originalData['discount_document_id'] : null;
-        $this->discountPercent = $this->originalData['discount_percent'] ? (float)$this->originalData['discount_percent'] : null;
-        $this->defaultPrice = $this->originalData['default_price'] ? (float)$this->originalData['default_price'] : null;
-        $this->createDate = (DateTimeContainer::fromOnlyDateString($this->originalData['create_date']))->dateTime;
-        $this->discountCause = $this->originalData['discount_cause'] ? (string)$this->originalData['discount_cause'] : null;
-        $this->fixedDiscountId = (int)$this->originalData['fixed_discount_id'];
-        $this->fixedDiscountPercent = (int)$this->originalData['fixed_discount_percent'];
-        $this->fixedIncreaseId = (int)$this->originalData['fixed_increase_id'];
-        $this->fixedIncreasePercent = (int)$this->originalData['fixed_increase_percent'];
-        $this->primeCost = (int)$this->originalData['prime_cost'];
-        $this->partyInfo = (array)$this->originalData['party_info'];
+        $this->discountDocumentId = IntContainer::fromStringOrNull($this->originalData['discount_document_id'])->positiveIntOrNull;
+        $this->discountPercent = FloatContainer::fromStringOrNull($this->originalData['discount_percent'])->floatOrNull;
+        $this->defaultPrice = FloatContainer::fromStringOrNull($this->originalData['default_price'])->float;
+        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTime;
+        $this->discountCause = StringContainer::fromStringOrNull($this->originalData['discount_cause'])->string;
+        $this->fixedDiscountId = IntContainer::fromStringOrNull($this->originalData['fixed_discount_id'])->positiveIntOrNull;
+        $this->fixedDiscountPercent = IntContainer::fromStringOrNull($this->originalData['fixed_discount_percent'])->positiveIntOrNull;
+        $this->fixedIncreaseId = IntContainer::fromStringOrNull($this->originalData['fixed_increase_id'])->positiveIntOrNull;
+        $this->fixedIncreasePercent = IntContainer::fromStringOrNull($this->originalData['fixed_increase_percent'])->positiveIntOrNull;
+        $this->primeCost = FloatContainer::fromStringOrNull($this->originalData['prime_cost'])->float;
 
         $this->goodSaleParam = DTO\GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
     }
@@ -140,7 +136,7 @@ class InvoiceDocument extends AbstractDTO
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\InvoiceDocument::getById($this->apiGateway, $this->id),
+            'self' => DAO\InvoiceDocumentFromGetById::getById($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }

@@ -6,33 +6,46 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO;
-use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetByIdInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
+use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-final class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequestsInterface
+final class InvoiceDocumentFromGetById extends DTO\InvoiceDocument implements RequestGetByIdInterface
 {
     use BasicDAOTrait;
-    use AllGetRequestsTrait;
+    use RequestGetByIdTrait;
 
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $minPrice;
+    public float $minPrice;
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $maxPrice;
+    public float $maxPrice;
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $minPriceInPercents;
+    public float $minPriceInPercents;
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
-    public ?float $maxPriceInPercents;
+    public float $maxPriceInPercents;
+    /** Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
+     * @var array<int, array{
+     *           "party_id": string,
+     *           "party_exec_date": string,
+     *           "store_id": string,
+     *           "good_id": string,
+     *           "characteristic_id": string,
+     *           "quantity": ?string,
+     *           "price": ?string
+     *           }> $partyInfo
+     */
+    public array $partyInfo;
     public DTO\Invoice $invoice;
     public DTO\Good $good;
-    /** @var array{
-     *     "id": string,
+    /** @param array{
+     *     "id": numeric-string,
      *     "document_id": string,
      *     "good_id": string,
-     *     "quantity": ?int,
-     *     "price": ?float,
+     *     "quantity": ?int|numeric-string,
+     *     "price": numeric|numeric-string,
      *     "responsible_user_id": string,
      *     "is_default_responsible": string,
      *     "sale_param_id": string,
@@ -48,11 +61,6 @@ final class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequest
      *     "fixed_increase_id": string,
      *     "fixed_increase_percent": string,
      *     "prime_cost": string,
-     *     "party_info": array,
-     *     "min_price": float,
-     *     "max_price": float,
-     *     "min_price_percent": float,
-     *     "max_price_percent": float,
      *     "document": array{
      *              "id": string,
      *              "doctor_id": ?string,
@@ -109,20 +117,23 @@ final class InvoiceDocument extends DTO\InvoiceDocument implements AllGetRequest
      *                       "title": string,
      *                       "status": string
      *              }
-     *     }
-     * }
-     */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
+     *     },
+     *     "party_info": array,
+     *     "min_price": float,
+     *     "max_price": float,
+     *     "min_price_percent": float,
+     *     "max_price_percent": float
+     * } $originalData
+     * @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->minPrice = (float)$this->originalData['min_price'];
-        $this->maxPrice = (float)$this->originalData['max_price'];
-        $this->minPriceInPercents = (float)$this->originalData['min_price_percent'];
-        $this->maxPriceInPercents = (float)$this->originalData['max_price_percent'];
+        $this->minPrice = FloatContainer::fromStringOrNull((string)$this->originalData['min_price'])->float;
+        $this->maxPrice = FloatContainer::fromStringOrNull((string)$this->originalData['max_price'])->float;
+        $this->minPriceInPercents = FloatContainer::fromStringOrNull((string)$this->originalData['min_price_percent'])->float;
+        $this->maxPriceInPercents = FloatContainer::fromStringOrNull((string)$this->originalData['max_price_percent'])->float;
+        $this->partyInfo = (array) $this->originalData['party_info'];
 
         $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
         $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
