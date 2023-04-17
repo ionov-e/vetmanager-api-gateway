@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -13,26 +15,27 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class Breed extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
+    /** @var non-empty-string */
     public string $title;
+    /** @var positive-int */
     public int $typeId;
 
-    /** @var array{
+    /** @param array{
      *       "id": string,
      *       "title": string,
      *       "pet_type_id": string,
      *   } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->typeId = (int)$this->originalData['pet_type_id'];
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->stringOrThrowIfNull;
+        $this->typeId = IntContainer::fromStringOrNull($this->originalData['pet_type_id'])->positiveInt;
     }
 
     /** @throws VetmanagerApiGatewayException

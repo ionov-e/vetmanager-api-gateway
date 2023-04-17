@@ -25,6 +25,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class Admission extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
     /** Пример "2020-12-31 17:51:18". Может быть: "0000-00-00 00:00:00" - переводится в null */
     public ?DateTime $date;

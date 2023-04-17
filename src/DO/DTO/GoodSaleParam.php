@@ -1,6 +1,5 @@
 <?php
 
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO\DTO;
@@ -8,26 +7,30 @@ namespace VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\Enum\GoodSaleParam\PriceFormation;
 use VetmanagerApiGateway\DO\Enum\GoodSaleParam\Status;
+use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\GoodSaleParam $self */
 class GoodSaleParam extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
-    /** Default: 0 */
-    public int $goodId;
+    /** @var ?positive-int Default: 0 */
+    public ?int $goodId;
     public ?float $price;
     /** Default: 1 */
     public float $coefficient;
-    /** Default: 0 */
-    public int $unitSaleId;
+    /** @var ?positive-int Default: 0 */
+    public ?int $unitSaleId;
     public ?float $minPriceInPercents;
     public ?float $maxPriceInPercents;
-    public ?string $barcode;
+    public string $barcode;
     /** Default: 'active' */
     public Status $status;
-    /** Default: 0 */
-    public int $clinicId;
+    /** @var ?positive-int Default: 0 */
+    public ?int $clinicId;
     public ?float $markup;
     /** Default: 'fixed' */
     public PriceFormation $priceFormation;
@@ -35,7 +38,7 @@ class GoodSaleParam extends AbstractDTO
     /** Предзагружен. Нового АПИ запроса не будет */
     public ?DAO\Unit $unit;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "good_id": string,
      *     "price": ?string,
@@ -49,27 +52,23 @@ class GoodSaleParam extends AbstractDTO
      *     "markup": string,
      *     "price_formation": ?string
      * } $originalData
-     */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException
-     * @throws \Exception
+     * @throws VetmanagerApiGatewayException
      */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->goodId = (int)$this->originalData['good_id'];
-        $this->price = $this->originalData['price'] ? (int)$this->originalData['price'] : null;
-        $this->coefficient = (float)$this->originalData['coefficient'];
-        $this->unitSaleId = (int)$this->originalData['unit_sale_id'];
-        $this->minPriceInPercents = $this->originalData['min_price'] ? (float)$this->originalData['min_price'] : null;
-        $this->maxPriceInPercents = $this->originalData['max_price'] ? (float)$this->originalData['max_price'] : null;
-        $this->barcode = $this->originalData['barcode'] ? (string)$this->originalData['barcode'] : null;
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->goodId = IntContainer::fromStringOrNull($this->originalData['good_id'])->positiveIntOrNull;
+        $this->price = FloatContainer::fromStringOrNull($this->originalData['price'])->floatOrNull;
+        $this->coefficient = FloatContainer::fromStringOrNull($this->originalData['coefficient'])->float;
+        $this->unitSaleId = IntContainer::fromStringOrNull($this->originalData['unit_sale_id'])->positiveIntOrNull;
+        $this->minPriceInPercents = FloatContainer::fromStringOrNull($this->originalData['min_price'])->floatOrNull;
+        $this->maxPriceInPercents = FloatContainer::fromStringOrNull($this->originalData['max_price'])->floatOrNull;
+        $this->barcode = StringContainer::fromStringOrNull($this->originalData['barcode'])->string;
         $this->status = Status::from($this->originalData['status']);
-        $this->clinicId = (int)$this->originalData['clinic_id'];
-        $this->markup = $this->originalData['markup'] ? (float)$this->originalData['markup'] : null;
+        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
+        $this->markup = FloatContainer::fromStringOrNull($this->originalData['markup'])->floatOrNull;
         $this->priceFormation = PriceFormation::from($this->originalData['price_formation']);
 
         $this->unit = !empty($this->originalData['unitSale'])
@@ -77,8 +76,7 @@ class GoodSaleParam extends AbstractDTO
             : null;
     }
 
-    /** @throws VetmanagerApiGatewayException
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {

@@ -14,33 +14,38 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 /** @property-read DAO\InvoiceDocument $self */
 class InvoiceDocument extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
+    /** @var positive-int */
     public int $documentId;
+    /** @var positive-int */
     public int $goodId;
     public ?float $quantity;
     /** Приходит сейчас int, но поручиться, что float не стоит исключать*/
     public ?float $price;
-    /** Default: '0' */
-    public int $responsibleUserId;
-    public int $isDefaultResponsible;
-    /** Default: '0' */
-    public int $saleParamId;
-    /** Default: '0' */
-    public int $tagId;
+    /** @var ?positive-int Default: '0' */
+    public ?int $responsibleUserId;
+    /** @var ?positive-int */
+    public ?int $isDefaultResponsible;
+    /** @var ?positive-int Default: '0' */
+    public ?int $saleParamId;
+    /** @var ?positive-int Default: '0' */
+    public ?int $tagId;
     public ?DiscountType $discountType;
+    /** @var ?positive-int */
     public ?int $discountDocumentId;
     public ?float $discountPercent;
     public ?float $defaultPrice;
     public DateTime $createDate;
-    public ?string $discountCause;
-    /** Default: '0' */
+    public string $discountCause;
+    /** @var ?positive-int Default: '0' */
     public ?int $fixedDiscountId;
-    /** Default: '0' */
-    public int $fixedDiscountPercent;
-    /** Default: '0' */
-    public int $fixedIncreaseId;
-    /** Default: '0' */
-    public int $fixedIncreasePercent;
+    /** @var ?positive-int Default: '0' */
+    public ?int $fixedDiscountPercent;
+    /** @var ?positive-int Default: '0' */
+    public ?int $fixedIncreaseId;
+    /** @var ?positive-int Default: '0' */
+    public ?int $fixedIncreasePercent;
     /** Default: "0.0000000000" */
     public float $primeCost;
 
@@ -57,8 +62,9 @@ class InvoiceDocument extends AbstractDTO
      */
     public array $partyInfo;
     public GoodSaleParam $goodSaleParam;
-    /** @var array{
-     *     "id": string,
+
+    /** @param array{
+     *     "id": numeric-string,
      *     "document_id": string,
      *     "good_id": string,
      *     "quantity": ?int,
@@ -98,11 +104,8 @@ class InvoiceDocument extends AbstractDTO
      *                       "status": string
      *              }
      *       }
-     * }
-     */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException
+     * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {

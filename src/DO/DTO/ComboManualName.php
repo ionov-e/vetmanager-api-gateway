@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\BoolContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\ComboManualName $self */
 class ComboManualName extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
     /** Default: '' */
     public string $title;
@@ -18,24 +22,22 @@ class ComboManualName extends AbstractDTO
     /** Default: '' */
     public string $name;
 
-    /** @var array{
+    /** @param array{
      *       "id": string,
      *       "title": string,
      *       "is_readonly": string,
      *       "name": string
      *   } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->isReadonly = (bool)$this->originalData['is_readonly'];
-        $this->name = (string)$this->originalData['name'];
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
+        $this->isReadonly = BoolContainer::fromStringOrNull($this->originalData['is_readonly'])->bool;
+        $this->name = StringContainer::fromStringOrNull($this->originalData['name'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException
