@@ -33,7 +33,7 @@ class Good extends AbstractDTO
     /** Default: 1 */
     public bool $isForSale;
     public string $barcode;
-    public DateTime $createDate;
+    public ?DateTime $createDate;
     public string $description;
     /** Default: '0.0000000000' */
     public float $primeCost;
@@ -72,7 +72,7 @@ class Good extends AbstractDTO
         $this->isCall = BoolContainer::fromStringOrNull($this->originalData['is_call'])->bool;
         $this->isForSale = BoolContainer::fromStringOrNull($this->originalData['is_for_sale'])->bool;
         $this->barcode = StringContainer::fromStringOrNull($this->originalData['barcode'])->string;
-        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTime;
+        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTimeOrNull;
         $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
         $this->primeCost = FloatContainer::fromStringOrNull($this->originalData['prime_cost'])->float;
         $this->categoryId = IntContainer::fromStringOrNull($this->originalData['category_id'])->positiveIntOrNull;

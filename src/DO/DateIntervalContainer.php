@@ -11,7 +11,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 /** @property-read DateInterval $dateInterval Для тех случаев, когда уверены, что null и пустых значений не будет */
 final class DateIntervalContainer
 {
-    public function __construct(public readonly ?DateInterval $dateIntervalNullable)
+    public function __construct(public readonly ?DateInterval $dateIntervalOrNull)
     {
     }
 
@@ -37,7 +37,7 @@ final class DateIntervalContainer
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'dateInterval' => $this->dateIntervalNullable,
+            'dateInterval' => $this->dateIntervalOrNull,
             default => $this->$name,
         };
     }

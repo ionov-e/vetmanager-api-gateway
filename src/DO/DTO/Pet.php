@@ -83,7 +83,7 @@ class Pet extends AbstractDTO
         $this->alias = (string)$this->originalData['alias'];
         $this->sex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
         $this->dateRegister = (DateTimeContainer::fromOnlyDateString($this->originalData['date_register']))->dateTime;
-        $this->birthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
+        $this->birthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
         $this->note = (string)$this->originalData['note'];
         $this->breedId = $this->originalData['breed_id'] ? (int)$this->originalData['breed_id'] : null;
         $this->oldId = $this->originalData['old_id'] ? (int)$this->originalData['old_id'] : null;

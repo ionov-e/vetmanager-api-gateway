@@ -122,7 +122,7 @@ class Client extends AbstractDTO
         $this->email = StringContainer::fromStringOrNull($this->originalData['email'])->string;
         $this->cityTitle = StringContainer::fromStringOrNull($this->originalData['city'])->string;
         $this->cityId = IntContainer::fromStringOrNull($this->originalData['city_id'])->positiveIntOrNull;
-        $this->dateRegister = DateTimeContainer::fromFullDateTimeString($this->originalData['date_register'])->dateTimeNullable;
+        $this->dateRegister = DateTimeContainer::fromFullDateTimeString($this->originalData['date_register'])->dateTimeOrNull;
         $this->cellPhone = StringContainer::fromStringOrNull($this->originalData['cell_phone'])->string;
         $this->zip = StringContainer::fromStringOrNull($this->originalData['zip'])->string;
         $this->registrationIndex = StringContainer::fromStringOrNull($this->originalData['registration_index'])->string;
@@ -138,7 +138,7 @@ class Client extends AbstractDTO
         $this->apartment = StringContainer::fromStringOrNull($this->originalData['apartment'])->string;
         $this->isUnsubscribed = BoolContainer::fromStringOrNull($this->originalData['unsubscribe'])->bool;
         $this->isBlacklisted = BoolContainer::fromStringOrNull($this->originalData['in_blacklist'])->bool;
-        $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($this->originalData['last_visit_date'])->dateTimeNullable;
+        $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($this->originalData['last_visit_date'])->dateTimeOrNull;
         $this->numberOfJournal = StringContainer::fromStringOrNull($this->originalData['number_of_journal'])->string;
         $this->phonePrefix = StringContainer::fromStringOrNull($this->originalData['phone_prefix'])->string;
     }

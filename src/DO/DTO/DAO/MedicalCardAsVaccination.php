@@ -93,10 +93,10 @@ final class MedicalCardAsVaccination extends AbstractDTO
         $this->vaccineId = (int)$this->originalData['id'];
         $this->name = (string)$this->originalData['name'];
         $this->petId = (int)$this->originalData['pet_id'];
-        $this->date = (DateTimeContainer::fromFullDateTimeString($this->originalData['date']))->dateTimeNullable;
+        $this->date = (DateTimeContainer::fromFullDateTimeString($this->originalData['date']))->dateTimeOrNull;
 
         $dateTimeService = (DateTimeContainer::fromFullDateTimeString($this->originalData['create_date']));
-        $this->nextDateTime = $dateTimeService->dateTimeNullable;
+        $this->nextDateTime = $dateTimeService->dateTimeOrNull;
         $this->isTimePresentInNextDateTime = $dateTimeService->isTimePresent();
 
         $this->goodId = (int)$this->originalData['vaccine_id'];
@@ -108,7 +108,7 @@ final class MedicalCardAsVaccination extends AbstractDTO
         $this->vaccineDescription = (string)$this->originalData['vaccine_description'];
         $this->vaccineTypeTitle = (string)$this->originalData['vaccine_type_title'];
         $this->nextAdmissionId = (int)$this->originalData['next_admission_id'];
-        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
+        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }

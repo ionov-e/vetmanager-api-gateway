@@ -85,7 +85,7 @@ class User extends AbstractDTO
         $this->isActive = (bool)$this->originalData['is_active'];
         $this->calcPercents = (int)$this->originalData['calc_percents'];
         $this->nickname = $this->originalData['nickname'] ? (string)$this->originalData['nickname'] : null;
-        $this->lastChangePwdDate = (DateTimeContainer::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTimeNullable;
+        $this->lastChangePwdDate = (DateTimeContainer::fromOnlyDateString($this->originalData['last_change_pwd_date']))->dateTimeOrNull;
         $this->isLimited = (bool)$this->originalData['is_limited'];
         $this->carrotquestId = $this->originalData['carrotquest_id'] ? (string)$this->originalData['carrotquest_id'] : null;
         $this->sipNumber = (string)$this->originalData['sip_number'];

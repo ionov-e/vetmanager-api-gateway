@@ -11,7 +11,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 /** @property-read DateTime $dateTime Для тех случаев, когда уверены, что null и пустых значений не будет */
 final class DateTimeContainer
 {
-    public function __construct(public readonly ?DateTime $dateTimeNullable)
+    public function __construct(public readonly ?DateTime $dateTimeOrNull)
     {
     }
 
@@ -65,15 +65,15 @@ final class DateTimeContainer
     /** @throws VetmanagerApiGatewayResponseException */
     private function getDateTime(): DateTime
     {
-        if (is_null($this->dateTimeNullable)) {
+        if (is_null($this->dateTimeOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
 
-        return $this->dateTimeNullable;
+        return $this->dateTimeOrNull;
     }
 
     public function isTimePresent(): bool
     {
-        return ($this->dateTimeNullable && $this->dateTimeNullable->format('H:i:s') !== '01:00:00');
+        return ($this->dateTimeOrNull && $this->dateTimeOrNull->format('H:i:s') !== '01:00:00');
     }
 }

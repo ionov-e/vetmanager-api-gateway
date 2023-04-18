@@ -127,12 +127,12 @@ final class MedicalCardsByClient extends AbstractDTO
         $this->meetResultId = $this->originalData['meet_result_id'] ? (int)$this->originalData['meet_result_id'] : null;
         $this->userId = $this->originalData['doctor_id'] ? (int)$this->originalData['doctor_id'] : null;
         $this->id = (int)$this->originalData['medical_card_id'];
-        $this->dateEdit = (DateTimeContainer::fromOnlyDateString($this->originalData['date_edit']))->dateTimeNullable;
+        $this->dateEdit = (DateTimeContainer::fromOnlyDateString($this->originalData['date_edit']))->dateTimeOrNull;
         $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : '';
         $this->status = Status::from($this->originalData['medical_card_status']);
         $this->petId = (int)$this->originalData['pet_id'];
         $this->petAlias = (string)$this->originalData['alias'];
-        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeNullable;
+        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
         $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
         $this->petSex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
         $this->petNote = $this->originalData['note'] ? (string)$this->originalData['note'] : '';

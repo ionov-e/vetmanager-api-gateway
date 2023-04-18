@@ -182,18 +182,18 @@ class Admission extends AbstractDTO
         parent::__construct($apiGateway, $originalData);
 
         $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeNullable;
+        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeOrNull;
         $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
         $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
         $this->petId = IntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
         $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
         $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
-        $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalNullable;
+        $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalOrNull;
         $this->status = Status::from($this->originalData['status']);
         $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
         $this->isDirectDirection = BoolContainer::fromStringOrNull($this->originalData['direct_direction'])->bool;
         $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
-        $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeNullable;
+        $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeOrNull;
         $this->escorterId = IntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
         $this->receptionWriteChannel = StringContainer::fromStringOrNull($this->originalData['reception_write_channel'])->string;
         $this->isAutoCreate = BoolContainer::fromStringOrNull($this->originalData['is_auto_create'])->bool;
