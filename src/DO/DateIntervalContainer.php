@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO;
 
 use DateInterval;
-use Exception;
+use Throwable;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @property-read DateInterval $dateInterval Для тех случаев, когда уверены, что null и пустых значений не будет */
@@ -17,8 +17,8 @@ final class DateIntervalContainer
 
     /**
      * @param ?string $hms Example: "14:45:00"
-     *
      * @throws VetmanagerApiGatewayResponseException
+     * @psalm-suppress PossiblyNullArgument, PossiblyNullArrayAccess - я все равно ловлю если DateInterval не создается
      */
     public static function fromStringHMS(?string $hms): self
     {
@@ -27,11 +27,13 @@ final class DateIntervalContainer
         }
 
         try {
-            list($hours, $minutes, $seconds) = sscanf($hms, '%d:%d:%d');
-            return new self(new DateInterval(sprintf('PT%dH%dM%dS', $hours, $minutes, $seconds)));
-        } catch (Exception) {
+            $timeAsArray = sscanf($hms, '%d:%d:%d');
+            $dateTime = new DateInterval(sprintf('PT%dH%dM%dS', $timeAsArray[0], $timeAsArray[1], $timeAsArray[2]));
+        } catch (Throwable) {
             throw new VetmanagerApiGatewayResponseException("Ожидаемый формат: '14:45:00'. А получили: '$hms'");
         }
+
+        return new self($dateTime);
     }
 
     public function __get(string $name): mixed
