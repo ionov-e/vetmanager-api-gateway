@@ -126,7 +126,7 @@ class Client extends AbstractDTO
         $this->cellPhone = StringContainer::fromStringOrNull($this->originalData['cell_phone'])->string;
         $this->zip = StringContainer::fromStringOrNull($this->originalData['zip'])->string;
         $this->registrationIndex = StringContainer::fromStringOrNull($this->originalData['registration_index'])->string;
-        $this->isVip = BoolContainer::fromStringOrNull($this->originalData['isVip'])->bool;
+        $this->isVip = BoolContainer::fromStringOrNull($this->originalData['vip'])->bool;
         $this->lastName = StringContainer::fromStringOrNull($this->originalData['last_name'])->string;
         $this->firstName = StringContainer::fromStringOrNull($this->originalData['first_name'])->string;
         $this->middleName = StringContainer::fromStringOrNull($this->originalData['middle_name'])->string;
