@@ -10,6 +10,9 @@ use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DO\Enum\Pet\Status;
+use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -23,9 +26,11 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 class Pet extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
-    /** Ни в одной БД не нашел "null" или "0" */
+    /** @var positive-int Ни в одной БД не нашел "null" или "0" */
     public int $ownerId;
+    /** @var ?positive-int */
     public ?int $typeId;
     public string $alias;
     public Sex $sex;
@@ -33,22 +38,26 @@ class Pet extends AbstractDTO
     /** Дата без времени */
     public ?DateTime $birthday;
     public string $note;
+    /** @var ?positive-int */
     public ?int $breedId;
+    /** @var ?positive-int */
     public ?int $oldId;
+    /** @var ?positive-int */
     public ?int $colorId;
-    public ?string $deathNote;
-    public ?string $deathDate;
-    /** Default: '' */
+    public string $deathNote;
+    public string $deathDate;
+    /** Default: ''. Самые разные строки прилетают */
     public string $chipNumber;
-    /** Default: '' */
+    /** Default: ''. Самые разные строки прилетают */
     public string $labNumber;
     public Status $status;
     /** Datatype: longblob */
     public string $picture;
     public ?float $weight;
     public DateTime $editDate;
+
     /**
-     * @var array{
+     * @param array{
      * "id": string,
      * "owner_id": ?string,
      * "type_id": ?string,
@@ -69,41 +78,41 @@ class Pet extends AbstractDTO
      * "weight": ?string,
      * "edit_date": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(ApiGateway $api, array $originalData)
     {
         parent::__construct($api, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->ownerId = (int)$this->originalData['owner_id'];
-        $this->typeId = $this->originalData['type_id'] ? (int)$this->originalData['type_id'] : null;
-        $this->alias = (string)$this->originalData['alias'];
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->ownerId = IntContainer::fromStringOrNull($this->originalData['owner_id'])->positiveInt;
+        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
+        $this->alias = StringContainer::fromStringOrNull($this->originalData['alias'])->string;
         $this->sex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
-        $this->dateRegister = (DateTimeContainer::fromOnlyDateString($this->originalData['date_register']))->dateTime;
-        $this->birthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
-        $this->note = (string)$this->originalData['note'];
-        $this->breedId = $this->originalData['breed_id'] ? (int)$this->originalData['breed_id'] : null;
-        $this->oldId = $this->originalData['old_id'] ? (int)$this->originalData['old_id'] : null;
-        $this->colorId = $this->originalData['color_id'] ? (int)$this->originalData['color_id'] : null;
-        $this->deathNote = $this->originalData['deathnote'] ? (string)$this->originalData['deathnote'] : null;
-        $this->deathDate = $this->originalData['deathdate'] ? (string)$this->originalData['deathdate'] : null;
-        $this->chipNumber = (string)$this->originalData['chip_number'];
-        $this->labNumber = (string)$this->originalData['lab_number'];
+        $this->dateRegister = DateTimeContainer::fromOnlyDateString($this->originalData['date_register'])->dateTime;
+        $this->birthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
+        $this->note = StringContainer::fromStringOrNull($this->originalData['note'])->string;
+        $this->breedId = IntContainer::fromStringOrNull($this->originalData['breed_id'])->positiveIntOrNull;
+        $this->oldId = IntContainer::fromStringOrNull($this->originalData['old_id'])->positiveIntOrNull;
+        $this->colorId = IntContainer::fromStringOrNull($this->originalData['color_id'])->positiveIntOrNull;
+        $this->deathNote = StringContainer::fromStringOrNull($this->originalData['deathnote'])->string;
+        $this->deathDate = StringContainer::fromStringOrNull($this->originalData['deathdate'])->string;
+        $this->chipNumber = StringContainer::fromStringOrNull($this->originalData['chip_number'])->string;
+        $this->labNumber = StringContainer::fromStringOrNull($this->originalData['lab_number'])->string;
         $this->status = Status::from($this->originalData['status']);
-        $this->picture = (string)$this->originalData['picture'];
-        $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
-        $this->editDate = (DateTimeContainer::fromOnlyDateString($this->originalData['edit_date']))->dateTime;
+        $this->picture = StringContainer::fromStringOrNull($this->originalData['picture'])->string;
+        $this->weight = FloatContainer::fromStringOrNull($this->originalData['weight'])->nonZeroFloatOrNull;
+        $this->editDate = DateTimeContainer::fromOnlyDateString($this->originalData['edit_date'])->dateTime;
     }
 
-    /** @throws VetmanagerApiGatewayException */
+    /** @throws VetmanagerApiGatewayException
+     * @psalm-suppress DocblockTypeContradiction
+     */
     public function __get(string $name): mixed
     {
         return match ($name) {
             'self' => DAO\Pet::getById($this->apiGateway, $this->id),
-            'breed' => $this->typeId ? DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
+            'breed' => $this->breedId ? DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
             'color' => $this->colorId ? DAO\ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
             'owner' => $this->ownerId ? DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
             'type' => $this->typeId ? DAO\PetType::getById($this->apiGateway, $this->typeId) : null,

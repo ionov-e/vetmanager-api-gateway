@@ -5,36 +5,36 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @property-read DAO\PetType $self */
 class PetType extends AbstractDTO
 {
+    /** @var positive-int */
     public int $id;
     public string $title;
     /** Default: '' */
     public string $picture;
-    public ?string $type;
+    public string $type;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "picture": string,
      *     "type": ?string,
-     *     }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->picture = (string)$this->originalData['picture'];
-        $this->type = $this->originalData['type'] ? (string)$this->originalData['type'] : null;
+        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
+        $this->picture = StringContainer::fromStringOrNull($this->originalData['picture'])->string;
+        $this->type = StringContainer::fromStringOrNull($this->originalData['type'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException */
