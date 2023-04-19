@@ -33,7 +33,7 @@ abstract class AbstractDTO
     }
 
     /**
-     * @param list<array<string, mixed>> $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+     * @param array $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
      *
      * @return static[]
      *
