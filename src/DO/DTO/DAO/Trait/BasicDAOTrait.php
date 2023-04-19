@@ -8,6 +8,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 trait BasicDAOTrait
 {
     /** @inheritDoc
+     * @return static[]
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
     public static function fromResponse(ApiGateway $apiGateway, array $apiResponse): array

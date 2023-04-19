@@ -14,7 +14,7 @@ interface BasicDAOInterface
     public static function getApiModel(): ApiRoute;
 
     /** @param array{"totalCount": int, MODEL_NAME: array<int, array>} $apiResponse Раскодированный JSON ответа по АПИ. Ключом второго элемента будет название модели, а в самом элементе массивы (их может быть несколько, один или нисколько) с полученными моделями
-     * @return self[]
+     * @return static[]
      */
     public static function fromResponse(ApiGateway $apiGateway, array $apiResponse): array;
 }
