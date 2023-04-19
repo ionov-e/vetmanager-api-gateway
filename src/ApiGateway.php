@@ -185,6 +185,11 @@ final class ApiGateway
         do {
             $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
             $pagedQuery->next();
+            if (!is_array($modelDataContents[$modelResponseKeyInJson])) {
+                throw new VetmanagerApiGatewayResponseException(
+                    "В Json под ключом '$modelResponseKeyInJson' должна быть строка"
+                );
+            }
             $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
         } while (count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels);
 
@@ -332,7 +337,9 @@ final class ApiGateway
         }
 
         if (!filter_var($contents['success'], FILTER_VALIDATE_BOOLEAN)) {
-            throw new VetmanagerApiGatewayResponseException($contents['message'] ?? 'Неизвестная ошибка работы с апи');
+            throw new VetmanagerApiGatewayResponseException(
+                $contents['message'] ? (string) $contents['message'] : 'Неизвестная ошибка работы с апи'
+            );
         }
         /** @var array{data: array, success: bool, message?: string} $contents */
 
