@@ -14,6 +14,9 @@ use VetmanagerApiGateway\DO\DTO\AbstractDTO;
 use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -29,10 +32,11 @@ final class MedicalCardAsVaccination extends AbstractDTO
 {
     use BasicDAOTrait;
 
-    /** id из таблицы vaccine_pets */
+    /** @var positive-int id из таблицы vaccine_pets */
     public int $vaccineId;
     /** title из таблицы vaccine_pets */
     public string $name;
+    /** @var positive-int */
     public int $petId;
     /** Дата без времени. Пример: "2012-09-02 00:00:00", а может прийти, если ничего: "0000-00-00". Из таблицы vaccine_pets*/
     public ?DateTime $date;
@@ -44,25 +48,28 @@ final class MedicalCardAsVaccination extends AbstractDTO
     public ?DateTime $nextDateTime;
     /** Указывает есть ли время в {@see $nextDateTime} */
     public bool $isTimePresentInNextDateTime;
+    /** @var positive-int Default: "0". Но не видел нигде 0 - не предусматриваю*/
     public int $goodId;
     /** Дата без времени. Пример: "2012-09-02 00:00:00". Может быть и null */
     public ?DateTime $petBirthday;
+    /** @var positive-int Default: "0". Но не видел нигде 0 - не предусматриваю*/
     public int $medcardId;
-    /** Default: "0" */
+    /** @var positive-int Default: "0". Но не видел нигде 0 - не предусматриваю*/
     public int $doseTypeId;
     /** Default: "1.0000000000". Из таблицы vaccine_pets*/
     public float $doseValue;
-    /** Из таблицы vaccine_pets */
+    /** @var positive-int Из таблицы vaccine_pets. Но не видел нигде 0 - не предусматриваю */
     public int $saleParamId;
-    /** Default: "0". Перевожу в null. Из таблицы vaccine_pets */
-    public int $vaccineType;
+    /** @var positive-int|null Default: "0" - перевожу в null */
+    public ?int $vaccineType;
     /** Default: "". Из таблицы vaccine_pets */
     public string $vaccineDescription;
     /** Default: "". Title из таблицы combo_manual_items (строка, где: value = {@see $vaccineType} & combo_manual_id = $comboManualIdOfVaccinationType*/
     public string $vaccineTypeTitle;
-    /** Default: "0". Перевожу в null. Из таблицы vaccine_pets */
-    public int $nextAdmissionId;
-    /** @var array{
+    /** @var positive-int|null Default: "0". Перевожу в null. Из таблицы vaccine_pets */
+    public ?int $nextAdmissionId;
+
+    /** @param array{
      *     "id": string,
      *     "name": string,
      *     "pet_id": string,
@@ -82,33 +89,29 @@ final class MedicalCardAsVaccination extends AbstractDTO
      *     "next_visit_time": string,
      *     "pet_age_at_time_vaccination": string
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->vaccineId = (int)$this->originalData['id'];
-        $this->name = (string)$this->originalData['name'];
-        $this->petId = (int)$this->originalData['pet_id'];
-        $this->date = (DateTimeContainer::fromFullDateTimeString($this->originalData['date']))->dateTimeOrNull;
-
-        $dateTimeService = (DateTimeContainer::fromFullDateTimeString($this->originalData['create_date']));
+        $this->vaccineId = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
+        $this->name = StringContainer::fromStringOrNull($this->originalData['name'])->string;
+        $this->petId = IntContainer::fromStringOrNull($this->originalData['pet_id'])->positiveInt;
+        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['date'])->dateTimeOrNull;
+        $dateTimeService = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date']);
         $this->nextDateTime = $dateTimeService->dateTimeOrNull;
         $this->isTimePresentInNextDateTime = $dateTimeService->isTimePresent();
-
-        $this->goodId = (int)$this->originalData['vaccine_id'];
-        $this->medcardId = (int)$this->originalData['medcard_id'];
-        $this->doseTypeId = (int)$this->originalData['doza_type_id'];
-        $this->doseValue = (float)$this->originalData['doza_value'];
-        $this->saleParamId = (int)$this->originalData['sale_param_id'];
-        $this->vaccineType = (int)$this->originalData['vaccine_type'];
-        $this->vaccineDescription = (string)$this->originalData['vaccine_description'];
-        $this->vaccineTypeTitle = (string)$this->originalData['vaccine_type_title'];
-        $this->nextAdmissionId = (int)$this->originalData['next_admission_id'];
-        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
+        $this->goodId = IntContainer::fromStringOrNull($this->originalData['vaccine_id'])->positiveInt;
+        $this->medcardId = IntContainer::fromStringOrNull($this->originalData['medcard_id'])->positiveInt;
+        $this->doseTypeId = IntContainer::fromStringOrNull($this->originalData['doza_type_id'])->positiveInt;
+        $this->doseValue = FloatContainer::fromStringOrNull($this->originalData['doza_value'])->float;
+        $this->saleParamId = IntContainer::fromStringOrNull($this->originalData['sale_param_id'])->positiveInt;
+        $this->vaccineType = IntContainer::fromStringOrNull($this->originalData['vaccine_type'])->positiveIntOrNull;
+        $this->vaccineDescription = StringContainer::fromStringOrNull($this->originalData['vaccine_description'])->string;
+        $this->vaccineTypeTitle = StringContainer::fromStringOrNull($this->originalData['vaccine_type_title'])->string;
+        $this->nextAdmissionId = IntContainer::fromStringOrNull($this->originalData['next_admission_id'])->positiveIntOrNull;
+        $this->petBirthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }
@@ -121,14 +124,14 @@ final class MedicalCardAsVaccination extends AbstractDTO
 
     /**
      * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
-     * @return self []
+     * @return self[]
      * @throws VetmanagerApiGatewayException Родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */
     public static function getByPetId(ApiGateway $apiGateway, int $petId, string $additionalGetParameters = ''): array
     {
         $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-        $petsFromApiResponse = $apiGateway->getWithGetParametersAsString(
+        $petsFromApiResponse = $apiGateway->getContentsWithGetParametersAsString(
             self::getApiModel(),
             "pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
@@ -151,7 +154,7 @@ final class MedicalCardAsVaccination extends AbstractDTO
 
     private function getPetAgeAtVaccinationMoment(): ?DateInterval
     {
-        if (!is_null($this->date) || !is_null($this->petBirthday)) {
+        if (is_null($this->date) || is_null($this->petBirthday)) {
             return null;
         }
 

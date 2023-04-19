@@ -50,7 +50,9 @@ class GoodSaleParam extends AbstractDTO
      *     "status": string,
      *     "clinic_id": string,
      *     "markup": string,
-     *     "price_formation": ?string
+     *     "price_formation": ?string,
+     *     "unitSale"?: array,
+     *     "good"?: array,
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

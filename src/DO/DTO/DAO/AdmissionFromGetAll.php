@@ -10,6 +10,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetAllTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetByQuery;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class AdmissionFromGetAll extends Admission implements RequestGetAllInterface, RequestGetByQueryInterface
 {
@@ -17,21 +18,27 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
     use RequestGetAllTrait;
     use RequestGetByQuery;
 
-    /** @var array{
-     *          "id": string,
+    /** @return ApiRoute::Admission */
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Admission;
+    }
+
+    /** @param array{
+     *          "id": numeric-string,
      *          "admission_date": string,
      *          "description": string,
-     *          "client_id": string,
-     *          "patient_id": string,
-     *          "user_id": string,
-     *          "type_id": string,
+     *          "client_id": numeric-string,
+     *          "patient_id": numeric-string,
+     *          "user_id": numeric-string,
+     *          "type_id": numeric-string,
      *          "admission_length": string,
      *          "status": ?string,
-     *          "clinic_id": string,
+     *          "clinic_id": numeric-string,
      *          "direct_direction": string,
-     *          "creator_id": string,
+     *          "creator_id": numeric-string,
      *          "create_date": string,
-     *          "escorter_id": ?string,
+     *          "escorter_id": ?numeric-string,
      *          "reception_write_channel": ?string,
      *          "is_auto_create": string,
      *          "invoices_sum": string,
@@ -67,7 +74,7 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
      *                      "number_of_journal": string,
      *                      "phone_prefix": ?string
      *          },
-     *          ?"pet": array{
+     *          "pet"?: array{
      *                      "id": string,
      *                      "owner_id": ?string,
      *                      "type_id": ?string,
@@ -99,8 +106,8 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
      *                              "pet_type_id": string,
      *                      }
      *          },
-     *          ?"wait_time": string,
-     *          ?"invoices": array<int, array{
+     *          "wait_time"?: string,
+     *          "invoices"?: array<int, array{
      *                              "id": string,
      *                              "doctor_id": ?string,
      *                              "client_id": string,
@@ -124,15 +131,8 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
      *                              "d": string
      *           }>
      *     } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @return ApiRoute::Admission */
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Admission;
-    }
-
     public function __construct(ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

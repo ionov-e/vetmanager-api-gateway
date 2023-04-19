@@ -8,6 +8,7 @@ namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use DateTime;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
 use VetmanagerApiGateway\DO\DTO\DAO;
@@ -15,7 +16,10 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\DO\Enum\Pet\Sex;
+use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\FullName;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -32,12 +36,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 final class MedicalCardsByClient extends AbstractDTO
 {
     use BasicDAOTrait;
+    /** @var positive-int */
 
     public int $id;
     public ?DateTime $dateEdit;
     /** Сюда приходит либо "0", либо JSON типа: "[ {"id":32,"type":1}, {"id":35,"type":1}, {"id":77,"type":1} ]". 0 переводим в '' */
     public string $diagnose;
-    /** Default: 0 - переводим в null */
+    /** @var positive-int|null Default: 0 - переводим в null */
     public ?int $userId;
     /** Default: 'active' */
     public Status $status;
@@ -47,12 +52,16 @@ final class MedicalCardsByClient extends AbstractDTO
     public string $recommendation;
     public ?float $weight;
     public ?float $temperature;
-    /** Default: 0    LEFT JOIN combo_manual_items ci2 ON ci2.combo_manual_id = 2 AND ci2.value = m.meet_result_id. 0 переводим в null */
-    public int $meetResultId;
-    /** {@see MedicalCard::admissionType} Тип приема
+    /** @var positive-int|null Default: 0 - переводим в null
+     * LEFT JOIN combo_manual_items ci2 ON ci2.combo_manual_id = 2 AND ci2.value = m.meet_result_id. 0 переводим в null
+     */
+    public ?int $meetResultId;
+    /** /** @var positive-int|null Default: 0 - переводим в null
+     * {@see MedicalCard::admissionType} Тип приема
      * LEFT JOIN combo_manual_items ci ON ci.combo_manual_id = {$reasonId} AND ci.value = m.admission_type
      */
     public ?int $admissionTypeId;
+    /** @var positive-int */
     public int $petId;
     public string $petAlias;
     /** Дата без времени */
@@ -61,6 +70,7 @@ final class MedicalCardsByClient extends AbstractDTO
     public string $petNote;
     public string $petTypeTitle;
     public string $petBreedTitle;
+    /** @var positive-int|null Default: 0 - переводим в null. Не уверен, что вообще можем получить 0 или null */
     public ?int $clientId;
     public FullName $ownerFullName;
     public string $ownerPhone;
@@ -78,7 +88,7 @@ final class MedicalCardsByClient extends AbstractDTO
      * В таблице combo_manual_items ищет строку с id = {@see self::admissionType} и возвращает значение из столбца title. */
     public string $admissionTypeTitle;
 
-    /** @var array{
+    /** @param array{
      *     "medical_card_id": string,
      *     "date_edit": ?string,
      *     "diagnos": string,
@@ -110,41 +120,39 @@ final class MedicalCardsByClient extends AbstractDTO
      *     "meet_result_title": string,
      *     "admission_type_title": string
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $diagnose = $this->originalData['diagnos'];
-        $this->diagnose = ($diagnose && $diagnose == '0') ? (string)$diagnose : '';
-        $this->recommendation = (string)$this->originalData['recomendation'];
-        $this->admissionTypeId = $this->originalData['admission_type'] ? (int)$this->originalData['admission_type'] : null;
-        $this->weight = $this->originalData['weight'] ? (float)$this->originalData['weight'] : null;
-        $this->temperature = $this->originalData['temperature'] ? (float)$this->originalData['temperature'] : null;
-        $this->meetResultId = $this->originalData['meet_result_id'] ? (int)$this->originalData['meet_result_id'] : null;
-        $this->userId = $this->originalData['doctor_id'] ? (int)$this->originalData['doctor_id'] : null;
-        $this->id = (int)$this->originalData['medical_card_id'];
-        $this->dateEdit = (DateTimeContainer::fromOnlyDateString($this->originalData['date_edit']))->dateTimeOrNull;
-        $this->description = $this->originalData['healing_process'] ? (string)$this->originalData['healing_process'] : '';
+        $this->id = IntContainer::fromStringOrNull($this->originalData['medical_card_id'])->positiveInt;
+        $this->dateEdit = DateTimeContainer::fromOnlyDateString($this->originalData['date_edit'])->dateTimeOrNull;
+        $diagnose = ($this->originalData['diagnos'] !== '0') ? (string)$this->originalData['diagnos'] : '';
+        $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
+        $this->userId = IntContainer::fromStringOrNull($this->originalData['doctor_id'])->positiveIntOrNull;
         $this->status = Status::from($this->originalData['medical_card_status']);
-        $this->petId = (int)$this->originalData['pet_id'];
-        $this->petAlias = (string)$this->originalData['alias'];
-        $this->petBirthday = (DateTimeContainer::fromOnlyDateString($this->originalData['birthday']))->dateTimeOrNull;
-        $this->clientId = $this->originalData['client_id'] ? (int)$this->originalData['client_id'] : null;
+        $this->description = StringContainer::fromStringOrNull($this->originalData['healing_process'])->string;
+        $this->recommendation = StringContainer::fromStringOrNull($this->originalData['recomendation'])->string;
+        $this->weight = FloatContainer::fromStringOrNull($this->originalData['weight'])->floatOrNull;
+        $this->temperature = FloatContainer::fromStringOrNull($this->originalData['temperature'])->floatOrNull;
+        $this->meetResultId = IntContainer::fromStringOrNull($this->originalData['meet_result_id'])->positiveIntOrNull;
+        $this->admissionTypeId = IntContainer::fromStringOrNull($this->originalData['admission_type'])->positiveIntOrNull;
+        $this->petId = IntContainer::fromStringOrNull($this->originalData['pet_id'])->positiveInt;
+        $this->petAlias = StringContainer::fromStringOrNull($this->originalData['alias'])->string;
+        $this->petBirthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
         $this->petSex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
-        $this->petNote = $this->originalData['note'] ? (string)$this->originalData['note'] : '';
-        $this->petTypeTitle = $this->originalData['pet_type'] ? (string)$this->originalData['pet_type'] : '';
-        $this->petBreedTitle = $this->originalData['breed'] ? (string)$this->originalData['breed'] : '';
+        $this->petNote = StringContainer::fromStringOrNull($this->originalData['note'])->string;
+        $this->petTypeTitle = StringContainer::fromStringOrNull($this->originalData['pet_type'])->string;
+        $this->petBreedTitle = StringContainer::fromStringOrNull($this->originalData['breed'])->string;
+        $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveInt;
         $this->ownerFullName = new FullName($this->originalData['first_name'], $this->originalData['middle_name'], $this->originalData['last_name']);
-        $this->ownerPhone = (string)$this->originalData['phone'];
-        $this->userLogin = (string)$this->originalData['doctor_nickname'];
+        $this->ownerPhone = StringContainer::fromStringOrNull($this->originalData['phone'])->string;
+        $this->userLogin = StringContainer::fromStringOrNull($this->originalData['doctor_nickname'])->string;
         $this->userFullName = new FullName($this->originalData['doctor_first_name'], $this->originalData['doctor_middle_name'], $this->originalData['doctor_last_name']);
-        $this->isEditable = (bool)$this->originalData['editable'];
-        $this->meetResultTitle = $this->originalData['meet_result_title'] ? (string)$this->originalData['meet_result_title'] : '';
-        $this->admissionTypeTitle = (string)$this->originalData['admission_type_title'];
+        $this->isEditable = BoolContainer::fromStringOrNull($this->originalData['editable'])->bool;
+        $this->meetResultTitle = StringContainer::fromStringOrNull($this->originalData['meet_result_title'])->string;
+        $this->admissionTypeTitle = StringContainer::fromStringOrNull($this->originalData['admission_type_title'])->string;
     }
 
     /** @return ApiRoute::MedicalCardsByClient */
@@ -155,7 +163,7 @@ final class MedicalCardsByClient extends AbstractDTO
 
     /**
      * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
-     * @return self []
+     * @return self[]
      * @throws VetmanagerApiGatewayException Родительское исключение
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
      */

@@ -20,14 +20,12 @@ final class CityType extends AbstractDTO implements AllGetRequestsInterface
     public int $id;
     public string $title;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

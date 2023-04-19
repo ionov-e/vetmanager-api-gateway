@@ -28,7 +28,6 @@ class InvoiceDocument extends AbstractDTO
     public float $price;
     /** @var ?positive-int Default: '0' */
     public ?int $responsibleUserId;
-    /** @var ?positive-int */
     public bool $isDefaultResponsible;
     /** @var ?positive-int Default: '0' */
     public ?int $saleParamId;
@@ -93,14 +92,14 @@ class InvoiceDocument extends AbstractDTO
      *                       "title": string,
      *                       "status": string
      *              }
-     *       },
-     *     document?: mixed,
-     *     good?: mixed,
-     *     party_info?: mixed,
-     *     min_price?: mixed,
-     *     max_price?: mixed,
-     *     min_price_percent?: mixed,
-     *     max_price_percent?: mixed
+     *     },
+     *     "document"?: array,
+     *     "good"?: array,
+     *     "party_info"?: array,
+     *     "min_price"?: float,
+     *     "max_price"?: float,
+     *     "min_price_percent"?: float,
+     *     "max_price_percent"?: float
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

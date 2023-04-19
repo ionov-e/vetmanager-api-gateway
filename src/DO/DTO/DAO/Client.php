@@ -21,7 +21,7 @@ final class Client extends DTO\Client implements AllGetRequestsInterface
     /** Предзагружен. Нового АПИ запроса не будет */
     public ?City $city;
     public ?string $typeTitle;
-    /** @var array{
+    /** @param array{
      *      "id": string,
      *      "address": string,
      *      "home_phone": string,
@@ -52,20 +52,17 @@ final class Client extends DTO\Client implements AllGetRequestsInterface
      *      "last_visit_date": string,
      *      "number_of_journal": string,
      *      "phone_prefix": ?string,
-     *      ?"city_data": array {
+     *      "city_data"?: array {
      *           "id": string,
      *           "title": string,
      *           "type_id": string
      *           },
-     *      ?"client_type_data": array {
+     *      "client_type_data"?: array {
      *           "id": string,
      *           "title": string
      *           }
      * } $originalData
-     */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayException
      */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {

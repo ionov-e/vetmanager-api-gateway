@@ -31,21 +31,19 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
     public int $cityId;
     public ?City $city;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "city_id": string,
      *     "type": string,
-     *     ?"city": array{
+     *     "city"?: array{
      *              "id": string,
      *              "title": ?string,
      *              "type_id": ?string
      *     }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

@@ -22,15 +22,13 @@ final class Role extends AbstractDTO implements AllGetRequestsInterface
     /** Default: '0' */
     public bool $isSuper;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "name": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

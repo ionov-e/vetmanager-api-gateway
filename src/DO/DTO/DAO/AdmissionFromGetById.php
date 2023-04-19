@@ -8,6 +8,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetByIdInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** Содержимое отличает от {@see AdmissionFromGetAll} лишь наличием двух дополнительных DTO:
  * 1) {@see self::$type} из элемента admission_type_data
@@ -18,21 +19,30 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
     use BasicDAOTrait;
     use RequestGetByIdTrait;
 
-    /** @var array{
-     *          "id": string,
+    public readonly ?DTO\User $user;
+    public readonly ?DTO\ComboManualItem $type;
+
+    /** @return ApiRoute::Admission */
+    public static function getApiModel(): ApiRoute
+    {
+        return ApiRoute::Admission;
+    }
+
+    /** @param array{
+     *          "id": numeric-string,
      *          "admission_date": string,
      *          "description": string,
-     *          "client_id": string,
-     *          "patient_id": string,
-     *          "user_id": string,
-     *          "type_id": string,
+     *          "client_id": numeric-string,
+     *          "patient_id": numeric-string,
+     *          "user_id": numeric-string,
+     *          "type_id": numeric-string,
      *          "admission_length": string,
      *          "status": ?string,
-     *          "clinic_id": string,
+     *          "clinic_id": numeric-string,
      *          "direct_direction": string,
-     *          "creator_id": string,
+     *          "creator_id": numeric-string,
      *          "create_date": string,
-     *          "escorter_id": ?string,
+     *          "escorter_id": ?numeric-string,
      *          "reception_write_channel": ?string,
      *          "is_auto_create": string,
      *          "invoices_sum": string,
@@ -68,7 +78,7 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
      *                      "number_of_journal": string,
      *                      "phone_prefix": ?string
      *          },
-     *          ?"pet": array{
+     *          "pet"?: array{
      *                      "id": string,
      *                      "owner_id": ?string,
      *                      "type_id": ?string,
@@ -100,7 +110,7 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
      *                              "pet_type_id": string,
      *                      }
      *          },
-     *          ?"doctor_data": array{
+     *          "doctor_data"?: array{
      *                      "id": string,
      *                      "last_name": string,
      *                      "first_name": string,
@@ -115,16 +125,14 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
      *                      "role_id": ?string,
      *                      "is_active": string,
      *                      "calc_percents": string,
-     *                      "nickname": ?string ,
-     *                      "youtrack_login": string,
-     *                      "youtrack_password": string,
+     *                      "nickname": ?string,
      *                      "last_change_pwd_date": string,
      *                      "is_limited": string,
      *                      "carrotquest_id": ?string,
      *                      "sip_number": string,
      *                      "user_inn": string
      *          },
-     *          ?"admission_type_data": array{
+     *          "admission_type_data"?: array{
      *                      "id": string,
      *                      "combo_manual_id": string,
      *                      "title": string,
@@ -134,8 +142,8 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
      *                      "dop_param3": string,
      *                      "is_active": string,
      *          },
-     *          ?"wait_time": string,
-     *          ?"invoices": array<int, array{
+     *          "wait_time"?: string,
+     *          "invoices"?: array<int, array{
      *                              "id": string,
      *                              "doctor_id": ?string,
      *                              "client_id": string,
@@ -157,20 +165,10 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
      *                              "creator_id": ?string,
      *                              "fiscal_section_id": string,
      *                              "d": string
-     *           }>,
+     *           }>
      *     } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    public readonly ?DTO\User $user;
-    public readonly ?DTO\ComboManualItem $type;
-
-    /** @return ApiRoute::Admission */
-    public static function getApiModel(): ApiRoute
-    {
-        return ApiRoute::Admission;
-    }
-
     public function __construct(ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

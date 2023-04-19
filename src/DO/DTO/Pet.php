@@ -77,6 +77,10 @@ class Pet extends AbstractDTO
      * "picture": ?string,
      * "weight": ?string,
      * "edit_date": string,
+     * "owner"?: array,
+     * "type"?: array,
+     * "breed"?: array,
+     * "color"?: array
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

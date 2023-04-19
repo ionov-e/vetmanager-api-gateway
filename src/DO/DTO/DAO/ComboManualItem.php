@@ -22,7 +22,7 @@ final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequest
 
     public DTO\ComboManualName $comboManualName;
 
-    /** @var array{
+    /** @param array{
      *       "id": string,
      *       "combo_manual_id": string,
      *       "title": string,
@@ -38,10 +38,8 @@ final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequest
      *               "name": string
      *       }
      *   } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

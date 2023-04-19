@@ -26,7 +26,8 @@ class ComboManualName extends AbstractDTO
      *       "id": string,
      *       "title": string,
      *       "is_readonly": string,
-     *       "name": string
+     *       "name": string,
+     *       "comboManualItems"?: array
      *   } $originalData
      * @throws VetmanagerApiGatewayException
      */

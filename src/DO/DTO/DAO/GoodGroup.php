@@ -26,7 +26,7 @@ final class GoodGroup extends AbstractDTO implements AllGetRequestsInterface
     /** Default: 0 */
     public bool $isShowInVaccines;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "is_service": string,
@@ -34,10 +34,8 @@ final class GoodGroup extends AbstractDTO implements AllGetRequestsInterface
      *     "is_show_in_vaccines": string,
      *     "price_id": ?string
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

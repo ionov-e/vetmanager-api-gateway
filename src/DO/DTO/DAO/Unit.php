@@ -23,15 +23,13 @@ final class Unit extends AbstractDTO implements AllGetRequestsInterface
     /** Default: 'active' */
     public Status $status;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "status": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

@@ -20,7 +20,7 @@ final class PetType extends DTO\PetType implements AllGetRequestsInterface
     /** @var DTO\Breed[] $breeds Уже получен при получении PetType. Нового АПИ-запроса не будет */
     public array $breeds;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "picture": string,
@@ -32,10 +32,8 @@ final class PetType extends DTO\PetType implements AllGetRequestsInterface
      *          }
      *     }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

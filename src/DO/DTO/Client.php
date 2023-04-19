@@ -103,7 +103,9 @@ class Client extends AbstractDTO
      *      "in_blacklist": string,
      *      "last_visit_date": string,
      *      "number_of_journal": string,
-     *      "phone_prefix": ?string
+     *      "phone_prefix": ?string,
+     *      "city_data"?: array,
+     *      "client_type_data"?: array,
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

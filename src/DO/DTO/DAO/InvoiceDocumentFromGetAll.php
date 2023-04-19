@@ -43,6 +43,25 @@ final class InvoiceDocumentFromGetAll extends DTO\InvoiceDocument implements Req
      *     "fixed_increase_id": string,
      *     "fixed_increase_percent": string,
      *     "prime_cost": string,
+     *     "goodSaleParam": array{
+     *              "id": string,
+     *              "good_id": string,
+     *              "price": ?string,
+     *              "coefficient": string,
+     *              "unit_sale_id": string,
+     *              "min_price": ?string,
+     *              "max_price": ?string,
+     *              "barcode": ?string,
+     *              "status": string,
+     *              "clinic_id": string,
+     *              "markup": string,
+     *              "price_formation": ?string,
+     *              "unitSale": array{
+     *                       "id": string,
+     *                       "title": string,
+     *                       "status": string
+     *              }
+     *     },
      *     "document": array{
      *              "id": string,
      *              "doctor_id": ?string,
@@ -80,25 +99,6 @@ final class InvoiceDocumentFromGetAll extends DTO\InvoiceDocument implements Req
      *              "description": string,
      *              "prime_cost": string,
      *              "category_id": ?string
-     *     },
-     *     "goodSaleParam": array{
-     *              "id": string,
-     *              "good_id": string,
-     *              "price": ?string,
-     *              "coefficient": string,
-     *              "unit_sale_id": string,
-     *              "min_price": ?string,
-     *              "max_price": ?string,
-     *              "barcode": ?string,
-     *              "status": string,
-     *              "clinic_id": string,
-     *              "markup": string,
-     *              "price_formation": ?string,
-     *              "unitSale": array{
-     *                       "id": string,
-     *                       "title": string,
-     *                       "status": string
-     *              }
      *     }
      * } $originalData
      * @throws VetmanagerApiGatewayException

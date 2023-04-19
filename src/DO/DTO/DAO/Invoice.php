@@ -25,27 +25,27 @@ final class Invoice extends DTO\Invoice implements AllGetRequestsInterface
     /** @var DTO\InvoiceDocument[] */
     public array $invoiceDocuments;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
-     *     "doctor_id": ?string,
-     *     "client_id": string,
-     *     "pet_id": string,
+     *     "doctor_id": ?numeric-string,
+     *     "client_id": numeric-string,
+     *     "pet_id": numeric-string,
      *     "description": string,
      *     "percent": ?string,
      *     "amount": ?string,
      *     "status": string,
      *     "invoice_date": string,
-     *     "old_id": ?string,
-     *     "night": string,
+     *     "old_id": ?numeric-string,
+     *     "night": numeric-string,
      *     "increase": ?string,
      *     "discount": ?string,
-     *     "call": string,
+     *     "call": numeric-string,
      *     "paid_amount": string,
      *     "create_date": string,
      *     "payment_status": string,
-     *     "clinic_id": string,
-     *     "creator_id": ?string,
-     *     "fiscal_section_id": string,
+     *     "clinic_id": numeric-string,
+     *     "creator_id": ?numeric-string,
+     *     "fiscal_section_id": numeric-string,
      *     "client": array{
      *            "id": string,
      *            "address": string,
@@ -125,9 +125,7 @@ final class Invoice extends DTO\Invoice implements AllGetRequestsInterface
      *                  "role_id": ?string,
      *                  "is_active": string,
      *                  "calc_percents": string,
-     *                  "nickname": ?string ,
-     *                  "youtrack_login": string,
-     *                  "youtrack_password": string,
+     *                  "nickname": ?string,
      *                  "last_change_pwd_date": string,
      *                  "is_limited": string,
      *                  "carrotquest_id": ?string,
@@ -169,18 +167,16 @@ final class Invoice extends DTO\Invoice implements AllGetRequestsInterface
      *                              "clinic_id": string,
      *                              "markup": string,
      *                              "price_formation": ?string,
-     *                              "unitSale": array{
+     *                              "unitSale"?: array{
      *                                      "id": string,
      *                                      "title": string,
      *                                      "status": string
      *                              }
      *                     }
      *          }>
-     *  }
+     *  } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

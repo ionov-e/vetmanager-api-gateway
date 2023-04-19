@@ -43,7 +43,8 @@ class ComboManualItem extends AbstractDTO
      *       "dop_param1": string,
      *       "dop_param2": string,
      *       "dop_param3": string,
-     *       "is_active": string
+     *       "is_active": string,
+     *       "comboManualName"?: array
      *   } $originalData
      * @throws VetmanagerApiGatewayException
      */

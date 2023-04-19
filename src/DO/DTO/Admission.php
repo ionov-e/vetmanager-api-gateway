@@ -173,7 +173,9 @@ class Admission extends AbstractDTO
      *                              "creator_id": ?string,
      *                              "fiscal_section_id": string,
      *                              "d": string
-     *           }>
+     *           }>,
+     *          "doctor_data"?: array,
+     *          "admission_type_data"?: array
      *     } $originalData
      * @throws VetmanagerApiGatewayException
      */

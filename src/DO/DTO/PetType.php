@@ -24,6 +24,7 @@ class PetType extends AbstractDTO
      *     "title": string,
      *     "picture": string,
      *     "type": ?string,
+     *     "breeds"?: array
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

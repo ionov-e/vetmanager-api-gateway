@@ -24,15 +24,13 @@ final class UserPosition extends AbstractDTO implements AllGetRequestsInterface
     /** Default: '00:30:00'. Type in DB: 'time'. Null if '00:00:00' */
     public ?DateInterval $admissionLength;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "title": string,
      *     "admission_length": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

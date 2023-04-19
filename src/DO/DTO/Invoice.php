@@ -76,6 +76,10 @@ class Invoice extends AbstractDTO
      *     "clinic_id": numeric-string,
      *     "creator_id": ?numeric-string,
      *     "fiscal_section_id": numeric-string,
+     *     "client"?: array,
+     *     "pet"?: array,
+     *     "doctor"?: array,
+     *     "invoiceDocuments"?: array
      *  } $originalData
      * @throws VetmanagerApiGatewayException
      */

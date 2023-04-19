@@ -22,14 +22,14 @@ final class User extends DTO\User implements AllGetRequestsInterface
     public ?DAO\Role $role;
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
     public ?UserPosition $position;
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "last_name": string,
      *     "first_name": string,
      *     "middle_name": string,
      *     "login": string,
      *     "passwd": string,
-     *     "position_id": ?string,
+     *     "position_id": string,
      *     "email": string,
      *     "phone": string,
      *     "cell_phone": string,
@@ -37,29 +37,25 @@ final class User extends DTO\User implements AllGetRequestsInterface
      *     "role_id": ?string,
      *     "is_active": string,
      *     "calc_percents": string,
-     *     "nickname": ?string ,
-     *     "youtrack_login": string,
-     *     "youtrack_password": string,
+     *     "nickname": ?string,
      *     "last_change_pwd_date": string,
      *     "is_limited": string,
      *     "carrotquest_id": ?string,
-     *     "sip_number": string,
+     *     "sip_number": ?string,
      *     "user_inn": string,
-     *     ?"position": array{
+     *     "position"?: array{
      *           "id": string,
      *           "title": string,
      *           "admission_length": string
      *     },
-     *     ?"role": array{
+     *     "role"?: array{
      *           "id": string,
      *           "name": string,
      *           "super": string
      *     }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

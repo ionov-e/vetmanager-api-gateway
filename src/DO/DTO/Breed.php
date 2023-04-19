@@ -26,6 +26,7 @@ class Breed extends AbstractDTO
      *       "id": string,
      *       "title": string,
      *       "pet_type_id": string,
+     *       "petType"?: array
      *   } $originalData
      * @throws VetmanagerApiGatewayException
      */

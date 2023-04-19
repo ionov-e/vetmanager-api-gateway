@@ -29,17 +29,15 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
     /** Default: '0' */
     public int $clinicId;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "property_name": string,
      *     "property_value": string,
      *     "property_title": ?string,
      *     "clinic_id": string
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

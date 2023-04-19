@@ -67,12 +67,14 @@ class User extends AbstractDTO
      *     "role_id": ?string,
      *     "is_active": string,
      *     "calc_percents": string,
-     *     "nickname": ?string ,
+     *     "nickname": ?string,
      *     "last_change_pwd_date": string,
      *     "is_limited": string,
      *     "carrotquest_id": ?string,
      *     "sip_number": ?string,
-     *     "user_inn": string
+     *     "user_inn": string,
+     *     "position"?: array,
+     *     "role"?: array
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */

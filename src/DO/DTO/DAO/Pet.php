@@ -31,7 +31,7 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
     /** Уже получен */
     public ?DTO\ComboManualItem $color;
     /**
-     * @var array{
+     * @param array{
      * "id": string,
      * "owner_id": ?string,
      * "type_id": ?string,
@@ -51,7 +51,7 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
      * "picture": ?string,
      * "weight": ?string,
      * "edit_date": string,
-     * ?"owner": array{
+     * "owner"?: array{
      *      "id": string,
      *      "address": string,
      *      "home_phone": string,
@@ -83,18 +83,18 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
      *      "number_of_journal": string,
      *      "phone_prefix": ?string
      *      },
-     * ?"type": array{
+     * "type"?: array{
      *      "id": string,
      *      "title": string,
      *      "picture": string,
      *      "type": ?string
      *      },
-     * ?"breed": array{
+     * "breed"?: array{
      *      "id": string,
      *      "title": string,
      *      "pet_type_id": string
      *      },
-     * ?"color": array{
+     * "color"?: array{
      *      "id": string,
      *      "combo_manual_id": string,
      *      "title": string,
@@ -105,17 +105,15 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
      *      "is_active": string
      *      }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(ApiGateway $api, array $originalData)
     {
         parent::__construct($api, $originalData);
 
-        $this->client = $this->ownerId ? DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['owner']) : null;
-        $this->type = $this->typeId ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['type']) : null;
-        $this->breed = $this->breedId ? DAO\Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedDao()) : null;
+        $this->client = !empty($this->originalData['owner']) ? DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['owner']) : null;
+        $this->type = !empty($this->originalData['type']) ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['type']) : null;
+        $this->breed = !empty($this->originalData['breed']) ? DAO\Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedDao()) : null;
         $this->color = !empty($this->originalData['color']) ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['color']) : null;
     }
 

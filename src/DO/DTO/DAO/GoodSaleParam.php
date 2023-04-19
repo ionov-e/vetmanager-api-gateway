@@ -20,7 +20,7 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
     /** Предзагружен. Нового АПИ запроса не будет */
     public DTO\Good $good;
 
-    /** @var array{
+    /** @param array{
      *     "id": string,
      *     "good_id": string,
      *     "price": ?string,
@@ -33,7 +33,7 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
      *     "clinic_id": string,
      *     "markup": string,
      *     "price_formation": ?string,
-     *     ?"unitSale": array{
+     *     "unitSale"?: array{
      *             "id": string,
      *             "title": string,
      *             "status": string,
@@ -55,10 +55,8 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
      *              "category_id": ?string,
      *     }
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      */
-    protected readonly array $originalData;
-
-    /** @throws VetmanagerApiGatewayException */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);

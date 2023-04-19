@@ -55,6 +55,9 @@ class Good extends AbstractDTO
      *     "description": string,
      *     "prime_cost": string,
      *     "category_id": ?string,
+     *     "group"?: array,
+     *     "unitStorage"?: array,
+     *     "goodSaleParams"?: array
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
