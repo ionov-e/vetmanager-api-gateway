@@ -11,6 +11,7 @@ use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ServiceName;
+use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use Otis22\VetmanagerRestApi\Model;
 use Otis22\VetmanagerRestApi\Query\Builder;
@@ -30,14 +31,16 @@ use function Otis22\VetmanagerUrl\url_test_env as vetmanager_url_test_env;
 final class ApiGateway
 {
     public function __construct(
-        protected Client            $guzzleClient,
-        protected WithAuthAndParams $allHeaders
+        public readonly string               $subDomain,
+        public readonly string               $apiUrl,
+        protected Client                     $guzzleClient,
+        protected WithAuthAndParams|WithAuth $allHeaders
     ) {
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
     public static function fromDomainAndServiceNameAndApiKey(
-        string $domainName,
+        string $subDomain,
         string $serviceName,
         string $apiKey,
         bool   $isProduction,
@@ -45,8 +48,8 @@ final class ApiGateway
     ): self {
         try {
             $baseApiUrl = $isProduction
-                ? vetmanager_url($domainName)->asString()
-                : vetmanager_url_test_env($domainName)->asString();
+                ? vetmanager_url($subDomain)->asString()
+                : vetmanager_url_test_env($subDomain)->asString();
         } catch (\Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
@@ -66,16 +69,15 @@ final class ApiGateway
             ),
             [
                 'X-REST-TIME-ZONE' => $timezone,
-                'X-APP' => 'VM-LINK'
             ]
         );
 
-        return new self($guzzleClient, $allHeaders);
+        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
     public static function fromDomainAndApiKey(
-        string $domainName,
+        string $subDomain,
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
@@ -99,7 +101,6 @@ final class ApiGateway
             new ByApiKey(new ApiKey($apiKey)),
             [
                 'X-REST-TIME-ZONE' => $timezone,
-                'X-APP' => 'VM-LINK'
             ]
         );
 
