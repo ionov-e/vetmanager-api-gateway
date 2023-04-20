@@ -84,8 +84,8 @@ final class ApiGateway
     ): self {
         try {
             $baseApiUrl = ($isProduction)
-                ? vetmanager_url($domainName)->asString()
-                : vetmanager_url_test_env($domainName)->asString();
+                ? vetmanager_url($subDomain)->asString()
+                : vetmanager_url_test_env($subDomain)->asString();
         } catch (\Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
@@ -104,7 +104,7 @@ final class ApiGateway
             ]
         );
 
-        return new self($guzzleClient, $allHeaders);
+        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
     /**
@@ -339,7 +339,7 @@ final class ApiGateway
 
         if (!filter_var($contents['success'], FILTER_VALIDATE_BOOLEAN)) {
             throw new VetmanagerApiGatewayResponseException(
-                $contents['message'] ? (string) $contents['message'] : 'Неизвестная ошибка работы с апи'
+                $contents['message'] ? (string)$contents['message'] : 'Неизвестная ошибка работы с апи'
             );
         }
         /** @var array{data: array, success: bool, message?: string} $contents */
