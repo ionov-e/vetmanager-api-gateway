@@ -61,8 +61,12 @@ final class User extends DTO\User implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->role = $originalData['role_id'] ? DAO\Role::fromSingleObjectContents($this->apiGateway, $originalData['role']) : null;
-        $this->position = $originalData['position_id'] ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position']) : null;
+        $this->role = !empty($originalData['role'])
+            ? DAO\Role::fromSingleObjectContents($this->apiGateway, $originalData['role'])
+            : null;
+        $this->position = !empty($originalData['position'])
+            ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position'])
+            : null;
     }
 
     /** @return ApiRoute::User */
