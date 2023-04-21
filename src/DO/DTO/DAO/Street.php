@@ -12,6 +12,8 @@ use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\Street\Type;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -22,12 +24,13 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
     use BasicDAOTrait;
     use AllGetRequestsTrait;
 
+    /** @var positive-int */
     public int $id;
     /** Default: '' */
     public string $title;
     /** Default: 'street'*/
     public Type $type;
-    /** Default: 0 */
+    /** @var positive-int В БД Default: '0' (но никогда не видел 0) */
     public int $cityId;
     public ?City $city;
 
@@ -48,11 +51,13 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$originalData['id'];
-        $this->title = (string)$originalData['title'];
-        $this->cityId = (int)$originalData['city_id'];
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveInt;
         $this->type = Type::from($originalData['type']);
-        $this->city = $originalData['city_id'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $originalData['city']) : null;
+        $this->city = !empty($originalData['city'])
+            ? DAO\City::fromSingleObjectContents($this->apiGateway, $originalData['city'])
+            : null;
     }
 
     /** @return ApiRoute::Street */
@@ -65,7 +70,9 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'cityType' => $this->originalData['city']['type_id'] ? DAO\CityType::getById($this->apiGateway, $this->originalData['city']['type_id']) : null,
+            'cityType' => $this->originalData['city']['type_id']
+                ? DAO\CityType::getById($this->apiGateway, $this->originalData['city']['type_id'])
+                : null,
             default => $this->$name,
         };
     }

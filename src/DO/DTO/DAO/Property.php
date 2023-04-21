@@ -12,6 +12,8 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
@@ -21,13 +23,14 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
     use BasicDAOTrait;
     use AllGetRequestsTrait;
 
+    /** @var positive-int */
     public int $id;
     /** Default: '' */
     public string $name;
     public string $value;
     public ?string $title;
-    /** Default: '0' */
-    public int $clinicId;
+    /** @var ?positive-int Default: '0' (вместо него отдаем null) */
+    public ?int $clinicId;
 
     /** @param array{
      *     "id": string,
@@ -42,11 +45,11 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$originalData['id'];
-        $this->name = (string)$originalData['property_name'];
-        $this->value = (string)$originalData['property_value'];
-        $this->title = $originalData['property_title'] ? (string)$originalData['property_title'] : null;
-        $this->clinicId = (int)$originalData['clinic_id'];
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->name = StringContainer::fromStringOrNull($originalData['property_name'])->string;
+        $this->value = StringContainer::fromStringOrNull($originalData['property_value'])->string;
+        $this->title = StringContainer::fromStringOrNull($originalData['property_title'])->string;
+        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
     }
 
     /**

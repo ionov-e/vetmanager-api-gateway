@@ -20,6 +20,7 @@ final class Role extends AbstractDTO implements AllGetRequestsInterface
     use BasicDAOTrait;
     use AllGetRequestsTrait;
 
+    /** @var positive-int */
     public int $id;
     public string $name;
     /** Default: '0' */

@@ -12,6 +12,8 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class UserPosition extends AbstractDTO implements AllGetRequestsInterface
@@ -35,9 +37,9 @@ final class UserPosition extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$originalData['id'];
-        $this->title = (string)$originalData['title'];
-        $this->admissionLength = (DateIntervalContainer::fromStringHMS($originalData['admission_length']))->dateIntervalOrNull;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
     }
 
     /** @return ApiRoute::UserPosition */

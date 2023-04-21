@@ -11,6 +11,7 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class Client extends DTO\Client implements AllGetRequestsInterface
@@ -20,7 +21,7 @@ final class Client extends DTO\Client implements AllGetRequestsInterface
 
     /** Предзагружен. Нового АПИ запроса не будет */
     public ?City $city;
-    public ?string $typeTitle;
+    public string $typeTitle;
 
     /** @param array{
      *      "id": string,
@@ -69,10 +70,12 @@ final class Client extends DTO\Client implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->city = $originalData['city_data'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $originalData['city_data']) : null;
-
-        $typeTitle = $originalData['client_type_data']['title'] ?? null;
-        $this->typeTitle = $typeTitle ? (string)$typeTitle : null;
+        $this->city = !empty($originalData['city_data'])
+            ? DAO\City::fromSingleObjectContents($this->apiGateway, $originalData['city_data'])
+            : null;
+        $this->typeTitle = StringContainer::fromStringOrNull(
+            $originalData['client_type_data']['title'] ?? ''
+        )->string;
     }
 
     /** @return ApiRoute::Client */

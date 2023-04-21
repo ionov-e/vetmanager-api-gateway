@@ -10,6 +10,8 @@ use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class CityType extends AbstractDTO implements AllGetRequestsInterface
@@ -17,6 +19,7 @@ final class CityType extends AbstractDTO implements AllGetRequestsInterface
     use BasicDAOTrait;
     use AllGetRequestsTrait;
 
+    /** @var positive-int */
     public int $id;
     public string $title;
 
@@ -30,8 +33,8 @@ final class CityType extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$originalData['id'];
-        $this->title = (string)$originalData['title'];
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
     }
 
     /** @return ApiRoute::CityType */
