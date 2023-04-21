@@ -35,9 +35,9 @@ final class City extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->typeId = (int)$this->originalData['type_id'];
+        $this->id = (int)$originalData['id'];
+        $this->title = (string)$originalData['title'];
+        $this->typeId = (int)$originalData['type_id'];
     }
 
     /** @return ApiRoute::City */

@@ -87,26 +87,26 @@ class Invoice extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->doctorId = IntContainer::fromStringOrNull($this->originalData['doctor_id'])->positiveIntOrNull;
-        $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveInt;
-        $this->petId = IntContainer::fromStringOrNull($this->originalData['pet_id'])->positiveInt;
-        $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
-        $this->percent = FloatContainer::fromStringOrNull($this->originalData['percent'])->float;
-        $this->amount = FloatContainer::fromStringOrNull($this->originalData['amount'])->float;
-        $this->status = Status::from($this->originalData['status']);
-        $this->invoiceDate = DateTimeContainer::fromOnlyDateString($this->originalData['invoice_date'])->dateTime;
-        $this->oldId = IntContainer::fromStringOrNull($this->originalData['old_id'])->positiveIntOrNull;
-        $this->night = IntContainer::fromStringOrNull($this->originalData['night'])->positiveIntOrNull;
-        $this->increase = FloatContainer::fromStringOrNull($this->originalData['increase'])->float;
-        $this->discount = FloatContainer::fromStringOrNull($this->originalData['discount'])->float;
-        $this->call = IntContainer::fromStringOrNull($this->originalData['call'])->positiveIntOrNull;
-        $this->paidAmount = FloatContainer::fromStringOrNull($this->originalData['paid_amount'])->float;
-        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTime;
-        $this->paymentStatus = PaymentStatus::from($this->originalData['payment_status']);
-        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
-        $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
-        $this->fiscalSectionId = IntContainer::fromStringOrNull($this->originalData['fiscal_section_id'])->positiveIntOrNull;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->doctorId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
+        $this->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveInt;
+        $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
+        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
+        $this->percent = FloatContainer::fromStringOrNull($originalData['percent'])->float;
+        $this->amount = FloatContainer::fromStringOrNull($originalData['amount'])->float;
+        $this->status = Status::from($originalData['status']);
+        $this->invoiceDate = DateTimeContainer::fromOnlyDateString($originalData['invoice_date'])->dateTime;
+        $this->oldId = IntContainer::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
+        $this->night = IntContainer::fromStringOrNull($originalData['night'])->positiveIntOrNull;
+        $this->increase = FloatContainer::fromStringOrNull($originalData['increase'])->float;
+        $this->discount = FloatContainer::fromStringOrNull($originalData['discount'])->float;
+        $this->call = IntContainer::fromStringOrNull($originalData['call'])->positiveIntOrNull;
+        $this->paidAmount = FloatContainer::fromStringOrNull($originalData['paid_amount'])->float;
+        $this->createDate = DateTimeContainer::fromOnlyDateString($originalData['create_date'])->dateTime;
+        $this->paymentStatus = PaymentStatus::from($originalData['payment_status']);
+        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
+        $this->fiscalSectionId = IntContainer::fromStringOrNull($originalData['fiscal_section_id'])->positiveIntOrNull;
     }
 
     /** @throws VetmanagerApiGatewayException

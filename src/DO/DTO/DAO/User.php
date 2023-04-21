@@ -22,6 +22,7 @@ final class User extends DTO\User implements AllGetRequestsInterface
     public ?DAO\Role $role;
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
     public ?UserPosition $position;
+
     /** @param array{
      *     "id": string,
      *     "last_name": string,
@@ -60,8 +61,8 @@ final class User extends DTO\User implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->role = $this->originalData['role_id'] ? DAO\Role::fromSingleObjectContents($this->apiGateway, $this->originalData['role']) : null;
-        $this->position = $this->originalData['position_id'] ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $this->originalData['position']) : null;
+        $this->role = $originalData['role_id'] ? DAO\Role::fromSingleObjectContents($this->apiGateway, $originalData['role']) : null;
+        $this->position = $originalData['position_id'] ? DAO\UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position']) : null;
     }
 
     /** @return ApiRoute::User */

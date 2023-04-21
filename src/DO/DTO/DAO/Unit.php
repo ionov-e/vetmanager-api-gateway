@@ -34,9 +34,9 @@ final class Unit extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->status = Status::from($this->originalData['status']);
+        $this->id = (int)$originalData['id'];
+        $this->title = (string)$originalData['title'];
+        $this->status = Status::from($originalData['status']);
     }
 
     /** @return ApiRoute::Unit */

@@ -33,6 +33,7 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;
+
     /** @var positive-int */
     public int $id;
     public DateTime $dateCreate;
@@ -54,7 +55,7 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     public ?int $meetResultId;
     /** Может быть просто строка, а может HTML-блок */
     public string $description;
-    /** @var positive-int|null Возможно null никогда не будет. Default: 0 - переводим в null.    LEFT JOIN admission ad ON ad.id = m.next_meet_id   */
+    /** @var positive-int|null Возможно null никогда не будет. Default: 0 - переводим в null.    LEFT JOIN admission ad ON ad.id = m.next_meet_id */
     public ?int $nextMeetId;
     /** @var positive-int|null Возможно null никогда не будет. Default: 0 - переводим в null */
     public ?int $userId;
@@ -126,28 +127,28 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->dateCreate = DateTimeContainer::fromOnlyDateString($this->originalData['date_create'])->dateTime;
-        $this->dateEdit = DateTimeContainer::fromOnlyDateString($this->originalData['date_edit'])->dateTime;
-        $diagnose = ($this->originalData['diagnos'] !== '0') ? (string)$this->originalData['diagnos'] : '';
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->dateCreate = DateTimeContainer::fromOnlyDateString($originalData['date_create'])->dateTime;
+        $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTime;
+        $diagnose = ($originalData['diagnos'] !== '0') ? (string)$originalData['diagnos'] : '';
         $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
-        $this->recommendation = StringContainer::fromStringOrNull($this->originalData['recomendation'])->string;
-        $this->invoiceId = IntContainer::fromStringOrNull($this->originalData['invoice'])->positiveIntOrNull;
-        $this->admissionTypeId = IntContainer::fromStringOrNull($this->originalData['admission_type'])->positiveIntOrNull;
-        $this->weight = FloatContainer::fromStringOrNull($this->originalData['weight'])->floatOrNull;
-        $this->temperature = FloatContainer::fromStringOrNull($this->originalData['temperature'])->floatOrNull;
-        $this->meetResultId = IntContainer::fromStringOrNull($this->originalData['meet_result_id'])->positiveIntOrNull;
-        $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
-        $this->nextMeetId = IntContainer::fromStringOrNull($this->originalData['next_meet_id'])->positiveIntOrNull;
-        $this->userId = IntContainer::fromStringOrNull($this->originalData['doctor_id'])->positiveIntOrNull;
-        $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
-        $this->status = Status::from($this->originalData['status']);
-        $this->callingId = IntContainer::fromStringOrNull($this->originalData['calling_id'])->positiveIntOrNull;
-        $this->admissionId = IntContainer::fromStringOrNull($this->originalData['admission_id'])->positiveIntOrNull;
-        $this->diagnoseText = StringContainer::fromStringOrNull($this->originalData['diagnos_text'])->string;
-        $this->diagnoseTypeText = StringContainer::fromStringOrNull($this->originalData['diagnos_type_text'])->string;
-        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
-        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['patient']);
+        $this->recommendation = StringContainer::fromStringOrNull($originalData['recomendation'])->string;
+        $this->invoiceId = IntContainer::fromStringOrNull($originalData['invoice'])->positiveIntOrNull;
+        $this->admissionTypeId = IntContainer::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
+        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->floatOrNull;
+        $this->temperature = FloatContainer::fromStringOrNull($originalData['temperature'])->floatOrNull;
+        $this->meetResultId = IntContainer::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
+        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
+        $this->nextMeetId = IntContainer::fromStringOrNull($originalData['next_meet_id'])->positiveIntOrNull;
+        $this->userId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
+        $this->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
+        $this->status = Status::from($originalData['status']);
+        $this->callingId = IntContainer::fromStringOrNull($originalData['calling_id'])->positiveIntOrNull;
+        $this->admissionId = IntContainer::fromStringOrNull($originalData['admission_id'])->positiveIntOrNull;
+        $this->diagnoseText = StringContainer::fromStringOrNull($originalData['diagnos_text'])->string;
+        $this->diagnoseTypeText = StringContainer::fromStringOrNull($originalData['diagnos_type_text'])->string;
+        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $originalData['patient']);
     }
 
     /** @return ApiRoute::MedicalCard */

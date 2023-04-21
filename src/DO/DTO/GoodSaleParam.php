@@ -60,21 +60,21 @@ class GoodSaleParam extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->goodId = IntContainer::fromStringOrNull($this->originalData['good_id'])->positiveIntOrNull;
-        $this->price = FloatContainer::fromStringOrNull($this->originalData['price'])->floatOrNull;
-        $this->coefficient = FloatContainer::fromStringOrNull($this->originalData['coefficient'])->float;
-        $this->unitSaleId = IntContainer::fromStringOrNull($this->originalData['unit_sale_id'])->positiveIntOrNull;
-        $this->minPriceInPercents = FloatContainer::fromStringOrNull($this->originalData['min_price'])->floatOrNull;
-        $this->maxPriceInPercents = FloatContainer::fromStringOrNull($this->originalData['max_price'])->floatOrNull;
-        $this->barcode = StringContainer::fromStringOrNull($this->originalData['barcode'])->string;
-        $this->status = Status::from($this->originalData['status']);
-        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
-        $this->markup = FloatContainer::fromStringOrNull($this->originalData['markup'])->floatOrNull;
-        $this->priceFormation = PriceFormation::from($this->originalData['price_formation']);
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
+        $this->price = FloatContainer::fromStringOrNull($originalData['price'])->floatOrNull;
+        $this->coefficient = FloatContainer::fromStringOrNull($originalData['coefficient'])->float;
+        $this->unitSaleId = IntContainer::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
+        $this->minPriceInPercents = FloatContainer::fromStringOrNull($originalData['min_price'])->floatOrNull;
+        $this->maxPriceInPercents = FloatContainer::fromStringOrNull($originalData['max_price'])->floatOrNull;
+        $this->barcode = StringContainer::fromStringOrNull($originalData['barcode'])->string;
+        $this->status = Status::from($originalData['status']);
+        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
+        $this->priceFormation = PriceFormation::from($originalData['price_formation']);
 
-        $this->unit = !empty($this->originalData['unitSale'])
-            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitSale'])
+        $this->unit = !empty($originalData['unitSale'])
+            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitSale'])
             : null;
     }
 

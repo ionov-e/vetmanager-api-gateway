@@ -181,14 +181,14 @@ final class Invoice extends DTO\Invoice implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->client = DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
-        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']);
-        $this->petBreed = DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data']);
-        $this->petType = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data']);
-        $this->doctor = DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor']);
+        $this->client = DTO\Client::fromSingleObjectContents($this->apiGateway, $originalData['client']);
+        $this->pet = DTO\Pet::fromSingleObjectContents($this->apiGateway, $originalData['pet']);
+        $this->petBreed = DTO\Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data']);
+        $this->petType = DTO\PetType::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data']);
+        $this->doctor = DTO\User::fromSingleObjectContents($this->apiGateway, $originalData['doctor']);
         $this->invoiceDocuments = DTO\InvoiceDocument::fromMultipleObjectsContents(
             $this->apiGateway,
-            $this->originalData['invoiceDocuments']
+            $originalData['invoiceDocuments']
         );
     }
 

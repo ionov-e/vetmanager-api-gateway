@@ -65,20 +65,20 @@ class Good extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->groupId = IntContainer::fromStringOrNull($this->originalData['group_id'])->positiveIntOrNull;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
-        $this->unitStorageId = IntContainer::fromStringOrNull($this->originalData['unit_storage_id'])->positiveIntOrNull;
-        $this->isWarehouseAccount = BoolContainer::fromStringOrNull($this->originalData['is_warehouse_account'])->bool;
-        $this->isActive = BoolContainer::fromStringOrNull($this->originalData['is_active'])->bool;
-        $this->code = StringContainer::fromStringOrNull($this->originalData['code'])->string;
-        $this->isCall = BoolContainer::fromStringOrNull($this->originalData['is_call'])->bool;
-        $this->isForSale = BoolContainer::fromStringOrNull($this->originalData['is_for_sale'])->bool;
-        $this->barcode = StringContainer::fromStringOrNull($this->originalData['barcode'])->string;
-        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTimeOrNull;
-        $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
-        $this->primeCost = FloatContainer::fromStringOrNull($this->originalData['prime_cost'])->float;
-        $this->categoryId = IntContainer::fromStringOrNull($this->originalData['category_id'])->positiveIntOrNull;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->groupId = IntContainer::fromStringOrNull($originalData['group_id'])->positiveIntOrNull;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->unitStorageId = IntContainer::fromStringOrNull($originalData['unit_storage_id'])->positiveIntOrNull;
+        $this->isWarehouseAccount = BoolContainer::fromStringOrNull($originalData['is_warehouse_account'])->bool;
+        $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
+        $this->code = StringContainer::fromStringOrNull($originalData['code'])->string;
+        $this->isCall = BoolContainer::fromStringOrNull($originalData['is_call'])->bool;
+        $this->isForSale = BoolContainer::fromStringOrNull($originalData['is_for_sale'])->bool;
+        $this->barcode = StringContainer::fromStringOrNull($originalData['barcode'])->string;
+        $this->createDate = DateTimeContainer::fromOnlyDateString($originalData['create_date'])->dateTimeOrNull;
+        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
+        $this->primeCost = FloatContainer::fromStringOrNull($originalData['prime_cost'])->float;
+        $this->categoryId = IntContainer::fromStringOrNull($originalData['category_id'])->positiveIntOrNull;
     }
 
     /** @throws VetmanagerApiGatewayException */

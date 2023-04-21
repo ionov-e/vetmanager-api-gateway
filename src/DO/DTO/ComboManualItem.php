@@ -52,14 +52,14 @@ class ComboManualItem extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->comboManualId = IntContainer::fromStringOrNull($this->originalData['combo_manual_id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
-        $this->value = StringContainer::fromStringOrNull($this->originalData['value'])->string;
-        $this->dopParam1 = StringContainer::fromStringOrNull($this->originalData['dop_param1'])->string;
-        $this->dopParam2 = StringContainer::fromStringOrNull($this->originalData['dop_param2'])->string;
-        $this->dopParam3 = StringContainer::fromStringOrNull($this->originalData['dop_param3'])->string;
-        $this->isActive = BoolContainer::fromStringOrNull($this->originalData['is_active'])->bool;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->comboManualId = IntContainer::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->value = StringContainer::fromStringOrNull($originalData['value'])->string;
+        $this->dopParam1 = StringContainer::fromStringOrNull($originalData['dop_param1'])->string;
+        $this->dopParam2 = StringContainer::fromStringOrNull($originalData['dop_param2'])->string;
+        $this->dopParam3 = StringContainer::fromStringOrNull($originalData['dop_param3'])->string;
+        $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
     }
 
     /** @throws VetmanagerApiGatewayException

@@ -24,6 +24,7 @@ final class ComboManualName extends DTO\ComboManualName implements AllGetRequest
 
     /** @var \VetmanagerApiGateway\DO\DTO\ComboManualItem[] $comboManualItems */
     public array $comboManualItems;
+
     /** @param array{
      *       "id": string,
      *       "title": string,
@@ -49,7 +50,7 @@ final class ComboManualName extends DTO\ComboManualName implements AllGetRequest
 
         $this->comboManualItems = DTO\ComboManualItem::fromMultipleObjectsContents(
             $this->apiGateway,
-            $this->originalData['comboManualItems']
+            $originalData['comboManualItems']
         );
     }
 

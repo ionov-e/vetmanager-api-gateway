@@ -35,9 +35,9 @@ final class UserPosition extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->admissionLength = (DateIntervalContainer::fromStringHMS($this->originalData['admission_length']))->dateIntervalOrNull;
+        $this->id = (int)$originalData['id'];
+        $this->title = (string)$originalData['title'];
+        $this->admissionLength = (DateIntervalContainer::fromStringHMS($originalData['admission_length']))->dateIntervalOrNull;
     }
 
     /** @return ApiRoute::UserPosition */

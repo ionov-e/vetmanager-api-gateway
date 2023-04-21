@@ -48,11 +48,11 @@ final class Street extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->cityId = (int)$this->originalData['city_id'];
-        $this->type = Type::from($this->originalData['type']);
-        $this->city = $this->originalData['city_id'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $this->originalData['city']) : null;
+        $this->id = (int)$originalData['id'];
+        $this->title = (string)$originalData['title'];
+        $this->cityId = (int)$originalData['city_id'];
+        $this->type = Type::from($originalData['type']);
+        $this->city = $originalData['city_id'] ? DAO\City::fromSingleObjectContents($this->apiGateway, $originalData['city']) : null;
     }
 
     /** @return ApiRoute::Street */

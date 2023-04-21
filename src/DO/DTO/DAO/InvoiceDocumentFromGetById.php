@@ -40,6 +40,7 @@ final class InvoiceDocumentFromGetById extends DTO\InvoiceDocument implements Re
     public array $partyInfo;
     public DTO\Invoice $invoice;
     public DTO\Good $good;
+
     /** @param array{
      *     "id": numeric-string,
      *     "document_id": string,
@@ -124,19 +125,20 @@ final class InvoiceDocumentFromGetById extends DTO\InvoiceDocument implements Re
      *     "min_price_percent": float,
      *     "max_price_percent": float
      * } $originalData
-     * @throws VetmanagerApiGatewayException */
+     * @throws VetmanagerApiGatewayException
+     */
     public function __construct(protected ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->minPrice = FloatContainer::fromStringOrNull((string)$this->originalData['min_price'])->float;
-        $this->maxPrice = FloatContainer::fromStringOrNull((string)$this->originalData['max_price'])->float;
-        $this->minPriceInPercents = FloatContainer::fromStringOrNull((string)$this->originalData['min_price_percent'])->float;
-        $this->maxPriceInPercents = FloatContainer::fromStringOrNull((string)$this->originalData['max_price_percent'])->float;
-        $this->partyInfo = (array) $this->originalData['party_info'];
+        $this->minPrice = FloatContainer::fromStringOrNull((string)$originalData['min_price'])->float;
+        $this->maxPrice = FloatContainer::fromStringOrNull((string)$originalData['max_price'])->float;
+        $this->minPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['min_price_percent'])->float;
+        $this->maxPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['max_price_percent'])->float;
+        $this->partyInfo = (array)$originalData['party_info'];
 
-        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
-        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
+        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $originalData['document']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
     /** @return ApiRoute::InvoiceDocument */

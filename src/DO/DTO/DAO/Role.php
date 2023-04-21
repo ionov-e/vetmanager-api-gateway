@@ -33,9 +33,9 @@ final class Role extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->name = (string)$this->originalData['name'];
-        $this->isSuper = (bool)$this->originalData['super'];
+        $this->id = (int)$originalData['id'];
+        $this->name = (string)$originalData['name'];
+        $this->isSuper = (bool)$originalData['super'];
     }
 
     /** @return ApiRoute::Role */

@@ -34,9 +34,9 @@ class Breed extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->stringOrThrowIfNull;
-        $this->typeId = IntContainer::fromStringOrNull($this->originalData['pet_type_id'])->positiveInt;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->stringOrThrowIfNull;
+        $this->typeId = IntContainer::fromStringOrNull($originalData['pet_type_id'])->positiveInt;
     }
 
     /** @throws VetmanagerApiGatewayException

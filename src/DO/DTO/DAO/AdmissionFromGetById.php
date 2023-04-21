@@ -173,11 +173,11 @@ final class AdmissionFromGetById extends DTO\Admission implements RequestGetById
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->user = !empty($this->originalData['doctor_data'])
-            ? DTO\User::fromSingleObjectContents($this->apiGateway, $this->originalData['doctor_data'])
+        $this->user = !empty($originalData['doctor_data'])
+            ? DTO\User::fromSingleObjectContents($this->apiGateway, $originalData['doctor_data'])
             : null;
-        $this->type = !empty($this->originalData['admission_type_data'])
-            ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['admission_type_data'])
+        $this->type = !empty($originalData['admission_type_data'])
+            ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $originalData['admission_type_data'])
             : null;
     }
 }

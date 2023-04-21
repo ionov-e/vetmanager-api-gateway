@@ -39,7 +39,7 @@ final class Clinic extends AbstractDTO implements AllGetRequestsInterface
     /** @var positive-int|null Default: '0' - переводим в null */
     public ?int $guestClientId;
     /** Пример: "Europe/Kiev" */
-    public ?string $timeZone;
+    public string $timeZone;
     /** Default: '' */
     public string $logoUrl;
     public Status $status;
@@ -49,6 +49,7 @@ final class Clinic extends AbstractDTO implements AllGetRequestsInterface
     public string $whatsapp;
     /** Default: '' */
     public string $email;
+
     /** @param array{
      *     "id": string,
      *     "title": ?string,
@@ -72,21 +73,21 @@ final class Clinic extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
-        $this->address = StringContainer::fromStringOrNull($this->originalData['address'])->string;
-        $this->phone = StringContainer::fromStringOrNull($this->originalData['phone'])->string;
-        $this->cityId = IntContainer::fromStringOrNull($this->originalData['city_id'])->positiveIntOrNull;
-        $this->startTime = StringContainer::fromStringOrNull($this->originalData['start_time'])->string;
-        $this->endTime = StringContainer::fromStringOrNull($this->originalData['end_time'])->string;
-        $this->internetAddress = StringContainer::fromStringOrNull($this->originalData['internet_address'])->string;
-        $this->guestClientId = IntContainer::fromStringOrNull($this->originalData['guest_client_id'])->positiveIntOrNull;
-        $this->timeZone = $this->originalData['time_zone'] ? (string)$this->originalData['time_zone'] : null;
-        $this->logoUrl = StringContainer::fromStringOrNull($this->originalData['logo_url'])->string;
-        $this->status = Status::from($this->originalData['status']);
-        $this->telegram = StringContainer::fromStringOrNull($this->originalData['telegram'])->string;
-        $this->whatsapp = StringContainer::fromStringOrNull($this->originalData['whatsapp'])->string;
-        $this->email = StringContainer::fromStringOrNull($this->originalData['email'])->string;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
+        $this->phone = StringContainer::fromStringOrNull($originalData['phone'])->string;
+        $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
+        $this->startTime = StringContainer::fromStringOrNull($originalData['start_time'])->string;
+        $this->endTime = StringContainer::fromStringOrNull($originalData['end_time'])->string;
+        $this->internetAddress = StringContainer::fromStringOrNull($originalData['internet_address'])->string;
+        $this->guestClientId = IntContainer::fromStringOrNull($originalData['guest_client_id'])->positiveIntOrNull;
+        $this->timeZone = StringContainer::fromStringOrNull($originalData['time_zone'])->string;
+        $this->logoUrl = StringContainer::fromStringOrNull($originalData['logo_url'])->string;
+        $this->status = Status::from($originalData['status']);
+        $this->telegram = StringContainer::fromStringOrNull($originalData['telegram'])->string;
+        $this->whatsapp = StringContainer::fromStringOrNull($originalData['whatsapp'])->string;
+        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
     }
 
     /** @return ApiRoute::Clinic */

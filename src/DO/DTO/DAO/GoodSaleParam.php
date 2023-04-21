@@ -61,7 +61,7 @@ final class GoodSaleParam extends DTO\GoodSaleParam implements AllGetRequestsInt
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
     /** @return ApiRoute::GoodSaleParam */

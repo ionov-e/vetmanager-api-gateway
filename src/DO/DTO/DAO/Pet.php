@@ -30,6 +30,7 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
     public ?Breed $breed;
     /** Уже получен */
     public ?DTO\ComboManualItem $color;
+
     /**
      * @param array{
      * "id": string,
@@ -111,10 +112,10 @@ final class Pet extends DTO\Pet implements AllGetRequestsInterface
     {
         parent::__construct($api, $originalData);
 
-        $this->client = !empty($this->originalData['owner']) ? DTO\Client::fromSingleObjectContents($this->apiGateway, $this->originalData['owner']) : null;
-        $this->type = !empty($this->originalData['type']) ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['type']) : null;
-        $this->breed = !empty($this->originalData['breed']) ? DAO\Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedDao()) : null;
-        $this->color = !empty($this->originalData['color']) ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $this->originalData['color']) : null;
+        $this->client = !empty($originalData['owner']) ? DTO\Client::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
+        $this->type = !empty($originalData['type']) ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
+        $this->breed = !empty($originalData['breed']) ? DAO\Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedDao()) : null;
+        $this->color = !empty($originalData['color']) ? DTO\ComboManualItem::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
     }
 
     private function getDataForBreedDao(): array

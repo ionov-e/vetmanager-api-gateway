@@ -82,26 +82,26 @@ class User extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->lastName = StringContainer::fromStringOrNull($this->originalData['last_name'])->string;
-        $this->firstName = StringContainer::fromStringOrNull($this->originalData['first_name'])->string;
-        $this->middleName = StringContainer::fromStringOrNull($this->originalData['middle_name'])->string;
-        $this->login = StringContainer::fromStringOrNull($this->originalData['login'])->string;
-        $this->password = StringContainer::fromStringOrNull($this->originalData['passwd'])->string;
-        $this->positionId = IntContainer::fromStringOrNull($this->originalData['position_id'])->positiveInt;
-        $this->email = StringContainer::fromStringOrNull($this->originalData['email'])->string;
-        $this->phone = StringContainer::fromStringOrNull($this->originalData['phone'])->string;
-        $this->cellPhone = StringContainer::fromStringOrNull($this->originalData['cell_phone'])->string;
-        $this->address = StringContainer::fromStringOrNull($this->originalData['address'])->string;
-        $this->roleId = IntContainer::fromStringOrNull($this->originalData['role_id'])->positiveIntOrNull;
-        $this->isActive = BoolContainer::fromStringOrNull($this->originalData['is_active'])->bool;
-        $this->isPercentCalculated = BoolContainer::fromStringOrNull($this->originalData['calc_percents'])->bool;
-        $this->nickname = StringContainer::fromStringOrNull($this->originalData['nickname'])->string;
-        $this->lastChangePwdDate = DateTimeContainer::fromOnlyDateString($this->originalData['last_change_pwd_date'])->dateTime;
-        $this->isLimited = BoolContainer::fromStringOrNull($this->originalData['is_limited'])->bool;
-        $this->carrotquestId = StringContainer::fromStringOrNull($this->originalData['carrotquest_id'])->string;
-        $this->sipNumber = StringContainer::fromStringOrNull($this->originalData['sip_number'])->string;
-        $this->userInn = StringContainer::fromStringOrNull($this->originalData['user_inn'])->string;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->lastName = StringContainer::fromStringOrNull($originalData['last_name'])->string;
+        $this->firstName = StringContainer::fromStringOrNull($originalData['first_name'])->string;
+        $this->middleName = StringContainer::fromStringOrNull($originalData['middle_name'])->string;
+        $this->login = StringContainer::fromStringOrNull($originalData['login'])->string;
+        $this->password = StringContainer::fromStringOrNull($originalData['passwd'])->string;
+        $this->positionId = IntContainer::fromStringOrNull($originalData['position_id'])->positiveInt;
+        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
+        $this->phone = StringContainer::fromStringOrNull($originalData['phone'])->string;
+        $this->cellPhone = StringContainer::fromStringOrNull($originalData['cell_phone'])->string;
+        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
+        $this->roleId = IntContainer::fromStringOrNull($originalData['role_id'])->positiveIntOrNull;
+        $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
+        $this->isPercentCalculated = BoolContainer::fromStringOrNull($originalData['calc_percents'])->bool;
+        $this->nickname = StringContainer::fromStringOrNull($originalData['nickname'])->string;
+        $this->lastChangePwdDate = DateTimeContainer::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTime;
+        $this->isLimited = BoolContainer::fromStringOrNull($originalData['is_limited'])->bool;
+        $this->carrotquestId = StringContainer::fromStringOrNull($originalData['carrotquest_id'])->string;
+        $this->sipNumber = StringContainer::fromStringOrNull($originalData['sip_number'])->string;
+        $this->userInn = StringContainer::fromStringOrNull($originalData['user_inn'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException */

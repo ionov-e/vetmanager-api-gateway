@@ -32,10 +32,10 @@ class PetType extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
-        $this->picture = StringContainer::fromStringOrNull($this->originalData['picture'])->string;
-        $this->type = StringContainer::fromStringOrNull($this->originalData['type'])->string;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
+        $this->type = StringContainer::fromStringOrNull($originalData['type'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException */

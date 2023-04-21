@@ -79,10 +79,10 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->group = DAO\GoodGroup::fromSingleObjectContents($this->apiGateway, $this->originalData['group']);
+        $this->group = DAO\GoodGroup::fromSingleObjectContents($this->apiGateway, $originalData['group']);
 
-        $this->unit = !empty($this->originalData['unitStorage'])
-            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $this->originalData['unitStorage'])
+        $this->unit = !empty($originalData['unitStorage'])
+            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitStorage'])
             : null;
 
         $this->goodSaleParams = DAO\GoodSaleParam::fromMultipleObjectsContents(
@@ -94,7 +94,7 @@ final class Good extends DTO\Good implements AllGetRequestsInterface
     private function getContentsForGoodSaleParamDAOs(): array
     {
         return array_map(
-            fn (array $goodSaleParamObject): array => array_merge(
+            fn(array $goodSaleParamObject): array => array_merge(
                 $goodSaleParamObject,
                 !empty($this->originalData['unitStorage']) ? ['unitSale' => $this->originalData['unitStorage']] : [],
                 ['good' => $this->getOnlyGoodContentsArray()]

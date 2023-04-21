@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DTO\AbstractDTO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\IntContainer;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class GoodGroup extends AbstractDTO implements AllGetRequestsInterface
@@ -40,12 +44,12 @@ final class GoodGroup extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->title = (string)$this->originalData['title'];
-        $this->priceId = $this->originalData['price_id'] ? (int)$this->originalData['price_id'] : null;
-        $this->isService = (bool)$this->originalData['is_service'];
-        $this->markup = $this->originalData['markup'] ? (float)$this->originalData['markup'] : null;
-        $this->isShowInVaccines = (bool)$this->originalData['is_show_in_vaccines'];
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->priceId = IntContainer::fromStringOrNull($originalData['price_id'])->positiveIntOrNull;
+        $this->isService = BoolContainer::fromStringOrNull($originalData['is_service'])->bool;
+        $this->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
+        $this->isShowInVaccines = BoolContainer::fromStringOrNull($originalData['is_show_in_vaccines'])->bool;
     }
 
     /** @return ApiRoute::GoodGroup */

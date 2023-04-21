@@ -22,6 +22,7 @@ final class InvoiceDocumentFromGetAll extends DTO\InvoiceDocument implements Req
 
     public DTO\Invoice $invoice;
     public DTO\Good $good;
+
     /** @param array{
      *     "id": numeric-string,
      *     "document_id": string,
@@ -107,8 +108,8 @@ final class InvoiceDocumentFromGetAll extends DTO\InvoiceDocument implements Req
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $this->originalData['document']);
-        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $this->originalData['good']);
+        $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $originalData['document']);
+        $this->good = DTO\Good::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
     /** @return ApiRoute::InvoiceDocument */

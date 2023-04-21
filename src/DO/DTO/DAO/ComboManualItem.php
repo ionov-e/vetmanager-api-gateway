@@ -44,7 +44,7 @@ final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequest
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualName = DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $this->originalData['comboManualName']);
+        $this->comboManualName = DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $originalData['comboManualName']);
     }
 
     /**

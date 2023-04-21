@@ -42,11 +42,11 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = (int)$this->originalData['id'];
-        $this->name = (string)$this->originalData['property_name'];
-        $this->value = (string)$this->originalData['property_value'];
-        $this->title = $this->originalData['property_title'] ? (string)$this->originalData['property_title'] : null;
-        $this->clinicId = (int)$this->originalData['clinic_id'];
+        $this->id = (int)$originalData['id'];
+        $this->name = (string)$originalData['property_name'];
+        $this->value = (string)$originalData['property_value'];
+        $this->title = $originalData['property_title'] ? (string)$originalData['property_title'] : null;
+        $this->clinicId = (int)$originalData['clinic_id'];
     }
 
     /**

@@ -95,23 +95,23 @@ final class MedicalCardAsVaccination extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->vaccineId = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->name = StringContainer::fromStringOrNull($this->originalData['name'])->string;
-        $this->petId = IntContainer::fromStringOrNull($this->originalData['pet_id'])->positiveInt;
-        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['date'])->dateTimeOrNull;
-        $dateTimeService = DateTimeContainer::fromFullDateTimeString($this->originalData['date_nexttime']);
+        $this->vaccineId = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
+        $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
+        $this->date = DateTimeContainer::fromFullDateTimeString($originalData['date'])->dateTimeOrNull;
+        $dateTimeService = DateTimeContainer::fromFullDateTimeString($originalData['date_nexttime']);
         $this->nextDateTime = $dateTimeService->dateTimeOrNull;
         $this->isTimePresentInNextDateTime = $dateTimeService->isTimePresent();
-        $this->goodId = IntContainer::fromStringOrNull($this->originalData['vaccine_id'])->positiveInt;
-        $this->medcardId = IntContainer::fromStringOrNull($this->originalData['medcard_id'])->positiveInt;
-        $this->doseTypeId = IntContainer::fromStringOrNull($this->originalData['doza_type_id'])->positiveInt;
-        $this->doseValue = FloatContainer::fromStringOrNull($this->originalData['doza_value'])->float;
-        $this->saleParamId = IntContainer::fromStringOrNull($this->originalData['sale_param_id'])->positiveInt;
-        $this->vaccineType = IntContainer::fromStringOrNull($this->originalData['vaccine_type'])->positiveIntOrNull;
-        $this->vaccineDescription = StringContainer::fromStringOrNull($this->originalData['vaccine_description'])->string;
-        $this->vaccineTypeTitle = StringContainer::fromStringOrNull($this->originalData['vaccine_type_title'])->string;
-        $this->nextAdmissionId = IntContainer::fromStringOrNull($this->originalData['next_admission_id'])->positiveIntOrNull;
-        $this->petBirthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
+        $this->goodId = IntContainer::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
+        $this->medcardId = IntContainer::fromStringOrNull($originalData['medcard_id'])->positiveInt;
+        $this->doseTypeId = IntContainer::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
+        $this->doseValue = FloatContainer::fromStringOrNull($originalData['doza_value'])->float;
+        $this->saleParamId = IntContainer::fromStringOrNull($originalData['sale_param_id'])->positiveInt;
+        $this->vaccineType = IntContainer::fromStringOrNull($originalData['vaccine_type'])->positiveIntOrNull;
+        $this->vaccineDescription = StringContainer::fromStringOrNull($originalData['vaccine_description'])->string;
+        $this->vaccineTypeTitle = StringContainer::fromStringOrNull($originalData['vaccine_type_title'])->string;
+        $this->nextAdmissionId = IntContainer::fromStringOrNull($originalData['next_admission_id'])->positiveIntOrNull;
+        $this->petBirthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }

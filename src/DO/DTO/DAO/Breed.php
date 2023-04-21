@@ -37,7 +37,7 @@ final class Breed extends DTO\Breed implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->type = DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['petType']);
+        $this->type = DTO\PetType::fromSingleObjectContents($this->apiGateway, $originalData['petType']);
     }
 
     /** @return ApiRoute::Breed */

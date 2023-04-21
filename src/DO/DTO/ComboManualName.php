@@ -35,10 +35,10 @@ class ComboManualName extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($this->originalData['title'])->string;
-        $this->isReadonly = BoolContainer::fromStringOrNull($this->originalData['is_readonly'])->bool;
-        $this->name = StringContainer::fromStringOrNull($this->originalData['name'])->string;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->isReadonly = BoolContainer::fromStringOrNull($originalData['is_readonly'])->bool;
+        $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException

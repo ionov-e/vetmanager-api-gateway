@@ -88,25 +88,25 @@ class Pet extends AbstractDTO
     {
         parent::__construct($api, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->ownerId = IntContainer::fromStringOrNull($this->originalData['owner_id'])->positiveInt;
-        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
-        $this->alias = StringContainer::fromStringOrNull($this->originalData['alias'])->string;
-        $this->sex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
-        $this->dateRegister = DateTimeContainer::fromOnlyDateString($this->originalData['date_register'])->dateTime;
-        $this->birthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
-        $this->note = StringContainer::fromStringOrNull($this->originalData['note'])->string;
-        $this->breedId = IntContainer::fromStringOrNull($this->originalData['breed_id'])->positiveIntOrNull;
-        $this->oldId = IntContainer::fromStringOrNull($this->originalData['old_id'])->positiveIntOrNull;
-        $this->colorId = IntContainer::fromStringOrNull($this->originalData['color_id'])->positiveIntOrNull;
-        $this->deathNote = StringContainer::fromStringOrNull($this->originalData['deathnote'])->string;
-        $this->deathDate = StringContainer::fromStringOrNull($this->originalData['deathdate'])->string;
-        $this->chipNumber = StringContainer::fromStringOrNull($this->originalData['chip_number'])->string;
-        $this->labNumber = StringContainer::fromStringOrNull($this->originalData['lab_number'])->string;
-        $this->status = Status::from($this->originalData['status']);
-        $this->picture = StringContainer::fromStringOrNull($this->originalData['picture'])->string;
-        $this->weight = FloatContainer::fromStringOrNull($this->originalData['weight'])->nonZeroFloatOrNull;
-        $this->editDate = DateTimeContainer::fromOnlyDateString($this->originalData['edit_date'])->dateTime;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->ownerId = IntContainer::fromStringOrNull($originalData['owner_id'])->positiveInt;
+        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $this->alias = StringContainer::fromStringOrNull($originalData['alias'])->string;
+        $this->sex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
+        $this->dateRegister = DateTimeContainer::fromOnlyDateString($originalData['date_register'])->dateTime;
+        $this->birthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $this->note = StringContainer::fromStringOrNull($originalData['note'])->string;
+        $this->breedId = IntContainer::fromStringOrNull($originalData['breed_id'])->positiveIntOrNull;
+        $this->oldId = IntContainer::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
+        $this->colorId = IntContainer::fromStringOrNull($originalData['color_id'])->positiveIntOrNull;
+        $this->deathNote = StringContainer::fromStringOrNull($originalData['deathnote'])->string;
+        $this->deathDate = StringContainer::fromStringOrNull($originalData['deathdate'])->string;
+        $this->chipNumber = StringContainer::fromStringOrNull($originalData['chip_number'])->string;
+        $this->labNumber = StringContainer::fromStringOrNull($originalData['lab_number'])->string;
+        $this->status = Status::from($originalData['status']);
+        $this->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
+        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->nonZeroFloatOrNull;
+        $this->editDate = DateTimeContainer::fromOnlyDateString($originalData['edit_date'])->dateTime;
     }
 
     /** @throws VetmanagerApiGatewayException

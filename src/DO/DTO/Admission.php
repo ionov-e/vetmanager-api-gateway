@@ -183,38 +183,38 @@ class Admission extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->date = DateTimeContainer::fromFullDateTimeString($this->originalData['admission_date'])->dateTimeOrNull;
-        $this->description = StringContainer::fromStringOrNull($this->originalData['description'])->string;
-        $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
-        $this->petId = IntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
-        $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
-        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
-        $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalOrNull;
-        $this->status = $this->originalData['status'] ? Status::from($this->originalData['status']) : null;
-        $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
-        $this->isDirectDirection = BoolContainer::fromStringOrNull($this->originalData['direct_direction'])->bool;
-        $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;
-        $this->createDate = DateTimeContainer::fromFullDateTimeString($this->originalData['create_date'])->dateTimeOrNull;
-        $this->escorterId = IntContainer::fromStringOrNull($this->originalData['escorter_id'])->positiveIntOrNull;
-        $this->receptionWriteChannel = StringContainer::fromStringOrNull($this->originalData['reception_write_channel'])->string;
-        $this->isAutoCreate = BoolContainer::fromStringOrNull($this->originalData['is_auto_create'])->bool;
-        $this->invoicesSum = FloatContainer::fromStringOrNull($this->originalData['invoices_sum'])->float;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->date = DateTimeContainer::fromFullDateTimeString($originalData['admission_date'])->dateTimeOrNull;
+        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
+        $this->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveIntOrNull;
+        $this->petId = IntContainer::fromStringOrNull($originalData['patient_id'])->positiveIntOrNull;
+        $this->userId = IntContainer::fromStringOrNull($originalData['user_id'])->positiveIntOrNull;
+        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $this->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
+        $this->status = $originalData['status'] ? Status::from($originalData['status']) : null;
+        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->isDirectDirection = BoolContainer::fromStringOrNull($originalData['direct_direction'])->bool;
+        $this->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
+        $this->createDate = DateTimeContainer::fromFullDateTimeString($originalData['create_date'])->dateTimeOrNull;
+        $this->escorterId = IntContainer::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
+        $this->receptionWriteChannel = StringContainer::fromStringOrNull($originalData['reception_write_channel'])->string;
+        $this->isAutoCreate = BoolContainer::fromStringOrNull($originalData['is_auto_create'])->bool;
+        $this->invoicesSum = FloatContainer::fromStringOrNull($originalData['invoices_sum'])->float;
 
-        $this->pet = !empty($this->originalData['pet'])
-            ? DTO\Pet::fromSingleObjectContents($this->apiGateway, $this->originalData['pet'])
+        $this->pet = !empty($originalData['pet'])
+            ? DTO\Pet::fromSingleObjectContents($this->apiGateway, $originalData['pet'])
             : null;
-        $this->petType = !empty($this->originalData['pet']['pet_type_data'])
-            ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['pet_type_data'])
+        $this->petType = !empty($originalData['pet']['pet_type_data'])
+            ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data'])
             : null;
-        $this->petBreed = !empty($this->originalData['pet']['breed_data'])
-            ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $this->originalData['pet']['breed_data'])
+        $this->petBreed = !empty($originalData['pet']['breed_data'])
+            ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data'])
             : null;
-        $this->client = Client::fromSingleObjectContents($this->apiGateway, $this->originalData['client']);
-        $this->waitTime = StringContainer::fromStringOrNull($this->originalData['wait_time'])->string;
+        $this->client = Client::fromSingleObjectContents($this->apiGateway, $originalData['client']);
+        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'])->string;
         $this->invoices = Invoice::fromMultipleObjectsContents(
             $this->apiGateway,
-            $this->originalData['invoices'] ?? []
+            $originalData['invoices'] ?? []
         );
     }
 

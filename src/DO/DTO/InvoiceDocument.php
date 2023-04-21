@@ -107,28 +107,28 @@ class InvoiceDocument extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->documentId = IntContainer::fromStringOrNull($this->originalData['document_id'])->positiveInt;
-        $this->goodId = IntContainer::fromStringOrNull($this->originalData['good_id'])->positiveInt;
-        $this->quantity = FloatContainer::fromStringOrNull((string)$this->originalData['quantity'])->floatOrNull;
-        $this->price = FloatContainer::fromStringOrNull((string)$this->originalData['price'])->float;
-        $this->responsibleUserId = IntContainer::fromStringOrNull($this->originalData['responsible_user_id'])->positiveIntOrNull;
-        $this->isDefaultResponsible = BoolContainer::fromStringOrNull($this->originalData['is_default_responsible'])->bool;
-        $this->saleParamId = IntContainer::fromStringOrNull($this->originalData['sale_param_id'])->positiveIntOrNull;
-        $this->tagId = IntContainer::fromStringOrNull($this->originalData['tag_id'])->positiveIntOrNull;
-        $this->discountType = $this->originalData['discount_type'] ? DiscountType::from($this->originalData['discount_type']) : null;
-        $this->discountDocumentId = IntContainer::fromStringOrNull($this->originalData['discount_document_id'])->positiveIntOrNull;
-        $this->discountPercent = FloatContainer::fromStringOrNull($this->originalData['discount_percent'])->floatOrNull;
-        $this->defaultPrice = FloatContainer::fromStringOrNull($this->originalData['default_price'])->float;
-        $this->createDate = DateTimeContainer::fromOnlyDateString($this->originalData['create_date'])->dateTime;
-        $this->discountCause = StringContainer::fromStringOrNull($this->originalData['discount_cause'])->string;
-        $this->fixedDiscountId = IntContainer::fromStringOrNull($this->originalData['fixed_discount_id'])->positiveIntOrNull;
-        $this->fixedDiscountPercent = IntContainer::fromStringOrNull($this->originalData['fixed_discount_percent'])->positiveIntOrNull;
-        $this->fixedIncreaseId = IntContainer::fromStringOrNull($this->originalData['fixed_increase_id'])->positiveIntOrNull;
-        $this->fixedIncreasePercent = IntContainer::fromStringOrNull($this->originalData['fixed_increase_percent'])->positiveIntOrNull;
-        $this->primeCost = FloatContainer::fromStringOrNull($this->originalData['prime_cost'])->float;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->documentId = IntContainer::fromStringOrNull($originalData['document_id'])->positiveInt;
+        $this->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveInt;
+        $this->quantity = FloatContainer::fromStringOrNull((string)$originalData['quantity'])->floatOrNull;
+        $this->price = FloatContainer::fromStringOrNull((string)$originalData['price'])->float;
+        $this->responsibleUserId = IntContainer::fromStringOrNull($originalData['responsible_user_id'])->positiveIntOrNull;
+        $this->isDefaultResponsible = BoolContainer::fromStringOrNull($originalData['is_default_responsible'])->bool;
+        $this->saleParamId = IntContainer::fromStringOrNull($originalData['sale_param_id'])->positiveIntOrNull;
+        $this->tagId = IntContainer::fromStringOrNull($originalData['tag_id'])->positiveIntOrNull;
+        $this->discountType = $originalData['discount_type'] ? DiscountType::from($originalData['discount_type']) : null;
+        $this->discountDocumentId = IntContainer::fromStringOrNull($originalData['discount_document_id'])->positiveIntOrNull;
+        $this->discountPercent = FloatContainer::fromStringOrNull($originalData['discount_percent'])->floatOrNull;
+        $this->defaultPrice = FloatContainer::fromStringOrNull($originalData['default_price'])->float;
+        $this->createDate = DateTimeContainer::fromOnlyDateString($originalData['create_date'])->dateTime;
+        $this->discountCause = StringContainer::fromStringOrNull($originalData['discount_cause'])->string;
+        $this->fixedDiscountId = IntContainer::fromStringOrNull($originalData['fixed_discount_id'])->positiveIntOrNull;
+        $this->fixedDiscountPercent = IntContainer::fromStringOrNull($originalData['fixed_discount_percent'])->positiveIntOrNull;
+        $this->fixedIncreaseId = IntContainer::fromStringOrNull($originalData['fixed_increase_id'])->positiveIntOrNull;
+        $this->fixedIncreasePercent = IntContainer::fromStringOrNull($originalData['fixed_increase_percent'])->positiveIntOrNull;
+        $this->primeCost = FloatContainer::fromStringOrNull($originalData['prime_cost'])->float;
 
-        $this->goodSaleParam = DTO\GoodSaleParam::fromSingleObjectContents($this->apiGateway, $this->originalData['goodSaleParam']);
+        $this->goodSaleParam = DTO\GoodSaleParam::fromSingleObjectContents($this->apiGateway, $originalData['goodSaleParam']);
     }
 
     /** @throws VetmanagerApiGatewayException */

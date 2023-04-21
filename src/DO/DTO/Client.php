@@ -113,36 +113,36 @@ class Client extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['id'])->positiveInt;
-        $this->address = StringContainer::fromStringOrNull($this->originalData['address'])->string;
-        $this->homePhone = StringContainer::fromStringOrNull($this->originalData['home_phone'])->string;
-        $this->workPhone = StringContainer::fromStringOrNull($this->originalData['work_phone'])->string;
-        $this->note = StringContainer::fromStringOrNull($this->originalData['note'])->string;
-        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
-        $this->howFind = IntContainer::fromStringOrNull($this->originalData['how_find'])->positiveIntOrNull;
-        $this->balance = FloatContainer::fromStringOrNull($this->originalData['balance'])->float;
-        $this->email = StringContainer::fromStringOrNull($this->originalData['email'])->string;
-        $this->cityTitle = StringContainer::fromStringOrNull($this->originalData['city'])->string;
-        $this->cityId = IntContainer::fromStringOrNull($this->originalData['city_id'])->positiveIntOrNull;
-        $this->dateRegister = DateTimeContainer::fromFullDateTimeString($this->originalData['date_register'])->dateTimeOrNull;
-        $this->cellPhone = StringContainer::fromStringOrNull($this->originalData['cell_phone'])->string;
-        $this->zip = StringContainer::fromStringOrNull($this->originalData['zip'])->string;
-        $this->registrationIndex = StringContainer::fromStringOrNull($this->originalData['registration_index'])->string;
-        $this->isVip = BoolContainer::fromStringOrNull($this->originalData['vip'])->bool;
-        $this->lastName = StringContainer::fromStringOrNull($this->originalData['last_name'])->string;
-        $this->firstName = StringContainer::fromStringOrNull($this->originalData['first_name'])->string;
-        $this->middleName = StringContainer::fromStringOrNull($this->originalData['middle_name'])->string;
-        $this->status = Status::from($this->originalData['status']);
-        $this->discount = IntContainer::fromStringOrNull($this->originalData['discount'])->int;
-        $this->passportSeries = StringContainer::fromStringOrNull($this->originalData['passport_series'])->string;
-        $this->labNumber = StringContainer::fromStringOrNull($this->originalData['lab_number'])->string;
-        $this->streetId = IntContainer::fromStringOrNull($this->originalData['street_id'])->positiveIntOrNull;
-        $this->apartment = StringContainer::fromStringOrNull($this->originalData['apartment'])->string;
-        $this->isUnsubscribed = BoolContainer::fromStringOrNull($this->originalData['unsubscribe'])->bool;
-        $this->isBlacklisted = BoolContainer::fromStringOrNull($this->originalData['in_blacklist'])->bool;
-        $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($this->originalData['last_visit_date'])->dateTimeOrNull;
-        $this->numberOfJournal = StringContainer::fromStringOrNull($this->originalData['number_of_journal'])->string;
-        $this->phonePrefix = StringContainer::fromStringOrNull($this->originalData['phone_prefix'])->string;
+        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
+        $this->homePhone = StringContainer::fromStringOrNull($originalData['home_phone'])->string;
+        $this->workPhone = StringContainer::fromStringOrNull($originalData['work_phone'])->string;
+        $this->note = StringContainer::fromStringOrNull($originalData['note'])->string;
+        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $this->howFind = IntContainer::fromStringOrNull($originalData['how_find'])->positiveIntOrNull;
+        $this->balance = FloatContainer::fromStringOrNull($originalData['balance'])->float;
+        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
+        $this->cityTitle = StringContainer::fromStringOrNull($originalData['city'])->string;
+        $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
+        $this->dateRegister = DateTimeContainer::fromFullDateTimeString($originalData['date_register'])->dateTimeOrNull;
+        $this->cellPhone = StringContainer::fromStringOrNull($originalData['cell_phone'])->string;
+        $this->zip = StringContainer::fromStringOrNull($originalData['zip'])->string;
+        $this->registrationIndex = StringContainer::fromStringOrNull($originalData['registration_index'])->string;
+        $this->isVip = BoolContainer::fromStringOrNull($originalData['vip'])->bool;
+        $this->lastName = StringContainer::fromStringOrNull($originalData['last_name'])->string;
+        $this->firstName = StringContainer::fromStringOrNull($originalData['first_name'])->string;
+        $this->middleName = StringContainer::fromStringOrNull($originalData['middle_name'])->string;
+        $this->status = Status::from($originalData['status']);
+        $this->discount = IntContainer::fromStringOrNull($originalData['discount'])->int;
+        $this->passportSeries = StringContainer::fromStringOrNull($originalData['passport_series'])->string;
+        $this->labNumber = StringContainer::fromStringOrNull($originalData['lab_number'])->string;
+        $this->streetId = IntContainer::fromStringOrNull($originalData['street_id'])->positiveIntOrNull;
+        $this->apartment = StringContainer::fromStringOrNull($originalData['apartment'])->string;
+        $this->isUnsubscribed = BoolContainer::fromStringOrNull($originalData['unsubscribe'])->bool;
+        $this->isBlacklisted = BoolContainer::fromStringOrNull($originalData['in_blacklist'])->bool;
+        $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($originalData['last_visit_date'])->dateTimeOrNull;
+        $this->numberOfJournal = StringContainer::fromStringOrNull($originalData['number_of_journal'])->string;
+        $this->phonePrefix = StringContainer::fromStringOrNull($originalData['phone_prefix'])->string;
     }
 
     /** @throws VetmanagerApiGatewayException

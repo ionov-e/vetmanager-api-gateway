@@ -36,6 +36,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 final class MedicalCardsByClient extends AbstractDTO
 {
     use BasicDAOTrait;
+
     /** @var positive-int */
 
     public int $id;
@@ -126,33 +127,33 @@ final class MedicalCardsByClient extends AbstractDTO
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($this->originalData['medical_card_id'])->positiveInt;
-        $this->dateEdit = DateTimeContainer::fromOnlyDateString($this->originalData['date_edit'])->dateTimeOrNull;
-        $diagnose = ($this->originalData['diagnos'] !== '0') ? (string)$this->originalData['diagnos'] : '';
+        $this->id = IntContainer::fromStringOrNull($originalData['medical_card_id'])->positiveInt;
+        $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTimeOrNull;
+        $diagnose = ($originalData['diagnos'] !== '0') ? (string)$originalData['diagnos'] : '';
         $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
-        $this->userId = IntContainer::fromStringOrNull($this->originalData['doctor_id'])->positiveIntOrNull;
-        $this->status = Status::from($this->originalData['medical_card_status']);
-        $this->description = StringContainer::fromStringOrNull($this->originalData['healing_process'])->string;
-        $this->recommendation = StringContainer::fromStringOrNull($this->originalData['recomendation'])->string;
-        $this->weight = FloatContainer::fromStringOrNull($this->originalData['weight'])->floatOrNull;
-        $this->temperature = FloatContainer::fromStringOrNull($this->originalData['temperature'])->floatOrNull;
-        $this->meetResultId = IntContainer::fromStringOrNull($this->originalData['meet_result_id'])->positiveIntOrNull;
-        $this->admissionTypeId = IntContainer::fromStringOrNull($this->originalData['admission_type'])->positiveIntOrNull;
-        $this->petId = IntContainer::fromStringOrNull($this->originalData['pet_id'])->positiveInt;
-        $this->petAlias = StringContainer::fromStringOrNull($this->originalData['alias'])->string;
-        $this->petBirthday = DateTimeContainer::fromOnlyDateString($this->originalData['birthday'])->dateTimeOrNull;
-        $this->petSex = $this->originalData['sex'] ? Sex::from($this->originalData['sex']) : Sex::Unknown;
-        $this->petNote = StringContainer::fromStringOrNull($this->originalData['note'])->string;
-        $this->petTypeTitle = StringContainer::fromStringOrNull($this->originalData['pet_type'])->string;
-        $this->petBreedTitle = StringContainer::fromStringOrNull($this->originalData['breed'])->string;
-        $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveInt;
-        $this->ownerFullName = new FullName($this->originalData['first_name'], $this->originalData['middle_name'], $this->originalData['last_name']);
-        $this->ownerPhone = StringContainer::fromStringOrNull($this->originalData['phone'])->string;
-        $this->userLogin = StringContainer::fromStringOrNull($this->originalData['doctor_nickname'])->string;
-        $this->userFullName = new FullName($this->originalData['doctor_first_name'], $this->originalData['doctor_middle_name'], $this->originalData['doctor_last_name']);
-        $this->isEditable = BoolContainer::fromStringOrNull($this->originalData['editable'])->bool;
-        $this->meetResultTitle = StringContainer::fromStringOrNull($this->originalData['meet_result_title'])->string;
-        $this->admissionTypeTitle = StringContainer::fromStringOrNull($this->originalData['admission_type_title'])->string;
+        $this->userId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
+        $this->status = Status::from($originalData['medical_card_status']);
+        $this->description = StringContainer::fromStringOrNull($originalData['healing_process'])->string;
+        $this->recommendation = StringContainer::fromStringOrNull($originalData['recomendation'])->string;
+        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->floatOrNull;
+        $this->temperature = FloatContainer::fromStringOrNull($originalData['temperature'])->floatOrNull;
+        $this->meetResultId = IntContainer::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
+        $this->admissionTypeId = IntContainer::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
+        $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
+        $this->petAlias = StringContainer::fromStringOrNull($originalData['alias'])->string;
+        $this->petBirthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $this->petSex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
+        $this->petNote = StringContainer::fromStringOrNull($originalData['note'])->string;
+        $this->petTypeTitle = StringContainer::fromStringOrNull($originalData['pet_type'])->string;
+        $this->petBreedTitle = StringContainer::fromStringOrNull($originalData['breed'])->string;
+        $this->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveInt;
+        $this->ownerFullName = new FullName($originalData['first_name'], $originalData['middle_name'], $originalData['last_name']);
+        $this->ownerPhone = StringContainer::fromStringOrNull($originalData['phone'])->string;
+        $this->userLogin = StringContainer::fromStringOrNull($originalData['doctor_nickname'])->string;
+        $this->userFullName = new FullName($originalData['doctor_first_name'], $originalData['doctor_middle_name'], $originalData['doctor_last_name']);
+        $this->isEditable = BoolContainer::fromStringOrNull($originalData['editable'])->bool;
+        $this->meetResultTitle = StringContainer::fromStringOrNull($originalData['meet_result_title'])->string;
+        $this->admissionTypeTitle = StringContainer::fromStringOrNull($originalData['admission_type_title'])->string;
     }
 
     /** @return ApiRoute::MedicalCardsByClient */
