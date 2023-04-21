@@ -211,11 +211,8 @@ class Admission extends AbstractDTO
             ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data'])
             : null;
         $this->client = Client::fromSingleObjectContents($this->apiGateway, $originalData['client']);
-        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'])->string;
-        $this->invoices = Invoice::fromMultipleObjectsContents(
-            $this->apiGateway,
-            $originalData['invoices'] ?? []
-        );
+        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
+        $this->invoices = Invoice::fromMultipleObjectsContents($this->apiGateway, $originalData['invoices'] ?? []);
     }
 
     /** @throws VetmanagerApiGatewayException */
