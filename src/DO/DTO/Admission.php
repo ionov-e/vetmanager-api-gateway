@@ -21,7 +21,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read DAO\Breed self
  * @property-read ?DAO\User user
  * @property-read ?DAO\Clinic clinic
- * @property-read ?DAO\ComboManualItem type
+ * @property-read DAO\ComboManualItem type
  */
 class Admission extends AbstractDTO
 {
@@ -37,8 +37,8 @@ class Admission extends AbstractDTO
     public ?int $petId;
     /** @var ?positive-int */
     public ?int $userId;
-    /** @var ?positive-int */
-    public ?int $typeId;
+    /** @var positive-int */
+    public int $typeId;
     /** Примеры: "00:15:00", "00:00:00" (последнее перевожу в null) */
     public ?DateInterval $admissionLength;
     public ?Status $status;
@@ -189,7 +189,7 @@ class Admission extends AbstractDTO
         $this->clientId = IntContainer::fromStringOrNull($this->originalData['client_id'])->positiveIntOrNull;
         $this->petId = IntContainer::fromStringOrNull($this->originalData['patient_id'])->positiveIntOrNull;
         $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
-        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
+        $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveInt;
         $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalOrNull;
         $this->status = $this->originalData['status'] ? Status::from($this->originalData['status']) : null;
         $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
@@ -225,7 +225,7 @@ class Admission extends AbstractDTO
             'self' => DAO\AdmissionFromGetById::getById($this->apiGateway, $this->id),
             'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
             'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'type' => $this->typeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            'type' => DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }
