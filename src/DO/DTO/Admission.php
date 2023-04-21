@@ -41,7 +41,7 @@ class Admission extends AbstractDTO
     public ?int $typeId;
     /** Примеры: "00:15:00", "00:00:00" (последнее перевожу в null) */
     public ?DateInterval $admissionLength;
-    public Status $status;
+    public ?Status $status;
     /** @var ?positive-int В БД встречается "0" - переводим в null */
     public ?int $clinicId;
     /** Насколько я понял, означает: 'Прием без планирования' */
@@ -191,7 +191,7 @@ class Admission extends AbstractDTO
         $this->userId = IntContainer::fromStringOrNull($this->originalData['user_id'])->positiveIntOrNull;
         $this->typeId = IntContainer::fromStringOrNull($this->originalData['type_id'])->positiveIntOrNull;
         $this->admissionLength = DateIntervalContainer::fromStringHMS($this->originalData['admission_length'])->dateIntervalOrNull;
-        $this->status = Status::from($this->originalData['status']);
+        $this->status = $this->originalData['status'] ? Status::from($this->originalData['status']) : null;
         $this->clinicId = IntContainer::fromStringOrNull($this->originalData['clinic_id'])->positiveIntOrNull;
         $this->isDirectDirection = BoolContainer::fromStringOrNull($this->originalData['direct_direction'])->bool;
         $this->creatorId = IntContainer::fromStringOrNull($this->originalData['creator_id'])->positiveIntOrNull;

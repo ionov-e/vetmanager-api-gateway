@@ -14,6 +14,4 @@ enum Status: string
     case NotApproved = 'not_approved';
     case InTreatment = 'in_treatment';
     case NotConfirmed = 'not_confirmed';
-    /** Случай когда пусто или null */
-    case Null = '';
 }
