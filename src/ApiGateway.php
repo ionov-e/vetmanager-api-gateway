@@ -26,9 +26,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-use function Otis22\VetmanagerUrl\url as vetmanager_url;
-use function Otis22\VetmanagerUrl\url_test_env as vetmanager_url_test_env;
-
 final class ApiGateway
 {
     public function __construct(
@@ -47,13 +44,7 @@ final class ApiGateway
         bool   $isProduction,
         string $timezone = '+03:00'
     ): self {
-        try {
-            $baseApiUrl = $isProduction
-                ? vetmanager_url($subDomain)->asString()
-                : vetmanager_url_test_env($subDomain)->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
+        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
 
         $guzzleClient = new Client(
             [
@@ -83,13 +74,7 @@ final class ApiGateway
         bool   $isProduction,
         string $timezone = '+03:00'
     ): self {
-        try {
-            $baseApiUrl = ($isProduction)
-                ? vetmanager_url($subDomain)->asString()
-                : vetmanager_url_test_env($subDomain)->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
+        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
 
         $guzzleClient = new Client(
             [
@@ -106,6 +91,18 @@ final class ApiGateway
         );
 
         return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
+    }
+
+    /** @throws VetmanagerApiGatewayRequestException */
+    private static function getApiUrlFromSubdomainForProdOrTest(string $subDomain, bool $isProduction): string
+    {
+        try {
+            return ($isProduction)
+                ? \Otis22\VetmanagerUrl\url($subDomain)->asString()
+                : \Otis22\VetmanagerUrl\url_test_env($subDomain)->asString();
+        } catch (\Exception $e) {
+            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+        }
     }
 
     /**
