@@ -37,7 +37,9 @@
     }
   ],
   "scripts": {
-    "cs-fixer": "vendor/bin/php-cs-fixer fix src",
+    "unit-tests": "vendor/bin/phpunit tests",
+    "style-check": "vendor/bin/php-cs-fixer fix src --dry-run",
+    "style-fix": "vendor/bin/php-cs-fixer fix src",
     "psalm": "vendor/bin/psalm",
     "psalm-json": "vendor/bin/psalm --report=psalm-report.json"
   }
