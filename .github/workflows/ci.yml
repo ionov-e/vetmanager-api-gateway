@@ -1,11 +1,6 @@
-name: Psalm
+name: CI
 
-on:
-  workflow_dispatch:
-  push:
-    paths:
-      - '**.php'
-      - 'psalm.xml.dist'
+on: [push, workflow_dispatch]
 
 jobs:
   psalm:
@@ -19,6 +14,7 @@ jobs:
         with:
           php-version: '8.1'
           extensions: mbstring
+          ini-values: max_execution_time=600, memory_limit=-1
           coverage: none
 
       - name: Cache composer dependencies
@@ -29,6 +25,15 @@ jobs:
 
       - name: Run composer install
         run: composer install -n --prefer-dist
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Run Unit Tests
+        run: composer unit-tests
+
+      - name: Run CS Fixer
+        run: composer style-fix
 
       - name: Run psalm
         run: ./vendor/bin/psalm --output-format=github
