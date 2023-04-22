@@ -25,6 +25,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+
 use function Otis22\VetmanagerUrl\url as vetmanager_url;
 use function Otis22\VetmanagerUrl\url_test_env as vetmanager_url_test_env;
 
