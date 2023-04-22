@@ -71,7 +71,7 @@ class GoodSaleParam extends AbstractDTO
         $this->status = Status::from($originalData['status']);
         $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
         $this->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
-        $this->priceFormation = PriceFormation::from($originalData['price_formation']);
+        $this->priceFormation = PriceFormation::from((string) $originalData['price_formation']);
 
         $this->unit = !empty($originalData['unitSale'])
             ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitSale'])
