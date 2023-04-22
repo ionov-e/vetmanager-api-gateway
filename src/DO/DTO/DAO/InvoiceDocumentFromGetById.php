@@ -135,6 +135,7 @@ final class InvoiceDocumentFromGetById extends DTO\InvoiceDocument implements Re
         $this->maxPrice = FloatContainer::fromStringOrNull((string)$originalData['max_price'])->float;
         $this->minPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['min_price_percent'])->float;
         $this->maxPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['max_price_percent'])->float;
+        /** @psalm-suppress RedundantCastGivenDocblockType */
         $this->partyInfo = (array)$originalData['party_info'];
 
         $this->invoice = DTO\Invoice::fromSingleObjectContents($this->apiGateway, $originalData['document']);

@@ -129,7 +129,7 @@ final class MedicalCardsByClient extends AbstractDTO
 
         $this->id = IntContainer::fromStringOrNull($originalData['medical_card_id'])->positiveInt;
         $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTimeOrNull;
-        $diagnose = ($originalData['diagnos'] !== '0') ? (string)$originalData['diagnos'] : '';
+        $diagnose = ($originalData['diagnos'] !== '0') ? $originalData['diagnos'] : '';
         $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
         $this->userId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
         $this->status = Status::from($originalData['medical_card_status']);

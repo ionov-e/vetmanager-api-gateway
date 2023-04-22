@@ -130,7 +130,7 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->dateCreate = DateTimeContainer::fromOnlyDateString($originalData['date_create'])->dateTime;
         $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTime;
-        $diagnose = ($originalData['diagnos'] !== '0') ? (string)$originalData['diagnos'] : '';
+        $diagnose = ($originalData['diagnos'] !== '0') ? $originalData['diagnos'] : '';
         $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
         $this->recommendation = StringContainer::fromStringOrNull($originalData['recomendation'])->string;
         $this->invoiceId = IntContainer::fromStringOrNull($originalData['invoice'])->positiveIntOrNull;
