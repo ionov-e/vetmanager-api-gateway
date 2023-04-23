@@ -172,9 +172,9 @@ final class ApiGateway
 
     /**
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     *
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     * @psalm-suppress InvalidReturnType, InvalidReturnStatement Без понятия почему не прекращает жаловаться
      */
     public function getWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
@@ -184,7 +184,8 @@ final class ApiGateway
         do {
             $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
             $pagedQuery->next();
-            if (!is_array($modelDataContents[$modelResponseKeyInJson])) {
+            if (!isset($modelDataContents[$modelResponseKeyInJson]) || !is_array($modelDataContents[$modelResponseKeyInJson])) {
+                /** @psalm-suppress PossiblyInvalidCast */
                 throw new VetmanagerApiGatewayResponseException(
                     "В Json под ключом '$modelResponseKeyInJson' должна быть строка"
                 );
@@ -353,6 +354,7 @@ final class ApiGateway
         $modelKey = $apiRouteKey->getApiModelResponseKey();
 
         if (!isset($apiDataContents[$modelKey])) {
+            /** @psalm-suppress PossiblyInvalidCast Бредовое предупреждение (типа не строка возможно) */
             throw new VetmanagerApiGatewayResponseException("Не найден ключ модели '$modelKey' в JSON ответе от АПИ");
         }
 

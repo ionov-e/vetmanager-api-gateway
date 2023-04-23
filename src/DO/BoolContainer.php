@@ -28,7 +28,7 @@ class BoolContainer
 
         $filteredBool = filter_var($boolAsStringOrNull, FILTER_VALIDATE_BOOL);
 
-        if (!is_null($filteredBool)) {
+        if (is_bool($filteredBool)) {
             return new self($filteredBool);
         }
 

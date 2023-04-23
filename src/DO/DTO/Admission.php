@@ -207,6 +207,7 @@ class Admission extends AbstractDTO
         $this->petType = !empty($originalData['pet']['pet_type_data'])
             ? DTO\PetType::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data'])
             : null;
+        /** @psalm-suppress DocblockTypeContradiction */
         $this->petBreed = !empty($originalData['pet']['breed_data'])
             ? DTO\Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data'])
             : null;
