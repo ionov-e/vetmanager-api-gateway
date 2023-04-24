@@ -42,7 +42,7 @@ class User extends AbstractDTO
     public bool $isPercentCalculated;
     public string $nickname;
     /** Дата без времени */
-    public DateTime $lastChangePwdDate;
+    public ?DateTime $lastChangePwdDate;
     /** Default: 0 */
     public bool $isLimited;
     /** Разного вида строк приходят */
@@ -97,7 +97,7 @@ class User extends AbstractDTO
         $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
         $this->isPercentCalculated = BoolContainer::fromStringOrNull($originalData['calc_percents'])->bool;
         $this->nickname = StringContainer::fromStringOrNull($originalData['nickname'])->string;
-        $this->lastChangePwdDate = DateTimeContainer::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTime;
+        $this->lastChangePwdDate = DateTimeContainer::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTimeOrNull;
         $this->isLimited = BoolContainer::fromStringOrNull($originalData['is_limited'])->bool;
         $this->carrotquestId = StringContainer::fromStringOrNull($originalData['carrotquest_id'])->string;
         $this->sipNumber = StringContainer::fromStringOrNull($originalData['sip_number'])->string;
