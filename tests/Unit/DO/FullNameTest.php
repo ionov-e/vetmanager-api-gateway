@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Unit;
+namespace VetmanagerApiGateway\Unit\DO;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -70,8 +70,8 @@ class FullNameTest extends TestCase
     public function testFullStartingWithLast(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
     {
         $this->assertEquals(
-            (new FullName($first, $middle, $last))->getFullStartingWithLast(),
             $expected,
+            (new FullName($first, $middle, $last))->getFullStartingWithLast(),
             $errorMessage
         );
     }
@@ -80,8 +80,8 @@ class FullNameTest extends TestCase
     public function testFullStartingWithFirst(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
     {
         $this->assertEquals(
-            (new FullName($first, $middle, $last))->getFullStartingWithFirst(),
             $expected,
+            (new FullName($first, $middle, $last))->getFullStartingWithFirst(),
             $errorMessage
         );
     }
@@ -90,8 +90,8 @@ class FullNameTest extends TestCase
     public function testLastPlusInitials(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
     {
         $this->assertEquals(
-            (new FullName($first, $middle, $last))->getLastPlusInitials(),
             $expected,
+            (new FullName($first, $middle, $last))->getLastPlusInitials(),
             $errorMessage
         );
     }
@@ -100,8 +100,8 @@ class FullNameTest extends TestCase
     public function testInitials(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
     {
         $this->assertEquals(
-            (new FullName($first, $middle, $last))->getInitials(),
             $expected,
+            (new FullName($first, $middle, $last))->getInitials(),
             $errorMessage
         );
     }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Unit;
+namespace VetmanagerApiGateway\Unit\DO;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -30,8 +30,8 @@ class FullPhoneTest extends TestCase
     public function testFullMasked(string $countryCode, string $number, string $mask, string $expected, string $messageInCaseOfError = ''): void
     {
         $this->assertEquals(
-            (string)new FullPhone($countryCode, $number, $mask),
             $expected,
+            (string)new FullPhone($countryCode, $number, $mask),
             $messageInCaseOfError
         );
     }
