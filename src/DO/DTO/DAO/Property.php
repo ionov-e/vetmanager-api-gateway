@@ -17,7 +17,10 @@ use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
-/** @property-read ?DAO\Clinic $clinic */
+/**
+ * @property-read ?DAO\Clinic clinic
+ * @property-read bool isOnlineSigningUpAvailableForClinic
+ */
 final class Property extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
@@ -56,23 +59,30 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): self
+    public static function getByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): ?self
     {
-        $filteredProperties = self::getByPagedQuery(
+        $filteredProperties = self::getByQueryBuilder(
             $api,
             (new Builder())
                 ->where('property_name', $propertyName)
-                ->where('clinic_id', (string)$clinicId)
-                ->top(1)
+                ->where('clinic_id', (string)$clinicId),
+            1
         );
 
-        return $filteredProperties[0];
+        return $filteredProperties[0] ?? null;
     }
 
     /** @return ApiRoute::Property */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Property;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public static function isOnlineSigningUpAvailableForClinic(ApiGateway $apiGateway, int $clinicId): bool
+    {
+        $property = self::getByClinicIdAndPropertyName($apiGateway, $clinicId, 'service.appointmentWidget');
+        return filter_var($property?->value, FILTER_VALIDATE_BOOL);
     }
 
     /** @throws VetmanagerApiGatewayException */

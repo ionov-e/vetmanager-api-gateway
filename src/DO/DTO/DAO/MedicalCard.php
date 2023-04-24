@@ -22,6 +22,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read ?DAO\Clinic clinic
+ * @property-read bool isOnlineSigningUpAvailableForClinic
  * @property-read ?DAO\AdmissionFromGetById admission
  * @property-read ?DAO\AdmissionFromGetById nextMeet
  * @property-read ?DAO\ComboManualItem admissionType
@@ -162,6 +163,7 @@ final class MedicalCard extends AbstractDTO implements AllGetRequestsInterface
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'isOnlineSigningUpAvailableForClinic' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->id),
             'admission' => $this->admissionId ? AdmissionFromGetById::getById($this->apiGateway, $this->admissionId) : null,
             'nextMeet' => $this->nextMeetId ? AdmissionFromGetById::getById($this->apiGateway, $this->nextMeetId) : null,
             'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,

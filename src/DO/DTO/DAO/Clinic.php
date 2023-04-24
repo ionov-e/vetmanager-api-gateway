@@ -18,7 +18,9 @@ use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
-/** @property-read FullPhone fullPhone */
+/** @property-read FullPhone fullPhone
+ * @property-read bool isOnlineSigningUpAvailable
+ */
 final class Clinic extends AbstractDTO implements AllGetRequestsInterface
 {
     use BasicDAOTrait;
@@ -103,6 +105,7 @@ final class Clinic extends AbstractDTO implements AllGetRequestsInterface
     {
         return match ($name) {
             'fullPhone' => $this->getFullPhone($this->id),
+            'isOnlineSigningUpAvailable' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }
