@@ -16,9 +16,9 @@ final class FullPhone
      * @param string $mask Сюда прилетают значения вида: '(___)-__-__-__', '(__)___-____', '____-____'
      */
     public function __construct(
-        public string $countryCode,
-        public string $number,
-        public string $mask
+        public readonly string $countryCode,
+        public readonly string $number,
+        public readonly string $mask
     ) {
     }
 

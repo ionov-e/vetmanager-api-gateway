@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO;
 
+/**
+ * @property-read string fullStartingWithFirst Возвращает: "Имя Отчество Фамилия". Но если чего-то не будет - вернет без этого слова и без лишних пробелов
+ * @property-read string fullStartingWithLast Возвращает: "Фамилия Имя Отчество". Но если чего-то не будет - вернет без этого слова и без лишних пробелов
+ * @property-read string lastPlusInitials Возвращает: "Фамилия И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек)
+ * @property-read string initials Возвращает: "Ф. И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек)
+ */
 final class FullName
 {
     public function __construct(
-        public ?string $first = null,
-        public ?string $middle = null,
-        public ?string $last = null
+        public readonly ?string $first = null,
+        public readonly ?string $middle = null,
+        public readonly ?string $last = null
     ) {
     }
 
@@ -24,8 +30,7 @@ final class FullName
         };
     }
 
-    /** Возвращает: "Имя Отчество Фамилия"
-     * Но если чего-то не будет - вернет без этого слова и без лишних пробелов */
+    /** Возвращает: "Имя Отчество Фамилия". Но если чего-то не будет - вернет без этого слова и без лишних пробелов */
     public function getFullStartingWithFirst(): string
     {
         return $this->getAsStringSeperatedBySpaces($this->first, $this->middle, $this->last);
@@ -39,15 +44,13 @@ final class FullName
         );
     }
 
-    /** Возвращает: "Фамилия Имя Отчество"
-     * Но если чего-то не будет - вернет без этого слова и без лишних пробелов */
+    /** Возвращает: "Фамилия Имя Отчество". Но если чего-то не будет - вернет без этого слова и без лишних пробелов */
     public function getFullStartingWithLast(): string
     {
         return $this->getAsStringSeperatedBySpaces($this->last, $this->first, $this->middle);
     }
 
-    /** Возвращает: "Фамилия И. О."
-     * Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
+    /** Возвращает: "Фамилия И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
     public function getLastPlusInitials(): string
     {
         return $this->getAsStringSeperatedBySpaces(
@@ -62,8 +65,7 @@ final class FullName
         return ($string) ? mb_substr($string, 0, 1) . '.' : '';
     }
 
-    /** Возвращает: "Ф. И. О."
-     * Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
+    /** Возвращает: "Ф. И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек) */
     public function getInitials(): string
     {
         return $this->getAsStringSeperatedBySpaces(
