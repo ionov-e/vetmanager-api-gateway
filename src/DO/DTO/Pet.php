@@ -21,8 +21,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\PetType type
  * @property-read ?DAO\Breed breed
  * @property-read ?DAO\ComboManualItem $color
- * @property-read ?DAO\MedicalCard[] medicalCards
- * @property-read ?DAO\MedicalCardAsVaccination[] vaccines
+ * @property-read DAO\MedicalCard[] medicalCards
+ * @property-read DAO\MedicalCardAsVaccination[] vaccines
  */
 class Pet extends AbstractDTO
 {
