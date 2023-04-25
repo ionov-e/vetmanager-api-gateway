@@ -99,9 +99,9 @@ final class MedicalCardAsVaccination extends AbstractDTO
         $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
         $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
         $this->date = DateTimeContainer::fromFullDateTimeString($originalData['date'])->dateTimeOrNull;
-        $dateTimeService = DateTimeContainer::fromFullDateTimeString($originalData['date_nexttime']);
-        $this->nextDateTime = $dateTimeService->dateTimeOrNull;
-        $this->isTimePresentInNextDateTime = $dateTimeService->isTimePresent();
+        $dateTimeServiceForNextDate = DateTimeContainer::fromOnlyDateString($originalData['date_nexttime']);
+        $this->nextDateTime = $dateTimeServiceForNextDate->dateTimeOrNull;
+        $this->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
         $this->goodId = IntContainer::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
         $this->medcardId = IntContainer::fromStringOrNull($originalData['medcard_id'])->positiveInt;
         $this->doseTypeId = IntContainer::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
