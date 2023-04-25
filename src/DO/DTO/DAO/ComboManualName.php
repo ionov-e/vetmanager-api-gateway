@@ -22,7 +22,7 @@ final class ComboManualName extends DTO\ComboManualName implements AllGetRequest
     use BasicDAOTrait;
     use AllGetRequestsTrait;
 
-    /** @var \VetmanagerApiGateway\DO\DTO\ComboManualItem[] $comboManualItems */
+    /** @var DTO\ComboManualItem[] $comboManualItems */
     public array $comboManualItems;
 
     /** @param array{
