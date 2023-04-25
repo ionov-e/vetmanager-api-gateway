@@ -22,7 +22,7 @@ final class DateTimeContainer
      */
     public static function fromFullDateTimeString(?string $fullDateTime): self
     {
-        if (!$fullDateTime || "0000-00-00 00:00:00" == $fullDateTime) {
+        if (!$fullDateTime || str_starts_with($fullDateTime, "0000")) {
             return new self(null);
         }
 
@@ -42,7 +42,7 @@ final class DateTimeContainer
      */
     public static function fromOnlyDateString(?string $onlyDate): self
     {
-        if (!$onlyDate || "0000-00-00" == $onlyDate) {
+        if (!$onlyDate || str_starts_with($onlyDate, "0000")) {
             return new self(null);
         }
 
