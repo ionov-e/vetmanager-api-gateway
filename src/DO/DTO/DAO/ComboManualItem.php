@@ -47,32 +47,24 @@ final class ComboManualItem extends DTO\ComboManualItem implements AllGetRequest
         $this->comboManualName = DTO\ComboManualName::fromSingleObjectContents($this->apiGateway, $originalData['comboManualName']);
     }
 
-    /**
-     * @param int $id Скорее всего тут будет значение из медкарты: {@see DAO\MedicalCard::admissionType}
-     * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
-     * @throws VetmanagerApiGatewayException
-     */
-    public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $id, int $comboManualIdOfAdmissionType = 0): self
-    {
-        if ($comboManualIdOfAdmissionType == 0) {
-            $comboManualIdOfAdmissionType = DAO\ComboManualName::getIdByNameAsEnum($apiGateway, Name::AdmissionType);
-        }
-
-        $comboManualItems = self::getByQueryBuilder(
-            $apiGateway,
-            (new Builder())
-                ->where('combo_manual_id', (string)$comboManualIdOfAdmissionType)
-                ->where('id', (string)$id),
-            1
-        );
-
-        return $comboManualItems[0];
-    }
-
     /** @return ApiRoute::ComboManualItem */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::ComboManualItem;
+    }
+
+    /**
+     * @param int $typeId Например, значение из медкарты: {@see DAO\MedicalCard::admissionTypeId}
+     * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getByAdmissionTypeId(ApiGateway $apiGateway, int $typeId, int $comboManualIdOfAdmissionType = 0): self
+    {
+        if ($comboManualIdOfAdmissionType) {
+            return self::getOneByValueAndComboManualId($apiGateway, (string)$typeId, $comboManualIdOfAdmissionType);
+        }
+
+        return self::getOneByValueAndComboManualName($apiGateway, (string)$typeId, Name::AdmissionType);
     }
 
     /**
