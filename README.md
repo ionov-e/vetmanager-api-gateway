@@ -192,7 +192,8 @@ $clientDataAsArray = $client->getOriginalObjectData();
    ```php
    $clinic = VetmanagerApiGateway\DO\DTO\DAO\Clinic::getById($apiGateway, 33);
    echo $clinic->fullPhone; // Выведет телефона в виде +7(918)-277-21-21
-   echo $clinic->fullPhone->mask; // +7
+   echo $clinic->fullPhone->mask; // Подобные маски могут вернуться: '(___)-__-__-__', '(__)___-____' или '____-____'
+   echo $clinic->fullPhone->countryCode; // +7 или +38 и т.д.
    ```
 
 ##### Узнать возможность онлайн записи клиники
