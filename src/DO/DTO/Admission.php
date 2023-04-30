@@ -22,6 +22,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\User user
  * @property-read ?DAO\Clinic clinic
  * @property-read ?DAO\ComboManualItem type
+ * @property-read DAO\AdmissionFromGetAll[] admissionsOfPet
+ * @property-read DAO\AdmissionFromGetAll[] admissionsOfOwner
  */
 class Admission extends AbstractDTO
 {
@@ -224,6 +226,8 @@ class Admission extends AbstractDTO
             'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
             'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
             'type' => $this->typeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            'admissionsOfPet' => $this->petId ? DAO\AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
+            'admissionsOfOwner' => $this->clientId ? DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
             default => $this->$name,
         };
     }

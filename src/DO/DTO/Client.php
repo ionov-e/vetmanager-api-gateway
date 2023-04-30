@@ -19,12 +19,13 @@ use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read DAO\Client $self
- * @property-read FullName $fullName
- * @property-read DAO\MedicalCardsByClient[] $medcards
- * @property-read DAO\Pet[] $petsAlive
- * @property-read ?DAO\City $city
- * @property-read ?DAO\Street $street
+ * @property-read DAO\Client self
+ * @property-read FullName fullName
+ * @property-read DAO\MedicalCardsByClient[] medcards
+ * @property-read DAO\AdmissionFromGetAll[] admissions
+ * @property-read DAO\Pet[] petsAlive
+ * @property-read ?DAO\City city
+ * @property-read ?DAO\Street street
  */
 class Client extends AbstractDTO
 {
@@ -153,6 +154,7 @@ class Client extends AbstractDTO
     {
         return match ($name) {
             'self' => DAO\Client::getById($this->apiGateway, $this->id),
+            'admissions' => DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->id),
             'medcards' => DAO\MedicalCardsByClient::getByClientId($this->apiGateway, $this->id),
             'petsAlive' => $this->getPetsAlive(),
             'street' => $this->streetId ? DAO\Street::getById($this->apiGateway, $this->streetId) : null,

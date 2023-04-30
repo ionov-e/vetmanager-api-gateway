@@ -23,6 +23,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\ComboManualItem $color
  * @property-read DAO\MedicalCard[] medicalCards
  * @property-read DAO\MedicalCardAsVaccination[] vaccines
+ * @property-read DAO\AdmissionFromGetAll[] admissions
+ * @property-read DAO\AdmissionFromGetAll[] admissionsOfOwner
  */
 class Pet extends AbstractDTO
 {
@@ -120,6 +122,8 @@ class Pet extends AbstractDTO
             'color' => $this->colorId ? DAO\ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
             'owner' => $this->ownerId ? DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
             'type' => $this->typeId ? DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
+            'admissions' => DAO\AdmissionFromGetAll::getByPetId($this->apiGateway, $this->id),
+            'admissionsOfOwner' => DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->ownerId),
             'medicalCards' => DAO\MedicalCard::getByPagedQuery(
                 $this->apiGateway,
                 (new Builder())->where('patient_id', (string)$this->id)->paginateAll()

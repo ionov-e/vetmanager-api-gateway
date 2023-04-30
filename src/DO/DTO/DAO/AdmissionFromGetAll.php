@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\DO\DTO\DAO;
 
+use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO\Admission;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestGetAllInterface;
@@ -136,5 +137,35 @@ final class AdmissionFromGetAll extends Admission implements RequestGetAllInterf
     public function __construct(ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
+    }
+
+    /** Не возвращаются со статусом "удален"
+     * @return self[]
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getByClientId(ApiGateway $apiGateway, int $clientId, int $maxLimit = 100): array
+    {
+        return self::getByQueryBuilder(
+            $apiGateway,
+            (new Builder())
+                ->where('client_id', (string)$clientId)
+                ->where('status', '!=', 'deleted'),
+            $maxLimit
+        );
+    }
+
+    /** Не возвращаются со статусом "удален"
+     * @return self[]
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getByPetId(ApiGateway $apiGateway, int $petId, int $maxLimit = 100): array
+    {
+        return self::getByQueryBuilder(
+            $apiGateway,
+            (new Builder())
+                ->where('patient_id', (string)$petId)
+                ->where('status', '!=', 'deleted'),
+            $maxLimit
+        );
     }
 }

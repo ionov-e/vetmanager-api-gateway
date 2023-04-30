@@ -151,6 +151,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
 
 ```php
 use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
+use VetmanagerApiGateway\DO\DTO\DAO\AdmissionFromGetAll;
 use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
 use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardAsVaccination;
 use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardsByClient;
@@ -167,6 +168,8 @@ ComboManualItem::getOneByValueAndComboManualName($apiGateway, $id, Name::Admissi
 $admissionResult = ComboManualItem::getByName($apiGateway, 'admission_result');
 $admissionResultId = ComboManualItem::getIdByNameAsString($apiGateway, 'admission_result'); // int
 $admissionResultId = ComboManualItem::getIdByNameAsEnum($apiGateway, Name::AdmissionResult);
+$clientAdmissions = AdmissionFromGetAll::getByClientId($this->apiGateway, $ownerId = 40);
+$petAdmissions = AdmissionFromGetAll::getByPetId($this->apiGateway, $petId = 88);
 ```
 
 ### Пример представления данных DAO/DTO <a id="header_dtos" />
