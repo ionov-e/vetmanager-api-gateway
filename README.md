@@ -6,11 +6,11 @@
 [Используется в основе библиотека](https://github.com/otis22/vetmanager-rest-api) -
 тут же документация к использованию классов для запросов: Builder и PagedQuery
 
-[vetmanager.ru](https://vetmanager.ru/)
+[Официальный сайт Vetmanager.ru](https://vetmanager.ru/)
 
-[vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
+[Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
 
-[vetmanager REST API in Postman](https://www.postman.com/vetmanager/workspace/vetmanager-api/collection/23836400-17133b76-0f52-4bb4-8b38-28a64781074e)
+[Vetmanager REST API Postman Collection](https://www.postman.com/vetmanager/workspace/vetmanager-api/collection/23836400-17133b76-0f52-4bb4-8b38-28a64781074e)
 
 ## Для чего?
 С помощью этой библиотеки удобно получать данные с АПИ Ветменеджера. Данные приходят в виде DTO (Data Transfer Object).
@@ -43,27 +43,28 @@ $apiGateway = ApiGateway::fromDomainAndApiKey($subDomain, $apiKey, $isProduction
 $apiGateway = ApiGateway::fromDomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true):
 ```
 ### Первоначальное получение объектов
-Первоначально по АПИ можно получить лишь обращаясь к **DAO** (Data Access Object). **DAO** условно выделил от остальных
-**DTO** (Data Transfer Object) по единственному принципу - эти объекты можно получить по прямому АПИ-запросу к объекту 
-(например получение по ID, или через более сложный запрос - например, через фильтры).
+Первоначально по АПИ можно получить лишь обращаясь к **DAO** (Data Access Object), а не к **DTO** (Data Transfer Object).
+
+То есть в этой библиотеке **DAO** - подвид **DTO**, но с возможностью получить эти объекты прямым АПИ-запросом (например,
+получение по ID, или через более сложный запрос - например, через фильтры).
 
 В качестве исключения есть DAO, которые могут быть получены лишь с помощью конкретного АПИ-запроса. Например,
 AdmissionFromGetById можно получить лишь по ID. А у MedicalCardsByClient есть лишь один (уникальный) метод получения по
-АПИ. Недоступные методы получения не высветятся (с помощью твоего IDE) у DAO, и значит не поддерживаются. 
+АПИ. Недоступные методы у DAO получения не высветятся (с помощью твоего IDE), и значит не поддерживаются. 
 #### Получение объекта по ID
-Выполняется АПИ-запрос, и полученные данные вернуться в виде DAO/DTO с удобными типизированными свойствами
 ```php
 $client = Client::getById($apiGateway, 33);
 ```
 #### Получение объекта по Query запросу
-По скольку все Query запросы всегда возвращают массив объектов: даже когда 1 объект получаем - обращаемся к нему через массив
+По скольку все Query запросы всегда возвращают массив объектов: даже когда 1 объект получаем - обращаемся к нему через
+массив.
 ```php
 $comboManualItemTitle = $comboManualItems[0]->title;
 ```
 Ниже перечислены 3 варианта одного и того же запроса
 1) Query Builder
 
-    [Ссылка на используемую библиотеку с большим количество примеров](https://github.com/otis22/vetmanager-rest-api)
+    [Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
     ```php
     use Otis22\VetmanagerRestApi\Query\Builder;
     use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
@@ -78,7 +79,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
     ```
 2) PagedQuery
 
-   [Ссылка на используемую библиотеку с большим количество примеров](https://github.com/otis22/vetmanager-rest-api)
+   [Ссылка на используемую библиотеку с большим количество примеров использования PagedQuery](https://github.com/otis22/vetmanager-rest-api)
 
     С помощью этого объекта удобнее работать с пагинацией.
     ```php
@@ -94,6 +95,8 @@ $comboManualItemTitle = $comboManualItems[0]->title;
     );
     ```
 3) Get Parameters As String
+   Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
+   и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
     ```php
     use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
     
@@ -105,6 +108,10 @@ $comboManualItemTitle = $comboManualItems[0]->title;
 #### Альтернативные способы получения для конкретных DAO
 ```php
 use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
+use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
+use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardAsVaccination;
+use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardsByClient;
+use VetmanagerApiGateway\DO\DTO\DAO\Property;
 
 $clinicLanguage = Property::getByClinicIdAndPropertyName($apiGateway, $clinicId = 13, 'lang')->title;
 $clientMedicalCards = MedicalCardsByClient::getByClientId($apiGateway, $clientId = 77);
@@ -116,14 +123,19 @@ ComboManualItem::getByVaccineTypeId($apiGateway, $id = 11);
 ComboManualItem::getOneByValueAndComboManualName($apiGateway, $id, Name::AdmissionResult);
 $admissionResult = ComboManualItem::getByName($apiGateway, 'admission_result');
 $admissionResultId = ComboManualItem::getIdByNameAsString($apiGateway, 'admission_result');
-$admissionResultId = getIdByNameAsEnum::getIdByNameAsString($apiGateway, Name::AdmissionResult);
+$admissionResultId = ComboManualItem::getIdByNameAsEnum($apiGateway, Name::AdmissionResult);
 ```
 ### Работа с DAO/DTO
 #### Пример представления данных
 Каждое свойство подсвечивается. Видно, что может вернуться
 ```php
+use VetmanagerApiGateway\DO\DTO\DAO\Client;
+
 $clientEmail = $client->email; // Объявлено, что только строка, возможно пустая
 $clientCityId = $client->cityId; // Объявлено, что только int или null может прийти
+$clientDateRegister = $client?->dateRegister->format('Y-m-d H:i:s'); //dateRegister содержит DateTime (или null, если отсутствует дата)
+$clientName = $client->fullName->fullStartingWithFirst; // fullName - вспомогательный объект для удобного форматирования имени
+$clientStatus = $client->status; // Возвращается одно из возможных значений соответствующего Enum
 ```
 #### Пример связанных запросов
 Есть свойства объекта, которые вместо скалярных данных, возвращают другие объекты или массив объектов.
@@ -152,15 +164,37 @@ $clientDataAsArray = $client->getOriginalObjectData();
 #### Создание объекта из данных в виде первоначального раздекодированного JSON
 Методы работают у всех DTO/DAO.
 
-Получение одного объекта из раздекодированного JSON (в виде ['id' => '12', "address" => ........]).
-```php
-$client = Client::fromSingleObjectContents($apiGateway, $clientDataAsArray);
-```
-Получение массива объектов из раздекодированных JSON
-```php
-$clients = Client::fromMultipleObjectsContents($apiGateway, $decodedObjects);
-```
+1. Получение одного объекта из раздекодированного JSON (в виде ['id' => '12', "address" => ........]).
+   ```php
+   $client = Client::fromSingleObjectContents($apiGateway, $clientDataAsArray);
+   ```
+2. Получение массива объектов из раздекодированных JSON
+   ```php
+   $clients = Client::fromMultipleObjectsContents($apiGateway, $decodedObjects);
+   ```
+Подобным образом несложно реализовать кеширование DAO/DTO (получить раздекодированный объект и в новой сессии создавать
+объект заново из данных в виде массива в кеше).
 #### Дополнительные возможности
+#### Вспомогательный объект FullName
+Например, у DAO и DTO User, Client есть свойство FullName. У объекта FullName есть свойства возвращающие полное имя в
+разном формате:
+   ```php
+   $client = VetmanagerApiGateway\DO\DTO\DAO\Client::getById($apiGateway, 9);
+   echo $client->fullName->fullStartingWithFirst; // Возвращает: "Имя Отчество Фамилия"
+   echo $client->fullName->fullStartingWithLast;  // Возвращает: "Фамилия Имя Отчество"
+   echo $client->fullName->initials;              // Возвращает: "Фамилия И. О."
+   echo $client->fullName->lastPlusInitials;      // Возвращает: "Ф. И. О."
+   ```
+Если, предположим, отчества не будет, то каждый из методов просто пропустит слово без создания лишних пробелов, точек и т.д.
+#### Вспомогательный объект FullPhone
+Например, у DAO и DTO Clinic есть свойство fullPhone. Он возвращает Объект FullPhone, у которого есть метод __toString - 
+возвращает телефон с кодом страны и выбранной маской номера +7(918)-277-21-21
+   ```php
+   $clinic = VetmanagerApiGateway\DO\DTO\DAO\Clinic::getById($apiGateway, 33);
+   echo $clinic->fullPhone; // Выведет телефона в виде +7(918)-277-21-21
+   echo $clinic->fullPhone->mask; // +7
+   ```
+
 ##### Узнать возможность онлайн записи клиники
 Несколько вариантов. Возвращается bool:
 ```php
