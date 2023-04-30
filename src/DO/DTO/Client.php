@@ -13,12 +13,14 @@ use VetmanagerApiGateway\DO\Enum;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\Enum\Client\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
+use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read DAO\Client $self
+ * @property-read FullName $fullName
  * @property-read DAO\MedicalCardsByClient[] $medcards
  * @property-read DAO\Pet[] $petsAlive
  * @property-read ?DAO\City $city
@@ -155,6 +157,11 @@ class Client extends AbstractDTO
             'petsAlive' => $this->getPetsAlive(),
             'street' => $this->streetId ? DAO\Street::getById($this->apiGateway, $this->streetId) : null,
             'city' => $this->cityId ? DAO\City::getById($this->apiGateway, $this->cityId) : null,
+            'fullName' => new FullName(
+                $this->originalData['first_name'],
+                $this->originalData['middle_name'],
+                $this->originalData['last_name']
+            ),
             default => $this->$name
         };
     }
