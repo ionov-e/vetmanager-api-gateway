@@ -183,7 +183,6 @@ final class ApiGateway
 
         do {
             $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
-            $pagedQuery->next();
             if (!isset($modelDataContents[$modelResponseKeyInJson]) || !is_array($modelDataContents[$modelResponseKeyInJson])) {
                 /** @psalm-suppress PossiblyInvalidCast */
                 throw new VetmanagerApiGatewayResponseException(
@@ -191,7 +190,11 @@ final class ApiGateway
                 );
             }
             $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
-        } while (count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels);
+            $pagedQuery->next();
+        } while (
+            (int)$modelDataContents['totalCount'] < $maxLimitOfReturnedModels &&
+            count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels
+        );
 
         return [
             'totalCount' => $modelDataContents['totalCount'],
