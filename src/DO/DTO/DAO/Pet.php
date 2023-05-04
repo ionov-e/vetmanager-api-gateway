@@ -8,8 +8,10 @@ use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DTO;
 use VetmanagerApiGateway\DO\DTO\DAO;
 use VetmanagerApiGateway\DO\DTO\DAO\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\DO\DTO\DAO\Interface\RequestPostInterface;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\DO\DTO\DAO\Trait\BasicDAOTrait;
+use VetmanagerApiGateway\DO\DTO\DAO\Trait\RequestPostTrait;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -17,17 +19,18 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\City $ownerCity
  * @property-read ?DAO\Street $ownerStreet
  */
-final class Pet extends DTO\Pet implements AllGetRequestsInterface
+final class Pet extends DTO\Pet implements AllGetRequestsInterface, RequestPostInterface
 {
     use BasicDAOTrait;
     use AllGetRequestsTrait;
+    use RequestPostTrait;
 
     /** Уже получен */
     public ?DTO\Client $client;
     /** Уже получен */
     public ?DTO\PetType $type;
     /** Уже получен */
-    public ?Breed $breed;
+    public ?DAO\Breed $breed;
     /** Уже получен */
     public ?DTO\ComboManualItem $color;
 
