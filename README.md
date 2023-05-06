@@ -19,7 +19,7 @@
 
 ```php
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\DTO\DAO\Client;
+use VetmanagerApiGateway\DTO\DAO\Client;
 
 $apiGateway = ApiGateway::fromDomainAndApiKey('subDomain', 'apiKey', true):
 $client = Client::getById($apiGateway, 33);
@@ -108,7 +108,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
    [Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
     ```php
     use Otis22\VetmanagerRestApi\Query\Builder;
-    use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
+    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
     
     $comboManualItems = ComboManualItem::getByQueryBuilder(
             $apiGateway,
@@ -125,7 +125,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
    С помощью этого объекта удобнее работать с пагинацией.
     ```php
     use Otis22\VetmanagerRestApi\Query\Builder;
-    use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
+    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
     
     $comboManualItems = ComboManualItem::getByPagedQuery(
             $apiGateway,
@@ -139,7 +139,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
    Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
    и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
     ```php
-    use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
+    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
     
     $comboManualItems = ComboManualItem::getByParametersAsString(
             $apiGateway,
@@ -151,11 +151,11 @@ $comboManualItemTitle = $comboManualItems[0]->title;
 
 ```php
 use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
-use VetmanagerApiGateway\DO\DTO\DAO\AdmissionFromGetAll;
-use VetmanagerApiGateway\DO\DTO\DAO\ComboManualItem;
-use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardAsVaccination;
-use VetmanagerApiGateway\DO\DTO\DAO\MedicalCardsByClient;
-use VetmanagerApiGateway\DO\DTO\DAO\Property;
+use VetmanagerApiGateway\DTO\DAO\AdmissionFromGetAll;
+use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
+use VetmanagerApiGateway\DTO\DAO\MedicalCardAsVaccination;
+use VetmanagerApiGateway\DTO\DAO\MedicalCardsByClient;
+use VetmanagerApiGateway\DTO\DAO\Property;
 
 $clinicLanguage = Property::getByClinicIdAndPropertyName($apiGateway, $clinicId = 13, 'lang')->title;
 $clientMedicalCards = MedicalCardsByClient::getByClientId($apiGateway, $clientId = 77);
@@ -177,7 +177,7 @@ $petAdmissions = AdmissionFromGetAll::getByPetId($this->apiGateway, $petId = 88)
 Каждое свойство подсвечивается. Видно, что может вернуться
 
 ```php
-use VetmanagerApiGateway\DO\DTO\DAO\Client;
+use VetmanagerApiGateway\DTO\DAO\Client;
 
 $clientEmail = $client->email; // Объявлено, что только строка, возможно пустая
 $clientCityId = $client->cityId; // Объявлено, что только int или null может прийти
@@ -251,7 +251,7 @@ $clientDataAsArray = $client->getOriginalObjectData();
 разном формате:
 
    ```php
-   $client = VetmanagerApiGateway\DO\DTO\DAO\Client::getById($apiGateway, 9);
+   $client = VetmanagerApiGateway\DTO\DAO\Client::getById($apiGateway, 9);
    echo $client->fullName->fullStartingWithFirst; // Возвращает: "Имя Отчество Фамилия"
    echo $client->fullName->fullStartingWithLast;  // Возвращает: "Фамилия Имя Отчество"
    echo $client->fullName->initials;              // Возвращает: "Фамилия И. О."
@@ -267,7 +267,7 @@ $clientDataAsArray = $client->getOriginalObjectData();
 возвращает телефон с кодом страны и выбранной маской номера +7(918)-277-21-21
 
    ```php
-   $clinic = VetmanagerApiGateway\DO\DTO\DAO\Clinic::getById($apiGateway, 33);
+   $clinic = VetmanagerApiGateway\DTO\DAO\Clinic::getById($apiGateway, 33);
    echo $clinic->fullPhone; // Выведет телефона в виде +7(918)-277-21-21
    echo $clinic->fullPhone->mask; // Подобные маски могут вернуться: '(___)-__-__-__', '(__)___-____' или '____-____'
    echo $clinic->fullPhone->countryCode; // +7 или +38 и т.д.
