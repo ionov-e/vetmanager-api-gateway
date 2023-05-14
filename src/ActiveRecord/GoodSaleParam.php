@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public DTO\GoodDto $good;
+    public Good $good;
+    /** Предзагружен. Нового АПИ запроса не будет */
+    public ?Unit $unit;
 
     /** @param array{
      *     "id": string,
@@ -61,12 +61,24 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->good = DTO\GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
+        $this->unit = !empty($originalData['unitSale'])     #TODO Move
+            ? Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitSale'])
+            : null;
+        $this->good = Good::fromSingleObjectContents($this->apiGateway, $originalData['good']); #TODO this was DTO
     }
 
     /** @return ApiRoute::GoodSaleParam */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::GoodSaleParam;
+    }
+
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name,
+        };
     }
 }

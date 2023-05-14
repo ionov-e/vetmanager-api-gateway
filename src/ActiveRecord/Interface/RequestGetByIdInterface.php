@@ -4,8 +4,11 @@ namespace VetmanagerApiGateway\ActiveRecord\Interface;
 
 use VetmanagerApiGateway\ApiGateway;
 
-interface RequestGetByIdInterface extends BasicDAOInterface
+interface RequestGetByIdInterface
 {
     /** Получение модели (используя ID модели) по АПИ Get-запросу */
     public static function getById(ApiGateway $apiGateway, int $id): self;
+
+    /** Создать объект, используя массив полученный Get-запросом по ID (т.е. создание объекта из кэша скорее всего) */
+    public static function fromArrayGetById(ApiGateway $apiGateway, array $originalData): self;
 }

@@ -5,28 +5,24 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\Client\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read DAO\Client self
  * @property-read FullName fullName
- * @property-read DAO\MedicalCardsByClient[] medcards
- * @property-read DAO\AdmissionFromGetAll[] admissions
- * @property-read DAO\Pet[] petsAlive
- * @property-read ?DAO\City city
- * @property-read ?DAO\Street street
+ * @property-read MedicalCardsByClient[] medcards
+ * @property-read AdmissionFromGetAll[] admissions
+ * @property-read Pet[] petsAlive
+ * @property-read ?City city
+ * @property-read ?Street street
  */
-class ClientDto implements DtoInterface
+class ClientDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -113,8 +109,6 @@ class ClientDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
         $this->homePhone = StringContainer::fromStringOrNull($originalData['home_phone'])->string;
@@ -145,40 +139,5 @@ class ClientDto implements DtoInterface
         $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($originalData['last_visit_date'])->dateTimeOrNull;
         $this->numberOfJournal = StringContainer::fromStringOrNull($originalData['number_of_journal'])->string;
         $this->phonePrefix = StringContainer::fromStringOrNull($originalData['phone_prefix'])->string;
-    }
-
-    /** @throws VetmanagerApiGatewayException
-     */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\Client::getById($this->apiGateway, $this->id),
-            'admissions' => DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->id),
-            'medcards' => DAO\MedicalCardsByClient::getByClientId($this->apiGateway, $this->id),
-            'petsAlive' => $this->getPetsAlive(),
-            'street' => $this->streetId ? DAO\Street::getById($this->apiGateway, $this->streetId) : null,
-            'city' => $this->cityId ? DAO\City::getById($this->apiGateway, $this->cityId) : null,
-            'fullName' => new FullName(
-                $this->originalData['first_name'],
-                $this->originalData['middle_name'],
-                $this->originalData['last_name']
-            ),
-            default => $this->$name
-        };
-    }
-
-    /** @return DAO\Pet[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getPetsAlive(): array
-    {
-        $pets = $this->apiGateway->getWithQueryBuilder(
-            ApiRoute::Pet,
-            (new Builder())
-                ->where('owner_id', (string)$this->id)
-                ->where('status', Enum\Pet\Status::Alive->value)
-        );
-
-        return DAO\Pet::fromResponse($this->apiGateway, $pets);
     }
 }

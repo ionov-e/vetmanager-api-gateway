@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestPostInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestPostTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -20,7 +20,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface, RequestPostInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
     use RequestPostTrait;
 
@@ -116,11 +116,11 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
 
         $this->client = !empty($originalData['owner']) ? DTO\ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
         $this->type = !empty($originalData['type']) ? DTO\PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
-        $this->breed = !empty($originalData['breed']) ? ActiveRecord\Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedDao()) : null;
+        $this->breed = !empty($originalData['breed']) ? Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedActiveRecord()) : null;
         $this->color = !empty($originalData['color']) ? DTO\ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
     }
 
-    private function getDataForBreedDao(): array
+    private function getDataForBreedActiveRecord(): array
     {
         return array_merge(
             $this->originalData['breed'],
@@ -132,5 +132,26 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Pet;
+    }
+
+    /** @throws VetmanagerApiGatewayException
+     * @psalm-suppress DocblockTypeContradiction
+     */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'breed' => $this->breedId ? Breed::getById($this->apiGateway, $this->breedId) : null,
+            'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
+            'owner' => $this->ownerId ? Client::getById($this->apiGateway, $this->ownerId) : null,
+            'type' => $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null,
+            'admissions' => AdmissionFromGetAll::getByPetId($this->apiGateway, $this->id),
+            'admissionsOfOwner' => AdmissionFromGetAll::getByClientId($this->apiGateway, $this->ownerId),
+            'medicalCards' => MedicalCard::getByPagedQuery(
+                $this->apiGateway,
+                (new Builder())->where('patient_id', (string)$this->id)->paginateAll()
+            ),
+            'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
+            default => $this->$name,
+        };
     }
 }

@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetAllInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByQueryInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetAllTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByQuery;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\GoodDto;
+use VetmanagerApiGateway\DTO\GoodSaleParamDto;
+use VetmanagerApiGateway\DTO\InvoiceDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class InvoiceDocumentFromGetAll extends AbstractActiveRecord implements RequestGetAllInterface, RequestGetByQueryInterface
 {
-    use BasicDAOTrait;
+
     use RequestGetAllTrait;
     use RequestGetByQuery;
 
-    public DTO\InvoiceDto $invoice;
-    public DTO\GoodDto $good;
+    public InvoiceDto $invoice;
+    public GoodDto $good;
+    public GoodSaleParamDto $goodSaleParam;
 
     /** @param array{
      *     "id": numeric-string,
@@ -108,13 +110,22 @@ final class InvoiceDocumentFromGetAll extends AbstractActiveRecord implements Re
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->invoice = DTO\InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
-        $this->good = DTO\GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
+        $this->goodSaleParam = GoodSaleParamDto::fromSingleObjectContents($this->apiGateway, $originalData['goodSaleParam']);
+        $this->invoice = InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
+        $this->good = GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
     /** @return ApiRoute::InvoiceDocument */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::InvoiceDocument;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name,
+        };
     }
 }

@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\PetTypeDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-final class PetType extends AbstractActiveRecord implements AllGetRequestsInterface
+final class PetType extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use BasicDAOTrait;
     use AllGetRequestsTrait;
 
-    /** @var DTO\BreedDto[] $breeds Уже получен при получении PetType. Нового АПИ-запроса не будет */
-    public array $breeds;
-
+    private readonly PetTypeDto $originalDto;
+    protected PetTypeDto $userMadeDto;
     /** @param array{
      *     "id": string,
      *     "title": string,
@@ -34,9 +33,11 @@ final class PetType extends AbstractActiveRecord implements AllGetRequestsInterf
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
+    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::Other)
     {
-        $this->breeds = DTO\BreedDto::fromMultipleObjectsContents($this->apiGateway, $originalData['breeds']);
+        parent::__construct($apiGateway, $originalData, $sourceOfData);
+        $this->originalDto = new PetTypeDto($originalData);
+        $this->userMadeDto = new PetTypeDto([]);
     }
 
     public static function getApiModel(): ApiRoute
@@ -48,7 +49,7 @@ final class PetType extends AbstractActiveRecord implements AllGetRequestsInterf
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => DAO\PetType::getById($this->apiGateway, $this->id),
+            'breeds' => DTO\BreedDto::fromMultipleObjectsContents($this->apiGateway, $this->originalData['breeds']),
             default => $this->$name,
         };
     }

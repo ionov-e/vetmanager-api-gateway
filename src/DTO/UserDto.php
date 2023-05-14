@@ -10,13 +10,12 @@ use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
-use VetmanagerApiGateway\DTO\Interface\DtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read FullName $fullName
  */
-class UserDto implements DtoInterface
+class UserDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;

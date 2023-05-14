@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\BreedDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read ActiveRecord\PetType $type
+ * @property positive-int id
+ * @property non-empty-string title
+ * @property positive-int typeId
  */
-final class Breed extends AbstractActiveRecord implements AllGetRequestsInterface
+final class Breed extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use BasicDAOTrait;
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
-    private readonly DTO\BreedDto $originalDto;
-    private DTO\BreedDto $userMadeDto;
-
-    /** Уже получен. Не будет дополнительного АПИ запроса */
-    public DTO\PetTypeDto $type;
+    private readonly BreedDto $originalDto;
+    protected BreedDto $userMadeDto;
 
     /** @param array{
      *     "id": string,
@@ -39,32 +37,53 @@ final class Breed extends AbstractActiveRecord implements AllGetRequestsInterfac
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
+    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::Other)
     {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->originalDto = new DTO\BreedDto($originalData);
-        $this->type = new DTO\PetTypeDto($originalData['petType']);
+        parent::__construct($apiGateway, $originalData, $sourceOfData);
+        $this->originalDto = new BreedDto($originalData);
+        $this->userMadeDto = new BreedDto([]);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
+    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfGet = Source::Other): self
     {
-        return match ($name) {
-            'type' => ActiveRecord\PetType::getById($this->apiGateway, $this->typeId),
-            default => $this->$name,
-        };
+        return ($typeOfGet === Source::ById)
+            ? self::fromArrayGetById($apiGateway, $originalData)
+            : self::fromArrayGetAll($apiGateway, $originalData);
     }
 
-    public function __set($name, $value)
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromArrayGetById(ApiGateway $apiGateway, array $originalData): self
     {
-        echo "Setting '$name' to '$value'\n";
-        //        $this->data[$name] = $value;
+        return new self($apiGateway, $originalData, Source::ById);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromArrayGetAll(ApiGateway $apiGateway, array $originalData): self
+    {
+        return new self($apiGateway, $originalData, Source::Other);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromArrayGetByQuery(ApiGateway $apiGateway, array $originalData): self
+    {
+        return self::fromArrayGetAll($apiGateway, $originalData);
     }
 
     /** @return ApiRoute::Breed */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Breed;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'type' => ($this->sourceOfData == Source::ById)
+                ? PetType::fromArrayGetAll($this->apiGateway, $this->originalData['petType']) #TODO redo
+                : PetType::getById($this->apiGateway, $this->typeId),
+            default => $this->originalDto->$name,
+        };
     }
 }

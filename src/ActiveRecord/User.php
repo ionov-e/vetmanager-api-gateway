@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class User extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
-    public ?ActiveRecord\Role $role;
+    public ?Role $role;
     /** Предзагружен (если существует). Отдельного АПИ-запроса не будет */
     public ?UserPosition $position;
 
@@ -61,10 +60,10 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
         parent::__construct($apiGateway, $originalData);
 
         $this->role = !empty($originalData['role'])
-            ? ActiveRecord\Role::fromSingleObjectContents($this->apiGateway, $originalData['role'])
+            ? Role::fromSingleObjectContents($this->apiGateway, $originalData['role'])
             : null;
         $this->position = !empty($originalData['position'])
-            ? ActiveRecord\UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position'])
+            ? UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position'])
             : null;
     }
 
@@ -73,7 +72,6 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         return ApiRoute::User;
     }
-
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

@@ -8,10 +8,9 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
@@ -28,7 +27,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  */
 final class MedicalCardAsVaccination extends AbstractActiveRecord
 {
-    use BasicDAOTrait;
+
 
     /** @var positive-int id из таблицы vaccine_pets */
     public int $vaccineId;

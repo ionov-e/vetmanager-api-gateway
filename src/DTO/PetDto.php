@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum\Pet\Sex;
-use VetmanagerApiGateway\DO\Enum\Pet\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
+use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read DAO\Pet self
  * @property-read ?DAO\Client owner
  * @property-read ?DAO\PetType type
  * @property-read ?DAO\Breed breed
@@ -26,7 +23,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read DAO\AdmissionFromGetAll[] admissions
  * @property-read DAO\AdmissionFromGetAll[] admissionsOfOwner
  */
-class PetDto implements DtoInterface
+class PetDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -86,10 +83,8 @@ class PetDto implements DtoInterface
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
-    public function __construct(ApiGateway $api, array $originalData)
+    public function __construct(array $originalData)
     {
-        parent::__construct($api, $originalData);
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->ownerId = IntContainer::fromStringOrNull($originalData['owner_id'])->positiveInt;
         $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
@@ -109,27 +104,5 @@ class PetDto implements DtoInterface
         $this->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
         $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->nonZeroFloatOrNull;
         $this->editDate = DateTimeContainer::fromOnlyDateString($originalData['edit_date'])->dateTime;
-    }
-
-    /** @throws VetmanagerApiGatewayException
-     * @psalm-suppress DocblockTypeContradiction
-     */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\Pet::getById($this->apiGateway, $this->id),
-            'breed' => $this->breedId ? DAO\Breed::getById($this->apiGateway, $this->breedId) : null,
-            'color' => $this->colorId ? DAO\ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
-            'owner' => $this->ownerId ? DAO\Client::getById($this->apiGateway, $this->ownerId) : null,
-            'type' => $this->typeId ? DAO\PetType::getById($this->apiGateway, $this->typeId) : null,
-            'admissions' => DAO\AdmissionFromGetAll::getByPetId($this->apiGateway, $this->id),
-            'admissionsOfOwner' => DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->ownerId),
-            'medicalCards' => DAO\MedicalCard::getByPagedQuery(
-                $this->apiGateway,
-                (new Builder())->where('patient_id', (string)$this->id)->paginateAll()
-            ),
-            'vaccines' => DAO\MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
-            default => $this->$name,
-        };
     }
 }

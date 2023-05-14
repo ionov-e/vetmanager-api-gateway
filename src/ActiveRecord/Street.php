@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\Street\Type;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\Street\Type;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -19,7 +18,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 final class Street extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** @var positive-int */

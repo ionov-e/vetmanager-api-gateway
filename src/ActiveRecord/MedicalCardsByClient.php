@@ -7,24 +7,22 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\MedicalCard\Status;
-use VetmanagerApiGateway\DO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
+use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
- * @property-read ActiveRecord\MedicalCard self
  * @property-read ?ActiveRecord\ComboManualItem admissionType
  * @property-read ?ActiveRecord\ComboManualItem meetResult
  * @property-read ?ActiveRecord\Client client
@@ -33,7 +31,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  */
 final class MedicalCardsByClient extends AbstractActiveRecord
 {
-    use BasicDAOTrait;
+
 
     /** @var positive-int */
 
@@ -181,7 +179,6 @@ final class MedicalCardsByClient extends AbstractActiveRecord
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'self' => ActiveRecord\MedicalCard::getById($this->apiGateway, $this->id),
             'admissionType' => $this->admissionTypeId ? ActiveRecord\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
             'meetResult' => $this->meetResultId ? ActiveRecord\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'client' => $this->clientId ? ActiveRecord\Client::getById($this->apiGateway, $this->clientId) : null,

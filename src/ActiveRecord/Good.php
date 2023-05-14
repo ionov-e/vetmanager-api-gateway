@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
@@ -78,19 +77,19 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->group = ActiveRecord\GoodGroup::fromSingleObjectContents($this->apiGateway, $originalData['group']);
+        $this->group = GoodGroup::fromSingleObjectContents($this->apiGateway, $originalData['group']);
 
         $this->unit = !empty($originalData['unitStorage'])
-            ? ActiveRecord\Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitStorage'])
+            ? Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitStorage'])
             : null;
 
-        $this->goodSaleParams = ActiveRecord\GoodSaleParam::fromMultipleObjectsContents(
+        $this->goodSaleParams = GoodSaleParam::fromMultipleObjectsContents(
             $this->apiGateway,
-            $this->getContentsForGoodSaleParamDAOs()
+            $this->getContentsForGoodSaleParamActiveRecords()
         );
     }
 
-    private function getContentsForGoodSaleParamDAOs(): array
+    private function getContentsForGoodSaleParamActiveRecords(): array
     {
         return array_map(
             fn (array $goodSaleParamObject): array => array_merge(
@@ -113,5 +112,13 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::Good;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name,
+        };
     }
 }

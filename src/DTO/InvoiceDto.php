@@ -6,15 +6,14 @@ namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum\Invoice\PaymentStatus;
-use VetmanagerApiGateway\DO\Enum\Invoice\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
-use VetmanagerApiGateway\DTO\Interface\DtoInterface;
+use VetmanagerApiGateway\DTO\Enum\Invoice\PaymentStatus;
+use VetmanagerApiGateway\DTO\Enum\Invoice\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class InvoiceDto implements DtoInterface
+class InvoiceDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;

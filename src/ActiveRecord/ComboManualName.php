@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -19,7 +18,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ComboManualName extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** @var DTO\ComboManualItemDto[] $comboManualItems */
@@ -48,10 +47,10 @@ final class ComboManualName extends AbstractActiveRecord implements AllGetReques
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualItems = DTO\ComboManualItemDto::fromMultipleObjectsContents(
+        $this->comboManualItems = ComboManualItem::fromMultipleObjectsContents(
             $this->apiGateway,
             $originalData['comboManualItems']
-        );
+        ); #TODO this was dto
     }
 
     /** @return ApiRoute::ComboManualName */
@@ -88,5 +87,13 @@ final class ComboManualName extends AbstractActiveRecord implements AllGetReques
     public static function getIdByNameAsEnum(ApiGateway $apiGateway, Name $comboManualName): int
     {
         return self::getIdByNameAsString($apiGateway, $comboManualName->value);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name,
+        };
     }
 }

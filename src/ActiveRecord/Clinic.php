@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\Clinic\Status;
 use VetmanagerApiGateway\DO\FullPhone;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\Clinic\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
@@ -21,7 +20,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
  */
 final class Clinic extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** @var positive-int */
@@ -102,29 +101,27 @@ final class Clinic extends AbstractActiveRecord implements AllGetRequestsInterfa
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'fullPhone' => $this->getFullPhone($this->id),
+            'fullPhone' => $this->getFullPhone(),
             'isOnlineSigningUpAvailable' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->id),
             default => $this->$name,
         };
     }
 
     /** @throws VetmanagerApiGatewayException */
-    private function getFullPhone(int $clinicId): FullPhone
+    private function getFullPhone(): FullPhone
+    {
+        $phonePrefix = $this->getClinicPropertyValueFromPropertyName("unisender_phone_pristavka");
+        $phoneMask = $this->getClinicPropertyValueFromPropertyName("phone_mask");
+        return (new FullPhone($phonePrefix, $this->phone, $phoneMask));
+    }
+
+    private function getClinicPropertyValueFromPropertyName(string $propertyName): string
     {
         try {
-            $phonePrefixProperty = ActiveRecord\Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "unisender_phone_pristavka");
-            $phonePrefix = $phonePrefixProperty->value;
+            $phonePrefixProperty = Property::getByClinicIdAndPropertyName($this->apiGateway, $this->id, "unisender_phone_pristavka");
+            return $phonePrefixProperty->value;
         } catch (VetmanagerApiGatewayResponseEmptyException) {
-            $phonePrefix = "";
+            return "";
         }
-
-        try {
-            $phoneMaskProperty = ActiveRecord\Property::getByClinicIdAndPropertyName($this->apiGateway, $clinicId, "phone_mask");
-            $phoneMask = $phoneMaskProperty->value;
-        } catch (VetmanagerApiGatewayResponseEmptyException) {
-            $phoneMask = "";
-        }
-
-        return (new FullPhone($phonePrefix, $this->phone, $phoneMask));
     }
 }

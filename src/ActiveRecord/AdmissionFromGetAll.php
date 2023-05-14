@@ -3,21 +3,35 @@
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetAllInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByQueryInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetAllTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByQuery;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\BreedDto;
+use VetmanagerApiGateway\DTO\ClientDto;
+use VetmanagerApiGateway\DTO\InvoiceDto;
+use VetmanagerApiGateway\DTO\PetDto;
+use VetmanagerApiGateway\DTO\PetTypeDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestGetAllInterface, RequestGetByQueryInterface
 {
-    use BasicDAOTrait;
+
     use RequestGetAllTrait;
     use RequestGetByQuery;
 
+    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
+    public ?PetDto $pet;
+    public ?PetTypeDto $petType;
+    public ?BreedDto $petBreed;
+    public ClientDto $client;
+    public string $waitTime;
+    /** @var InvoiceDto[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
+     * При других запросах такого элемента нет */
+    public array $invoices;
     /** @return ApiRoute::Admission */
     public static function getApiModel(): ApiRoute
     {
@@ -136,6 +150,14 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
     public function __construct(ApiGateway $apiGateway, array $originalData)
     {
         parent::__construct($apiGateway, $originalData);
+
+        $this->pet = !empty($originalData['pet']) ? new PetDto($originalData['pet']) : null;
+        $this->petType = !empty($originalData['pet']['pet_type_data']) ? new PetTypeDto($originalData['pet']['pet_type_data']) : null;
+        /** @psalm-suppress DocblockTypeContradiction */
+        $this->petBreed = !empty($originalData['pet']['breed_data']) ? new BreedDto($originalData['pet']['breed_data']) : null;
+        $this->client = new ClientDto($originalData['client']);
+        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
+        $this->invoices = Invoice::fromMultipleObjectsContents($this->apiGateway, $originalData['invoices'] ?? []); #TODO Was DTO
     }
 
     /** Не возвращаются со статусом "удален"
@@ -166,5 +188,19 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
                 ->where('status', '!=', 'deleted'),
             $maxLimit
         );
+    }
+
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'type' => $this->typeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            'admissionsOfPet' => $this->petId ? AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
+            'admissionsOfOwner' => $this->clientId ? AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
+            default => $this->$name,
+        };
     }
 }

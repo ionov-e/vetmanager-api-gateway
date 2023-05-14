@@ -12,8 +12,7 @@ use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\Good $self */
-class GoodDto implements DtoInterface
+class GoodDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -62,8 +61,6 @@ class GoodDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->groupId = IntContainer::fromStringOrNull($originalData['group_id'])->positiveIntOrNull;
         $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
@@ -78,14 +75,5 @@ class GoodDto implements DtoInterface
         $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
         $this->primeCost = FloatContainer::fromStringOrNull($originalData['prime_cost'])->float;
         $this->categoryId = IntContainer::fromStringOrNull($originalData['category_id'])->positiveIntOrNull;
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\Good::getById($this->apiGateway, $this->id),
-            default => $this->$name,
-        };
     }
 }

@@ -16,7 +16,7 @@ trait RequestGetByIdTrait
      */
     public static function getById(ApiGateway $apiGateway, int $id): self
     {
-        return new self(
+        return self::fromArrayGetById(
             $apiGateway,
             $apiGateway->getWithId(self::getApiModel(), $id)
         );

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\Enum\GoodSaleParam\PriceFormation;
-use VetmanagerApiGateway\DO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
+use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\GoodSaleParam $self */
-class GoodSaleParamDto implements DtoInterface
+class GoodSaleParamDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -34,8 +33,6 @@ class GoodSaleParamDto implements DtoInterface
     /** Default: 'fixed' */
     public PriceFormation $priceFormation;
 
-    /** Предзагружен. Нового АПИ запроса не будет */
-    public ?DAO\Unit $unit;
 
     /** @param array{
      *     "id": string,
@@ -57,8 +54,6 @@ class GoodSaleParamDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
         $this->price = FloatContainer::fromStringOrNull($originalData['price'])->floatOrNull;
@@ -71,18 +66,5 @@ class GoodSaleParamDto implements DtoInterface
         $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
         $this->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
         $this->priceFormation = PriceFormation::from((string)$originalData['price_formation']);
-
-        $this->unit = !empty($originalData['unitSale'])
-            ? DAO\Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitSale'])
-            : null;
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\GoodSaleParam::getById($this->apiGateway, $this->id),
-            default => $this->$name,
-        };
     }
 }

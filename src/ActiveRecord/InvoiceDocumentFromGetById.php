@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByIdInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\GoodDto;
+use VetmanagerApiGateway\DTO\GoodSaleParamDto;
+use VetmanagerApiGateway\DTO\InvoiceDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements RequestGetByIdInterface
 {
-    use BasicDAOTrait;
+
     use RequestGetByIdTrait;
 
     /** Приходит сейчас int, но поручиться, что float не стоит исключать (странная функция округления)*/
@@ -38,8 +40,9 @@ final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements R
      *           }> $partyInfo
      */
     public array $partyInfo;
-    public DTO\InvoiceDto $invoice;
-    public DTO\GoodDto $good;
+    public InvoiceDto $invoice;
+    public GoodDto $good;
+    public GoodSaleParamDto $goodSaleParam;
 
     /** @param array{
      *     "id": numeric-string,
@@ -132,19 +135,28 @@ final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements R
     {
         parent::__construct($apiGateway, $originalData);
 
+        $this->goodSaleParam = DTO\GoodSaleParamDto::fromSingleObjectContents($this->apiGateway, $originalData['goodSaleParam']);
+        $this->invoice = DTO\InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
+        $this->good = DTO\GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
+
         $this->minPrice = FloatContainer::fromStringOrNull((string)$originalData['min_price'])->float;
         $this->maxPrice = FloatContainer::fromStringOrNull((string)$originalData['max_price'])->float;
         $this->minPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['min_price_percent'])->float;
         $this->maxPriceInPercents = FloatContainer::fromStringOrNull((string)$originalData['max_price_percent'])->float;
         $this->partyInfo = (array)$originalData['party_info'];
-
-        $this->invoice = DTO\InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
-        $this->good = DTO\GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
     /** @return ApiRoute::InvoiceDocument */
     public static function getApiModel(): ApiRoute
     {
         return ApiRoute::InvoiceDocument;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name,
+        };
     }
 }

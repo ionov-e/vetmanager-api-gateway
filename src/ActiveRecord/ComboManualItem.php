@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class ComboManualItem extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     public DTO\ComboManualNameDto $comboManualName;
@@ -53,7 +52,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     }
 
     /**
-     * @param int $typeId Например, значение из медкарты: {@see ActiveRecord\MedicalCard::admissionTypeId}
+     * @param int $typeId Например, значение из медкарты: {@see MedicalCard::admissionTypeId}
      * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -67,7 +66,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     }
 
     /**
-     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see ActiveRecord\MedicalCard::meetResultId}
+     * @param int $resultId Скорее всего тут будет значение из медкарты: {@see MedicalCard::meetResultId}
      * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -119,7 +118,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     /** @throws VetmanagerApiGatewayException Родительское исключение */
     private static function getComboManualIdFromComboManualName(ApiGateway $apiGateway, Name $comboManualName): int
     {
-        return ActiveRecord\ComboManualName::getIdByNameAsEnum($apiGateway, $comboManualName);
+        return ComboManualName::getIdByNameAsEnum($apiGateway, $comboManualName);
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -134,5 +133,13 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
         );
 
         return $comboManualItems[0];
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->$name
+        };
     }
 }

@@ -10,11 +10,26 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 trait RequestPostTrait
 {
+    /**
+     * @inheritDoc
+     * @throws VetmanagerApiGatewayException
+     */
+    public function createAsNew(): self
+    {
+        return self::createAsNewUsingArray(
+            $this->apiGateway,
+            $this->apiGateway->post(
+                self::getApiModel(),
+                $this->userMadeDto->getAsArrayForPostRequest()
+            )
+        );
+    }
+
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function post(ApiGateway $apiGateway, array $data): self
+    public static function createAsNewUsingArray(ApiGateway $apiGateway, array $data): self
     {
         return new self(
             $apiGateway,

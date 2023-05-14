@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
-    public DTO\ClientDto $client;
-    public DTO\PetDto $pet;
-    public DTO\PetTypeDto $petType;
-    public DTO\BreedDto $petBreed;
-    public DTO\UserDto $doctor;
-    /** @var DTO\InvoiceDocument[] */
+    public Client $client;
+    public Pet $pet;
+    public PetType $petType;
+    public Breed $petBreed;
+    public User $doctor;
+    /** @var InvoiceDocument[] */
     public array $invoiceDocuments;
 
     /** @param array{
@@ -181,15 +179,12 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->client = DTO\ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['client']);
-        $this->pet = DTO\PetDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']);
-        $this->petBreed = DTO\BreedDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data']);
-        $this->petType = DTO\PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data']);
-        $this->doctor = DTO\UserDto::fromSingleObjectContents($this->apiGateway, $originalData['doctor']);
-        $this->invoiceDocuments = DTO\InvoiceDocument::fromMultipleObjectsContents(
-            $this->apiGateway,
-            $originalData['invoiceDocuments']
-        );
+        $this->client = Client::fromSingleObjectContents($this->apiGateway, $originalData['client']);
+        $this->pet = Pet::fromSingleObjectContents($this->apiGateway, $originalData['pet']);
+        $this->petBreed = Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data']);
+        $this->petType = PetType::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data']);
+        $this->doctor = User::fromSingleObjectContents($this->apiGateway, $originalData['doctor']);
+        $this->invoiceDocuments = InvoiceDocument::fromMultipleObjectsContents($this->apiGateway, $originalData['invoiceDocuments']);
     }
 
     /** @return ApiRoute::Invoice */

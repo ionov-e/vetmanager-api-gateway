@@ -9,8 +9,7 @@ use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read DAO\ComboManualName $self */
-class ComboManualNameDto implements DtoInterface
+class ComboManualNameDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -32,21 +31,9 @@ class ComboManualNameDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
         $this->isReadonly = BoolContainer::fromStringOrNull($originalData['is_readonly'])->bool;
         $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
-    }
-
-    /** @throws VetmanagerApiGatewayException
-     */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\ComboManualName::getById($this->apiGateway, $this->id),
-            default => $this->$name,
-        };
     }
 }

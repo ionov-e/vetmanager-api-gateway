@@ -6,25 +6,27 @@ namespace VetmanagerApiGateway\DTO;
 
 use DateInterval;
 use DateTime;
+use VetmanagerApiGateway\ActiveRecord\AdmissionFromGetAll;
+use VetmanagerApiGateway\ActiveRecord\Clinic;
+use VetmanagerApiGateway\ActiveRecord\ComboManualItem;
+use VetmanagerApiGateway\ActiveRecord\User;
 use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateIntervalContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\Enum\Admission\Status;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
-use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\Enum\Admission\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read DAO\Breed self
- * @property-read ?DAO\User user
- * @property-read ?DAO\Clinic clinic
- * @property-read ?DAO\ComboManualItem type
- * @property-read DAO\AdmissionFromGetAll[] admissionsOfPet
- * @property-read DAO\AdmissionFromGetAll[] admissionsOfOwner
+ * @property-read ?User user
+ * @property-read ?Clinic clinic
+ * @property-read ?ComboManualItem type
+ * @property-read AdmissionFromGetAll[] admissionsOfPet
+ * @property-read AdmissionFromGetAll[] admissionsOfOwner
  */
-class AdmissionDto implements DtoInterface
+class AdmissionDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -51,7 +53,7 @@ class AdmissionDto implements DtoInterface
     public ?int $creatorId;
     /** Приходит: "2015-07-08 06:43:44", но бывает и "0000-00-00 00:00:00". Последнее переводится в null */
     public ?DateTime $createDate;
-    /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see DAO\User}. Какой-то врач-помощник что ли.
+    /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see User}. Какой-то врач-помощник что ли.
      * Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать */
     public ?int $escorterId;
     /** Искал по всем БД: находил только "vetmanager" и "" или null (редко. Пустые перевожу в null) */
@@ -59,15 +61,6 @@ class AdmissionDto implements DtoInterface
     public bool $isAutoCreate;
     /** Default: 0.0000000000 */
     public float $invoicesSum;
-    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
-    public ?PetDto $pet;
-    public ?PetTypeDto $petType;
-    public ?BreedDto $petBreed;
-    public ClientDto $client;
-    public string $waitTime;
-    /** @var DTO\InvoiceDto[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
-     * При других запросах такого элемента нет */
-    public array $invoices;
 
     /** @param array{
      *          "id": numeric-string,
@@ -182,8 +175,6 @@ class AdmissionDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->date = DateTimeContainer::fromFullDateTimeString($originalData['admission_date'])->dateTimeOrNull;
         $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
@@ -201,33 +192,5 @@ class AdmissionDto implements DtoInterface
         $this->receptionWriteChannel = StringContainer::fromStringOrNull($originalData['reception_write_channel'])->string;
         $this->isAutoCreate = BoolContainer::fromStringOrNull($originalData['is_auto_create'])->bool;
         $this->invoicesSum = FloatContainer::fromStringOrNull($originalData['invoices_sum'])->float;
-
-        $this->pet = !empty($originalData['pet'])
-            ? DTO\PetDto::fromSingleObjectContents($this->apiGateway, $originalData['pet'])
-            : null;
-        $this->petType = !empty($originalData['pet']['pet_type_data'])
-            ? DTO\PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data'])
-            : null;
-        /** @psalm-suppress DocblockTypeContradiction */
-        $this->petBreed = !empty($originalData['pet']['breed_data'])
-            ? DTO\BreedDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data'])
-            : null;
-        $this->client = ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['client']);
-        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
-        $this->invoices = InvoiceDto::fromMultipleObjectsContents($this->apiGateway, $originalData['invoices'] ?? []);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\AdmissionFromGetById::getById($this->apiGateway, $this->id),
-            'user' => $this->userId ? DAO\User::getById($this->apiGateway, $this->userId) : null,
-            'clinic' => $this->clinicId ? DAO\Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'type' => $this->typeId ? DAO\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
-            'admissionsOfPet' => $this->petId ? DAO\AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
-            'admissionsOfOwner' => $this->clientId ? DAO\AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
-            default => $this->$name,
-        };
     }
 }

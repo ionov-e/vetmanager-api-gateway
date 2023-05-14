@@ -8,7 +8,7 @@ use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class BreedDto
+class BreedDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -30,5 +30,20 @@ class BreedDto
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->title = StringContainer::fromStringOrNull($originalData['title'])->stringOrThrowIfNull;
         $this->typeId = IntContainer::fromStringOrNull($originalData['pet_type_id'])->positiveInt;
+    }
+
+    /** @inheritdoc */
+    public function getRequiredKeysForPostArray(): array
+    {
+        return ['title', 'pet_type_id'];
+    }
+
+    /** @inheritdoc */
+    protected function getSetValuesWithoutId(): array
+    {
+        return array_merge(
+            isset($this->title) ? ['title' => $this->title] : [],
+            isset($this->typeId) ? ['pet_type_id' => (string) $this->typeId] : [],
+        );
     }
 }

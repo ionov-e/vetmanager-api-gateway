@@ -2,12 +2,19 @@
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByIdInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\BreedDto;
+use VetmanagerApiGateway\DTO\ClientDto;
+use VetmanagerApiGateway\DTO\ComboManualItemDto;
+use VetmanagerApiGateway\DTO\InvoiceDto;
+use VetmanagerApiGateway\DTO\PetDto;
+use VetmanagerApiGateway\DTO\PetTypeDto;
+use VetmanagerApiGateway\DTO\UserDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** Содержимое отличает от {@see AdmissionFromGetAll} лишь наличием двух дополнительных DTO:
@@ -16,11 +23,21 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  */
 final class AdmissionFromGetById extends AbstractActiveRecord implements RequestGetByIdInterface
 {
-    use BasicDAOTrait;
+
     use RequestGetByIdTrait;
 
-    public readonly ?DTO\UserDto $user;
-    public readonly ?DTO\ComboManualItemDto $type;
+    public readonly ?UserDto $user;
+    public readonly ?ComboManualItemDto $type;
+
+    /** Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null */
+    public ?PetDto $pet;
+    public ?PetTypeDto $petType;
+    public ?BreedDto $petBreed;
+    public ClientDto $client;
+    public string $waitTime;
+    /** @var InvoiceDto[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
+     * При других запросах такого элемента нет */
+    public array $invoices;
 
     /** @return ApiRoute::Admission */
     public static function getApiModel(): ApiRoute
@@ -173,11 +190,39 @@ final class AdmissionFromGetById extends AbstractActiveRecord implements Request
     {
         parent::__construct($apiGateway, $originalData);
 
+        $this->pet = !empty($originalData['pet'])
+            ? PetDto::fromSingleObjectContents($this->apiGateway, $originalData['pet'])
+            : null;
+        $this->petType = !empty($originalData['pet']['pet_type_data'])
+            ? PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data'])
+            : null;
+        /** @psalm-suppress DocblockTypeContradiction */
+        $this->petBreed = !empty($originalData['pet']['breed_data'])
+            ? BreedDto::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data'])
+            : null;
+        $this->client = ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['client']);
+        $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
+        $this->invoices = InvoiceDto::fromMultipleObjectsContents($this->apiGateway, $originalData['invoices'] ?? []);
+
         $this->user = !empty($originalData['doctor_data'])
             ? DTO\UserDto::fromSingleObjectContents($this->apiGateway, $originalData['doctor_data'])
             : null;
         $this->type = !empty($originalData['admission_type_data'])
             ? DTO\ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['admission_type_data'])
             : null;
+    }
+
+
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'type' => $this->typeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
+            'admissionsOfPet' => $this->petId ? AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
+            'admissionsOfOwner' => $this->clientId ? AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
+            default => $this->$name,
+        };
     }
 }

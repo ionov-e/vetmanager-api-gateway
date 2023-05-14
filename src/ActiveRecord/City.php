@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\BasicDAOTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read ActiveRecord\CityType $type */
+/** @property-read CityType $type */
 final class City extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-    use BasicDAOTrait;
+
     use AllGetRequestsTrait;
 
     /** @var positive-int */
@@ -52,7 +51,7 @@ final class City extends AbstractActiveRecord implements AllGetRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => ActiveRecord\CityType::getById($this->apiGateway, $this->typeId),
+            'type' => CityType::getById($this->apiGateway, $this->typeId),
             default => $this->$name,
         };
     }

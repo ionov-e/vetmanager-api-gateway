@@ -6,10 +6,7 @@ namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 
-/**
- * Реализация интерфейса {@see AllGetRequestsInterface}. Используется только в DAO - дочерних классах DTO {@see AbstractActiveRecord} этой библиотеки.
- * Не все DTO можно получить по прямому АПИ запросу, только DAO можно
- */
+/** Реализация интерфейса {@see AllGetRequestsInterface}. То есть поддержка всех Get-запросов */
 trait AllGetRequestsTrait
 {
     use RequestGetAllTrait;

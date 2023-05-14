@@ -11,10 +11,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * Обращается в таблицу combo_manual_items
- *
- * @property-read DAO\ComboManualItem $self
  */
-class ComboManualItemDto implements DtoInterface
+class ComboManualItemDto extends AbstractDTO
 {
     /** @var positive-int ID записи цвета в таблице combo_manual_items */
     public int $id;
@@ -49,8 +47,6 @@ class ComboManualItemDto implements DtoInterface
      */
     public function __construct(array $originalData)
     {
-
-
         $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
         $this->comboManualId = IntContainer::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
         $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
@@ -59,15 +55,5 @@ class ComboManualItemDto implements DtoInterface
         $this->dopParam2 = StringContainer::fromStringOrNull($originalData['dop_param2'])->string;
         $this->dopParam3 = StringContainer::fromStringOrNull($originalData['dop_param3'])->string;
         $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
-    }
-
-    /** @throws VetmanagerApiGatewayException
-     */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'self' => DAO\ComboManualItem::getById($this->apiGateway, $this->id),
-            default => $this->$name
-        };
     }
 }

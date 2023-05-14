@@ -6,7 +6,7 @@ use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ApiGateway;
 
-interface RequestGetByQueryInterface extends BasicDAOInterface
+interface RequestGetByQueryInterface
 {
     /** Реализация возможности прямого обращения по АПИ, формируя фильтры/сортировку/лимит с помощью с Query Builder
      *
@@ -24,4 +24,7 @@ interface RequestGetByQueryInterface extends BasicDAOInterface
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
      */
     public static function getByParametersAsString(ApiGateway $apiGateway, string $getParameters): array;
+
+    /** Создать объект, используя массив полученный query Get-запросом (т.е. создание объекта из кэша скорее всего) */
+    public static function fromArrayGetByQuery(ApiGateway $apiGateway, array $originalData): self;
 }

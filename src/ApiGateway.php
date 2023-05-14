@@ -20,7 +20,7 @@ use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
