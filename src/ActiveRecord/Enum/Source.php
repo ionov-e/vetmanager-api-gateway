@@ -4,7 +4,8 @@ namespace VetmanagerApiGateway\ActiveRecord\Enum;
 
 enum Source
 {
-    case ById;
-    case ByAllList;
-    case Other;
+    case GetById;
+    case GetByAllList;
+    case GetByQuery;
+    case OnlyBasicDto;
 }

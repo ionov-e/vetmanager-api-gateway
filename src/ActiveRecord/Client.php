@@ -116,6 +116,6 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
                 ->where('status', Status::Alive->value)
         );
 
-        return Pet::fromResponse($this->apiGateway, $pets);
+        return Pet::fromApiResponseArray($this->apiGateway, $pets);
     }
 }

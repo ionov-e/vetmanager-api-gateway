@@ -19,6 +19,7 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
 
     private readonly PetTypeDto $originalDto;
     protected PetTypeDto $userMadeDto;
+
     /** @param array{
      *     "id": string,
      *     "title": string,
@@ -33,7 +34,7 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
      * } $originalData
      * @throws VetmanagerApiGatewayException
      */
-    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::Other)
+    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::OnlyBasicDto)
     {
         parent::__construct($apiGateway, $originalData, $sourceOfData);
         $this->originalDto = new PetTypeDto($originalData);

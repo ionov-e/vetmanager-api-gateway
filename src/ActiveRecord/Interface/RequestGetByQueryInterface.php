@@ -26,5 +26,5 @@ interface RequestGetByQueryInterface
     public static function getByParametersAsString(ApiGateway $apiGateway, string $getParameters): array;
 
     /** Создать объект, используя массив полученный query Get-запросом (т.е. создание объекта из кэша скорее всего) */
-    public static function fromArrayGetByQuery(ApiGateway $apiGateway, array $originalData): self;
+    public static function fromSingleArrayUsingGetByQuery(ApiGateway $apiGateway, array $originalData): self;
 }

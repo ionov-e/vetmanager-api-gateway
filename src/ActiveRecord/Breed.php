@@ -16,6 +16,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property positive-int id
  * @property non-empty-string title
  * @property positive-int typeId
+ * @property-read PetType type
  */
 final class Breed extends AbstractActiveRecord implements AllRequestsInterface
 {
@@ -35,39 +36,10 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
      *          "type": ?string,
      *      }
      * } $originalData
-     * @throws VetmanagerApiGatewayException
      */
-    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::Other)
+    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::OnlyBasicDto)
     {
-        parent::__construct($apiGateway, $originalData, $sourceOfData);
-        $this->originalDto = new BreedDto($originalData);
-        $this->userMadeDto = new BreedDto([]);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfGet = Source::Other): self
-    {
-        return ($typeOfGet === Source::ById)
-            ? self::fromArrayGetById($apiGateway, $originalData)
-            : self::fromArrayGetAll($apiGateway, $originalData);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromArrayGetById(ApiGateway $apiGateway, array $originalData): self
-    {
-        return new self($apiGateway, $originalData, Source::ById);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromArrayGetAll(ApiGateway $apiGateway, array $originalData): self
-    {
-        return new self($apiGateway, $originalData, Source::Other);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromArrayGetByQuery(ApiGateway $apiGateway, array $originalData): self
-    {
-        return self::fromArrayGetAll($apiGateway, $originalData);
+        parent::__construct($apiGateway, $originalData, BreedDto::class, 'breed', $sourceOfData);
     }
 
     /** @return ApiRoute::Breed */
@@ -77,11 +49,21 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
+    public static function fromSingleObjectArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfSource = Source::OnlyBasicDto): self
+    {
+        return match ($typeOfSource) {
+            Source::GetById => self::fromSingleArrayUsingGetById($apiGateway, $originalData),
+            Source::GetByAllList => self::fromSingleArrayUsingGetAll($apiGateway, $originalData),
+            Source::GetByQuery => self::fromSingleArrayUsingGetByQuery($apiGateway, $originalData)
+        };
+    }
+
+    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => ($this->sourceOfData == Source::ById)
-                ? PetType::fromArrayGetAll($this->apiGateway, $this->originalData['petType']) #TODO redo
+            'type' => ($this->sourceOfData == Source::GetById)
+                ? PetType::fromSingleArrayUsingGetAll($this->apiGateway, $this->originalData['petType']) #TODO redo
                 : PetType::getById($this->apiGateway, $this->typeId),
             default => $this->originalDto->$name,
         };

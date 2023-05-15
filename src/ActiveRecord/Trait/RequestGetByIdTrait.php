@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
+use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
@@ -16,9 +17,15 @@ trait RequestGetByIdTrait
      */
     public static function getById(ApiGateway $apiGateway, int $id): self
     {
-        return self::fromArrayGetById(
+        return self::fromSingleArrayUsingGetById(
             $apiGateway,
             $apiGateway->getWithId(self::getApiModel(), $id)
         );
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromSingleArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self
+    {
+        return self::fromSingleObjectContents($apiGateway, $originalData, Source::GetById);
     }
 }

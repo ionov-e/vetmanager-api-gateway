@@ -13,28 +13,47 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
- * @property-read array arrayToSend Массив для отправки Post и Put запросов #TODO Consider whether to have
- * @property-write AbstractDTO userMadeDto Здесь будут данные в виде DTO для отправки в ветменеджер (создание новой записи или редактирование существующей)
+ * // * @property-read array arrayToSend Массив для отправки Post и Put запросов #TODO Consider whether to have
  */
 abstract class AbstractActiveRecord
 {
+    public readonly AbstractDTO $originalDto;
+    /** Здесь будут данные в виде DTO для отправки в ветменеджер (создание новой записи или редактирование существующей) */
+    protected AbstractDTO $userMadeDto;
+
     /**
      * @param ApiGateway $apiGateway
      * @param array<string, mixed> $originalData Данные в том виде, в котором были получены (массив из раздекодированного JSON)
+     * @param class-string $dtoClassName Используемое DTO
+     * @param string $apiRoute Имя модели в роуте АПИ-запроса
      * @param Source $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
+     * @param string $apiUnexpectedModelKey Для исключений в некоторых запросах, когда имя модели в ответе JSON отличается от имени модели в роуте {@see $apiRoute}
      */
     protected function __construct(
-        readonly protected ApiGateway                   $apiGateway,
-        readonly protected array                        $originalData,
-        protected Source $sourceOfData
+        readonly protected ApiGateway $apiGateway,
+        protected array               $originalData,
+        readonly protected string     $dtoClassName,
+        readonly protected string     $apiRoute,
+        protected Source              $sourceOfData = Source::OnlyBasicDto,
+        readonly protected string     $apiUnexpectedModelKey = '',
+        //        protected readonly AbstractDTO $originalDto,
+        //        protected AbstractDTO          $userMadeDto,
     ) {
+        $this->originalDto = new $dtoClassName($originalData);
+        $this->userMadeDto = new $dtoClassName([]);
     }
+
+//    /** @throws VetmanagerApiGatewayException */
+//    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfGet = Source::OnlyBasicDto): self
+//    {
+//        return static($apiGateway, $originalData);
+//    }
 
     /** Создание Active Record из АПИ-ответа в виде массива (раздекодированного JSON)
      * @return static[]
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromResponse(ApiGateway $apiGateway, array $apiResponse): array
+    public static function fromApiResponseArray(ApiGateway $apiGateway, array $apiResponse, Source $sourceOfData = Source::OnlyBasicDto): array
     {
         $modelKey = static::getApiModel()->getApiModelResponseKey();
 
@@ -45,7 +64,8 @@ abstract class AbstractActiveRecord
 
         return self::fromMultipleObjectsContents(
             $apiGateway,
-            $apiResponse[$modelKey]
+            $apiResponse[$modelKey],
+            $sourceOfData
         );
     }
 
@@ -53,26 +73,30 @@ abstract class AbstractActiveRecord
      * @throws VetmanagerApiGatewayResponseEmptyException
      * @psalm-suppress UnsafeInstantiation
      */
-    public static function fromSingleObjectContents(ApiGateway $apiGateway, array $objectContents): static
-    {
+    public static function fromSingleObjectContents(
+        ApiGateway $apiGateway,
+        array      $objectContents,
+        Source     $sourceOfData = Source::OnlyBasicDto
+    ): static {
         if (empty($objectContents)) {
             throw new VetmanagerApiGatewayResponseEmptyException();
         }
 
-        return new static ($apiGateway, $objectContents);
+        return new static ($apiGateway, $objectContents, $sourceOfData);
     }
 
     /**
      * @param array $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
-     *
      * @return static[]
-     *
      * @throws VetmanagerApiGatewayResponseEmptyException
      */
-    public static function fromMultipleObjectsContents(ApiGateway $apiGateway, array $objects): array
-    {
+    public static function fromMultipleObjectsContents(
+        ApiGateway $apiGateway,
+        array      $objects,
+        Source     $sourceOfData = Source::OnlyBasicDto
+    ): array {
         return array_map(
-            fn (array $objectContents): static => static::fromSingleObjectContents($apiGateway, $objectContents),
+            fn (array $objectContents): static => static::fromSingleObjectContents($apiGateway, $objectContents, $sourceOfData),
             $objects
         );
     }
