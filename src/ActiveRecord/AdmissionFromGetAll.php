@@ -3,7 +3,7 @@
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetAllInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByQueryInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetAllTrait;
@@ -32,10 +32,10 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
     /** @var InvoiceDto[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
      * При других запросах такого элемента нет */
     public array $invoices;
-    /** @return ApiRoute::Admission */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Admission */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Admission;
+        return ApiModel::Admission;
     }
 
     /** @param array{

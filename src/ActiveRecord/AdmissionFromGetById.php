@@ -2,7 +2,7 @@
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByIdInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -39,10 +39,10 @@ final class AdmissionFromGetById extends AbstractActiveRecord implements Request
      * При других запросах такого элемента нет */
     public array $invoices;
 
-    /** @return ApiRoute::Admission */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Admission */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Admission;
+        return ApiModel::Admission;
     }
 
     /** @param array{

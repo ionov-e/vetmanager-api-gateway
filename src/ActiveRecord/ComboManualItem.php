@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -45,10 +45,10 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
         $this->comboManualName = DTO\ComboManualNameDto::fromSingleObjectContents($this->apiGateway, $originalData['comboManualName']);
     }
 
-    /** @return ApiRoute::ComboManualItem */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::ComboManualItem */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::ComboManualItem;
+        return ApiModel::ComboManualItem;
     }
 
     /**

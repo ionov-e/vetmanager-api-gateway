@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -78,10 +78,10 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
         )->string;
     }
 
-    /** @return ApiRoute::Client */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Client */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Client;
+        return ApiModel::Client;
     }
 
 
@@ -110,7 +110,7 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
     private function getPetsAlive(): array
     {
         $pets = $this->apiGateway->getWithQueryBuilder(
-            ApiRoute::Pet,
+            ApiModel::Pet,
             (new Builder())
                 ->where('owner_id', (string)$this->id)
                 ->where('status', Status::Alive->value)

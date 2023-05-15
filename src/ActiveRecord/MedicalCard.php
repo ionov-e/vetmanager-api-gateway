@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -149,10 +149,10 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
         $this->pet = DTO\PetDto::fromSingleObjectContents($this->apiGateway, $originalData['patient']);
     }
 
-    /** @return ApiRoute::MedicalCard */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::MedicalCard */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::MedicalCard;
+        return ApiModel::MedicalCard;
     }
 
     /** @throws VetmanagerApiGatewayException */

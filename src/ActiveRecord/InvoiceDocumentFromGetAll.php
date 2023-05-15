@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetAllInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByQueryInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetAllTrait;
@@ -115,10 +115,10 @@ final class InvoiceDocumentFromGetAll extends AbstractActiveRecord implements Re
         $this->good = GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
     }
 
-    /** @return ApiRoute::InvoiceDocument */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::InvoiceDocument */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::InvoiceDocument;
+        return ApiModel::InvoiceDocument;
     }
 
     /** @throws VetmanagerApiGatewayException */

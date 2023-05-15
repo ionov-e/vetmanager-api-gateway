@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -40,9 +40,9 @@ final class UserPosition extends AbstractActiveRecord implements AllGetRequestsI
         $this->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
     }
 
-    /** @return ApiRoute::UserPosition */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::UserPosition */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::UserPosition;
+        return ApiModel::UserPosition;
     }
 }

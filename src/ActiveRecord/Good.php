@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -109,9 +109,9 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
         return $originalData;
     }
 
-    public static function getApiModel(): ApiRoute
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Good;
+        return ApiModel::Good;
     }
 
     /** @throws VetmanagerApiGatewayException */

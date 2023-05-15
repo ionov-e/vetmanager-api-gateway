@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
@@ -20,28 +19,36 @@ abstract class AbstractActiveRecord
     public readonly AbstractDTO $originalDto;
     /** Здесь будут данные в виде DTO для отправки в ветменеджер (создание новой записи или редактирование существующей) */
     protected AbstractDTO $userMadeDto;
+    protected readonly string $apiUnexpectedModelKey;
 
     /**
      * @param ApiGateway $apiGateway
      * @param array<string, mixed> $originalData Данные в том виде, в котором были получены (массив из раздекодированного JSON)
      * @param class-string $dtoClassName Используемое DTO
-     * @param string $apiRoute Имя модели в роуте АПИ-запроса
      * @param Source $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
-     * @param string $apiUnexpectedModelKey Для исключений в некоторых запросах, когда имя модели в ответе JSON отличается от имени модели в роуте {@see $apiRoute}
      */
     protected function __construct(
         readonly protected ApiGateway $apiGateway,
-        protected array               $originalData,
+        public array                  $originalData,
         readonly protected string     $dtoClassName,
-        readonly protected string     $apiRoute,
         protected Source              $sourceOfData = Source::OnlyBasicDto,
-        readonly protected string     $apiUnexpectedModelKey = '',
-        //        protected readonly AbstractDTO $originalDto,
-        //        protected AbstractDTO          $userMadeDto,
     ) {
         $this->originalDto = new $dtoClassName($originalData);
         $this->userMadeDto = new $dtoClassName([]);
     }
+
+//    protected function __construct(
+//        readonly protected ApiGateway $apiGateway,
+//        public array                  $originalData,
+//        readonly protected string     $dtoClassName,
+//        readonly protected string     $apiRoute,
+//        protected Source              $sourceOfData = Source::OnlyBasicDto,
+//        string                        $apiUnexpectedModelKey = '',
+//    ) {
+//        $this->apiUnexpectedModelKey = $apiUnexpectedModelKey ?: $apiRoute;
+//        $this->originalDto = new $dtoClassName($originalData);
+//        $this->userMadeDto = new $dtoClassName([]);
+//    }
 
 //    /** @throws VetmanagerApiGatewayException */
 //    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfGet = Source::OnlyBasicDto): self
@@ -101,8 +108,8 @@ abstract class AbstractActiveRecord
         );
     }
 
-    /** Используется при АПИ-запросах (роуты и имена моделей из тела JSON-ответа на АПИ запрос) */
-    abstract public static function getApiModel(): ApiRoute;
+//    /** Используется при АПИ-запросах (роуты и имена моделей из тела JSON-ответа на АПИ запрос) */
+//    abstract public static function getApiModel(): ApiRoute;
 
     public function __set($name, $value)
     {

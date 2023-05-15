@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
@@ -41,9 +41,9 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
         $this->userMadeDto = new PetTypeDto([]);
     }
 
-    public static function getApiModel(): ApiRoute
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::PetType;
+        return ApiModel::PetType;
     }
 
     /** @throws VetmanagerApiGatewayException */

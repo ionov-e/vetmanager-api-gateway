@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateTimeContainer;
@@ -152,10 +152,10 @@ final class MedicalCardsByClient extends AbstractActiveRecord
         $this->admissionTypeTitle = StringContainer::fromStringOrNull($originalData['admission_type_title'])->string;
     }
 
-    /** @return ApiRoute::MedicalCardsByClient */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::MedicalCardsByClient */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::MedicalCardsByClient;
+        return ApiModel::MedicalCardsByClient;
     }
 
     /**

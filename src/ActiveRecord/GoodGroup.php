@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -50,9 +50,9 @@ final class GoodGroup extends AbstractActiveRecord implements AllGetRequestsInte
         $this->isShowInVaccines = BoolContainer::fromStringOrNull($originalData['is_show_in_vaccines'])->bool;
     }
 
-    /** @return ApiRoute::GoodGroup */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::GoodGroup */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::GoodGroup;
+        return ApiModel::GoodGroup;
     }
 }

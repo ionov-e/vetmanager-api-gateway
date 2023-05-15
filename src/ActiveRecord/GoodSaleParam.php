@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -67,10 +67,10 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
         $this->good = Good::fromSingleObjectContents($this->apiGateway, $originalData['good']); #TODO this was DTO
     }
 
-    /** @return ApiRoute::GoodSaleParam */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::GoodSaleParam */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::GoodSaleParam;
+        return ApiModel::GoodSaleParam;
     }
 
 

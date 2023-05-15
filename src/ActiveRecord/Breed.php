@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
@@ -21,9 +21,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 final class Breed extends AbstractActiveRecord implements AllRequestsInterface
 {
     use AllRequestsTrait;
-
-    private readonly BreedDto $originalDto;
-    protected BreedDto $userMadeDto;
 
     /** @param array{
      *     "id": string,
@@ -42,21 +39,22 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
         parent::__construct($apiGateway, $originalData, BreedDto::class, 'breed', $sourceOfData);
     }
 
-    /** @return ApiRoute::Breed */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Breed */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Breed;
+        return ApiModel::Breed;
     }
 
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleObjectArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfSource = Source::OnlyBasicDto): self
-    {
-        return match ($typeOfSource) {
-            Source::GetById => self::fromSingleArrayUsingGetById($apiGateway, $originalData),
-            Source::GetByAllList => self::fromSingleArrayUsingGetAll($apiGateway, $originalData),
-            Source::GetByQuery => self::fromSingleArrayUsingGetByQuery($apiGateway, $originalData)
-        };
-    }
+//    /** @throws VetmanagerApiGatewayException */
+//    public static function fromSingleObjectArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfSource = Source::OnlyBasicDto): self
+//    {
+//        return match ($typeOfSource) {
+//            Source::GetById => self::fromSingleArrayUsingGetById($apiGateway, $originalData),
+//            Source::GetByAllList => self::fromSingleArrayUsingGetAll($apiGateway, $originalData),
+//            Source::GetByQuery => self::fromSingleArrayUsingGetByQuery($apiGateway, $originalData),
+//            Source::OnlyBasicDto => throw new \Exception('To be implemented')
+//        };
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

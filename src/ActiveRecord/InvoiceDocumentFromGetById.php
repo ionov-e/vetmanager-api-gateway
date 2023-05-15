@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestGetByIdInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestGetByIdTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -146,10 +146,10 @@ final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements R
         $this->partyInfo = (array)$originalData['party_info'];
     }
 
-    /** @return ApiRoute::InvoiceDocument */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::InvoiceDocument */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::InvoiceDocument;
+        return ApiModel::InvoiceDocument;
     }
 
     /** @throws VetmanagerApiGatewayException */

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Interface\RequestPostInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
@@ -128,10 +128,10 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
         );
     }
 
-    /** @return ApiRoute::Pet */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Pet */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Pet;
+        return ApiModel::Pet;
     }
 
     /** @throws VetmanagerApiGatewayException

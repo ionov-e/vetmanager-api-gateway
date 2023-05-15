@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -39,9 +39,9 @@ final class Unit extends AbstractActiveRecord implements AllGetRequestsInterface
         $this->status = Status::from($originalData['status']);
     }
 
-    /** @return ApiRoute::Unit */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Unit */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Unit;
+        return ApiModel::Unit;
     }
 }

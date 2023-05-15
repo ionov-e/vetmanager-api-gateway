@@ -8,7 +8,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\FloatContainer;
@@ -113,10 +113,10 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }
 
-    /** @return ApiRoute::MedicalCardsVaccinations */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::MedicalCardsVaccinations */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::MedicalCardsVaccinations;
+        return ApiModel::MedicalCardsVaccinations;
     }
 
     /**

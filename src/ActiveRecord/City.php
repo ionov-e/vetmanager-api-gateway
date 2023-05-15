@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -40,10 +40,10 @@ final class City extends AbstractActiveRecord implements AllGetRequestsInterface
         $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveInt;
     }
 
-    /** @return ApiRoute::City */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::City */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::City;
+        return ApiModel::City;
     }
 
     /** @throws VetmanagerApiGatewayException

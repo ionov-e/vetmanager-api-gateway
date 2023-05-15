@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -187,9 +187,9 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
         $this->invoiceDocuments = InvoiceDocument::fromMultipleObjectsContents($this->apiGateway, $originalData['invoiceDocuments']);
     }
 
-    /** @return ApiRoute::Invoice */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Invoice */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Invoice;
+        return ApiModel::Invoice;
     }
 }

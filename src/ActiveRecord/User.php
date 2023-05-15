@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -67,10 +67,10 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
             : null;
     }
 
-    /** @return ApiRoute::User */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::User */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::User;
+        return ApiModel::User;
     }
 
     /** @throws VetmanagerApiGatewayException */

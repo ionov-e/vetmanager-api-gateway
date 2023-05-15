@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -89,10 +89,10 @@ final class Clinic extends AbstractActiveRecord implements AllGetRequestsInterfa
         $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
     }
 
-    /** @return ApiRoute::Clinic */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Clinic */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Clinic;
+        return ApiModel::Clinic;
     }
 
     /**

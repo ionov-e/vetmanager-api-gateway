@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiRoute;
+use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
@@ -40,9 +40,9 @@ final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
         $this->isSuper = BoolContainer::fromStringOrNull($originalData['super'])->bool;
     }
 
-    /** @return ApiRoute::Role */
-    public static function getApiModel(): ApiRoute
+    /** @return ApiModel::Role */
+    public static function getApiModel(): ApiModel
     {
-        return ApiRoute::Role;
+        return ApiModel::Role;
     }
 }
