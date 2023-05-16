@@ -77,13 +77,13 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->group = GoodGroup::fromSingleObjectContents($this->apiGateway, $originalData['group']);
+        $this->group = GoodGroup::fromSingleDtoArray($this->apiGateway, $originalData['group']);
 
         $this->unit = !empty($originalData['unitStorage'])
-            ? Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitStorage'])
+            ? Unit::fromSingleDtoArray($this->apiGateway, $originalData['unitStorage'])
             : null;
 
-        $this->goodSaleParams = GoodSaleParam::fromMultipleObjectsContents(
+        $this->goodSaleParams = GoodSaleParam::fromMultipleDtosArrays(
             $this->apiGateway,
             $this->getContentsForGoodSaleParamActiveRecords()
         );

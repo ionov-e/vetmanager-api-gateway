@@ -7,40 +7,28 @@ namespace VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO;
-use VetmanagerApiGateway\DTO\PetTypeDto;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
+/**
+ * @property array{
+ *     "id": string,
+ *     "title": string,
+ *     "picture": string,
+ *     "type": ?string,
+ *     "breeds": list{array{
+ *              "id": string,
+ *              "title": string,
+ *              "pet_type_id": string,
+ *          }
+ *     }
+ * } $originalData 'breeds' массив только при GetById
+ */
 final class PetType extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
-    private readonly PetTypeDto $originalDto;
-    protected PetTypeDto $userMadeDto;
-
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "picture": string,
-     *     "type": ?string,
-     *     "breeds": array{int, array{
-     *              "id": string,
-     *              "title": string,
-     *              "pet_type_id": string,
-     *          }
-     *     }
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    private function __construct(ApiGateway $apiGateway, array $originalData, Source $sourceOfData = Source::OnlyBasicDto)
-    {
-        parent::__construct($apiGateway, $originalData, $sourceOfData);
-        $this->originalDto = new PetTypeDto($originalData);
-        $this->userMadeDto = new PetTypeDto([]);
-    }
-
+    /** @return ApiModel::PetType */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::PetType;
@@ -49,9 +37,15 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
-        return match ($name) {
-            'breeds' => DTO\BreedDto::fromMultipleObjectsContents($this->apiGateway, $this->originalData['breeds']),
-            default => $this->$name,
-        };
+        switch ($name) {
+            case 'breeds':
+                if ($this->sourceOfData == Source::GetById) {
+                    return Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['breeds'], Source::OnlyBasicDto);
+                }
+                #TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // no break
+            default:
+                return $this->originalDto->$name;
+        }
     }
 }

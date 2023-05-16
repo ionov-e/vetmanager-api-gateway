@@ -171,7 +171,7 @@ final class MedicalCardsByClient extends AbstractActiveRecord
             self::getApiModel(),
             "client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
-        return self::fromMultipleObjectsContents($apiGateway, $medcardsFromApiResponse);
+        return self::fromMultipleDtosArrays($apiGateway, $medcardsFromApiResponse);
     }
 
     /** @throws VetmanagerApiGatewayException

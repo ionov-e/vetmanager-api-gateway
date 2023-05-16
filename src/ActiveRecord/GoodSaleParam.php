@@ -62,9 +62,9 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
         parent::__construct($apiGateway, $originalData);
 
         $this->unit = !empty($originalData['unitSale'])     #TODO Move
-            ? Unit::fromSingleObjectContents($this->apiGateway, $originalData['unitSale'])
+            ? Unit::fromSingleDtoArray($this->apiGateway, $originalData['unitSale'])
             : null;
-        $this->good = Good::fromSingleObjectContents($this->apiGateway, $originalData['good']); #TODO this was DTO
+        $this->good = Good::fromSingleDtoArray($this->apiGateway, $originalData['good']); #TODO this was DTO
     }
 
     /** @return ApiModel::GoodSaleParam */

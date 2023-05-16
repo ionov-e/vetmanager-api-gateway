@@ -179,11 +179,11 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->client = Client::fromSingleObjectContents($this->apiGateway, $originalData['client']);
-        $this->pet = Pet::fromSingleObjectContents($this->apiGateway, $originalData['pet']);
-        $this->petBreed = Breed::fromSingleObjectContents($this->apiGateway, $originalData['pet']['breed_data']);
-        $this->petType = PetType::fromSingleObjectContents($this->apiGateway, $originalData['pet']['pet_type_data']);
-        $this->doctor = User::fromSingleObjectContents($this->apiGateway, $originalData['doctor']);
+        $this->client = Client::fromSingleDtoArray($this->apiGateway, $originalData['client']);
+        $this->pet = Pet::fromSingleDtoArray($this->apiGateway, $originalData['pet']);
+        $this->petBreed = Breed::fromSingleDtoArray($this->apiGateway, $originalData['pet']['breed_data']);
+        $this->petType = PetType::fromSingleDtoArray($this->apiGateway, $originalData['pet']['pet_type_data']);
+        $this->doctor = User::fromSingleDtoArray($this->apiGateway, $originalData['doctor']);
         $this->invoiceDocuments = InvoiceDocument::fromMultipleObjectsContents($this->apiGateway, $originalData['invoiceDocuments']);
     }
 

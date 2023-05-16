@@ -10,5 +10,5 @@ interface RequestGetByIdInterface
     public static function getById(ApiGateway $apiGateway, int $id): self;
 
     /** Создать объект, используя массив полученный Get-запросом по ID (т.е. создание объекта из кэша скорее всего) */
-    public static function fromSingleArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self;
+    public static function fromSingleDtoArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self;
 }

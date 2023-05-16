@@ -23,8 +23,8 @@ trait RequestGetAllTrait
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleArrayUsingGetAll(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayUsingGetAll(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleObjectContents($apiGateway, $originalData, Source::GetByAllList);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetByAllList);
     }
 }

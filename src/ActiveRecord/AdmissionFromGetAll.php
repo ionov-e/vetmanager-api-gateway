@@ -32,6 +32,7 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
     /** @var InvoiceDto[] Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется.
      * При других запросах такого элемента нет */
     public array $invoices;
+
     /** @return ApiModel::Admission */
     public static function getApiModel(): ApiModel
     {
@@ -157,7 +158,7 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
         $this->petBreed = !empty($originalData['pet']['breed_data']) ? new BreedDto($originalData['pet']['breed_data']) : null;
         $this->client = new ClientDto($originalData['client']);
         $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
-        $this->invoices = Invoice::fromMultipleObjectsContents($this->apiGateway, $originalData['invoices'] ?? []); #TODO Was DTO
+        $this->invoices = Invoice::fromMultipleDtosArrays($this->apiGateway, $originalData['invoices'] ?? []); #TODO Was DTO
     }
 
     /** Не возвращаются со статусом "удален"

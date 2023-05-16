@@ -48,8 +48,8 @@ trait RequestGetByQuery
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleArrayUsingGetByQuery(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayUsingGetByQuery(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleObjectContents($apiGateway, $originalData, Source::OnlyBasicDto);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetByQuery);
     }
 }

@@ -60,10 +60,10 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
         parent::__construct($apiGateway, $originalData);
 
         $this->role = !empty($originalData['role'])
-            ? Role::fromSingleObjectContents($this->apiGateway, $originalData['role'])
+            ? Role::fromSingleDtoArray($this->apiGateway, $originalData['role'])
             : null;
         $this->position = !empty($originalData['position'])
-            ? UserPosition::fromSingleObjectContents($this->apiGateway, $originalData['position'])
+            ? UserPosition::fromSingleDtoArray($this->apiGateway, $originalData['position'])
             : null;
     }
 

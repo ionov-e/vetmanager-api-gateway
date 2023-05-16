@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
+use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -17,15 +18,26 @@ trait RequestGetByIdTrait
      */
     public static function getById(ApiGateway $apiGateway, int $id): self
     {
-        return self::fromSingleArrayUsingGetById(
+        return self::fromSingleDtoArrayUsingGetById(
             $apiGateway,
             $apiGateway->getWithId(self::getApiModel(), $id)
         );
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleObjectContents($apiGateway, $originalData, Source::GetById);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetById);
+    }
+
+    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
+     * текущего объекта на данные полученные по АПИ запросу используя ID
+     * @throws VetmanagerApiGatewayException
+     */
+    public function rewriteCurrentObjectWithGetByIdData(): void
+    {
+        $instanceFromGetById = self::getById($this->apiGateway, $this->id);
+        $this->originalDto = $instanceFromGetById->originalDto;
+        $this->sourceOfData = Source::GetById;
     }
 }

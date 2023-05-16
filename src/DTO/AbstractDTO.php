@@ -6,6 +6,25 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 abstract class AbstractDTO
 {
+    protected function __construct()
+    {
+    }
+
+    public static function createEmpty(): static
+    {
+        return new static();
+    }
+
+    abstract public static function fromApiResponseArray(array $originalData): self;
+
+    /** Список обязательных ключей
+     * @return string[]
+     */
+    abstract public function getRequiredKeysForPostArray(): array;
+
+    /** Получение записанного пользователем DTO в виде массива (без поля с ID) для Post или Put запроса */
+    abstract protected function getSetValuesWithoutId(): array;
+
     /** @throws VetmanagerApiGatewayRequestException */
     public function getAsArrayForPostRequest(): array
     {
@@ -54,12 +73,4 @@ abstract class AbstractDTO
 
         return $arrayToSend;
     }
-
-    /** Список обязательных ключей
-     * @return string[]
-     */
-    abstract public function getRequiredKeysForPostArray(): array;
-
-    /** Получение записанного пользователем DTO в виде массива (без поля с ID) для Post или Put запроса */
-    abstract protected function getSetValuesWithoutId(): array;
 }

@@ -47,7 +47,7 @@ final class ComboManualName extends AbstractActiveRecord implements AllGetReques
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->comboManualItems = ComboManualItem::fromMultipleObjectsContents(
+        $this->comboManualItems = ComboManualItem::fromMultipleDtosArrays(
             $this->apiGateway,
             $originalData['comboManualItems']
         ); #TODO this was dto

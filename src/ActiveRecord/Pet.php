@@ -116,7 +116,7 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
 
         $this->client = !empty($originalData['owner']) ? DTO\ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
         $this->type = !empty($originalData['type']) ? DTO\PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
-        $this->breed = !empty($originalData['breed']) ? Breed::fromSingleObjectContents($this->apiGateway, $this->getDataForBreedActiveRecord()) : null;
+        $this->breed = !empty($originalData['breed']) ? Breed::fromSingleDtoArray($this->apiGateway, $this->getDataForBreedActiveRecord()) : null;
         $this->color = !empty($originalData['color']) ? DTO\ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
     }
 

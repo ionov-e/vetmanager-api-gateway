@@ -132,7 +132,7 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
             self::getApiModel(),
             "pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}"
         );
-        return self::fromMultipleObjectsContents($apiGateway, $petsFromApiResponse);
+        return self::fromMultipleDtosArrays($apiGateway, $petsFromApiResponse);
     }
 
     /** @throws VetmanagerApiGatewayException Родительский */

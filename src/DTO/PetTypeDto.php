@@ -8,6 +8,7 @@ use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
+/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 class PetTypeDto extends AbstractDTO
 {
     /** @var positive-int */
@@ -24,17 +25,20 @@ class PetTypeDto extends AbstractDTO
      *     "type": ?string,
      * } $originalData
      * @throws VetmanagerApiGatewayException
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function __construct(array $originalData)
+    public static function fromApiResponseArray(array $originalData): self
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $this->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
-        $this->type = StringContainer::fromStringOrNull($originalData['type'])->string;
+        $instance = new self();
+        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $instance->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
+        $instance->type = StringContainer::fromStringOrNull($originalData['type'])->string;
+        return $instance;
     }
 
     /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
+    public function getRequiredKeysForPostArray(): array #TODO check
     {
         return ['title'];
     }
@@ -44,7 +48,8 @@ class PetTypeDto extends AbstractDTO
     {
         return array_merge(
             isset($this->title) ? ['title' => $this->title] : [],
-            isset($this->typeId) ? ['pet_type_id' => (string) $this->typeId] : [],
+            isset($this->picture) ? ['picture' => $this->picture] : [],
+            isset($this->type) ? ['type' => $this->type] : [],
         );
     }
 }
