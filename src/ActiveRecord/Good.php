@@ -114,11 +114,10 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
         return ApiModel::Good;
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

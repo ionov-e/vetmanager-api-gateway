@@ -139,13 +139,13 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'medicalCard' => ActiveRecord\MedicalCard::getById($this->apiGateway, $this->medcardId),
+            'medicalCard' => MedicalCard::getById($this->apiGateway, $this->medcardId),
             'nextAdmission' => $this->nextAdmissionId
-                ? ActiveRecord\AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
+                ? AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
                 : null,
             'petAgeAtVaccinationMoment' => $this->getPetAgeAtVaccinationMoment(),
             'currentPetAgeIfStillAlive' => $this->getCurrentPetAgeIfStillAlive(),
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 

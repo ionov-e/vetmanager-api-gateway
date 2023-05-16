@@ -45,4 +45,11 @@ final class UserPosition extends AbstractActiveRecord implements AllGetRequestsI
     {
         return ApiModel::UserPosition;
     }
+
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->originalDto->$name
+        };
+    }
 }

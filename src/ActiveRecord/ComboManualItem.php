@@ -139,7 +139,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     public function __get(string $name): mixed
     {
         return match ($name) {
-            default => $this->$name
+            default => $this->originalDto->$name
         };
     }
 }

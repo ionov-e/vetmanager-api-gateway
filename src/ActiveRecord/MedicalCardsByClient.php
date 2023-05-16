@@ -179,12 +179,12 @@ final class MedicalCardsByClient extends AbstractActiveRecord
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'admissionType' => $this->admissionTypeId ? ActiveRecord\ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
-            'meetResult' => $this->meetResultId ? ActiveRecord\ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
-            'client' => $this->clientId ? ActiveRecord\Client::getById($this->apiGateway, $this->clientId) : null,
-            'pet' => ActiveRecord\Pet::getById($this->apiGateway, $this->petId),
-            'user' => $this->userId ? ActiveRecord\User::getById($this->apiGateway, $this->userId) : null,
-            default => $this->$name,
+            'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
+            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
+            'client' => $this->clientId ? Client::getById($this->apiGateway, $this->clientId) : null,
+            'pet' => Pet::getById($this->apiGateway, $this->petId),
+            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            default => $this->originalDto->$name
         };
     }
 }

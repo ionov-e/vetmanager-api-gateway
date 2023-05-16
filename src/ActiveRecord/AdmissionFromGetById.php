@@ -222,7 +222,7 @@ final class AdmissionFromGetById extends AbstractActiveRecord implements Request
             'type' => $this->typeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
             'admissionsOfPet' => $this->petId ? AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
             'admissionsOfOwner' => $this->clientId ? AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

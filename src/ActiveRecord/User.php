@@ -82,7 +82,7 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
                 $this->originalData['middle_name'],
                 $this->originalData['last_name']
             ),
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

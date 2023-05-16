@@ -121,11 +121,10 @@ final class InvoiceDocumentFromGetAll extends AbstractActiveRecord implements Re
         return ApiModel::InvoiceDocument;
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

@@ -86,8 +86,8 @@ final class Property extends AbstractActiveRecord implements AllGetRequestsInter
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'clinic' => $this->clinicId ? ActiveRecord\Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            default => $this->$name,
+            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            default => $this->originalDto->$name
         };
     }
 }

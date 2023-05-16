@@ -45,4 +45,11 @@ final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         return ApiModel::Role;
     }
+
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->originalDto->$name
+        };
+    }
 }

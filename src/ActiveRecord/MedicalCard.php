@@ -167,7 +167,7 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
             'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'invoice' => $this->invoiceId ? Invoice::getById($this->apiGateway, $this->invoiceId) : null,
             'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

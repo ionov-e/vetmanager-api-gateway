@@ -12,6 +12,11 @@ use VetmanagerApiGateway\DTO\BreedDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
+ * @property-read BreedDto $originalDto
+ * @property positive-int id
+ * @property non-empty-string title
+ * @property positive-int typeId
+ * @property-read PetType type
  * @property array{
  *     id: string,
  *     title: string,
@@ -23,11 +28,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *          type?: string
  *      }
  * } $originalData 'petType' массив только при GetById
- * @property positive-int id
- * @property non-empty-string title
- * @property positive-int typeId
- * @property-read PetType type
- * @property-read BreedDto $originalDto
  */
 final class Breed extends AbstractActiveRecord implements AllRequestsInterface
 {

@@ -74,11 +74,10 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
     }
 
 
-    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

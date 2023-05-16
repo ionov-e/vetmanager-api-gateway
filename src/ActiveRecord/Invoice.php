@@ -184,12 +184,19 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
         $this->petBreed = Breed::fromSingleDtoArray($this->apiGateway, $originalData['pet']['breed_data']);
         $this->petType = PetType::fromSingleDtoArray($this->apiGateway, $originalData['pet']['pet_type_data']);
         $this->doctor = User::fromSingleDtoArray($this->apiGateway, $originalData['doctor']);
-        $this->invoiceDocuments = InvoiceDocument::fromMultipleObjectsContents($this->apiGateway, $originalData['invoiceDocuments']);
+        $this->invoiceDocuments = InvoiceDocumentFromGetAll::fromMultipleDtosArrays($this->apiGateway, $originalData['invoiceDocuments']);
     }
 
     /** @return ApiModel::Invoice */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::Invoice;
+    }
+
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->originalDto->$name
+        };
     }
 }

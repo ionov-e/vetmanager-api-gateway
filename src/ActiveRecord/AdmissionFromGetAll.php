@@ -153,9 +153,9 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
         parent::__construct($apiGateway, $originalData);
 
         $this->pet = !empty($originalData['pet']) ? new PetDto($originalData['pet']) : null;
-        $this->petType = !empty($originalData['pet']['pet_type_data']) ? new PetTypeDto($originalData['pet']['pet_type_data']) : null;
+        $this->petType = !empty($originalData['pet']['pet_type_data']) ? PetTypeDto::fromApiResponseArray($originalData['pet']['pet_type_data']) : null;
         /** @psalm-suppress DocblockTypeContradiction */
-        $this->petBreed = !empty($originalData['pet']['breed_data']) ? new BreedDto($originalData['pet']['breed_data']) : null;
+        $this->petBreed = !empty($originalData['pet']['breed_data']) ? BreedDto::fromApiResponseArray($originalData['pet']['breed_data']) : null;
         $this->client = new ClientDto($originalData['client']);
         $this->waitTime = StringContainer::fromStringOrNull($originalData['wait_time'] ?? '')->string;
         $this->invoices = Invoice::fromMultipleDtosArrays($this->apiGateway, $originalData['invoices'] ?? []); #TODO Was DTO
@@ -201,7 +201,7 @@ final class AdmissionFromGetAll extends AbstractActiveRecord implements RequestG
             'type' => $this->typeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->typeId) : null,
             'admissionsOfPet' => $this->petId ? AdmissionFromGetAll::getByPetId($this->apiGateway, $this->petId) : [],
             'admissionsOfOwner' => $this->clientId ? AdmissionFromGetAll::getByClientId($this->apiGateway, $this->clientId) : [],
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

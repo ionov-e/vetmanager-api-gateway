@@ -8,15 +8,21 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Source;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
+use VetmanagerApiGateway\DTO\PetTypeDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
+ * @property-read PetTypeDto $originalDto
+ * @property positive-int id
+ * @property string title
+ * @property string picture
+ * @property string type
  * @property array{
- *     "id": string,
- *     "title": string,
- *     "picture": string,
- *     "type": ?string,
- *     "breeds": list{array{
+ *     id: string,
+ *     title: string,
+ *     picture: string,
+ *     type: ?string,
+ *     breeds: list{array{
  *              "id": string,
  *              "title": string,
  *              "pet_type_id": string,
@@ -39,11 +45,8 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
     {
         switch ($name) {
             case 'breeds':
-                if ($this->sourceOfData == Source::GetById) {
-                    return Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['breeds'], Source::OnlyBasicDto);
-                }
-                #TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // no break
+                $this->fillCurrentObjectWithGetByIdDataIfItsNot();
+                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalData['breeds'], Source::OnlyBasicDto);
             default:
                 return $this->originalDto->$name;
         }

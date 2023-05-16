@@ -103,7 +103,7 @@ final class Clinic extends AbstractActiveRecord implements AllGetRequestsInterfa
         return match ($name) {
             'fullPhone' => $this->getFullPhone(),
             'isOnlineSigningUpAvailable' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->id),
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 

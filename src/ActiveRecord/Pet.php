@@ -151,7 +151,7 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
                 (new Builder())->where('patient_id', (string)$this->id)->paginateAll()
             ),
             'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
-            default => $this->$name,
+            default => $this->originalDto->$name,
         };
     }
 }

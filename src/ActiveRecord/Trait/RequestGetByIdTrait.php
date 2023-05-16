@@ -34,8 +34,12 @@ trait RequestGetByIdTrait
      * текущего объекта на данные полученные по АПИ запросу используя ID
      * @throws VetmanagerApiGatewayException
      */
-    public function rewriteCurrentObjectWithGetByIdData(): void
+    public function fillCurrentObjectWithGetByIdDataIfItsNot(): void
     {
+        if ($this->sourceOfData == Source::GetById) {
+            return;
+        }
+
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
         $this->originalDto = $instanceFromGetById->originalDto;
         $this->sourceOfData = Source::GetById;

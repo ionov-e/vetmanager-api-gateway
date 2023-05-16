@@ -44,4 +44,11 @@ final class Unit extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         return ApiModel::Unit;
     }
+
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->originalDto->$name
+        };
+    }
 }

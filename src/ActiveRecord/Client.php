@@ -100,7 +100,7 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
                 $this->originalData['middle_name'],
                 $this->originalData['last_name']
             ),
-            default => $this->$name
+            default => $this->originalDto->$name
         };
     }
 

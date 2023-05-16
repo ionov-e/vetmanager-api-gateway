@@ -135,9 +135,9 @@ final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements R
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->goodSaleParam = DTO\GoodSaleParamDto::fromSingleObjectContents($this->apiGateway, $originalData['goodSaleParam']);
-        $this->invoice = DTO\InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
-        $this->good = DTO\GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
+        $this->goodSaleParam = GoodSaleParamDto::fromSingleObjectContents($this->apiGateway, $originalData['goodSaleParam']);
+        $this->invoice = InvoiceDto::fromSingleObjectContents($this->apiGateway, $originalData['document']);
+        $this->good = GoodDto::fromSingleObjectContents($this->apiGateway, $originalData['good']);
 
         $this->minPrice = FloatContainer::fromStringOrNull((string)$originalData['min_price'])->float;
         $this->maxPrice = FloatContainer::fromStringOrNull((string)$originalData['max_price'])->float;
@@ -152,11 +152,10 @@ final class InvoiceDocumentFromGetById extends AbstractActiveRecord implements R
         return ApiModel::InvoiceDocument;
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            default => $this->$name,
+            default => $this->originalDto->$name
         };
     }
 }

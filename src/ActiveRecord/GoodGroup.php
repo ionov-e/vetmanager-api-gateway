@@ -55,4 +55,11 @@ final class GoodGroup extends AbstractActiveRecord implements AllGetRequestsInte
     {
         return ApiModel::GoodGroup;
     }
+
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
+            default => $this->originalDto->$name
+        };
+    }
 }
