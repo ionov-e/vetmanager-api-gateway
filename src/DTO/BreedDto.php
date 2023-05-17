@@ -19,10 +19,10 @@ class BreedDto extends AbstractDTO
     public int $typeId;
 
     /** @param array{
-     *       "id": string,
-     *       "title": string,
-     *       "pet_type_id": string,
-     *       "petType"?: array
+     *       id: string,
+     *       title: string,
+     *       pet_type_id: string,
+     *       petType?: array
      *   } $originalData
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType

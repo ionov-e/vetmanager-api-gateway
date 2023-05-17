@@ -16,7 +16,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property positive-int id
  * @property non-empty-string title
  * @property positive-int typeId
- * @property-read PetType type
  * @property array{
  *     id: string,
  *     title: string,
@@ -27,7 +26,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *          picture: string,
  *          type?: string
  *      }
- * } $originalData 'petType' массив только при GetById
+ * } $originalDataArray 'petType' массив только при GetById
+ * @property-read PetType type
  */
 final class Breed extends AbstractActiveRecord implements AllRequestsInterface
 {
@@ -44,7 +44,7 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
     {
         return match ($name) {
             'type' => ($this->sourceOfData == Source::GetById)
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['petType'])
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['petType'])
                 : PetType::getById($this->apiGateway, $this->originalDto->typeId),
             default => $this->originalDto->$name,
         };

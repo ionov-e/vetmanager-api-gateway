@@ -15,7 +15,7 @@ use VetmanagerApiGateway\DTO\CityTypeDto;
  * @property array{
  *     "id": string,
  *     "title": string,
- * } $originalData
+ * } $originalDataArray
  */
 final class CityType extends AbstractActiveRecord implements AllGetRequestsInterface
 {

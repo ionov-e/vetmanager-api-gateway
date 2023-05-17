@@ -78,9 +78,9 @@ final class User extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         return match ($name) {
             'fullName' => new FullName(
-                $this->originalData['first_name'],
-                $this->originalData['middle_name'],
-                $this->originalData['last_name']
+                $this->originalDataArray['first_name'],
+                $this->originalDataArray['middle_name'],
+                $this->originalDataArray['last_name']
             ),
             default => $this->originalDto->$name
         };

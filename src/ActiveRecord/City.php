@@ -19,7 +19,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     "id": string,
  *     "title": string,
  *     "type_id": string,
- * } $originalData
+ * } $originalDataArray
  */
 final class City extends AbstractActiveRecord implements AllGetRequestsInterface
 {

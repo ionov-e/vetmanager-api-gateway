@@ -94,17 +94,17 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
         return array_map(
             fn (array $goodSaleParamObject): array => array_merge(
                 $goodSaleParamObject,
-                !empty($this->originalData['unitStorage']) ? ['unitSale' => $this->originalData['unitStorage']] : [],
+                !empty($this->originalDataArray['unitStorage']) ? ['unitSale' => $this->originalDataArray['unitStorage']] : [],
                 ['good' => $this->getOnlyGoodContentsArray()]
             ),
-            $this->originalData['goodSaleParams']
+            $this->originalDataArray['goodSaleParams']
         );
     }
 
     /** @return array<string, ?string> */
     private function getOnlyGoodContentsArray(): array
     {
-        $originalData = $this->originalData;
+        $originalData = $this->originalDataArray;
         unset($originalData['group'], $originalData['unitStorage'], $originalData['goodSaleParams']);
         return $originalData;
     }

@@ -11,6 +11,7 @@ use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
+/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 class GoodSaleParamDto extends AbstractDTO
 {
     /** @var positive-int */
@@ -33,38 +34,65 @@ class GoodSaleParamDto extends AbstractDTO
     /** Default: 'fixed' */
     public PriceFormation $priceFormation;
 
-
     /** @param array{
-     *     "id": string,
-     *     "good_id": string,
-     *     "price": ?string,
-     *     "coefficient": string,
-     *     "unit_sale_id": string,
-     *     "min_price": ?string,
-     *     "max_price": ?string,
-     *     "barcode": ?string,
-     *     "status": string,
-     *     "clinic_id": string,
-     *     "markup": string,
-     *     "price_formation": ?string,
-     *     "unitSale"?: array,
-     *     "good"?: array,
+     *     id: string,
+     *     good_id: string,
+     *     price: ?string,
+     *     coefficient: string,
+     *     unit_sale_id: string,
+     *     min_price: ?string,
+     *     max_price: ?string,
+     *     barcode: ?string,
+     *     status: string,
+     *     clinic_id: string,
+     *     markup: string,
+     *     price_formation: ?string,
+     *     unitSale?: array,
+     *     good?: array,
      * } $originalData
      * @throws VetmanagerApiGatewayException
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function __construct(array $originalData)
+    public static function fromApiResponseArray(array $originalData): self
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
-        $this->price = FloatContainer::fromStringOrNull($originalData['price'])->floatOrNull;
-        $this->coefficient = FloatContainer::fromStringOrNull($originalData['coefficient'])->float;
-        $this->unitSaleId = IntContainer::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
-        $this->minPriceInPercents = FloatContainer::fromStringOrNull($originalData['min_price'])->floatOrNull;
-        $this->maxPriceInPercents = FloatContainer::fromStringOrNull($originalData['max_price'])->floatOrNull;
-        $this->barcode = StringContainer::fromStringOrNull($originalData['barcode'])->string;
-        $this->status = Status::from($originalData['status']);
-        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $this->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
-        $this->priceFormation = PriceFormation::from((string)$originalData['price_formation']);
+        $instance = new self();
+        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
+        $instance->price = FloatContainer::fromStringOrNull($originalData['price'])->floatOrNull;
+        $instance->coefficient = FloatContainer::fromStringOrNull($originalData['coefficient'])->float;
+        $instance->unitSaleId = IntContainer::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
+        $instance->minPriceInPercents = FloatContainer::fromStringOrNull($originalData['min_price'])->floatOrNull;
+        $instance->maxPriceInPercents = FloatContainer::fromStringOrNull($originalData['max_price'])->floatOrNull;
+        $instance->barcode = StringContainer::fromStringOrNull($originalData['barcode'])->string;
+        $instance->status = Status::from($originalData['status']);
+        $instance->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $instance->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
+        $instance->priceFormation = PriceFormation::from((string)$originalData['price_formation']);
+        return $instance;
     }
+
+    /** @inheritdoc */
+    public function getRequiredKeysForPostArray(): array #TODO No Idea
+    {
+        return [];
+    }
+
+    /** @inheritdoc */
+    protected function getSetValuesWithoutId(): array
+    {
+        return array_merge(
+            isset($this->goodId) ? ['good_id' => $this->goodId] : [],
+            isset($this->price) ? ['price' => $this->price] : [],
+            isset($this->coefficient) ? ['coefficient' => $this->coefficient] : [],
+            isset($this->unitSaleId) ? ['unit_sale_id' => $this->unitSaleId] : [],
+            isset($this->minPriceInPercents) ? ['min_price' => $this->minPriceInPercents] : [],
+            isset($this->maxPriceInPercents) ? ['max_price' => $this->maxPriceInPercents] : [],
+            isset($this->barcode) ? ['barcode' => $this->barcode] : [],
+            isset($this->status) ? ['status' => $this->status->value] : [],
+            isset($this->clinicId) ? ['clinic_id' => $this->clinicId] : [],
+            isset($this->markup) ? ['markup' => $this->markup] : [],
+            isset($this->priceFormation) ? ['price_formation' => $this->priceFormation->value] : [],
+        );
+    }
+
 }

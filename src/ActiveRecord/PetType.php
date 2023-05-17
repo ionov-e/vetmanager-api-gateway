@@ -22,13 +22,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     title: string,
  *     picture: string,
  *     type: ?string,
- *     breeds: list{array{
+ *     breeds: list<array{
  *              "id": string,
  *              "title": string,
  *              "pet_type_id": string,
  *          }
- *     }
- * } $originalData 'breeds' массив только при GetById
+ *     >
+ * } $originalDataArray 'breeds' массив только при GetById
  */
 final class PetType extends AbstractActiveRecord implements AllRequestsInterface
 {
@@ -46,7 +46,7 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
         switch ($name) {
             case 'breeds':
                 $this->fillCurrentObjectWithGetByIdDataIfItsNot();
-                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalData['breeds'], Source::OnlyBasicDto);
+                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['breeds'], Source::OnlyBasicDto);
             default:
                 return $this->originalDto->$name;
         }

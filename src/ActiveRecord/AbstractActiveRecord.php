@@ -22,13 +22,13 @@ abstract class AbstractActiveRecord
 
     /**
      * @param ApiGateway $apiGateway
-     * @param array<string,mixed> $originalData Данные в том виде, в котором были получены (массив из раздекодированного JSON)
+     * @param array<string,mixed> $originalDataArray Данные в том виде, в котором были получены (массив из раздекодированного JSON)
      * @param Source $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
      * @throws VetmanagerApiGatewayException
      */
     protected function __construct(
         protected readonly ApiGateway $apiGateway,
-        public array                  $originalData,
+        public array                  $originalDataArray,
         protected Source              $sourceOfData = Source::OnlyBasicDto,
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
@@ -37,7 +37,7 @@ abstract class AbstractActiveRecord
             throw new VetmanagerApiGatewayRequestException();
         }
 
-        $this->originalDto = $dtoClassName::fromApiResponseArray($originalData);
+        $this->originalDto = $dtoClassName::fromApiResponseArray($originalDataArray);
         $this->userMadeDto = $dtoClassName::createEmpty();
     }
 
@@ -78,45 +78,45 @@ abstract class AbstractActiveRecord
         );
     }
 
-    /** @param array $objectContents Содержимое: {id: 13, ...}
+    /** @param array $singleDtoAsArray Содержимое: {id: 13, ...}
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress UnsafeInstantiation
      */
     public static function fromSingleDtoArray(
         ApiGateway $apiGateway,
-        array      $objectContents,
+        array      $singleDtoAsArray,
         Source     $sourceOfData = Source::OnlyBasicDto
     ): static {
-        if (empty($objectContents)) {
+        if (empty($singleDtoAsArray)) {
             throw new VetmanagerApiGatewayResponseEmptyException();
         }
 
-        return new static ($apiGateway, $objectContents, $sourceOfData);
+        return new static ($apiGateway, $singleDtoAsArray, $sourceOfData);
     }
 
-    /** @param array $objectContents Содержимое: {id: 13, ...}
+    /** @param array $singleDtoAsArray Содержимое: {id: 13, ...}
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress UnsafeInstantiation
      */
     public static function fromSingleDtoArrayUsingBasicDto(
         ApiGateway $apiGateway,
-        array      $objectContents
+        array      $singleDtoAsArray
     ): static {
-        return static::fromSingleDtoArray($apiGateway, $objectContents, Source::OnlyBasicDto);
+        return static::fromSingleDtoArray($apiGateway, $singleDtoAsArray, Source::OnlyBasicDto);
     }
 
-    /** @param array $objects Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+    /** @param array $listOfMultipleDtosAsArrays Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
      * @return static[]
      * @throws VetmanagerApiGatewayException
      */
     public static function fromMultipleDtosArrays(
         ApiGateway $apiGateway,
-        array      $objects,
+        array      $listOfMultipleDtosAsArrays,
         Source     $sourceOfData = Source::OnlyBasicDto
     ): array {
         return array_map(
             fn (array $objectContents): static => static::fromSingleDtoArray($apiGateway, $objectContents, $sourceOfData),
-            $objects
+            $listOfMultipleDtosAsArrays
         );
     }
 
@@ -130,7 +130,7 @@ abstract class AbstractActiveRecord
 
     public function getAsArrayOriginalObject(): array  #TODO Probably not needing it
     {
-        return $this->originalData;
+        return $this->originalDataArray;
     }
 
     /** Получение  */

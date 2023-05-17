@@ -96,9 +96,9 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
             'street' => $this->streetId ? Street::getById($this->apiGateway, $this->streetId) : null,
             'city' => $this->cityId ? City::getById($this->apiGateway, $this->cityId) : null,
             'fullName' => new FullName(
-                $this->originalData['first_name'],
-                $this->originalData['middle_name'],
-                $this->originalData['last_name']
+                $this->originalDataArray['first_name'],
+                $this->originalDataArray['middle_name'],
+                $this->originalDataArray['last_name']
             ),
             default => $this->originalDto->$name
         };

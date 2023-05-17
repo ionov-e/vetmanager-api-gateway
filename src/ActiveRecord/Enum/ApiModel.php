@@ -179,8 +179,6 @@ enum ApiModel
      * /rest/api/MedicalCards/MedicalcardsDataByClient?client_id={{ID}}
      * А ответ придет в виде JSON: { "success": true, "data": { "medicalcards": [{...},{...}] } }.
      * То есть не совпадает "MedicalCards/MedicalcardsDataByClient" из url и "medicalcards" из ответа.
-     *
-     * @return value-of<ApiModel>|'medicalcards'
      */
     public function getResponseKey(): string
     {

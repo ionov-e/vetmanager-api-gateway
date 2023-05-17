@@ -123,8 +123,8 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
     private function getDataForBreedActiveRecord(): array
     {
         return array_merge(
-            $this->originalData['breed'],
-            ["petType" => $this->originalData['type']]
+            $this->originalDataArray['breed'],
+            ["petType" => $this->originalDataArray['type']]
         );
     }
 

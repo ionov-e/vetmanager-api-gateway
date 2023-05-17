@@ -67,8 +67,8 @@ final class Street extends AbstractActiveRecord implements AllGetRequestsInterfa
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'cityType' => $this->originalData['city']['type_id']
-                ? CityType::getById($this->apiGateway, $this->originalData['city']['type_id'])
+            'cityType' => $this->originalDataArray['city']['type_id']
+                ? CityType::getById($this->apiGateway, $this->originalDataArray['city']['type_id'])
                 : null,
             default => $this->originalDto->$name,
         };

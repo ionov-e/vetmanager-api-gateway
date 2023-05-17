@@ -9,41 +9,41 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO;
+use VetmanagerApiGateway\DTO\ComboManualItemDto;
 use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
+/**
+ * @property-read ComboManualItemDto $originalDto
+ * @property positive-int id
+ * @property positive-int comboManualId
+ * @property string title Default: ''
+ * @property string value Default: ''
+ * @property string dopParam1 Default: ''
+ * @property string dopParam2 Default: ''
+ * @property string dopParam3 Default: ''
+ * @property bool isActive Default: true
+ * @property array{
+ *       id: string,
+ *       combo_manual_id: string,
+ *       title: string,
+ *       value: string,
+ *       dop_param1: string,
+ *       dop_param2: string,
+ *       dop_param3: string,
+ *       is_active: string,
+ *       comboManualName: array{
+ *               id: string,
+ *               title: string,
+ *               is_readonly: string,
+ *               name: string
+ *       }
+ *  } $originalDataArray
+ * comboManualName' => ComboManualName
+ */
 final class ComboManualItem extends AbstractActiveRecord implements AllGetRequestsInterface
 {
-
     use AllGetRequestsTrait;
-
-    public DTO\ComboManualNameDto $comboManualName;
-
-    /** @param array{
-     *       "id": string,
-     *       "combo_manual_id": string,
-     *       "title": string,
-     *       "value": string,
-     *       "dop_param1": string,
-     *       "dop_param2": string,
-     *       "dop_param3": string,
-     *       "is_active": string,
-     *       "comboManualName": array{
-     *               "id": string,
-     *               "title": string,
-     *               "is_readonly": string,
-     *               "name": string
-     *       }
-     *   } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
-    {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->comboManualName = DTO\ComboManualNameDto::fromSingleObjectContents($this->apiGateway, $originalData['comboManualName']);
-    }
 
     /** @return ApiModel::ComboManualItem */
     public static function getApiModel(): ApiModel
@@ -80,7 +80,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     }
 
     /**
-     * @param int $colorId Например: {@see DTO\PetDto::colorId}. По факту это value из таблицы combo_manual_items
+     * @param int $colorId Например: {@see PetDto::colorId}. По факту это value из таблицы combo_manual_items
      * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
      * @throws VetmanagerApiGatewayException
      */
@@ -139,6 +139,7 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     public function __get(string $name): mixed
     {
         return match ($name) {
+            'comboManualName' => ComboManualName::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['comboManualName']),
             default => $this->originalDto->$name
         };
     }

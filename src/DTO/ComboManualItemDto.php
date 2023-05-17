@@ -9,8 +9,8 @@ use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/**
- * Обращается в таблицу combo_manual_items
+/** Обращается в таблицу combo_manual_items
+ * @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая
  */
 class ComboManualItemDto extends AbstractDTO
 {
@@ -33,27 +33,50 @@ class ComboManualItemDto extends AbstractDTO
     public bool $isActive;
 
     /** @param array{
-     *       "id": string,
-     *       "combo_manual_id": string,
-     *       "title": string,
-     *       "value": string,
-     *       "dop_param1": string,
-     *       "dop_param2": string,
-     *       "dop_param3": string,
-     *       "is_active": string,
-     *       "comboManualName"?: array
+     *       id: string,
+     *       combo_manual_id: string,
+     *       title: string,
+     *       value: string,
+     *       dop_param1: string,
+     *       dop_param2: string,
+     *       dop_param3: string,
+     *       is_active: string,
+     *       comboManualName?: array
      *   } $originalData
      * @throws VetmanagerApiGatewayException
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function __construct(array $originalData)
+    public static function fromApiResponseArray(array $originalData): self
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->comboManualId = IntContainer::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $this->value = StringContainer::fromStringOrNull($originalData['value'])->string;
-        $this->dopParam1 = StringContainer::fromStringOrNull($originalData['dop_param1'])->string;
-        $this->dopParam2 = StringContainer::fromStringOrNull($originalData['dop_param2'])->string;
-        $this->dopParam3 = StringContainer::fromStringOrNull($originalData['dop_param3'])->string;
-        $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
+        $instance = new self();
+        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->comboManualId = IntContainer::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
+        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $instance->value = StringContainer::fromStringOrNull($originalData['value'])->string;
+        $instance->dopParam1 = StringContainer::fromStringOrNull($originalData['dop_param1'])->string;
+        $instance->dopParam2 = StringContainer::fromStringOrNull($originalData['dop_param2'])->string;
+        $instance->dopParam3 = StringContainer::fromStringOrNull($originalData['dop_param3'])->string;
+        $instance->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
+        return $instance;
+    }
+
+    /** @inheritdoc */
+    public function getRequiredKeysForPostArray(): array
+    {
+        return ['combo_manual_id', 'title', 'value'];
+    }
+
+    /** @inheritdoc */
+    protected function getSetValuesWithoutId(): array
+    {
+        return array_merge(
+            isset($this->comboManualId) ? ['combo_manual_id' => $this->comboManualId] : [],
+            isset($this->title) ? ['title' => $this->title] : [],
+            isset($this->value) ? ['value' => $this->value] : [],
+            isset($this->dopParam1) ? ['dop_param1' => $this->dopParam1] : [],
+            isset($this->dopParam2) ? ['dop_param2' => $this->dopParam2] : [],
+            isset($this->dopParam3) ? ['dop_param3' => $this->dopParam3] : [],
+            isset($this->isActive) ? ['is_active' => (int)$this->isActive] : [],
+        );
     }
 }
