@@ -31,17 +31,33 @@ trait RequestGetByIdTrait
     }
 
     /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
-     * текущего объекта на данные полученные по АПИ запросу используя ID
+     * текущего объекта на данные полученные по АПИ запросу используя ID, если объект получен иначе
      * @throws VetmanagerApiGatewayException
      */
-    public function fillCurrentObjectWithGetByIdDataIfItsNot(): void
+    public function fillCurrentObjectWithGetByIdDataIfSourceIsDifferent(): void
     {
-        if ($this->sourceOfData == Source::GetById) {
-            return;
+        if ($this->sourceOfData !== Source::GetById) {
+            $this->fillCurrentObjectWithGetByIdData();
         }
+    }
 
+    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
+     * текущего объекта на данные полученные по АПИ запросу используя ID, если Source из 'минимального' DTO
+     * @throws VetmanagerApiGatewayException
+     */
+    public function fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto(): void
+    {
+        if ($this->sourceOfData == Source::OnlyBasicDto) {
+            $this->fillCurrentObjectWithGetByIdData();
+        }
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    private function fillCurrentObjectWithGetByIdData(): void
+    {
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
-        $this->originalDto = $instanceFromGetById->originalDto;
+        $this->originalDto = $instanceFromGetById->getAsDto();
+        $this->originalDataArray = $instanceFromGetById->getAsOriginalDataArray();
         $this->sourceOfData = Source::GetById;
     }
 }

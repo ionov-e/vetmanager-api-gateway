@@ -6,9 +6,6 @@ namespace VetmanagerApiGateway\DTO;
 
 use DateInterval;
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\AdmissionFromGetAll;
-use VetmanagerApiGateway\ActiveRecord\Clinic;
-use VetmanagerApiGateway\ActiveRecord\ComboManualItem;
 use VetmanagerApiGateway\ActiveRecord\User;
 use VetmanagerApiGateway\DO\BoolContainer;
 use VetmanagerApiGateway\DO\DateIntervalContainer;
@@ -19,13 +16,6 @@ use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\Admission\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/**
- * @property-read ?User user
- * @property-read ?Clinic clinic
- * @property-read ?ComboManualItem type
- * @property-read AdmissionFromGetAll[] admissionsOfPet
- * @property-read AdmissionFromGetAll[] admissionsOfOwner
- */
 class AdmissionDto extends AbstractDTO
 {
     /** @var positive-int */
@@ -63,134 +53,82 @@ class AdmissionDto extends AbstractDTO
     public float $invoicesSum;
 
     /** @param array{
-     *          "id": numeric-string,
-     *          "admission_date": string,
-     *          "description": string,
-     *          "client_id": numeric-string,
-     *          "patient_id": numeric-string,
-     *          "user_id": numeric-string,
-     *          "type_id": numeric-string,
-     *          "admission_length": string,
-     *          "status": ?string,
-     *          "clinic_id": numeric-string,
-     *          "direct_direction": string,
-     *          "creator_id": numeric-string,
-     *          "create_date": string,
-     *          "escorter_id": ?numeric-string,
-     *          "reception_write_channel": ?string,
-     *          "is_auto_create": string,
-     *          "invoices_sum": string,
-     *          "client": array{
-     *                      "id": string,
-     *                      "address": string,
-     *                      "home_phone": string,
-     *                      "work_phone": string,
-     *                      "note": string,
-     *                      "type_id": ?string,
-     *                      "how_find": ?string,
-     *                      "balance": string,
-     *                      "email": string,
-     *                      "city": string,
-     *                      "city_id": ?string,
-     *                      "date_register": string,
-     *                      "cell_phone": string,
-     *                      "zip": string,
-     *                      "registration_index": ?string,
-     *                      "vip": string,
-     *                      "last_name": string,
-     *                      "first_name": string,
-     *                      "middle_name": string,
-     *                      "status": string,
-     *                      "discount": string,
-     *                      "passport_series": string,
-     *                      "lab_number": string,
-     *                      "street_id": string,
-     *                      "apartment": string,
-     *                      "unsubscribe": string,
-     *                      "in_blacklist": string,
-     *                      "last_visit_date": string,
-     *                      "number_of_journal": string,
-     *                      "phone_prefix": ?string
-     *          },
-     *          "pet"?: array{
-     *                      "id": string,
-     *                      "owner_id": ?string,
-     *                      "type_id": ?string,
-     *                      "alias": string,
-     *                      "sex": ?string,
-     *                      "date_register": string,
-     *                      "birthday": ?string,
-     *                      "note": string,
-     *                      "breed_id": ?string,
-     *                      "old_id": ?string,
-     *                      "color_id": ?string,
-     *                      "deathnote": ?string,
-     *                      "deathdate": ?string,
-     *                      "chip_number": string,
-     *                      "lab_number": string,
-     *                      "status": string,
-     *                      "picture": ?string,
-     *                      "weight": ?string,
-     *                      "edit_date": string,
-     *                      "pet_type_data": array{}|array{
-     *                              "id": string,
-     *                              "title": string,
-     *                              "picture": string,
-     *                              "type": ?string,
-     *                      },
-     *                      "breed_data": array{
-     *                              "id": string,
-     *                              "title": string,
-     *                              "pet_type_id": string,
-     *                      }
-     *          },
-     *          "wait_time"?: string,
-     *          "invoices"?: array<int, array{
-     *                              "id": string,
-     *                              "doctor_id": ?string,
-     *                              "client_id": string,
-     *                              "pet_id": string,
-     *                              "description": string,
-     *                              "percent": ?string,
-     *                              "amount": ?string,
-     *                              "status": string,
-     *                              "invoice_date": string,
-     *                              "old_id": ?string,
-     *                              "night": string,
-     *                              "increase": ?string,
-     *                              "discount": ?string,
-     *                              "call": string,
-     *                              "paid_amount": string,
-     *                              "create_date": string,
-     *                              "payment_status": string,
-     *                              "clinic_id": string,
-     *                              "creator_id": ?string,
-     *                              "fiscal_section_id": string,
-     *                              "d": string
-     *           }>,
-     *          "doctor_data"?: array,
-     *          "admission_type_data"?: array
+     *          id: numeric-string,
+     *          admission_date: string,
+     *          description: string,
+     *          client_id: numeric-string,
+     *          patient_id: numeric-string,
+     *          user_id: numeric-string,
+     *          type_id: numeric-string,
+     *          admission_length: string,
+     *          status: ?string,
+     *          clinic_id: numeric-string,
+     *          direct_direction: string,
+     *          creator_id: numeric-string,
+     *          create_date: string,
+     *          escorter_id: ?numeric-string,
+     *          reception_write_channel: ?string,
+     *          is_auto_create: string,
+     *          invoices_sum: string,
+     *          client: array,
+     *          pet?: array,
+     *          wait_time?: string,
+     *          invoices?: array,
+     *          doctor_data?: array,
+     *          admission_type_data?: array
      *     } $originalData
      * @throws VetmanagerApiGatewayException
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function __construct(array $originalData)
+    public static function fromApiResponseArray(array $originalData): self
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->date = DateTimeContainer::fromFullDateTimeString($originalData['admission_date'])->dateTimeOrNull;
-        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
-        $this->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveIntOrNull;
-        $this->petId = IntContainer::fromStringOrNull($originalData['patient_id'])->positiveIntOrNull;
-        $this->userId = IntContainer::fromStringOrNull($originalData['user_id'])->positiveIntOrNull;
-        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $this->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
-        $this->status = $originalData['status'] ? Status::from($originalData['status']) : null;
-        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $this->isDirectDirection = BoolContainer::fromStringOrNull($originalData['direct_direction'])->bool;
-        $this->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
-        $this->createDate = DateTimeContainer::fromFullDateTimeString($originalData['create_date'])->dateTimeOrNull;
-        $this->escorterId = IntContainer::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
-        $this->receptionWriteChannel = StringContainer::fromStringOrNull($originalData['reception_write_channel'])->string;
-        $this->isAutoCreate = BoolContainer::fromStringOrNull($originalData['is_auto_create'])->bool;
-        $this->invoicesSum = FloatContainer::fromStringOrNull($originalData['invoices_sum'])->float;
+        $instance = new self();
+        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->date = DateTimeContainer::fromFullDateTimeString($originalData['admission_date'])->dateTimeOrNull;
+        $instance->description = StringContainer::fromStringOrNull($originalData['description'])->string;
+        $instance->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveIntOrNull;
+        $instance->petId = IntContainer::fromStringOrNull($originalData['patient_id'])->positiveIntOrNull;
+        $instance->userId = IntContainer::fromStringOrNull($originalData['user_id'])->positiveIntOrNull;
+        $instance->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $instance->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
+        $instance->status = $originalData['status'] ? Status::from($originalData['status']) : null;
+        $instance->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $instance->isDirectDirection = BoolContainer::fromStringOrNull($originalData['direct_direction'])->bool;
+        $instance->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
+        $instance->createDate = DateTimeContainer::fromFullDateTimeString($originalData['create_date'])->dateTimeOrNull;
+        $instance->escorterId = IntContainer::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
+        $instance->receptionWriteChannel = StringContainer::fromStringOrNull($originalData['reception_write_channel'])->string;
+        $instance->isAutoCreate = BoolContainer::fromStringOrNull($originalData['is_auto_create'])->bool;
+        $instance->invoicesSum = FloatContainer::fromStringOrNull($originalData['invoices_sum'])->float;
+        return $instance;
+    }
+
+    /** @inheritdoc */
+    public function getRequiredKeysForPostArray(): array #TODO No Idea
+    {
+        return [];
+    }
+
+    /** @inheritdoc */
+    protected function getSetValuesWithoutId(): array
+    {
+        return array_merge(
+            isset($this->date) ? ['admission_date' => $this->date] : [],
+            isset($this->description) ? ['description' => $this->description] : [],
+            isset($this->clientId) ? ['client_id' => $this->clientId] : [],
+            isset($this->petId) ? ['patient_id' => $this->petId] : [],
+            isset($this->userId) ? ['user_id' => $this->userId] : [],
+            isset($this->typeId) ? ['type_id' => $this->typeId] : [],
+            isset($this->admissionLength) ? ['admission_length' => $this->admissionLength?->format('H:i:s')] : [],
+            isset($this->status) ? ['status' => $this->status] : [],
+            isset($this->clinicId) ? ['clinic_id' => $this->clinicId] : [],
+            isset($this->isDirectDirection) ? ['direct_direction' => (int)$this->isDirectDirection] : [],
+            isset($this->creatorId) ? ['creator_id' => $this->creatorId] : [],
+            isset($this->createDate) ? ['create_date' => $this->createDate?->format('Y-m-d H:i:s')] : [],
+            isset($this->escorterId) ? ['escorter_id' => $this->escorterId] : [],
+            isset($this->receptionWriteChannel) ? ['reception_write_channel' => $this->receptionWriteChannel] : [],
+            isset($this->isAutoCreate) ? ['is_auto_create' => (int)$this->isAutoCreate] : [],
+            isset($this->invoicesSum) ? ['invoices_sum' => $this->invoicesSum] : [],
+        );
     }
 }

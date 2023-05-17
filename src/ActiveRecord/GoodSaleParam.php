@@ -78,10 +78,10 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
     {
         switch ($name) {
             case 'unit':
-                $this->fillCurrentObjectWithGetByIdDataIfItsNot();
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
                 return Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale']);
             case 'good':
-                $this->fillCurrentObjectWithGetByIdDataIfItsNot();
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
                 return !empty($this->originalDataArray['good'])
                     ? Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good'])
                     : null;

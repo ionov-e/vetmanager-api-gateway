@@ -13,10 +13,9 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-// * @property-read array arrayToSend Массив для отправки Post и Put запросов #TODO Consider whether to have
 abstract class AbstractActiveRecord
 {
-    public readonly AbstractDTO $originalDto;
+    protected readonly AbstractDTO $originalDto;
     /** Здесь будут данные в виде DTO для отправки в ветменеджер (создание новой записи или редактирование существующей) */
     protected AbstractDTO $userMadeDto;
 
@@ -28,7 +27,7 @@ abstract class AbstractActiveRecord
      */
     protected function __construct(
         protected readonly ApiGateway $apiGateway,
-        public array                  $originalDataArray,
+        protected array               $originalDataArray,
         protected Source              $sourceOfData = Source::OnlyBasicDto,
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
@@ -128,15 +127,21 @@ abstract class AbstractActiveRecord
         $this->userMadeDto->$name = $value;
     }
 
-    public function getAsArrayOriginalObject(): array  #TODO Probably not needing it
+    public function getAsOriginalDataArray(): array
     {
         return $this->originalDataArray;
     }
 
-    /** Получение  */
-    public function getSourceOfData(): string
+    /** Возвращает в виде DTO в основе текущего объекта Active Record */
+    public function getAsDto(): AbstractDTO
     {
-        return $this->sourceOfData->name;
+        return $this->originalDto;
+    }
+
+    /** Получение источника Active Record. Т.е. как был получен, например по прямому АПИ-запросу по ID */
+    public function getSourceOfData(): Source
+    {
+        return $this->sourceOfData;
     }
 
     /** @throws VetmanagerApiGatewayRequestException */

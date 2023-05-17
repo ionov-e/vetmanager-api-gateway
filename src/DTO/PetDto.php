@@ -20,8 +20,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?DAO\ComboManualItem $color
  * @property-read DAO\MedicalCard[] medicalCards
  * @property-read DAO\MedicalCardAsVaccination[] vaccines
- * @property-read DAO\AdmissionFromGetAll[] admissions
- * @property-read DAO\AdmissionFromGetAll[] admissionsOfOwner
+ * @property-read DAO\Admission[] admissions
+ * @property-read DAO\Admission[] admissionsOfOwner
  */
 class PetDto extends AbstractDTO
 {

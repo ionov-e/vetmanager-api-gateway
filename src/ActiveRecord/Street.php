@@ -53,7 +53,7 @@ final class Street extends AbstractActiveRecord implements AllGetRequestsInterfa
         $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveInt;
         $this->type = Type::from($originalData['type']);
         $this->city = !empty($originalData['city'])
-            ? ActiveRecord\City::fromSingleObjectContents($this->apiGateway, $originalData['city'])
+            ? City::fromSingleObjectContents($this->apiGateway, $originalData['city'])
             : null;
     }
 

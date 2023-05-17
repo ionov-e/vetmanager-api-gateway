@@ -11,7 +11,6 @@ use VetmanagerApiGateway\ActiveRecord\Interface\RequestPostInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ActiveRecord\Trait\RequestPostTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
@@ -25,13 +24,13 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
     use RequestPostTrait;
 
     /** Уже получен */
-    public ?DTO\ClientDto $client;
+    public ?ClientDto $client;
     /** Уже получен */
-    public ?DTO\PetTypeDto $type;
+    public ?PetTypeDto $type;
     /** Уже получен */
     public ?ActiveRecord\Breed $breed;
     /** Уже получен */
-    public ?DTO\ComboManualItemDto $color;
+    public ?ComboManualItemDto $color;
 
     /**
      * @param array{
@@ -114,10 +113,10 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
     {
         parent::__construct($api, $originalData);
 
-        $this->client = !empty($originalData['owner']) ? DTO\ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
-        $this->type = !empty($originalData['type']) ? DTO\PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
+        $this->client = !empty($originalData['owner']) ? ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
+        $this->type = !empty($originalData['type']) ? PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
         $this->breed = !empty($originalData['breed']) ? Breed::fromSingleDtoArray($this->apiGateway, $this->getDataForBreedActiveRecord()) : null;
-        $this->color = !empty($originalData['color']) ? DTO\ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
+        $this->color = !empty($originalData['color']) ? ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
     }
 
     private function getDataForBreedActiveRecord(): array
@@ -144,8 +143,8 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
             'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
             'owner' => $this->ownerId ? Client::getById($this->apiGateway, $this->ownerId) : null,
             'type' => $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null,
-            'admissions' => AdmissionFromGetAll::getByPetId($this->apiGateway, $this->id),
-            'admissionsOfOwner' => AdmissionFromGetAll::getByClientId($this->apiGateway, $this->ownerId),
+            'admissions' => Admission::getByPetId($this->apiGateway, $this->id),
+            'admissionsOfOwner' => Admission::getByClientId($this->apiGateway, $this->ownerId),
             'medicalCards' => MedicalCard::getByPagedQuery(
                 $this->apiGateway,
                 (new Builder())->where('patient_id', (string)$this->id)->paginateAll()

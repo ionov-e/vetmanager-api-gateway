@@ -38,8 +38,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *               is_readonly: string,
  *               name: string
  *       }
- *  } $originalDataArray
- * comboManualName' => ComboManualName
+ *  } $originalDataArray comboManualName при GetAll тоже
  */
 final class ComboManualItem extends AbstractActiveRecord implements AllGetRequestsInterface
 {

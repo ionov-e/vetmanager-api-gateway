@@ -141,7 +141,7 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
         return match ($name) {
             'medicalCard' => MedicalCard::getById($this->apiGateway, $this->medcardId),
             'nextAdmission' => $this->nextAdmissionId
-                ? AdmissionFromGetById::getById($this->apiGateway, $this->nextAdmissionId)
+                ? Admission::getById($this->apiGateway, $this->nextAdmissionId)
                 : null,
             'petAgeAtVaccinationMoment' => $this->getPetAgeAtVaccinationMoment(),
             'currentPetAgeIfStillAlive' => $this->getCurrentPetAgeIfStillAlive(),

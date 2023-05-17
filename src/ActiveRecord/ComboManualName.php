@@ -84,12 +84,15 @@ final class ComboManualName extends AbstractActiveRecord implements AllGetReques
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
-        return match ($name) {
-            'comboManualItems' => ComboManualItem::fromMultipleDtosArrays(
-                $this->apiGateway,
-                $this->originalDataArray['comboManualItems']
-            ),
-            default => $this->originalDto->$name
-        };
+        switch ($name) {
+            case 'comboManualItems':
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
+                return ComboManualItem::fromMultipleDtosArrays(
+                    $this->apiGateway,
+                    $this->originalDataArray['comboManualItems']
+                );
+            default:
+                return $this->originalDto->$name;
+        }
     }
 }

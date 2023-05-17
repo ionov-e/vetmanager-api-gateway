@@ -13,19 +13,18 @@ use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\IntContainer;
 use VetmanagerApiGateway\DO\StringContainer;
-use VetmanagerApiGateway\DTO;
 use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read ?ActiveRecord\Clinic clinic
+ * @property-read ?Clinic clinic
  * @property-read bool isOnlineSigningUpAvailableForClinic
- * @property-read ?ActiveRecord\AdmissionFromGetById admission
- * @property-read ?ActiveRecord\AdmissionFromGetById nextMeet
- * @property-read ?ActiveRecord\ComboManualItem admissionType
- * @property-read ?ActiveRecord\ComboManualItem meetResult
- * @property-read ?ActiveRecord\Invoice invoice
- * @property-read ?ActiveRecord\User user
+ * @property-read ?AdmissionFromGetById admission
+ * @property-read ?AdmissionFromGetById nextMeet
+ * @property-read ?ComboManualItem admissionType
+ * @property-read ?ComboManualItem meetResult
+ * @property-read ?Invoice invoice
+ * @property-read ?User user
  */
 final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsInterface
 {
@@ -73,7 +72,7 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
     public string $diagnoseTypeText;
     /** @var positive-int|null Возможно null никогда не будет. Default: 0 - переводим в null */
     public ?int $clinicId;
-    public DTO\PetDto $pet;
+    public Pet $pet;
 
     /** @param array{
      *     "id": string,
@@ -146,7 +145,7 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
         $this->diagnoseText = StringContainer::fromStringOrNull($originalData['diagnos_text'])->string;
         $this->diagnoseTypeText = StringContainer::fromStringOrNull($originalData['diagnos_type_text'])->string;
         $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $this->pet = DTO\PetDto::fromSingleObjectContents($this->apiGateway, $originalData['patient']);
+        $this->pet = Pet::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $originalData['patient']);
     }
 
     /** @return ApiModel::MedicalCard */
@@ -161,8 +160,8 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
             'isOnlineSigningUpAvailableForClinic' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId),
-            'admission' => $this->admissionId ? AdmissionFromGetById::getById($this->apiGateway, $this->admissionId) : null,
-            'nextMeet' => $this->nextMeetId ? AdmissionFromGetById::getById($this->apiGateway, $this->nextMeetId) : null,
+            'admission' => $this->admissionId ? Admission::getById($this->apiGateway, $this->admissionId) : null,
+            'nextMeet' => $this->nextMeetId ? Admission::getById($this->apiGateway, $this->nextMeetId) : null,
             'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
             'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
             'invoice' => $this->invoiceId ? Invoice::getById($this->apiGateway, $this->invoiceId) : null,

@@ -15,7 +15,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
 /**
- * @property-read ?ActiveRecord\Clinic clinic
+ * @property-read ?Clinic clinic
  * @property-read bool isOnlineSigningUpAvailableForClinic
  */
 final class Property extends AbstractActiveRecord implements AllGetRequestsInterface

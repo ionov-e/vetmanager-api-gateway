@@ -17,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 /**
  * @property-read FullName fullName
  * @property-read MedicalCardsByClient[] medcards
- * @property-read AdmissionFromGetAll[] admissions
+ * @property-read Admission[] admissions
  * @property-read Pet[] petsAlive
  * @property-read ?City city
  * @property-read ?Street street

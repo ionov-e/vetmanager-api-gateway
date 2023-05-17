@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
@@ -17,9 +16,9 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
     use AllGetRequestsTrait;
 
     /** Предзагружен. Нового АПИ запроса не будет */
-    public ActiveRecord\GoodGroup $group;
+    public GoodGroup $group;
     /** Предзагружен. Нового АПИ запроса не будет */
-    public ?ActiveRecord\Unit $unit;
+    public ?Unit $unit;
     /** @var GoodSaleParam[] Предзагружены. Нового АПИ запроса не будет */
     public array $goodSaleParams;
 

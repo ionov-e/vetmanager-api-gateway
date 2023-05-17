@@ -12,7 +12,7 @@ use VetmanagerApiGateway\DTO\BreedDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read BreedDto $originalDto
+ * @property-read BreedDto originalDto
  * @property positive-int id
  * @property non-empty-string title
  * @property positive-int typeId

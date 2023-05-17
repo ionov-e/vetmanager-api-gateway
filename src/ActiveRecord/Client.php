@@ -90,7 +90,7 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'admissions' => AdmissionFromGetAll::getByClientId($this->apiGateway, $this->id),
+            'admissions' => Admission::getByClientId($this->apiGateway, $this->id),
             'medcards' => MedicalCardsByClient::getByClientId($this->apiGateway, $this->id),
             'petsAlive' => $this->getPetsAlive(),
             'street' => $this->streetId ? Street::getById($this->apiGateway, $this->streetId) : null,
