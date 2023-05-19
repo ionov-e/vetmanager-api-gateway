@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\PetTypeDto;
@@ -46,7 +46,7 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
         switch ($name) {
             case 'breeds':
                 $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
-                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['breeds'], Source::OnlyBasicDto);
+                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
             default:
                 return $this->originalDto->$name;
         }

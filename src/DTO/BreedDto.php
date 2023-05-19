@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-class BreedDto extends AbstractDTO
+final class BreedDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -30,9 +30,9 @@ class BreedDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->stringOrThrowIfNull;
-        $instance->typeId = IntContainer::fromStringOrNull($originalData['pet_type_id'])->positiveInt;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalData['title'])->stringOrThrowIfNull;
+        $instance->typeId = ApiInt::fromStringOrNull($originalData['pet_type_id'])->positiveInt;
         return $instance;
     }
 

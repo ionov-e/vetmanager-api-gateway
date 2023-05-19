@@ -9,8 +9,8 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
@@ -45,11 +45,11 @@ final class Property extends AbstractActiveRecord implements AllGetRequestsInter
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->name = StringContainer::fromStringOrNull($originalData['property_name'])->string;
-        $this->value = StringContainer::fromStringOrNull($originalData['property_value'])->string;
-        $this->title = StringContainer::fromStringOrNull($originalData['property_title'])->string;
-        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->name = ApiString::fromStringOrNull($originalData['property_name'])->string;
+        $this->value = ApiString::fromStringOrNull($originalData['property_value'])->string;
+        $this->title = ApiString::fromStringOrNull($originalData['property_title'])->string;
+        $this->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
     }
 
     /**

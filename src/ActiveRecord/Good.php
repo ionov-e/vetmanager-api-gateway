@@ -4,88 +4,106 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DTO\GoodDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
+/**
+ * @property-read GoodDto $originalDto
+ * @property positive-int $id
+ * @property ?positive-int $groupId
+ * @property string $title
+ * @property ?positive-int $unitStorageId
+ * @property bool $isWarehouseAccount Default in DB: True
+ * @property bool $isActive Default in DB: True
+ * @property string $code
+ * @property bool $isCall Default in DB: False
+ * @property bool $isForSale Default in DB: True
+ * @property string $barcode
+ * @property ?DateTime $createDate
+ * @property string $description
+ * @property float $primeCost Default in DB: '0.0000000000'
+ * @property ?positive-int $categoryId
+ * @property array{
+ *     id: numeric-string,
+ *     group_id: ?numeric-string,
+ *     title: string,
+ *     unit_storage_id: ?numeric-string,
+ *     is_warehouse_account: string,
+ *     is_active: string,
+ *     code: ?string,
+ *     is_call: string,
+ *     is_for_sale: string,
+ *     barcode: ?string,
+ *     create_date: string,
+ *     description: string,
+ *     prime_cost: string,
+ *     category_id: ?numeric-string,
+ *     group: array{
+ *              id: string,
+ *              title: string,
+ *              is_service: string,
+ *              markup: ?string,
+ *              is_show_in_vaccines: string,
+ *              price_id: ?string
+ *     },
+ *     unitStorage?: array{
+ *              id: string,
+ *              title: string,
+ *              status: string
+ *     },
+ *     goodSaleParams: list<array{
+ *              id: numeric-string,
+ *              good_id: numeric-string,
+ *              price: ?string,
+ *              coefficient: string,
+ *              unit_sale_id: numeric-string,
+ *              min_price: ?string,
+ *              max_price: ?string,
+ *              barcode: ?string,
+ *              status: string,
+ *              clinic_id: numeric-string,
+ *              markup: string,
+ *              price_formation: ?string,
+ *              unitSale?: array{
+ *                      id: string,
+ *                      title: string,
+ *                      status: string
+ *              }
+ *     }>
+ * } $originalDataArray
+ * @property-read GoodGroup $group
+ * @property-read ?Unit $unit
+ * @property-read GoodSaleParam[] $goodSaleParams
+ */
 final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
 {
 
     use AllGetRequestsTrait;
 
-    /** Предзагружен. Нового АПИ запроса не будет */
-    public GoodGroup $group;
-    /** Предзагружен. Нового АПИ запроса не будет */
-    public ?Unit $unit;
-    /** @var GoodSaleParam[] Предзагружены. Нового АПИ запроса не будет */
-    public array $goodSaleParams;
-
-    /** @param array{
-     *     "id": string,
-     *     "group_id": ?string,
-     *     "title": string,
-     *     "unit_storage_id": ?string,
-     *     "is_warehouse_account": string,
-     *     "is_active": string,
-     *     "code": ?string,
-     *     "is_call": string,
-     *     "is_for_sale": string,
-     *     "barcode": ?string,
-     *     "create_date": string,
-     *     "description": string,
-     *     "prime_cost": string,
-     *     "category_id": ?string,
-     *     "group": array{
-     *              "id": string,
-     *              "title": string,
-     *              "is_service": string,
-     *              "markup": ?string,
-     *              "is_show_in_vaccines": string,
-     *              "price_id": ?string
-     *     },
-     *     "unitStorage"?: array{
-     *              "id": string,
-     *              "title": string,
-     *              "status": string
-     *     },
-     *     "goodSaleParams": array<int, array{
-     *              "id": string,
-     *              "good_id": string,
-     *              "price": ?string,
-     *              "coefficient": string,
-     *              "unit_sale_id": string,
-     *              "min_price": ?string,
-     *              "max_price": ?string,
-     *              "barcode": ?string,
-     *              "status": string,
-     *              "clinic_id": string,
-     *              "markup": string,
-     *              "price_formation": ?string,
-     *              "unitSale"?: array{
-     *                      "id": string,
-     *                      "title": string,
-     *                      "status": string,
-     *              }
-     *     }>
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
+    public static function getApiModel(): ApiModel
     {
-        parent::__construct($apiGateway, $originalData);
+        return ApiModel::Good;
+    }
 
-        $this->group = GoodGroup::fromSingleDtoArray($this->apiGateway, $originalData['group']);
+    /** @throws VetmanagerApiGatewayException */
+    public function __get(string $name): mixed
+    {
+        return match ($name) {
 
-        $this->unit = !empty($originalData['unitStorage'])
-            ? Unit::fromSingleDtoArray($this->apiGateway, $originalData['unitStorage'])
-            : null;
-
-        $this->goodSaleParams = GoodSaleParam::fromMultipleDtosArrays(
-            $this->apiGateway,
-            $this->getContentsForGoodSaleParamActiveRecords()
-        );
+            'group' => GoodGroup::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['group']),
+            'unit' => !empty($this->originalDataArray['unitStorage'])
+                ? Unit::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['unitStorage'])
+                : null,
+            'goodSaleParams' => GoodSaleParam::fromMultipleDtosArrays(
+                $this->apiGateway,
+                $this->getContentsForGoodSaleParamActiveRecords()
+            ),
+            default => $this->originalDto->$name
+        };
     }
 
     private function getContentsForGoodSaleParamActiveRecords(): array
@@ -106,17 +124,5 @@ final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
         $originalData = $this->originalDataArray;
         unset($originalData['group'], $originalData['unitStorage'], $originalData['goodSaleParams']);
         return $originalData;
-    }
-
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Good;
-    }
-
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            default => $this->originalDto->$name
-        };
     }
 }

@@ -8,9 +8,9 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
@@ -35,9 +35,9 @@ final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
-        $this->isSuper = BoolContainer::fromStringOrNull($originalData['super'])->bool;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->name = ApiString::fromStringOrNull($originalData['name'])->string;
+        $this->isSuper = ApiBool::fromStringOrNull($originalData['super'])->bool;
     }
 
     /** @return ApiModel::Role */

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-class GoodGroupDto extends AbstractDTO
+final class GoodGroupDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -37,12 +37,12 @@ class GoodGroupDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $instance->priceId = IntContainer::fromStringOrNull($originalData['price_id'])->positiveIntOrNull;
-        $instance->isService = BoolContainer::fromStringOrNull($originalData['is_service'])->bool;
-        $instance->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
-        $instance->isShowInVaccines = BoolContainer::fromStringOrNull($originalData['is_show_in_vaccines'])->bool;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance->priceId = ApiInt::fromStringOrNull($originalData['price_id'])->positiveIntOrNull;
+        $instance->isService = ApiBool::fromStringOrNull($originalData['is_service'])->bool;
+        $instance->markup = ApiFloat::fromStringOrNull($originalData['markup'])->floatOrNull;
+        $instance->isShowInVaccines = ApiBool::fromStringOrNull($originalData['is_show_in_vaccines'])->bool;
         return $instance;
     }
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-class PetTypeDto extends AbstractDTO
+final class PetTypeDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -19,10 +19,10 @@ class PetTypeDto extends AbstractDTO
     public string $type;
 
     /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "picture": string,
-     *     "type": ?string,
+     *     id: string,
+     *     title: string,
+     *     picture: string,
+     *     type: ?string,
      * } $originalData
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
@@ -30,10 +30,10 @@ class PetTypeDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $instance->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
-        $instance->type = StringContainer::fromStringOrNull($originalData['type'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance->picture = ApiString::fromStringOrNull($originalData['picture'])->string;
+        $instance->type = ApiString::fromStringOrNull($originalData['type'])->string;
         return $instance;
     }
 

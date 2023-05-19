@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\FullName;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /**
  * @property-read FullName fullName
@@ -22,7 +22,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?City city
  * @property-read ?Street street
  */
-class ClientDto extends AbstractDTO
+final class ClientDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -109,35 +109,35 @@ class ClientDto extends AbstractDTO
      */
     public function __construct(array $originalData)
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
-        $this->homePhone = StringContainer::fromStringOrNull($originalData['home_phone'])->string;
-        $this->workPhone = StringContainer::fromStringOrNull($originalData['work_phone'])->string;
-        $this->note = StringContainer::fromStringOrNull($originalData['note'])->string;
-        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $this->howFind = IntContainer::fromStringOrNull($originalData['how_find'])->positiveIntOrNull;
-        $this->balance = FloatContainer::fromStringOrNull($originalData['balance'])->float;
-        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
-        $this->cityTitle = StringContainer::fromStringOrNull($originalData['city'])->string;
-        $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
-        $this->dateRegister = DateTimeContainer::fromFullDateTimeString($originalData['date_register'])->dateTimeOrNull;
-        $this->cellPhone = StringContainer::fromStringOrNull($originalData['cell_phone'])->string;
-        $this->zip = StringContainer::fromStringOrNull($originalData['zip'])->string;
-        $this->registrationIndex = StringContainer::fromStringOrNull($originalData['registration_index'])->string;
-        $this->isVip = BoolContainer::fromStringOrNull($originalData['vip'])->bool;
-        $this->lastName = StringContainer::fromStringOrNull($originalData['last_name'])->string;
-        $this->firstName = StringContainer::fromStringOrNull($originalData['first_name'])->string;
-        $this->middleName = StringContainer::fromStringOrNull($originalData['middle_name'])->string;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->address = ApiString::fromStringOrNull($originalData['address'])->string;
+        $this->homePhone = ApiString::fromStringOrNull($originalData['home_phone'])->string;
+        $this->workPhone = ApiString::fromStringOrNull($originalData['work_phone'])->string;
+        $this->note = ApiString::fromStringOrNull($originalData['note'])->string;
+        $this->typeId = ApiInt::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $this->howFind = ApiInt::fromStringOrNull($originalData['how_find'])->positiveIntOrNull;
+        $this->balance = ApiFloat::fromStringOrNull($originalData['balance'])->float;
+        $this->email = ApiString::fromStringOrNull($originalData['email'])->string;
+        $this->cityTitle = ApiString::fromStringOrNull($originalData['city'])->string;
+        $this->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
+        $this->dateRegister = ApiDateTime::fromFullDateTimeString($originalData['date_register'])->dateTimeOrNull;
+        $this->cellPhone = ApiString::fromStringOrNull($originalData['cell_phone'])->string;
+        $this->zip = ApiString::fromStringOrNull($originalData['zip'])->string;
+        $this->registrationIndex = ApiString::fromStringOrNull($originalData['registration_index'])->string;
+        $this->isVip = ApiBool::fromStringOrNull($originalData['vip'])->bool;
+        $this->lastName = ApiString::fromStringOrNull($originalData['last_name'])->string;
+        $this->firstName = ApiString::fromStringOrNull($originalData['first_name'])->string;
+        $this->middleName = ApiString::fromStringOrNull($originalData['middle_name'])->string;
         $this->status = Status::from($originalData['status']);
-        $this->discount = IntContainer::fromStringOrNull($originalData['discount'])->int;
-        $this->passportSeries = StringContainer::fromStringOrNull($originalData['passport_series'])->string;
-        $this->labNumber = StringContainer::fromStringOrNull($originalData['lab_number'])->string;
-        $this->streetId = IntContainer::fromStringOrNull($originalData['street_id'])->positiveIntOrNull;
-        $this->apartment = StringContainer::fromStringOrNull($originalData['apartment'])->string;
-        $this->isUnsubscribed = BoolContainer::fromStringOrNull($originalData['unsubscribe'])->bool;
-        $this->isBlacklisted = BoolContainer::fromStringOrNull($originalData['in_blacklist'])->bool;
-        $this->lastVisitDate = DateTimeContainer::fromFullDateTimeString($originalData['last_visit_date'])->dateTimeOrNull;
-        $this->numberOfJournal = StringContainer::fromStringOrNull($originalData['number_of_journal'])->string;
-        $this->phonePrefix = StringContainer::fromStringOrNull($originalData['phone_prefix'])->string;
+        $this->discount = ApiInt::fromStringOrNull($originalData['discount'])->int;
+        $this->passportSeries = ApiString::fromStringOrNull($originalData['passport_series'])->string;
+        $this->labNumber = ApiString::fromStringOrNull($originalData['lab_number'])->string;
+        $this->streetId = ApiInt::fromStringOrNull($originalData['street_id'])->positiveIntOrNull;
+        $this->apartment = ApiString::fromStringOrNull($originalData['apartment'])->string;
+        $this->isUnsubscribed = ApiBool::fromStringOrNull($originalData['unsubscribe'])->bool;
+        $this->isBlacklisted = ApiBool::fromStringOrNull($originalData['in_blacklist'])->bool;
+        $this->lastVisitDate = ApiDateTime::fromFullDateTimeString($originalData['last_visit_date'])->dateTimeOrNull;
+        $this->numberOfJournal = ApiString::fromStringOrNull($originalData['number_of_journal'])->string;
+        $this->phonePrefix = ApiString::fromStringOrNull($originalData['phone_prefix'])->string;
     }
 }

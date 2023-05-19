@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @property-read DateTime $dateTime Для тех случаев, когда уверены, что null и пустых значений не будет */
-final class DateTimeContainer
+final class ApiDateTime
 {
     public function __construct(public readonly ?DateTime $dateTimeOrNull)
     {

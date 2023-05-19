@@ -3,7 +3,7 @@
 namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
@@ -25,6 +25,6 @@ trait RequestGetAllTrait
     /** @throws VetmanagerApiGatewayException */
     public static function fromSingleDtoArrayUsingGetAll(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetByAllList);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Completeness::Partial1);
     }
 }

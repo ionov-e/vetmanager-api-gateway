@@ -10,10 +10,10 @@ use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -92,23 +92,23 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->vaccineId = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->name = StringContainer::fromStringOrNull($originalData['name'])->string;
-        $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
-        $this->date = DateTimeContainer::fromFullDateTimeString($originalData['date'])->dateTimeOrNull;
-        $dateTimeServiceForNextDate = DateTimeContainer::fromOnlyDateString($originalData['date_nexttime']);
+        $this->vaccineId = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->name = ApiString::fromStringOrNull($originalData['name'])->string;
+        $this->petId = ApiInt::fromStringOrNull($originalData['pet_id'])->positiveInt;
+        $this->date = ApiDateTime::fromFullDateTimeString($originalData['date'])->dateTimeOrNull;
+        $dateTimeServiceForNextDate = ApiDateTime::fromOnlyDateString($originalData['date_nexttime']);
         $this->nextDateTime = $dateTimeServiceForNextDate->dateTimeOrNull;
         $this->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
-        $this->goodId = IntContainer::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
-        $this->medcardId = IntContainer::fromStringOrNull($originalData['medcard_id'])->positiveInt;
-        $this->doseTypeId = IntContainer::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
-        $this->doseValue = FloatContainer::fromStringOrNull($originalData['doza_value'])->float;
-        $this->saleParamId = IntContainer::fromStringOrNull($originalData['sale_param_id'])->positiveInt;
-        $this->vaccineType = IntContainer::fromStringOrNull($originalData['vaccine_type'])->positiveIntOrNull;
-        $this->vaccineDescription = StringContainer::fromStringOrNull($originalData['vaccine_description'])->string;
-        $this->vaccineTypeTitle = StringContainer::fromStringOrNull($originalData['vaccine_type_title'])->string;
-        $this->nextAdmissionId = IntContainer::fromStringOrNull($originalData['next_admission_id'])->positiveIntOrNull;
-        $this->petBirthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $this->goodId = ApiInt::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
+        $this->medcardId = ApiInt::fromStringOrNull($originalData['medcard_id'])->positiveInt;
+        $this->doseTypeId = ApiInt::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
+        $this->doseValue = ApiFloat::fromStringOrNull($originalData['doza_value'])->float;
+        $this->saleParamId = ApiInt::fromStringOrNull($originalData['sale_param_id'])->positiveInt;
+        $this->vaccineType = ApiInt::fromStringOrNull($originalData['vaccine_type'])->positiveIntOrNull;
+        $this->vaccineDescription = ApiString::fromStringOrNull($originalData['vaccine_description'])->string;
+        $this->vaccineTypeTitle = ApiString::fromStringOrNull($originalData['vaccine_type_title'])->string;
+        $this->nextAdmissionId = ApiInt::fromStringOrNull($originalData['next_admission_id'])->positiveIntOrNull;
+        $this->petBirthday = ApiDateTime::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
     }

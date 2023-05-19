@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -12,7 +12,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read positive-int $positiveInt Для тех случаев, когда уверены, что null и пустых значений не будет
  * @property-read ?positive-int $positiveIntOrNull Преобразует 0 в null
  */
-class IntContainer
+class ApiInt
 {
     public function __construct(private readonly ?int $intOrNull)
     {

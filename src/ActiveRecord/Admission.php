@@ -6,13 +6,13 @@ use DateInterval;
 use DateTime;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\Admission\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /**
  * @property-read positive-int id
@@ -258,8 +258,8 @@ final class Admission extends AbstractActiveRecord implements AllGetRequestsInte
             'petBreed' => !empty($this->originalDataArray['pet']['breed_data'])
                 ? Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
                 : null,
-            'waitTime' => StringContainer::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->string,
-            'invoices' => Invoice::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['invoices'] ?? [], Source::OnlyBasicDto),
+            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->string,
+            'invoices' => Invoice::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
             'admissionsOfPet' => $this->petId ? self::getByPetId($this->apiGateway, $this->petId) : [],
             'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->apiGateway, $this->clientId) : [],

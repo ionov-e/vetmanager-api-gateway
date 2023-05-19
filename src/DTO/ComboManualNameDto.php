@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-class ComboManualNameDto extends AbstractDTO
+final class ComboManualNameDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -34,10 +34,10 @@ class ComboManualNameDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->nonEmptyString;
-        $instance->isReadonly = BoolContainer::fromStringOrNull($originalData['is_readonly'])->bool;
-        $instance->name = StringContainer::fromStringOrNull($originalData['name'])->nonEmptyString;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalData['title'])->nonEmptyString;
+        $instance->isReadonly = ApiBool::fromStringOrNull($originalData['is_readonly'])->bool;
+        $instance->name = ApiString::fromStringOrNull($originalData['name'])->nonEmptyString;
         return $instance;
     }
 

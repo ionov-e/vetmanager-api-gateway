@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** Обращается в таблицу combo_manual_items
  * @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая
  */
-class ComboManualItemDto extends AbstractDTO
+final class ComboManualItemDto extends AbstractDTO
 {
     /** @var positive-int ID записи цвета в таблице combo_manual_items */
     public int $id;
@@ -49,14 +49,14 @@ class ComboManualItemDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->comboManualId = IntContainer::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
-        $instance->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $instance->value = StringContainer::fromStringOrNull($originalData['value'])->string;
-        $instance->dopParam1 = StringContainer::fromStringOrNull($originalData['dop_param1'])->string;
-        $instance->dopParam2 = StringContainer::fromStringOrNull($originalData['dop_param2'])->string;
-        $instance->dopParam3 = StringContainer::fromStringOrNull($originalData['dop_param3'])->string;
-        $instance->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->comboManualId = ApiInt::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance->value = ApiString::fromStringOrNull($originalData['value'])->string;
+        $instance->dopParam1 = ApiString::fromStringOrNull($originalData['dop_param1'])->string;
+        $instance->dopParam2 = ApiString::fromStringOrNull($originalData['dop_param2'])->string;
+        $instance->dopParam3 = ApiString::fromStringOrNull($originalData['dop_param3'])->string;
+        $instance->isActive = ApiBool::fromStringOrNull($originalData['is_active'])->bool;
         return $instance;
     }
 

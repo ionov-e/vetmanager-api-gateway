@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use DateInterval;
 use Throwable;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @property-read DateInterval $dateInterval Для тех случаев, когда уверены, что null и пустых значений не будет */
-final class DateIntervalContainer
+final class ApiDateInterval
 {
     public function __construct(public readonly ?DateInterval $dateIntervalOrNull)
     {

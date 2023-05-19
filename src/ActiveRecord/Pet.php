@@ -14,8 +14,8 @@ use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read ?ActiveRecord\City $ownerCity
- * @property-read ?ActiveRecord\Street $ownerStreet
+ * @property-read ?City $ownerCity
+ * @property-read ?Street $ownerStreet
  */
 final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface, RequestPostInterface
 {
@@ -24,13 +24,13 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
     use RequestPostTrait;
 
     /** Уже получен */
-    public ?ClientDto $client;
+    public ?Client $client;
     /** Уже получен */
-    public ?PetTypeDto $type;
+    public ?PetType $type;
     /** Уже получен */
-    public ?ActiveRecord\Breed $breed;
+    public ?Breed $breed;
     /** Уже получен */
-    public ?ComboManualItemDto $color;
+    public ?ComboManualItem $color;
 
     /**
      * @param array{

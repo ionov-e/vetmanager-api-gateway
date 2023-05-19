@@ -22,7 +22,9 @@ abstract class AbstractDTO
      */
     abstract public function getRequiredKeysForPostArray(): array;
 
-    /** Получение записанного пользователем DTO в виде массива (без поля с ID) для Post или Put запроса */
+    /** Получение записанного пользователем DTO в виде массива (без поля с ID) для Post или Put запроса
+     * @return array<string, null|int|float|string|array>
+     */
     abstract protected function getSetValuesWithoutId(): array;
 
     /** @throws VetmanagerApiGatewayRequestException */

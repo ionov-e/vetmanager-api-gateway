@@ -9,11 +9,11 @@ use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\FullPhone;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\Clinic\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /** @property-read FullPhone fullPhone
  * @property-read bool isOnlineSigningUpAvailable
@@ -72,21 +72,21 @@ final class Clinic extends AbstractActiveRecord implements AllGetRequestsInterfa
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
-        $this->phone = StringContainer::fromStringOrNull($originalData['phone'])->string;
-        $this->cityId = IntContainer::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
-        $this->startTime = StringContainer::fromStringOrNull($originalData['start_time'])->string;
-        $this->endTime = StringContainer::fromStringOrNull($originalData['end_time'])->string;
-        $this->internetAddress = StringContainer::fromStringOrNull($originalData['internet_address'])->string;
-        $this->guestClientId = IntContainer::fromStringOrNull($originalData['guest_client_id'])->positiveIntOrNull;
-        $this->timeZone = StringContainer::fromStringOrNull($originalData['time_zone'])->string;
-        $this->logoUrl = StringContainer::fromStringOrNull($originalData['logo_url'])->string;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $this->address = ApiString::fromStringOrNull($originalData['address'])->string;
+        $this->phone = ApiString::fromStringOrNull($originalData['phone'])->string;
+        $this->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
+        $this->startTime = ApiString::fromStringOrNull($originalData['start_time'])->string;
+        $this->endTime = ApiString::fromStringOrNull($originalData['end_time'])->string;
+        $this->internetAddress = ApiString::fromStringOrNull($originalData['internet_address'])->string;
+        $this->guestClientId = ApiInt::fromStringOrNull($originalData['guest_client_id'])->positiveIntOrNull;
+        $this->timeZone = ApiString::fromStringOrNull($originalData['time_zone'])->string;
+        $this->logoUrl = ApiString::fromStringOrNull($originalData['logo_url'])->string;
         $this->status = Status::from($originalData['status']);
-        $this->telegram = StringContainer::fromStringOrNull($originalData['telegram'])->string;
-        $this->whatsapp = StringContainer::fromStringOrNull($originalData['whatsapp'])->string;
-        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
+        $this->telegram = ApiString::fromStringOrNull($originalData['telegram'])->string;
+        $this->whatsapp = ApiString::fromStringOrNull($originalData['whatsapp'])->string;
+        $this->email = ApiString::fromStringOrNull($originalData['email'])->string;
     }
 
     /** @return ApiModel::Clinic */

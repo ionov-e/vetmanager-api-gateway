@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -11,7 +11,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read string stringOrThrowIfNull Для тех случаев, когда уверены, что null не будет
  * @property-read non-empty-string nonEmptyString Для тех случаев, когда уверены, что не пустая строка должна прийти
  */
-class StringContainer
+class ApiString
 {
     public function __construct(public readonly ?string $stringOrNull)
     {

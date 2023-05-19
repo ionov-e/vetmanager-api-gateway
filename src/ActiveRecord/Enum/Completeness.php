@@ -2,10 +2,10 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Enum;
 
-enum Source
+enum Completeness
 {
-    case GetById;
-    case GetByAllList;
-    case GetByQuery;
+    case Full;
+    case Partial1;
+    case Partial2;
     case OnlyBasicDto;
 }

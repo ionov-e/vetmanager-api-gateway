@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
-class InvoiceDocumentDto extends AbstractDTO
+/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
+final class InvoiceDocumentDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -85,26 +86,26 @@ class InvoiceDocumentDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->invoiceId = IntContainer::fromStringOrNull($originalData['document_id'])->positiveInt;
-        $instance->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveInt;
-        $instance->quantity = FloatContainer::fromStringOrNull((string)$originalData['quantity'])->floatOrNull;
-        $instance->price = FloatContainer::fromStringOrNull((string)$originalData['price'])->float;
-        $instance->responsibleUserId = IntContainer::fromStringOrNull($originalData['responsible_user_id'])->positiveIntOrNull;
-        $instance->isDefaultResponsible = BoolContainer::fromStringOrNull($originalData['is_default_responsible'])->bool;
-        $instance->saleParamId = IntContainer::fromStringOrNull($originalData['sale_param_id'])->positiveIntOrNull;
-        $instance->tagId = IntContainer::fromStringOrNull($originalData['tag_id'])->positiveIntOrNull;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->invoiceId = ApiInt::fromStringOrNull($originalData['document_id'])->positiveInt;
+        $instance->goodId = ApiInt::fromStringOrNull($originalData['good_id'])->positiveInt;
+        $instance->quantity = ApiFloat::fromStringOrNull((string)$originalData['quantity'])->floatOrNull;
+        $instance->price = ApiFloat::fromStringOrNull((string)$originalData['price'])->float;
+        $instance->responsibleUserId = ApiInt::fromStringOrNull($originalData['responsible_user_id'])->positiveIntOrNull;
+        $instance->isDefaultResponsible = ApiBool::fromStringOrNull($originalData['is_default_responsible'])->bool;
+        $instance->saleParamId = ApiInt::fromStringOrNull($originalData['sale_param_id'])->positiveIntOrNull;
+        $instance->tagId = ApiInt::fromStringOrNull($originalData['tag_id'])->positiveIntOrNull;
         $instance->discountType = $originalData['discount_type'] ? DiscountType::from($originalData['discount_type']) : null;
-        $instance->discountDocumentId = IntContainer::fromStringOrNull($originalData['discount_document_id'])->positiveIntOrNull;
-        $instance->discountPercent = FloatContainer::fromStringOrNull($originalData['discount_percent'])->floatOrNull;
-        $instance->defaultPrice = FloatContainer::fromStringOrNull($originalData['default_price'])->float;
-        $instance->createDate = DateTimeContainer::fromOnlyDateString($originalData['create_date'])->dateTime;
-        $instance->discountCause = StringContainer::fromStringOrNull($originalData['discount_cause'])->string;
-        $instance->fixedDiscountId = IntContainer::fromStringOrNull($originalData['fixed_discount_id'])->positiveIntOrNull;
-        $instance->fixedDiscountPercent = IntContainer::fromStringOrNull($originalData['fixed_discount_percent'])->positiveIntOrNull;
-        $instance->fixedIncreaseId = IntContainer::fromStringOrNull($originalData['fixed_increase_id'])->positiveIntOrNull;
-        $instance->fixedIncreasePercent = IntContainer::fromStringOrNull($originalData['fixed_increase_percent'])->positiveIntOrNull;
-        $instance->primeCost = FloatContainer::fromStringOrNull($originalData['prime_cost'])->float;
+        $instance->discountDocumentId = ApiInt::fromStringOrNull($originalData['discount_document_id'])->positiveIntOrNull;
+        $instance->discountPercent = ApiFloat::fromStringOrNull($originalData['discount_percent'])->floatOrNull;
+        $instance->defaultPrice = ApiFloat::fromStringOrNull($originalData['default_price'])->float;
+        $instance->createDate = ApiDateTime::fromOnlyDateString($originalData['create_date'])->dateTime;
+        $instance->discountCause = ApiString::fromStringOrNull($originalData['discount_cause'])->string;
+        $instance->fixedDiscountId = ApiInt::fromStringOrNull($originalData['fixed_discount_id'])->positiveIntOrNull;
+        $instance->fixedDiscountPercent = ApiInt::fromStringOrNull($originalData['fixed_discount_percent'])->positiveIntOrNull;
+        $instance->fixedIncreaseId = ApiInt::fromStringOrNull($originalData['fixed_increase_id'])->positiveIntOrNull;
+        $instance->fixedIncreasePercent = ApiInt::fromStringOrNull($originalData['fixed_increase_percent'])->positiveIntOrNull;
+        $instance->primeCost = ApiFloat::fromStringOrNull($originalData['prime_cost'])->float;
         return $instance;
     }
 
@@ -118,25 +119,25 @@ class InvoiceDocumentDto extends AbstractDTO
     protected function getSetValuesWithoutId(): array
     {
         return array_merge(
-            isset($this->invoiceId) ? ['document_id' => $this->invoiceId] : [],
-            isset($this->goodId) ? ['good_id' => $this->goodId] : [],
-            isset($this->quantity) ? ['quantity' => $this->quantity] : [],
-            isset($this->price) ? ['price' => $this->price] : [],
-            isset($this->responsibleUserId) ? ['responsible_user_id' => $this->responsibleUserId] : [],
-            isset($this->isDefaultResponsible) ? ['is_default_responsible' => (int)$this->isDefaultResponsible] : [],
-            isset($this->saleParamId) ? ['sale_param_id' => $this->saleParamId] : [],
-            isset($this->tagId) ? ['tag_id' => $this->tagId] : [],
-            isset($this->discountType) ? ['discount_type' => $this->discountType] : [],
-            isset($this->discountDocumentId) ? ['discount_document_id' => $this->discountDocumentId] : [],
-            isset($this->discountPercent) ? ['discount_percent' => $this->discountPercent] : [],
-            isset($this->defaultPrice) ? ['default_price' => $this->defaultPrice] : [],
-            isset($this->createDate) ? ['create_date' => $this->createDate->format('Y-m-d H:i:s')] : [],
-            isset($this->discountCause) ? ['discount_cause' => $this->discountCause] : [],
-            isset($this->fixedDiscountId) ? ['fixed_discount_id' => $this->fixedDiscountId] : [],
-            isset($this->fixedDiscountPercent) ? ['fixed_discount_percent' => $this->fixedDiscountPercent] : [],
-            isset($this->fixedIncreaseId) ? ['fixed_increase_id' => $this->fixedIncreaseId] : [],
-            isset($this->fixedIncreasePercent) ? ['fixed_increase_percent' => $this->fixedIncreasePercent] : [],
-            isset($this->primeCost) ? ['prime_cost' => $this->primeCost] : [],
+            property_exists($this, 'invoiceId') ? ['document_id' => $this->invoiceId] : [],
+            property_exists($this, 'goodId') ? ['good_id' => $this->goodId] : [],
+            property_exists($this, 'quantity') ? ['quantity' => $this->quantity] : [],
+            property_exists($this, 'price') ? ['price' => $this->price] : [],
+            property_exists($this, 'responsibleUserId') ? ['responsible_user_id' => $this->responsibleUserId] : [],
+            property_exists($this, 'isDefaultResponsible') ? ['is_default_responsible' => (int)$this->isDefaultResponsible] : [],
+            property_exists($this, 'saleParamId') ? ['sale_param_id' => $this->saleParamId] : [],
+            property_exists($this, 'tagId') ? ['tag_id' => $this->tagId] : [],
+            property_exists($this, 'discountType') ? ['discount_type' => $this->discountType] : [],
+            property_exists($this, 'discountDocumentId') ? ['discount_document_id' => $this->discountDocumentId] : [],
+            property_exists($this, 'discountPercent') ? ['discount_percent' => $this->discountPercent] : [],
+            property_exists($this, 'defaultPrice') ? ['default_price' => $this->defaultPrice] : [],
+            property_exists($this, 'createDate') ? ['create_date' => $this->createDate->format('Y-m-d H:i:s')] : [],
+            property_exists($this, 'discountCause') ? ['discount_cause' => $this->discountCause] : [],
+            property_exists($this, 'fixedDiscountId') ? ['fixed_discount_id' => $this->fixedDiscountId] : [],
+            property_exists($this, 'fixedDiscountPercent') ? ['fixed_discount_percent' => $this->fixedDiscountPercent] : [],
+            property_exists($this, 'fixedIncreaseId') ? ['fixed_increase_id' => $this->fixedIncreaseId] : [],
+            property_exists($this, 'fixedIncreasePercent') ? ['fixed_increase_percent' => $this->fixedIncreasePercent] : [],
+            property_exists($this, 'primeCost') ? ['prime_cost' => $this->primeCost] : [],
         );
     }
 }

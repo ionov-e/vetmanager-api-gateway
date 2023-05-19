@@ -9,10 +9,10 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -124,27 +124,27 @@ final class MedicalCard extends AbstractActiveRecord implements AllGetRequestsIn
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->dateCreate = DateTimeContainer::fromOnlyDateString($originalData['date_create'])->dateTime;
-        $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTime;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->dateCreate = ApiDateTime::fromOnlyDateString($originalData['date_create'])->dateTime;
+        $this->dateEdit = ApiDateTime::fromOnlyDateString($originalData['date_edit'])->dateTime;
         $diagnose = ($originalData['diagnos'] !== '0') ? $originalData['diagnos'] : '';
-        $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
-        $this->recommendation = StringContainer::fromStringOrNull($originalData['recomendation'])->string;
-        $this->invoiceId = IntContainer::fromStringOrNull($originalData['invoice'])->positiveIntOrNull;
-        $this->admissionTypeId = IntContainer::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
-        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->floatOrNull;
-        $this->temperature = FloatContainer::fromStringOrNull($originalData['temperature'])->floatOrNull;
-        $this->meetResultId = IntContainer::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
-        $this->description = StringContainer::fromStringOrNull($originalData['description'])->string;
-        $this->nextMeetId = IntContainer::fromStringOrNull($originalData['next_meet_id'])->positiveIntOrNull;
-        $this->userId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
-        $this->creatorId = IntContainer::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
+        $this->diagnose = ApiString::fromStringOrNull($diagnose)->string;
+        $this->recommendation = ApiString::fromStringOrNull($originalData['recomendation'])->string;
+        $this->invoiceId = ApiInt::fromStringOrNull($originalData['invoice'])->positiveIntOrNull;
+        $this->admissionTypeId = ApiInt::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
+        $this->weight = ApiFloat::fromStringOrNull($originalData['weight'])->floatOrNull;
+        $this->temperature = ApiFloat::fromStringOrNull($originalData['temperature'])->floatOrNull;
+        $this->meetResultId = ApiInt::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
+        $this->description = ApiString::fromStringOrNull($originalData['description'])->string;
+        $this->nextMeetId = ApiInt::fromStringOrNull($originalData['next_meet_id'])->positiveIntOrNull;
+        $this->userId = ApiInt::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
+        $this->creatorId = ApiInt::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
         $this->status = Status::from($originalData['status']);
-        $this->callingId = IntContainer::fromStringOrNull($originalData['calling_id'])->positiveIntOrNull;
-        $this->admissionId = IntContainer::fromStringOrNull($originalData['admission_id'])->positiveIntOrNull;
-        $this->diagnoseText = StringContainer::fromStringOrNull($originalData['diagnos_text'])->string;
-        $this->diagnoseTypeText = StringContainer::fromStringOrNull($originalData['diagnos_type_text'])->string;
-        $this->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $this->callingId = ApiInt::fromStringOrNull($originalData['calling_id'])->positiveIntOrNull;
+        $this->admissionId = ApiInt::fromStringOrNull($originalData['admission_id'])->positiveIntOrNull;
+        $this->diagnoseText = ApiString::fromStringOrNull($originalData['diagnos_text'])->string;
+        $this->diagnoseTypeText = ApiString::fromStringOrNull($originalData['diagnos_type_text'])->string;
+        $this->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
         $this->pet = Pet::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $originalData['patient']);
     }
 

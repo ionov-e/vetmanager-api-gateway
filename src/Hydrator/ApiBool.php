@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
  * @property-read bool $bool Для тех случаев, когда уверены, что null и пустых значений не будет
  */
-class BoolContainer
+class ApiBool
 {
     public function __construct(public readonly ?bool $boolOrNull)
     {

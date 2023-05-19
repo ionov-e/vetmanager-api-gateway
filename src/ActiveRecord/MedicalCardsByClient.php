@@ -9,18 +9,18 @@ namespace VetmanagerApiGateway\ActiveRecord;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
 use VetmanagerApiGateway\DO\FullName;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /**
  * @property-read ?ActiveRecord\ComboManualItem admissionType
@@ -123,33 +123,33 @@ final class MedicalCardsByClient extends AbstractActiveRecord
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['medical_card_id'])->positiveInt;
-        $this->dateEdit = DateTimeContainer::fromOnlyDateString($originalData['date_edit'])->dateTimeOrNull;
+        $this->id = ApiInt::fromStringOrNull($originalData['medical_card_id'])->positiveInt;
+        $this->dateEdit = ApiDateTime::fromOnlyDateString($originalData['date_edit'])->dateTimeOrNull;
         $diagnose = ($originalData['diagnos'] !== '0') ? $originalData['diagnos'] : '';
-        $this->diagnose = StringContainer::fromStringOrNull($diagnose)->string;
-        $this->userId = IntContainer::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
+        $this->diagnose = ApiString::fromStringOrNull($diagnose)->string;
+        $this->userId = ApiInt::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
         $this->status = Status::from($originalData['medical_card_status']);
-        $this->description = StringContainer::fromStringOrNull($originalData['healing_process'])->string;
-        $this->recommendation = StringContainer::fromStringOrNull($originalData['recomendation'])->string;
-        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->floatOrNull;
-        $this->temperature = FloatContainer::fromStringOrNull($originalData['temperature'])->floatOrNull;
-        $this->meetResultId = IntContainer::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
-        $this->admissionTypeId = IntContainer::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
-        $this->petId = IntContainer::fromStringOrNull($originalData['pet_id'])->positiveInt;
-        $this->petAlias = StringContainer::fromStringOrNull($originalData['alias'])->string;
-        $this->petBirthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $this->description = ApiString::fromStringOrNull($originalData['healing_process'])->string;
+        $this->recommendation = ApiString::fromStringOrNull($originalData['recomendation'])->string;
+        $this->weight = ApiFloat::fromStringOrNull($originalData['weight'])->floatOrNull;
+        $this->temperature = ApiFloat::fromStringOrNull($originalData['temperature'])->floatOrNull;
+        $this->meetResultId = ApiInt::fromStringOrNull($originalData['meet_result_id'])->positiveIntOrNull;
+        $this->admissionTypeId = ApiInt::fromStringOrNull($originalData['admission_type'])->positiveIntOrNull;
+        $this->petId = ApiInt::fromStringOrNull($originalData['pet_id'])->positiveInt;
+        $this->petAlias = ApiString::fromStringOrNull($originalData['alias'])->string;
+        $this->petBirthday = ApiDateTime::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
         $this->petSex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
-        $this->petNote = StringContainer::fromStringOrNull($originalData['note'])->string;
-        $this->petTypeTitle = StringContainer::fromStringOrNull($originalData['pet_type'])->string;
-        $this->petBreedTitle = StringContainer::fromStringOrNull($originalData['breed'])->string;
-        $this->clientId = IntContainer::fromStringOrNull($originalData['client_id'])->positiveInt;
+        $this->petNote = ApiString::fromStringOrNull($originalData['note'])->string;
+        $this->petTypeTitle = ApiString::fromStringOrNull($originalData['pet_type'])->string;
+        $this->petBreedTitle = ApiString::fromStringOrNull($originalData['breed'])->string;
+        $this->clientId = ApiInt::fromStringOrNull($originalData['client_id'])->positiveInt;
         $this->ownerFullName = new FullName($originalData['first_name'], $originalData['middle_name'], $originalData['last_name']);
-        $this->ownerPhone = StringContainer::fromStringOrNull($originalData['phone'])->string;
-        $this->userLogin = StringContainer::fromStringOrNull($originalData['doctor_nickname'])->string;
+        $this->ownerPhone = ApiString::fromStringOrNull($originalData['phone'])->string;
+        $this->userLogin = ApiString::fromStringOrNull($originalData['doctor_nickname'])->string;
         $this->userFullName = new FullName($originalData['doctor_first_name'], $originalData['doctor_middle_name'], $originalData['doctor_last_name']);
-        $this->isEditable = BoolContainer::fromStringOrNull($originalData['editable'])->bool;
-        $this->meetResultTitle = StringContainer::fromStringOrNull($originalData['meet_result_title'])->string;
-        $this->admissionTypeTitle = StringContainer::fromStringOrNull($originalData['admission_type_title'])->string;
+        $this->isEditable = ApiBool::fromStringOrNull($originalData['editable'])->bool;
+        $this->meetResultTitle = ApiString::fromStringOrNull($originalData['meet_result_title'])->string;
+        $this->admissionTypeTitle = ApiString::fromStringOrNull($originalData['admission_type_title'])->string;
     }
 
     /** @return ApiModel::MedicalCardsByClient */

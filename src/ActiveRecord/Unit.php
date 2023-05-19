@@ -8,8 +8,8 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\DTO\Enum\Unit\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -34,8 +34,8 @@ final class Unit extends AbstractActiveRecord implements AllGetRequestsInterface
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = ApiString::fromStringOrNull($originalData['title'])->string;
         $this->status = Status::from($originalData['status']);
     }
 

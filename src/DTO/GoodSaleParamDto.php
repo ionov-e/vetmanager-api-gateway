@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-class GoodSaleParamDto extends AbstractDTO
+final class GoodSaleParamDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -35,20 +35,20 @@ class GoodSaleParamDto extends AbstractDTO
     public PriceFormation $priceFormation;
 
     /** @param array{
-     *     id: string,
-     *     good_id: string,
+     *     id: numeric-string,
+     *     good_id: numeric-string,
      *     price: ?string,
      *     coefficient: string,
-     *     unit_sale_id: string,
+     *     unit_sale_id: numeric-string,
      *     min_price: ?string,
      *     max_price: ?string,
      *     barcode: ?string,
      *     status: string,
-     *     clinic_id: string,
+     *     clinic_id: numeric-string,
      *     markup: string,
      *     price_formation: ?string,
      *     unitSale?: array,
-     *     good?: array,
+     *     good?: array
      * } $originalData
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
@@ -56,17 +56,17 @@ class GoodSaleParamDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
-        $instance->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->goodId = IntContainer::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
-        $instance->price = FloatContainer::fromStringOrNull($originalData['price'])->floatOrNull;
-        $instance->coefficient = FloatContainer::fromStringOrNull($originalData['coefficient'])->float;
-        $instance->unitSaleId = IntContainer::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
-        $instance->minPriceInPercents = FloatContainer::fromStringOrNull($originalData['min_price'])->floatOrNull;
-        $instance->maxPriceInPercents = FloatContainer::fromStringOrNull($originalData['max_price'])->floatOrNull;
-        $instance->barcode = StringContainer::fromStringOrNull($originalData['barcode'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $instance->goodId = ApiInt::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
+        $instance->price = ApiFloat::fromStringOrNull($originalData['price'])->floatOrNull;
+        $instance->coefficient = ApiFloat::fromStringOrNull($originalData['coefficient'])->float;
+        $instance->unitSaleId = ApiInt::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
+        $instance->minPriceInPercents = ApiFloat::fromStringOrNull($originalData['min_price'])->floatOrNull;
+        $instance->maxPriceInPercents = ApiFloat::fromStringOrNull($originalData['max_price'])->floatOrNull;
+        $instance->barcode = ApiString::fromStringOrNull($originalData['barcode'])->string;
         $instance->status = Status::from($originalData['status']);
-        $instance->clinicId = IntContainer::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $instance->markup = FloatContainer::fromStringOrNull($originalData['markup'])->floatOrNull;
+        $instance->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $instance->markup = ApiFloat::fromStringOrNull($originalData['markup'])->floatOrNull;
         $instance->priceFormation = PriceFormation::from((string)$originalData['price_formation']);
         return $instance;
     }

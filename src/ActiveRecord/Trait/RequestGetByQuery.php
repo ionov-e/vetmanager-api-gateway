@@ -4,7 +4,7 @@ namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
@@ -50,6 +50,6 @@ trait RequestGetByQuery
     /** @throws VetmanagerApiGatewayException */
     public static function fromSingleDtoArrayUsingGetByQuery(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetByQuery);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Completeness::Partial2);
     }
 }

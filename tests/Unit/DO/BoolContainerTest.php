@@ -5,10 +5,10 @@ namespace VetmanagerApiGateway\Unit\DO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\DO\BoolContainer;
+use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-#[CoversClass(BoolContainer::class)]
+#[CoversClass(ApiBool::class)]
 class BoolContainerTest extends TestCase
 {
     public static function dataProviderForStingOrNull(): array
@@ -33,7 +33,7 @@ class BoolContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            BoolContainer::fromStringOrNull($forConstructor)->boolOrNull,
+            ApiBool::fromStringOrNull($forConstructor)->boolOrNull,
             $messageInCaseOfError
         );
     }
@@ -59,10 +59,10 @@ class BoolContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            BoolContainer::fromStringOrNull($forConstructor)->bool,
+            ApiBool::fromStringOrNull($forConstructor)->bool,
             $messageInCaseOfError
         );
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        BoolContainer::fromStringOrNull(null)->bool;
+        ApiBool::fromStringOrNull(null)->bool;
     }
 }

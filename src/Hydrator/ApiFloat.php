@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\DO;
+namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -10,7 +10,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read float $float Для тех случаев, когда уверены, что null и пустых значений не будет
  * @property-read ?float $nonZeroFloatOrNull Преобразует 0 в null
  */
-class FloatContainer
+class ApiFloat
 {
     public function __construct(public readonly ?float $floatOrNull)
     {

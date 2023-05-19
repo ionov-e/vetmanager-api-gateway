@@ -10,9 +10,9 @@ use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\FullName;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class Client extends AbstractActiveRecord implements AllGetRequestsInterface
 {
@@ -73,7 +73,7 @@ final class Client extends AbstractActiveRecord implements AllGetRequestsInterfa
         $this->city = !empty($originalData['city_data'])
             ? ActiveRecord\City::fromSingleObjectContents($this->apiGateway, $originalData['city_data'])
             : null;
-        $this->typeTitle = StringContainer::fromStringOrNull(
+        $this->typeTitle = ApiString::fromStringOrNull(
             $originalData['client_type_data']['title'] ?? ''
         )->string;
     }

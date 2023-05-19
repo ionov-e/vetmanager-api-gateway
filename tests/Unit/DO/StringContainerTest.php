@@ -5,10 +5,10 @@ namespace VetmanagerApiGateway\Unit\DO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-#[CoversClass(StringContainer::class)]
+#[CoversClass(ApiString::class)]
 class StringContainerTest extends TestCase
 {
     public static function dataProviderForStingOrNull(): array
@@ -24,7 +24,7 @@ class StringContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            StringContainer::fromStringOrNull($forConstructor)->stringOrNull,
+            ApiString::fromStringOrNull($forConstructor)->stringOrNull,
             $messageInCaseOfError
         );
     }
@@ -42,24 +42,24 @@ class StringContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            StringContainer::fromStringOrNull($stringOrNull)->string,
+            ApiString::fromStringOrNull($stringOrNull)->string,
             $messageInCaseOfError
         );
     }
 
     public function testStringOrThrowIfNullMethod(): void
     {
-        $this->assertEquals('Hello1', StringContainer::fromStringOrNull('Hello1')->stringOrThrowIfNull);
+        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->stringOrThrowIfNull);
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull(null)->stringOrThrowIfNull;
+        ApiString::fromStringOrNull(null)->stringOrThrowIfNull;
     }
 
     public function testNonEmptyStringMethod(): void
     {
-        $this->assertEquals('Hello1', StringContainer::fromStringOrNull('Hello1')->nonEmptyString);
+        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->nonEmptyString);
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull('')->nonEmptyString;
+        ApiString::fromStringOrNull('')->nonEmptyString;
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull(null)->nonEmptyString;
+        ApiString::fromStringOrNull(null)->nonEmptyString;
     }
 }

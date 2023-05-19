@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -22,13 +22,13 @@ abstract class AbstractActiveRecord
     /**
      * @param ApiGateway $apiGateway
      * @param array<string,mixed> $originalDataArray Данные в том виде, в котором были получены (массив из раздекодированного JSON)
-     * @param Source $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
+     * @param Completeness $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
      * @throws VetmanagerApiGatewayException
      */
     protected function __construct(
         protected readonly ApiGateway $apiGateway,
         protected array               $originalDataArray,
-        protected Source              $sourceOfData = Source::OnlyBasicDto,
+        protected Completeness        $sourceOfData = Completeness::OnlyBasicDto,
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
 
@@ -61,7 +61,7 @@ abstract class AbstractActiveRecord
      * @return static[]
      * @throws VetmanagerApiGatewayException
      */
-    public static function fromApiResponseArray(ApiGateway $apiGateway, array $apiResponse, Source $sourceOfData = Source::OnlyBasicDto): array
+    public static function fromApiResponseArray(ApiGateway $apiGateway, array $apiResponse, Completeness $sourceOfData = Completeness::OnlyBasicDto): array
     {
         $modelKey = static::getApiModel()->getResponseKey();
 
@@ -82,9 +82,9 @@ abstract class AbstractActiveRecord
      * @psalm-suppress UnsafeInstantiation
      */
     public static function fromSingleDtoArray(
-        ApiGateway $apiGateway,
-        array      $singleDtoAsArray,
-        Source     $sourceOfData = Source::OnlyBasicDto
+        ApiGateway   $apiGateway,
+        array        $singleDtoAsArray,
+        Completeness $sourceOfData = Completeness::OnlyBasicDto
     ): static {
         if (empty($singleDtoAsArray)) {
             throw new VetmanagerApiGatewayResponseEmptyException();
@@ -101,7 +101,7 @@ abstract class AbstractActiveRecord
         ApiGateway $apiGateway,
         array      $singleDtoAsArray
     ): static {
-        return static::fromSingleDtoArray($apiGateway, $singleDtoAsArray, Source::OnlyBasicDto);
+        return static::fromSingleDtoArray($apiGateway, $singleDtoAsArray, Completeness::OnlyBasicDto);
     }
 
     /** @param array $listOfMultipleDtosAsArrays Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
@@ -109,9 +109,9 @@ abstract class AbstractActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public static function fromMultipleDtosArrays(
-        ApiGateway $apiGateway,
-        array      $listOfMultipleDtosAsArrays,
-        Source     $sourceOfData = Source::OnlyBasicDto
+        ApiGateway   $apiGateway,
+        array        $listOfMultipleDtosAsArrays,
+        Completeness $sourceOfData = Completeness::OnlyBasicDto
     ): array {
         return array_map(
             fn (array $objectContents): static => static::fromSingleDtoArray($apiGateway, $objectContents, $sourceOfData),
@@ -139,7 +139,7 @@ abstract class AbstractActiveRecord
     }
 
     /** Получение источника Active Record. Т.е. как был получен, например по прямому АПИ-запросу по ID */
-    public function getSourceOfData(): Source
+    public function getSourceOfData(): Completeness
     {
         return $this->sourceOfData;
     }

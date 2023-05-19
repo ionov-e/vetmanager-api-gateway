@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use VetmanagerApiGateway\DO\DateTimeContainer;
-use VetmanagerApiGateway\DO\FloatContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiFloat;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -23,7 +23,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read DAO\Admission[] admissions
  * @property-read DAO\Admission[] admissionsOfOwner
  */
-class PetDto extends AbstractDTO
+final class PetDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -85,24 +85,24 @@ class PetDto extends AbstractDTO
      */
     public function __construct(array $originalData)
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->ownerId = IntContainer::fromStringOrNull($originalData['owner_id'])->positiveInt;
-        $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $this->alias = StringContainer::fromStringOrNull($originalData['alias'])->string;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->ownerId = ApiInt::fromStringOrNull($originalData['owner_id'])->positiveInt;
+        $this->typeId = ApiInt::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
+        $this->alias = ApiString::fromStringOrNull($originalData['alias'])->string;
         $this->sex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
-        $this->dateRegister = DateTimeContainer::fromOnlyDateString($originalData['date_register'])->dateTime;
-        $this->birthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
-        $this->note = StringContainer::fromStringOrNull($originalData['note'])->string;
-        $this->breedId = IntContainer::fromStringOrNull($originalData['breed_id'])->positiveIntOrNull;
-        $this->oldId = IntContainer::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
-        $this->colorId = IntContainer::fromStringOrNull($originalData['color_id'])->positiveIntOrNull;
-        $this->deathNote = StringContainer::fromStringOrNull($originalData['deathnote'])->string;
-        $this->deathDate = StringContainer::fromStringOrNull($originalData['deathdate'])->string;
-        $this->chipNumber = StringContainer::fromStringOrNull($originalData['chip_number'])->string;
-        $this->labNumber = StringContainer::fromStringOrNull($originalData['lab_number'])->string;
+        $this->dateRegister = ApiDateTime::fromOnlyDateString($originalData['date_register'])->dateTime;
+        $this->birthday = ApiDateTime::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $this->note = ApiString::fromStringOrNull($originalData['note'])->string;
+        $this->breedId = ApiInt::fromStringOrNull($originalData['breed_id'])->positiveIntOrNull;
+        $this->oldId = ApiInt::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
+        $this->colorId = ApiInt::fromStringOrNull($originalData['color_id'])->positiveIntOrNull;
+        $this->deathNote = ApiString::fromStringOrNull($originalData['deathnote'])->string;
+        $this->deathDate = ApiString::fromStringOrNull($originalData['deathdate'])->string;
+        $this->chipNumber = ApiString::fromStringOrNull($originalData['chip_number'])->string;
+        $this->labNumber = ApiString::fromStringOrNull($originalData['lab_number'])->string;
         $this->status = Status::from($originalData['status']);
-        $this->picture = StringContainer::fromStringOrNull($originalData['picture'])->string;
-        $this->weight = FloatContainer::fromStringOrNull($originalData['weight'])->nonZeroFloatOrNull;
-        $this->editDate = DateTimeContainer::fromOnlyDateString($originalData['edit_date'])->dateTime;
+        $this->picture = ApiString::fromStringOrNull($originalData['picture'])->string;
+        $this->weight = ApiFloat::fromStringOrNull($originalData['weight'])->nonZeroFloatOrNull;
+        $this->editDate = ApiDateTime::fromOnlyDateString($originalData['edit_date'])->dateTime;
     }
 }

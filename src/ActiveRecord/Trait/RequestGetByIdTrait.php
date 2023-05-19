@@ -3,7 +3,7 @@
 namespace VetmanagerApiGateway\ActiveRecord\Trait;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Enum\Source;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
@@ -27,7 +27,7 @@ trait RequestGetByIdTrait
     /** @throws VetmanagerApiGatewayException */
     public static function fromSingleDtoArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self
     {
-        return self::fromSingleDtoArray($apiGateway, $originalData, Source::GetById);
+        return self::fromSingleDtoArray($apiGateway, $originalData, Completeness::Full);
     }
 
     /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
@@ -36,7 +36,7 @@ trait RequestGetByIdTrait
      */
     public function fillCurrentObjectWithGetByIdDataIfSourceIsDifferent(): void
     {
-        if ($this->sourceOfData !== Source::GetById) {
+        if ($this->sourceOfData !== Completeness::Full) {
             $this->fillCurrentObjectWithGetByIdData();
         }
     }
@@ -47,7 +47,7 @@ trait RequestGetByIdTrait
      */
     public function fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto(): void
     {
-        if ($this->sourceOfData == Source::OnlyBasicDto) {
+        if ($this->sourceOfData == Completeness::OnlyBasicDto) {
             $this->fillCurrentObjectWithGetByIdData();
         }
     }
@@ -58,6 +58,6 @@ trait RequestGetByIdTrait
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
         $this->originalDto = $instanceFromGetById->getAsDto();
         $this->originalDataArray = $instanceFromGetById->getAsOriginalDataArray();
-        $this->sourceOfData = Source::GetById;
+        $this->sourceOfData = Completeness::Full;
     }
 }

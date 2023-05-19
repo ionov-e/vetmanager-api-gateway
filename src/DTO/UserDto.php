@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use VetmanagerApiGateway\DO\BoolContainer;
-use VetmanagerApiGateway\DO\DateTimeContainer;
 use VetmanagerApiGateway\DO\FullName;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\ApiBool;
+use VetmanagerApiGateway\Hydrator\ApiDateTime;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
 /**
  * @property-read FullName $fullName
  */
-class UserDto extends AbstractDTO
+final class UserDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
@@ -78,25 +78,25 @@ class UserDto extends AbstractDTO
      */
     public function __construct(array $originalData)
     {
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->lastName = StringContainer::fromStringOrNull($originalData['last_name'])->string;
-        $this->firstName = StringContainer::fromStringOrNull($originalData['first_name'])->string;
-        $this->middleName = StringContainer::fromStringOrNull($originalData['middle_name'])->string;
-        $this->login = StringContainer::fromStringOrNull($originalData['login'])->string;
-        $this->password = StringContainer::fromStringOrNull($originalData['passwd'])->string;
-        $this->positionId = IntContainer::fromStringOrNull($originalData['position_id'])->positiveInt;
-        $this->email = StringContainer::fromStringOrNull($originalData['email'])->string;
-        $this->phone = StringContainer::fromStringOrNull($originalData['phone'])->string;
-        $this->cellPhone = StringContainer::fromStringOrNull($originalData['cell_phone'])->string;
-        $this->address = StringContainer::fromStringOrNull($originalData['address'])->string;
-        $this->roleId = IntContainer::fromStringOrNull($originalData['role_id'])->positiveIntOrNull;
-        $this->isActive = BoolContainer::fromStringOrNull($originalData['is_active'])->bool;
-        $this->isPercentCalculated = BoolContainer::fromStringOrNull($originalData['calc_percents'])->bool;
-        $this->nickname = StringContainer::fromStringOrNull($originalData['nickname'])->string;
-        $this->lastChangePwdDate = DateTimeContainer::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTimeOrNull;
-        $this->isLimited = BoolContainer::fromStringOrNull($originalData['is_limited'])->bool;
-        $this->carrotquestId = StringContainer::fromStringOrNull($originalData['carrotquest_id'])->string;
-        $this->sipNumber = StringContainer::fromStringOrNull($originalData['sip_number'])->string;
-        $this->userInn = StringContainer::fromStringOrNull($originalData['user_inn'])->string;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->lastName = ApiString::fromStringOrNull($originalData['last_name'])->string;
+        $this->firstName = ApiString::fromStringOrNull($originalData['first_name'])->string;
+        $this->middleName = ApiString::fromStringOrNull($originalData['middle_name'])->string;
+        $this->login = ApiString::fromStringOrNull($originalData['login'])->string;
+        $this->password = ApiString::fromStringOrNull($originalData['passwd'])->string;
+        $this->positionId = ApiInt::fromStringOrNull($originalData['position_id'])->positiveInt;
+        $this->email = ApiString::fromStringOrNull($originalData['email'])->string;
+        $this->phone = ApiString::fromStringOrNull($originalData['phone'])->string;
+        $this->cellPhone = ApiString::fromStringOrNull($originalData['cell_phone'])->string;
+        $this->address = ApiString::fromStringOrNull($originalData['address'])->string;
+        $this->roleId = ApiInt::fromStringOrNull($originalData['role_id'])->positiveIntOrNull;
+        $this->isActive = ApiBool::fromStringOrNull($originalData['is_active'])->bool;
+        $this->isPercentCalculated = ApiBool::fromStringOrNull($originalData['calc_percents'])->bool;
+        $this->nickname = ApiString::fromStringOrNull($originalData['nickname'])->string;
+        $this->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTimeOrNull;
+        $this->isLimited = ApiBool::fromStringOrNull($originalData['is_limited'])->bool;
+        $this->carrotquestId = ApiString::fromStringOrNull($originalData['carrotquest_id'])->string;
+        $this->sipNumber = ApiString::fromStringOrNull($originalData['sip_number'])->string;
+        $this->userInn = ApiString::fromStringOrNull($originalData['user_inn'])->string;
     }
 }

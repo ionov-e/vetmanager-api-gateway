@@ -9,9 +9,9 @@ use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DO\DateIntervalContainer;
-use VetmanagerApiGateway\DO\IntContainer;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\Hydrator\ApiDateInterval;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 final class UserPosition extends AbstractActiveRecord implements AllGetRequestsInterface
@@ -35,9 +35,9 @@ final class UserPosition extends AbstractActiveRecord implements AllGetRequestsI
     {
         parent::__construct($apiGateway, $originalData);
 
-        $this->id = IntContainer::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = StringContainer::fromStringOrNull($originalData['title'])->string;
-        $this->admissionLength = DateIntervalContainer::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
+        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
+        $this->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $this->admissionLength = ApiDateInterval::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
     }
 
     /** @return ApiModel::UserPosition */
