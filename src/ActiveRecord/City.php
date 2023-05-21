@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\CityDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -15,21 +16,26 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property string title
  * @property positive-int typeId Default: 1
  * @property-read CityType type
- * @property array{
+ * @property-read array{
  *     "id": string,
  *     "title": string,
  *     "type_id": string,
  * } $originalDataArray
  */
-final class City extends AbstractActiveRecord implements AllGetRequestsInterface
+final class City extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     /** @return ApiModel::City */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::City;
+    }
+
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
     }
 
     /** @throws VetmanagerApiGatewayException

@@ -4,128 +4,124 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
+use DateTime;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Interface\RequestPostInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ActiveRecord\Trait\RequestPostTrait;
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
+use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
+use VetmanagerApiGateway\DTO\Enum\Pet\Status;
+use VetmanagerApiGateway\DTO\PetDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read ?City $ownerCity
- * @property-read ?Street $ownerStreet
+ * @property-read PetDto $originalDto
+ * @property positive-int $id;
+ * @property positive-int $ownerId Ни в одной БД не нашел "null" или "0"
+ * @property ?positive-int $typeId;
+ * @property string $alias;
+ * @property Sex $sex;
+ * @property DateTime $dateRegister;
+ * @property ?DateTime $birthday Дата без времени
+ * @property string $note
+ * @property ?positive-int $breedId
+ * @property ?positive-int $oldId
+ * @property ?positive-int $colorId
+ * @property string $deathNote
+ * @property string $deathDate
+ * @property string $chipNumber Default: ''. Самые разные строки прилетают
+ * @property string $labNumber Default: ''. Самые разные строки прилетают
+ * @property Status $status
+ * @property string $picture Datatype: longblob
+ * @property ?float $weight
+ * @property DateTime $editDate
+ * @property-read array{
+ * id: numeric-string,
+ * owner_id: ?numeric-string,
+ * type_id: ?numeric-string,
+ * alias: string,
+ * sex: ?string,
+ * date_register: string,
+ * birthday: ?string,
+ * note: string,
+ * breed_id: ?numeric-string,
+ * old_id: ?numeric-string,
+ * color_id: ?numeric-string,
+ * deathnote: ?string,
+ * deathdate: ?string,
+ * chip_number: string,
+ * lab_number: string,
+ * status: string,
+ * picture: ?string,
+ * weight: ?string,
+ * edit_date: string,
+ * owner?: array{
+ *      id: string,
+ *      address: string,
+ *      home_phone: string,
+ *      work_phone: string,
+ *      note: string,
+ *      type_id: ?string,
+ *      how_find: ?string,
+ *      balance: string,
+ *      email: string,
+ *      city: string,
+ *      city_id: ?string,
+ *      date_register: string,
+ *      cell_phone: string,
+ *      zip: string,
+ *      registration_index: ?string,
+ *      vip: string,
+ *      last_name: string,
+ *      first_name: string,
+ *      middle_name: string,
+ *      status: string,
+ *      discount: string,
+ *      passport_series: string,
+ *      lab_number: string,
+ *      street_id: string,
+ *      apartment: string,
+ *      unsubscribe: string,
+ *      in_blacklist: string,
+ *      last_visit_date: string,
+ *      number_of_journal: string,
+ *      phone_prefix: ?string
+ *      },
+ * type?: array{
+ *      id: string,
+ *      title: string,
+ *      picture: string,
+ *      type: ?string
+ *      },
+ * breed?: array{
+ *      id: string,
+ *      title: string,
+ *      pet_type_id: string
+ *      },
+ * color?: array{
+ *      id: string,
+ *      combo_manual_id: string,
+ *      title: string,
+ *      value: string,
+ *      dop_param1: string,
+ *      dop_param2: string,
+ *      dop_param3: string,
+ *      is_active: string
+ *      }
+ * } $originalData
+ * @property-read ?Client $client
+ * @property-read ?PetType $type
+ * @property-read ?Breed $breed
+ * @property-read ?ComboManualItem $color
+ * @property-read Admission[] admissions
+ * @property-read Admission[] admissionsOfOwner
+ * @property-read MedicalCard[] medicalCards
+ * @property-read MedicalCardAsVaccination[] vaccines
  */
-final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface, RequestPostInterface
+final class Pet extends AbstractActiveRecord implements AllRequestsInterface
 {
-
-    use AllGetRequestsTrait;
-    use RequestPostTrait;
-
-    /** Уже получен */
-    public ?Client $client;
-    /** Уже получен */
-    public ?PetType $type;
-    /** Уже получен */
-    public ?Breed $breed;
-    /** Уже получен */
-    public ?ComboManualItem $color;
-
-    /**
-     * @param array{
-     * "id": string,
-     * "owner_id": ?string,
-     * "type_id": ?string,
-     * "alias": string,
-     * "sex": ?string,
-     * "date_register": string,
-     * "birthday": ?string,
-     * "note": string,
-     * "breed_id": ?string,
-     * "old_id": ?string,
-     * "color_id": ?string,
-     * "deathnote": ?string,
-     * "deathdate": ?string,
-     * "chip_number": string,
-     * "lab_number": string,
-     * "status": string,
-     * "picture": ?string,
-     * "weight": ?string,
-     * "edit_date": string,
-     * "owner"?: array{
-     *      "id": string,
-     *      "address": string,
-     *      "home_phone": string,
-     *      "work_phone": string,
-     *      "note": string,
-     *      "type_id": ?string,
-     *      "how_find": ?string,
-     *      "balance": string,
-     *      "email": string,
-     *      "city": string,
-     *      "city_id": ?string,
-     *      "date_register": string,
-     *      "cell_phone": string,
-     *      "zip": string,
-     *      "registration_index": ?string,
-     *      "vip": string,
-     *      "last_name": string,
-     *      "first_name": string,
-     *      "middle_name": string,
-     *      "status": string,
-     *      "discount": string,
-     *      "passport_series": string,
-     *      "lab_number": string,
-     *      "street_id": string,
-     *      "apartment": string,
-     *      "unsubscribe": string,
-     *      "in_blacklist": string,
-     *      "last_visit_date": string,
-     *      "number_of_journal": string,
-     *      "phone_prefix": ?string
-     *      },
-     * "type"?: array{
-     *      "id": string,
-     *      "title": string,
-     *      "picture": string,
-     *      "type": ?string
-     *      },
-     * "breed"?: array{
-     *      "id": string,
-     *      "title": string,
-     *      "pet_type_id": string
-     *      },
-     * "color"?: array{
-     *      "id": string,
-     *      "combo_manual_id": string,
-     *      "title": string,
-     *      "value": string,
-     *      "dop_param1": string,
-     *      "dop_param2": string,
-     *      "dop_param3": string,
-     *      "is_active": string
-     *      }
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $api, array $originalData)
-    {
-        parent::__construct($api, $originalData);
-
-        $this->client = !empty($originalData['owner']) ? ClientDto::fromSingleObjectContents($this->apiGateway, $originalData['owner']) : null;
-        $this->type = !empty($originalData['type']) ? PetTypeDto::fromSingleObjectContents($this->apiGateway, $originalData['type']) : null;
-        $this->breed = !empty($originalData['breed']) ? Breed::fromSingleDtoArray($this->apiGateway, $this->getDataForBreedActiveRecord()) : null;
-        $this->color = !empty($originalData['color']) ? ComboManualItemDto::fromSingleObjectContents($this->apiGateway, $originalData['color']) : null;
-    }
-
-    private function getDataForBreedActiveRecord(): array
-    {
-        return array_merge(
-            $this->originalDataArray['breed'],
-            ["petType" => $this->originalDataArray['type']]
-        );
-    }
+    use AllRequestsTrait;
 
     /** @return ApiModel::Pet */
     public static function getApiModel(): ApiModel
@@ -133,16 +129,42 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
         return ApiModel::Pet;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     /** @throws VetmanagerApiGatewayException
      * @psalm-suppress DocblockTypeContradiction
      */
     public function __get(string $name): mixed
     {
+        if ($this->completenessLevel != Completeness::Full) {
+            switch ($name) {
+                case 'client':
+                    return $this->ownerId ? Client::getById($this->apiGateway, $this->ownerId) : null;
+                case 'type':
+                    return $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null;
+                case 'breed':
+                    return $this->breedId ? Breed::getById($this->apiGateway, $this->breedId) : null;
+                case 'color':
+                    return $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null;
+            }
+        }
+
         return match ($name) {
-            'breed' => $this->breedId ? Breed::getById($this->apiGateway, $this->breedId) : null,
-            'color' => $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null,
-            'owner' => $this->ownerId ? Client::getById($this->apiGateway, $this->ownerId) : null,
-            'type' => $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null,
+            'client' => !empty($this->originalData['owner'])
+                ? Client::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['owner'])
+                : null,
+            'type' => !empty($this->originalData['type'])
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['type'])
+                : null,
+            'breed' => !empty($this->originalData['breed'])
+                ? Breed::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getFullDataForBreed())
+                : null,
+            'color' => !empty($this->originalData['color'])
+                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['color'])
+                : null,
             'admissions' => Admission::getByPetId($this->apiGateway, $this->id),
             'admissionsOfOwner' => Admission::getByClientId($this->apiGateway, $this->ownerId),
             'medicalCards' => MedicalCard::getByPagedQuery(
@@ -152,5 +174,13 @@ final class Pet extends AbstractActiveRecord implements AllGetRequestsInterface,
             'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
             default => $this->originalDto->$name,
         };
+    }
+
+    private function getFullDataForBreed(): array
+    {
+        return array_merge(
+            $this->originalDataArray['breed'],
+            ["petType" => $this->originalDataArray['type']]
+        );
     }
 }

@@ -39,11 +39,16 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
         return ApiModel::Breed;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::OnlyBasicDto;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'type' => ($this->sourceOfData == Completeness::Full)
+            'type' => ($this->completenessLevel == Completeness::Full)
                 ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['petType'])
                 : PetType::getById($this->apiGateway, $this->typeId),
             default => $this->originalDto->$name,

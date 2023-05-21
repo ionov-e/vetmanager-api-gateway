@@ -5,57 +5,36 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\Street\Type;
+use VetmanagerApiGateway\DTO\StreetDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
- * @property-read CityType $cityType
+ * @property-read StreetDto $originalDto
+ * @property positive-int $id
+ * @property string $title Default: ''
+ * @property Type $type Default: 'street'
+ * @property positive-int $cityId
+ * @property-read array{
+ *     "id": string,
+ *     "title": string,
+ *     "city_id": string,
+ *     "type": string,
+ *     "city"?: array{
+ *              "id": string,
+ *              "title": ?string,
+ *              "type_id": ?string
+ *     }
+ * } $originalData
+ * @property-read ?City $city
  */
-final class Street extends AbstractActiveRecord implements AllGetRequestsInterface
+final class Street extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
-
-    /** @var positive-int */
-    public int $id;
-    /** Default: '' */
-    public string $title;
-    /** Default: 'street'*/
-    public Type $type;
-    /** @var positive-int В БД Default: '0' (но никогда не видел 0) */
-    public int $cityId;
-    public ?City $city;
-
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "city_id": string,
-     *     "type": string,
-     *     "city"?: array{
-     *              "id": string,
-     *              "title": ?string,
-     *              "type_id": ?string
-     *     }
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
-    {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $this->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveInt;
-        $this->type = Type::from($originalData['type']);
-        $this->city = !empty($originalData['city'])
-            ? City::fromSingleObjectContents($this->apiGateway, $originalData['city'])
-            : null;
-    }
+    use AllRequestsTrait;
 
     /** @return ApiModel::Street */
     public static function getApiModel(): ApiModel
@@ -63,12 +42,17 @@ final class Street extends AbstractActiveRecord implements AllGetRequestsInterfa
         return ApiModel::Street;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'cityType' => $this->originalDataArray['city']['type_id']
-                ? CityType::getById($this->apiGateway, $this->originalDataArray['city']['type_id'])
+            'city' => !empty($originalData['city'])
+                ? City::fromSingleDtoArrayAsFromGetById($this->apiGateway, $originalData['city'])
                 : null,
             default => $this->originalDto->$name,
         };

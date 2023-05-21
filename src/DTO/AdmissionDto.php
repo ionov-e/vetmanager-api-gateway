@@ -7,14 +7,16 @@ namespace VetmanagerApiGateway\DTO;
 use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\User;
+use VetmanagerApiGateway\DTO\Enum\Admission\Status;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateInterval;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
 use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\DTO\Enum\Admission\Status;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 final class AdmissionDto extends AbstractDTO
 {
@@ -45,7 +47,7 @@ final class AdmissionDto extends AbstractDTO
     public ?DateTime $createDate;
     /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see User}. Какой-то врач-помощник что ли.
      * Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать */
-    public ?int $escorterId;
+    public ?int $escortId;
     /** Искал по всем БД: находил только "vetmanager" и "" или null (редко. Пустые перевожу в null) */
     public string $receptionWriteChannel;
     public bool $isAutoCreate;
@@ -96,7 +98,7 @@ final class AdmissionDto extends AbstractDTO
         $instance->isDirectDirection = ApiBool::fromStringOrNull($originalData['direct_direction'])->bool;
         $instance->creatorId = ApiInt::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
         $instance->createDate = ApiDateTime::fromFullDateTimeString($originalData['create_date'])->dateTimeOrNull;
-        $instance->escorterId = ApiInt::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
+        $instance->escortId = ApiInt::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
         $instance->receptionWriteChannel = ApiString::fromStringOrNull($originalData['reception_write_channel'])->string;
         $instance->isAutoCreate = ApiBool::fromStringOrNull($originalData['is_auto_create'])->bool;
         $instance->invoicesSum = ApiFloat::fromStringOrNull($originalData['invoices_sum'])->float;
@@ -109,26 +111,29 @@ final class AdmissionDto extends AbstractDTO
         return [];
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * @throws VetmanagerApiGatewayRequestException
+     */
     protected function getSetValuesWithoutId(): array
     {
-        return array_merge(
-            isset($this->date) ? ['admission_date' => $this->date] : [],
-            isset($this->description) ? ['description' => $this->description] : [],
-            isset($this->clientId) ? ['client_id' => $this->clientId] : [],
-            isset($this->petId) ? ['patient_id' => $this->petId] : [],
-            isset($this->userId) ? ['user_id' => $this->userId] : [],
-            isset($this->typeId) ? ['type_id' => $this->typeId] : [],
-            isset($this->admissionLength) ? ['admission_length' => $this->admissionLength?->format('H:i:s')] : [],
-            isset($this->status) ? ['status' => $this->status] : [],
-            isset($this->clinicId) ? ['clinic_id' => $this->clinicId] : [],
-            isset($this->isDirectDirection) ? ['direct_direction' => (int)$this->isDirectDirection] : [],
-            isset($this->creatorId) ? ['creator_id' => $this->creatorId] : [],
-            isset($this->createDate) ? ['create_date' => $this->createDate?->format('Y-m-d H:i:s')] : [],
-            isset($this->escorterId) ? ['escorter_id' => $this->escorterId] : [],
-            isset($this->receptionWriteChannel) ? ['reception_write_channel' => $this->receptionWriteChannel] : [],
-            isset($this->isAutoCreate) ? ['is_auto_create' => (int)$this->isAutoCreate] : [],
-            isset($this->invoicesSum) ? ['invoices_sum' => $this->invoicesSum] : [],
-        );
+        return (new DtoPropertyList(
+            $this,
+            ['date', 'admission_date'],
+            ['description', 'description'],
+            ['clientId', 'client_id'],
+            ['petId', 'patient_id'],
+            ['userId', 'user_id'],
+            ['typeId', 'type_id'],
+            ['admissionLength', 'admission_length'],
+            ['status', 'status'],
+            ['clinicId', 'clinic_id'],
+            ['isDirectDirection', 'direct_direction'],
+            ['creatorId', 'creator_id'],
+            ['createDate', 'create_date'],
+            ['escortId', 'escorter_id'],
+            ['receptionWriteChannel', 'reception_write_channel'],
+            ['isAutoCreate', 'is_auto_create'],
+            ['invoicesSum', 'invoices_sum'],
+        ))->toArray();
     }
 }

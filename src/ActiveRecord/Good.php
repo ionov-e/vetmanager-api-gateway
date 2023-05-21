@@ -6,8 +6,9 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\GoodDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -27,7 +28,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property string $description
  * @property float $primeCost Default in DB: '0.0000000000'
  * @property ?positive-int $categoryId
- * @property array{
+ * @property-read array{
  *     id: numeric-string,
  *     group_id: ?numeric-string,
  *     title: string,
@@ -79,34 +80,46 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Unit $unit
  * @property-read GoodSaleParam[] $goodSaleParams
  */
-final class Good extends AbstractActiveRecord implements AllGetRequestsInterface
+final class Good extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     public static function getApiModel(): ApiModel
     {
         return ApiModel::Good;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
-        return match ($name) {
+        switch ($name) {
+            case 'group':
+            case 'unit':
+            case 'goodSaleParams':
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
+        }
 
-            'group' => GoodGroup::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['group']),
+        return match ($name) {
+            'group' => GoodGroup::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['group']),
             'unit' => !empty($this->originalDataArray['unitStorage'])
-                ? Unit::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['unitStorage'])
+                ? Unit::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['unitStorage'])
                 : null,
             'goodSaleParams' => GoodSaleParam::fromMultipleDtosArrays(
                 $this->apiGateway,
-                $this->getContentsForGoodSaleParamActiveRecords()
+                $this->getFullDataForGoodSaleParamActiveRecords(),
+                Completeness::Full
             ),
             default => $this->originalDto->$name
         };
     }
 
-    private function getContentsForGoodSaleParamActiveRecords(): array
+    private function getFullDataForGoodSaleParamActiveRecords(): array
     {
         return array_map(
             fn (array $goodSaleParamObject): array => array_merge(

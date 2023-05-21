@@ -17,7 +17,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property string title
  * @property string picture
  * @property string type
- * @property array{
+ * @property-read array{
  *     id: string,
  *     title: string,
  *     picture: string,
@@ -40,12 +40,17 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
         return ApiModel::PetType;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::OnlyBasicDto;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         switch ($name) {
             case 'breeds':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
                 return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
             default:
                 return $this->originalDto->$name;

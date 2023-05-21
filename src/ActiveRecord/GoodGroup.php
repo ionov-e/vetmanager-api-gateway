@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\GoodGroupDto;
 
 /**
@@ -16,7 +17,7 @@ use VetmanagerApiGateway\DTO\GoodGroupDto;
  * @property bool $isService Default: false
  * @property ?float $markup
  * @property bool $isShowInVaccines Default: false
- * @property array{
+ * @property-read array{
  *     "id": string,
  *     "title": string,
  *     "is_service": string,
@@ -25,14 +26,19 @@ use VetmanagerApiGateway\DTO\GoodGroupDto;
  *     "price_id": ?string
  * } $originalDataArray
  */
-final class GoodGroup extends AbstractActiveRecord implements AllGetRequestsInterface
+final class GoodGroup extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     /** @return ApiModel::GoodGroup */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::GoodGroup;
+    }
+
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
     }
 
     public function __get(string $name): mixed

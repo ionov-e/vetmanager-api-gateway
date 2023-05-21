@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class ComboManualNameDto extends AbstractDTO
@@ -47,13 +49,16 @@ final class ComboManualNameDto extends AbstractDTO
         return ['title', 'name'];
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * @throws VetmanagerApiGatewayRequestException
+     */
     protected function getSetValuesWithoutId(): array
     {
-        return array_merge(
-            isset($this->title) ? ['title' => $this->title] : [],
-            isset($this->isReadonly) ? ['is_readonly' => (int)$this->isReadonly] : [],
-            isset($this->name) ? ['name' => $this->name] : [],
-        );
+        return (new DtoPropertyList(
+            $this,
+            ['title', 'title'],
+            ['isReadonly', 'is_readonly'],
+            ['name', 'name'],
+        ))->toArray();
     }
 }

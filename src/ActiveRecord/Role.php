@@ -5,40 +5,26 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
+use VetmanagerApiGateway\DTO\RoleDto;
 
-final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
+/**
+ * @property-read RoleDto $originalDto
+ * @property positive-int $id;
+ * @property string $name
+ * @property bool $isSuper Default: False
+ * @property-read array{
+ *     "id": numeric-string,
+ *     "name": string,
+ *     "super": string,
+ * } $originalData
+ */
+final class Role extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
-
-    /** @var positive-int */
-    public int $id;
-    public string $name;
-    /** Default: '0' */
-    public bool $isSuper;
-
-    /** @param array{
-     *     "id": string,
-     *     "name": string,
-     *     "super": string,
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
-    {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->name = ApiString::fromStringOrNull($originalData['name'])->string;
-        $this->isSuper = ApiBool::fromStringOrNull($originalData['super'])->bool;
-    }
+    use AllRequestsTrait;
 
     /** @return ApiModel::Role */
     public static function getApiModel(): ApiModel
@@ -46,10 +32,13 @@ final class Role extends AbstractActiveRecord implements AllGetRequestsInterface
         return ApiModel::Role;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     public function __get(string $name): mixed
     {
-        return match ($name) {
-            default => $this->originalDto->$name
-        };
+        return $this->originalDto->$name;
     }
 }

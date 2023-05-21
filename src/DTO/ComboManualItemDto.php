@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** Обращается в таблицу combo_manual_items
  * @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая
@@ -70,13 +70,13 @@ final class ComboManualItemDto extends AbstractDTO
     protected function getSetValuesWithoutId(): array
     {
         return array_merge(
-            isset($this->comboManualId) ? ['combo_manual_id' => $this->comboManualId] : [],
-            isset($this->title) ? ['title' => $this->title] : [],
-            isset($this->value) ? ['value' => $this->value] : [],
-            isset($this->dopParam1) ? ['dop_param1' => $this->dopParam1] : [],
-            isset($this->dopParam2) ? ['dop_param2' => $this->dopParam2] : [],
-            isset($this->dopParam3) ? ['dop_param3' => $this->dopParam3] : [],
-            isset($this->isActive) ? ['is_active' => (int)$this->isActive] : [],
+            property_exists($this, 'comboManualId') ? ['combo_manual_id' => $this->comboManualId] : [],
+            property_exists($this, 'title') ? ['title' => $this->title] : [],
+            property_exists($this, 'value') ? ['value' => $this->value] : [],
+            property_exists($this, 'dopParam1') ? ['dop_param1' => $this->dopParam1] : [],
+            property_exists($this, 'dopParam2') ? ['dop_param2' => $this->dopParam2] : [],
+            property_exists($this, 'dopParam3') ? ['dop_param3' => $this->dopParam3] : [],
+            property_exists($this, 'isActive') ? ['is_active' => (int)$this->isActive] : [],
         );
     }
 }

@@ -2,9 +2,9 @@
 
 namespace VetmanagerApiGateway\Hydrator;
 
-use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
 class DtoPropertyList
 {

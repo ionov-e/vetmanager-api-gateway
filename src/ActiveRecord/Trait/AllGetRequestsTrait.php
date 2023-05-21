@@ -11,5 +11,5 @@ trait AllGetRequestsTrait
 {
     use RequestGetAllTrait;
     use RequestGetByIdTrait;
-    use RequestGetByQuery;
+    use RequestGetByQueryTrait;
 }

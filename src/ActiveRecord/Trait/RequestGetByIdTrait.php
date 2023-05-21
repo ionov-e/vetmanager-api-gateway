@@ -18,36 +18,36 @@ trait RequestGetByIdTrait
      */
     public static function getById(ApiGateway $apiGateway, int $id): self
     {
-        return self::fromSingleDtoArrayUsingGetById(
+        return self::fromSingleDtoArrayAsFromGetById(
             $apiGateway,
             $apiGateway->getWithId(self::getApiModel(), $id)
         );
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleDtoArrayUsingGetById(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayAsFromGetById(ApiGateway $apiGateway, array $originalData): self
     {
         return self::fromSingleDtoArray($apiGateway, $originalData, Completeness::Full);
     }
 
-    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
+    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$completenessLevel}
      * текущего объекта на данные полученные по АПИ запросу используя ID, если объект получен иначе
      * @throws VetmanagerApiGatewayException
      */
-    public function fillCurrentObjectWithGetByIdDataIfSourceIsDifferent(): void
+    public function fillCurrentObjectWithGetByIdDataIfSourceIsNotFull(): void
     {
-        if ($this->sourceOfData !== Completeness::Full) {
+        if ($this->completenessLevel !== Completeness::Full) {
             $this->fillCurrentObjectWithGetByIdData();
         }
     }
 
-    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$sourceOfData}
+    /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$completenessLevel}
      * текущего объекта на данные полученные по АПИ запросу используя ID, если Source из 'минимального' DTO
      * @throws VetmanagerApiGatewayException
      */
     public function fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto(): void
     {
-        if ($this->sourceOfData == Completeness::OnlyBasicDto) {
+        if ($this->completenessLevel == Completeness::OnlyBasicDto) {
             $this->fillCurrentObjectWithGetByIdData();
         }
     }
@@ -58,6 +58,6 @@ trait RequestGetByIdTrait
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
         $this->originalDto = $instanceFromGetById->getAsDto();
         $this->originalDataArray = $instanceFromGetById->getAsOriginalDataArray();
-        $this->sourceOfData = Completeness::Full;
+        $this->completenessLevel = Completeness::Full;
     }
 }

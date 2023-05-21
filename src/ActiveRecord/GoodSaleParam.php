@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\DTO\GoodSaleParamDto;
@@ -25,8 +26,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property Status status Default: 'active'
  * @property ?positive-int clinicId
  * @property ?float markup
- * @property PriceFormation priceFormation;
- * @property array{
+ * @property PriceFormation priceFormation
+ * @property-read array{
  *     id: string,
  *     good_id: string,
  *     price: ?string,
@@ -62,10 +63,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     }
  * } $originalDataArray 'unitSale' и 'good' присутствуют и при GetById и GetAll
  */
-final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequestsInterface
+final class GoodSaleParam extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     /** @return ApiModel::GoodSaleParam */
     public static function getApiModel(): ApiModel
@@ -73,20 +74,26 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllGetRequests
         return ApiModel::GoodSaleParam;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed
     {
         switch ($name) {
             case 'unit':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
-                return Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale']);
             case 'good':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
-                return !empty($this->originalDataArray['good'])
-                    ? Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good'])
-                    : null;
-            default:
-                return $this->originalDto->$name;
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
         }
+
+        return match ($name) {
+            'unit' => Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale']),
+            'good' => !empty($this->originalDataArray['good'])
+                ? Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good'])
+                : null,
+            default => $this->originalDto->$name
+        };
     }
 }

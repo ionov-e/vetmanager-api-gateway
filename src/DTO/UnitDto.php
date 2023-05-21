@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\DTO\Enum\Unit\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
@@ -11,15 +12,18 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-final class CityTypeDto extends AbstractDTO
+final class UnitDto extends AbstractDTO
 {
-    /** @var positive-int */
+
     public int $id;
     public string $title;
+    /** Default: 'active' */
+    public Status $status;
 
     /** @param array{
      *     "id": string,
      *     "title": string,
+     *     "status": string,
      * } $originalData
      * @psalm-suppress MoreSpecificImplementedParamType
      * @throws VetmanagerApiGatewayResponseException
@@ -29,13 +33,14 @@ final class CityTypeDto extends AbstractDTO
         $instance = new self();
         $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
         $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance->status = Status::from($originalData['status']);
         return $instance;
     }
 
     /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
+    public function getRequiredKeysForPostArray(): array #TODO check
     {
-        return ['title'];
+        return ['title', 'status'];
     }
 
     /** @inheritdoc
@@ -46,6 +51,7 @@ final class CityTypeDto extends AbstractDTO
         return (new DtoPropertyList(
             $this,
             ['title', 'title'],
+            ['status', 'status'],
         ))->toArray();
     }
 }

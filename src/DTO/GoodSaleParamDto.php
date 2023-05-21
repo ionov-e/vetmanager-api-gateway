@@ -81,17 +81,17 @@ final class GoodSaleParamDto extends AbstractDTO
     protected function getSetValuesWithoutId(): array
     {
         return array_merge(
-            isset($this->goodId) ? ['good_id' => $this->goodId] : [],
-            isset($this->price) ? ['price' => $this->price] : [],
-            isset($this->coefficient) ? ['coefficient' => $this->coefficient] : [],
-            isset($this->unitSaleId) ? ['unit_sale_id' => $this->unitSaleId] : [],
-            isset($this->minPriceInPercents) ? ['min_price' => $this->minPriceInPercents] : [],
-            isset($this->maxPriceInPercents) ? ['max_price' => $this->maxPriceInPercents] : [],
-            isset($this->barcode) ? ['barcode' => $this->barcode] : [],
-            isset($this->status) ? ['status' => $this->status->value] : [],
-            isset($this->clinicId) ? ['clinic_id' => $this->clinicId] : [],
-            isset($this->markup) ? ['markup' => $this->markup] : [],
-            isset($this->priceFormation) ? ['price_formation' => $this->priceFormation->value] : [],
+            property_exists($this, 'goodId') ? ['good_id' => $this->goodId] : [],
+            property_exists($this, 'price') ? ['price' => $this->price] : [],
+            property_exists($this, 'coefficient') ? ['coefficient' => $this->coefficient] : [],
+            property_exists($this, 'unitSaleId') ? ['unit_sale_id' => $this->unitSaleId] : [],
+            property_exists($this, 'minPriceInPercents') ? ['min_price' => $this->minPriceInPercents] : [],
+            property_exists($this, 'maxPriceInPercents') ? ['max_price' => $this->maxPriceInPercents] : [],
+            property_exists($this, 'barcode') ? ['barcode' => $this->barcode] : [],
+            property_exists($this, 'status') ? ['status' => $this->status->value] : [],
+            property_exists($this, 'clinicId') ? ['clinic_id' => $this->clinicId] : [],
+            property_exists($this, 'markup') ? ['markup' => $this->markup] : [],
+            property_exists($this, 'priceFormation') ? ['price_formation' => $this->priceFormation->value] : [],
         );
     }
 

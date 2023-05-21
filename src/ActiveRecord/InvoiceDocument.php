@@ -7,8 +7,8 @@ namespace VetmanagerApiGateway\ActiveRecord;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\DTO\GoodDto;
 use VetmanagerApiGateway\DTO\GoodSaleParamDto;
@@ -39,7 +39,7 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
  * @property ?positive-int $fixedIncreaseId
  * @property ?positive-int $fixedIncreasePercent
  * @property float $primeCost
- * @property array{
+ * @property-read array{
  *     id: numeric-string,
  *     document_id: string,
  *     good_id: string,
@@ -140,14 +140,18 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
  *                           price: ?string
  *           }> $partyInfo Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
  */
-final class InvoiceDocument extends AbstractActiveRecord implements AllGetRequestsInterface
+final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
-    /** @return ApiModel::InvoiceDocument */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::InvoiceDocument;
+    }
+
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Partial;
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -159,7 +163,7 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllGetReques
             case 'minPriceInPercents':
             case 'maxPriceInPercents':
             case 'partyInfo':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsDifferent();
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
         }
 
         return match ($name) {
@@ -168,15 +172,15 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllGetReques
             'minPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->float,
             'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->float,
             'partyInfo' => (array)$this->originalDataArray['party_info'],
-            'good' => ($this->sourceOfData !== Completeness::OnlyBasicDto)
-                ? Good::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['good'])
-                : $this->getGoodById(),
-            'goodSaleParam' => ($this->sourceOfData !== Completeness::OnlyBasicDto)
-                ? GoodSaleParam::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['goodSaleParam'])
-                : $this->getGoodSaleParamById(),
-            'invoice' => ($this->sourceOfData !== Completeness::OnlyBasicDto)
-                ? Invoice::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['document'])
-                : $this->getInvoiceById(),
+            'good' => ($this->completenessLevel == Completeness::OnlyBasicDto)
+                ? $this->getGoodById()
+                : Good::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['good']),
+            'goodSaleParam' => ($this->completenessLevel == Completeness::OnlyBasicDto)
+                ? $this->getGoodSaleParamById()
+                : GoodSaleParam::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getArrayFromFullActiveRecordForGoodSaleParam()),
+            'invoice' => ($this->completenessLevel == Completeness::OnlyBasicDto)
+                ? $this->getInvoiceById()
+                : Invoice::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['document']),
             default => $this->originalDto->$name
         };
     }
@@ -197,5 +201,13 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllGetReques
     private function getInvoiceById(): ?Invoice
     {
         return $this->invoiceId ? Invoice::getById($this->apiGateway, $this->invoiceId) : null;
+    }
+
+    private function getArrayFromFullActiveRecordForGoodSaleParam(): array
+    {
+        return array_merge(
+            $this->originalDataArray['goodSaleParam'],
+            ['good' => $this->originalDataArray['good']]
+        );
     }
 }

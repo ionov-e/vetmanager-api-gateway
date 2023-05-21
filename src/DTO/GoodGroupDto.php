@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class GoodGroupDto extends AbstractDTO
@@ -56,11 +56,11 @@ final class GoodGroupDto extends AbstractDTO
     protected function getSetValuesWithoutId(): array
     {
         return array_merge(
-            isset($this->title) ? ['title' => $this->title] : [],
-            isset($this->priceId) ? ['price_id' => $this->priceId] : [],
-            isset($this->isService) ? ['is_service' => (int)$this->isService] : [],
-            isset($this->markup) ? ['markup' => $this->markup] : [],
-            isset($this->isShowInVaccines) ? ['is_show_in_vaccines' => (int)$this->isShowInVaccines] : [],
+            property_exists($this, 'title') ? ['title' => $this->title] : [],
+            property_exists($this, 'priceId') ? ['price_id' => $this->priceId] : [],
+            property_exists($this, 'isService') ? ['is_service' => (int)$this->isService] : [],
+            property_exists($this, 'markup') ? ['markup' => $this->markup] : [],
+            property_exists($this, 'isShowInVaccines') ? ['is_show_in_vaccines' => (int)$this->isShowInVaccines] : [],
         );
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class BreedDto extends AbstractDTO
@@ -42,12 +44,15 @@ final class BreedDto extends AbstractDTO
         return ['title', 'pet_type_id'];
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * @throws VetmanagerApiGatewayRequestException
+     */
     protected function getSetValuesWithoutId(): array
     {
-        return array_merge(
-            isset($this->title) ? ['title' => $this->title] : [],
-            isset($this->typeId) ? ['pet_type_id' => (string)$this->typeId] : [],
-        );
+        return (new DtoPropertyList(
+            $this,
+            ['title', 'title'],
+            ['typeId', 'pet_type_id'],
+        ))->toArray();
     }
 }

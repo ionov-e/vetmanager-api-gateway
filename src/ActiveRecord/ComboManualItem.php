@@ -6,8 +6,9 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ComboManualItemDto;
 use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
@@ -23,7 +24,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property string dopParam2 Default: ''
  * @property string dopParam3 Default: ''
  * @property bool isActive Default: true
- * @property array{
+ * @property-read array{
  *       id: string,
  *       combo_manual_id: string,
  *       title: string,
@@ -39,15 +40,21 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *               name: string
  *       }
  *  } $originalDataArray comboManualName при GetAll тоже
+ * @property-read ComboManualName $comboManualName
  */
-final class ComboManualItem extends AbstractActiveRecord implements AllGetRequestsInterface
+final class ComboManualItem extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     /** @return ApiModel::ComboManualItem */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::ComboManualItem;
+    }
+
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
     }
 
     /**
@@ -138,7 +145,9 @@ final class ComboManualItem extends AbstractActiveRecord implements AllGetReques
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'comboManualName' => ComboManualName::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['comboManualName']),
+            'comboManualName' => ($this->completenessLevel == Completeness::Full)
+                ? ComboManualName::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['comboManualName'])
+                : ComboManualName::getById($this->apiGateway, $this->comboManualId),
             default => $this->originalDto->$name
         };
     }

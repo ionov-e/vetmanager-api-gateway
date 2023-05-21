@@ -6,60 +6,44 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
+use VetmanagerApiGateway\DTO\PropertyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 
 /**
- * @property-read ?Clinic clinic
- * @property-read bool isOnlineSigningUpAvailableForClinic
+ * @property-read PropertyDto $originalDto
+ * @property positive-int $id
+ * @property string $name Default: ''
+ * @property string $value
+ * @property ?string $title
+ * @property ?positive-int $clinicId
+ * @property-read array{
+ *     "id": string,
+ *     "property_name": string,
+ *     "property_value": string,
+ *     "property_title": ?string,
+ *     "clinic_id": string
+ * } $originalData
+ * @property-read ?Clinic $clinic
+ * @property-read bool $isOnlineSigningUpAvailableForClinic
  */
-final class Property extends AbstractActiveRecord implements AllGetRequestsInterface
+final class Property extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
-
-    /** @var positive-int */
-    public int $id;
-    /** Default: '' */
-    public string $name;
-    public string $value;
-    public ?string $title;
-    /** @var ?positive-int Default: '0' (вместо него отдаем null) */
-    public ?int $clinicId;
-
-    /** @param array{
-     *     "id": string,
-     *     "property_name": string,
-     *     "property_value": string,
-     *     "property_title": ?string,
-     *     "clinic_id": string
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
-    {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->name = ApiString::fromStringOrNull($originalData['property_name'])->string;
-        $this->value = ApiString::fromStringOrNull($originalData['property_value'])->string;
-        $this->title = ApiString::fromStringOrNull($originalData['property_title'])->string;
-        $this->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-    }
+    use AllRequestsTrait;
 
     /**
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
      * @throws VetmanagerApiGatewayException
      */
-    public static function getByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): ?self
+    public static function getByClinicIdAndPropertyName(ApiGateway $apiGateway, int $clinicId, string $propertyName): ?self
     {
         $filteredProperties = self::getByQueryBuilder(
-            $api,
+            $apiGateway,
             (new Builder())
                 ->where('property_name', $propertyName)
                 ->where('clinic_id', (string)$clinicId),
@@ -69,10 +53,24 @@ final class Property extends AbstractActiveRecord implements AllGetRequestsInter
         return $filteredProperties[0] ?? null;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     /** @return ApiModel::Property */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::Property;
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
+     * @throws VetmanagerApiGatewayException
+     */
+    public static function getValueByClinicIdAndPropertyName(ApiGateway $apiGateway, int $clinicId, string $propertyName): ?string
+    {
+        return self::getByClinicIdAndPropertyName($apiGateway, $clinicId, $propertyName)?->value;
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -87,6 +85,7 @@ final class Property extends AbstractActiveRecord implements AllGetRequestsInter
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
+            'isOnlineSigningUpAvailableForClinic' => self::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId),
             default => $this->originalDto->$name
         };
     }

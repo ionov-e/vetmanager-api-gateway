@@ -6,13 +6,16 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\Invoice\PaymentStatus;
 use VetmanagerApiGateway\DTO\Enum\Invoice\Status;
+use VetmanagerApiGateway\DTO\InvoiceDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
+ * @property-read InvoiceDto $originalDto
  * @property positive-int $id;
  * @property ?positive-int $doctorId Ни в одной базе не нашел, чтобы было 0 или null
  * @property positive-int $clientId Ни в одной базе не нашел, чтобы было 0 или null
@@ -36,7 +39,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property ?int $creatorId
  * @property ?positive-int Default: '0' - переводим в null. Редко вижу не 0
  * @property ?int $fiscalSectionId
- * @property array{
+ * @property-read array{
  *     id: string,
  *     doctor_id: ?numeric-string,
  *     client_id: numeric-string,
@@ -143,7 +146,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *                  sip_number: string,
  *                  user_inn: string,
  *       },
- *       invoiceDocuments: array<int,array{
+ *       invoiceDocuments: list<array{
  *                  id: string,
  *                  document_id: string,
  *                  good_id: string,
@@ -185,7 +188,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *                              }
  *                     }
  *          }>
- *  } $originalDataArray
+ *  } $originalDataArray В Get All отсутствует invoiceDocuments
  * @property-read Client $client
  * @property-read Pet $pet
  * @property-read ?PetType $petType
@@ -193,14 +196,19 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read User $user
  * @property-read InvoiceDocument[] $invoiceDocuments
  */
-final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterface
+final class Invoice extends AbstractActiveRecord implements AllRequestsInterface
 {
-    use AllGetRequestsTrait;
+    use AllRequestsTrait;
 
     /** @return ApiModel::Invoice */
     public static function getApiModel(): ApiModel
     {
         return ApiModel::Invoice;
+    }
+
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Partial;
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -212,13 +220,15 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
             case 'petBreed':
             case 'petType':
             case 'user':
-            case 'invoiceDocuments':
                 $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
+                break;
+            case 'invoiceDocuments':
+                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
         }
 
         return match ($name) {
             'client' => Client::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['client']),
-            'pet' => Pet::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['pet']),
+            'pet' => Pet::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['pet']),
             'petBreed' => !empty($this->originalDataArray['pet']['breed_data'])
                 ? Breed::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
                 : null,
@@ -226,7 +236,12 @@ final class Invoice extends AbstractActiveRecord implements AllGetRequestsInterf
                 ? PetType::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['pet']['pet_type_data'])
                 : null,
             'user' => User::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['doctor']),
-            'invoiceDocuments' => InvoiceDocument::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['invoiceDocuments']),
+            'invoiceDocuments' => InvoiceDocument::fromMultipleDtosArrays(
+                $this->apiGateway,
+                $this->originalDataArray['invoiceDocuments'],
+                Completeness::OnlyBasicDto
+                // На самом деле приходит еще и с полным goodSaleParam внутри. Но проигнорировал
+            ),
             default => $this->originalDto->$name
         };
     }

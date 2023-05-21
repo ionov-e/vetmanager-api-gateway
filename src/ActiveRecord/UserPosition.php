@@ -6,39 +6,26 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllGetRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllGetRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\Hydrator\ApiDateInterval;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
+use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
+use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
+use VetmanagerApiGateway\DTO\UserPositionDto;
 
-final class UserPosition extends AbstractActiveRecord implements AllGetRequestsInterface
+/**
+ * @property-read UserPositionDto $originalDto
+ * @property int $id
+ * @property string $title
+ * @property ?DateInterval $admissionLength Default: '00:30:00'
+ * @property-read array{
+ *     "id": string,
+ *     "title": string,
+ *     "admission_length": string,
+ * } $originalData
+ */
+final class UserPosition extends AbstractActiveRecord implements AllRequestsInterface
 {
 
-    use AllGetRequestsTrait;
-
-    public int $id;
-    public string $title;
-    /** Default: '00:30:00'. Type in DB: 'time'. Null if '00:00:00' */
-    public ?DateInterval $admissionLength;
-
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "admission_length": string,
-     * } $originalData
-     * @throws VetmanagerApiGatewayException
-     */
-    public function __construct(ApiGateway $apiGateway, array $originalData)
-    {
-        parent::__construct($apiGateway, $originalData);
-
-        $this->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $this->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $this->admissionLength = ApiDateInterval::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
-    }
+    use AllRequestsTrait;
 
     /** @return ApiModel::UserPosition */
     public static function getApiModel(): ApiModel
@@ -46,10 +33,13 @@ final class UserPosition extends AbstractActiveRecord implements AllGetRequestsI
         return ApiModel::UserPosition;
     }
 
+    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    {
+        return Completeness::Full;
+    }
+
     public function __get(string $name): mixed
     {
-        return match ($name) {
-            default => $this->originalDto->$name
-        };
+        return $this->originalDto->$name;
     }
 }

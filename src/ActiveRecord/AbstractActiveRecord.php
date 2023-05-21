@@ -22,13 +22,13 @@ abstract class AbstractActiveRecord
     /**
      * @param ApiGateway $apiGateway
      * @param array<string,mixed> $originalDataArray Данные в том виде, в котором были получены (массив из раздекодированного JSON)
-     * @param Completeness $sourceOfData Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
+     * @param Completeness $completenessLevel Enum для указания источника данных. Например, по ID или из запроса Get All придет разное содержимое - тогда, если пользователь будет запрашивать свойство, которое получается при запросе только по ID - сделаю такой запрос и отдам пользователю.
      * @throws VetmanagerApiGatewayException
      */
     protected function __construct(
         protected readonly ApiGateway $apiGateway,
         protected array               $originalDataArray,
-        protected Completeness        $sourceOfData = Completeness::OnlyBasicDto,
+        protected Completeness        $completenessLevel = Completeness::OnlyBasicDto,
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
 
@@ -139,9 +139,9 @@ abstract class AbstractActiveRecord
     }
 
     /** Получение источника Active Record. Т.е. как был получен, например по прямому АПИ-запросу по ID */
-    public function getSourceOfData(): Completeness
+    public function getCompletenessLevel(): Completeness
     {
-        return $this->sourceOfData;
+        return $this->completenessLevel;
     }
 
     /** @throws VetmanagerApiGatewayRequestException */

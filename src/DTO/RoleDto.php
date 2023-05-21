@@ -4,38 +4,43 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 /** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
-final class CityTypeDto extends AbstractDTO
+final class RoleDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
-    public string $title;
+    public string $name;
+    /** Default: '0' */
+    public bool $isSuper;
 
     /** @param array{
-     *     "id": string,
-     *     "title": string,
+     *     "id": numeric-string,
+     *     "name": string,
+     *     "super": string,
      * } $originalData
+     * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
-     * @throws VetmanagerApiGatewayResponseException
      */
     public static function fromApiResponseArray(array $originalData): self
     {
         $instance = new self();
         $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance->name = ApiString::fromStringOrNull($originalData['name'])->string;
+        $instance->isSuper = ApiBool::fromStringOrNull($originalData['super'])->bool;
         return $instance;
     }
 
     /** @inheritdoc */
     public function getRequiredKeysForPostArray(): array
     {
-        return ['title'];
+        return [];
     }
 
     /** @inheritdoc
@@ -45,7 +50,8 @@ final class CityTypeDto extends AbstractDTO
     {
         return (new DtoPropertyList(
             $this,
-            ['title', 'title'],
+            ['name', 'name'],
+            ['isSuper', 'super'],
         ))->toArray();
     }
 }
