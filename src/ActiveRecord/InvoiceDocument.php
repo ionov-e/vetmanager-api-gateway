@@ -26,7 +26,7 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
  * @property float $price
  * @property ?positive-int $responsibleUserId
  * @property bool $isDefaultResponsible
- * @property ?positive-int $saleParamId
+ * @property positive-int $saleParamId Не видел без ID
  * @property ?positive-int $tagId
  * @property ?DiscountType $discountType
  * @property ?positive-int $discountDocumentId
@@ -171,30 +171,18 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsI
             'maxPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price'])->float,
             'minPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->float,
             'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->float,
-            'partyInfo' => (array)$this->originalDataArray['party_info'],
+            'partyInfo' => $this->originalDataArray['party_info'],
             'good' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? $this->getGoodById()
+                ? Good::getById($this->apiGateway, $this->goodId)
                 : Good::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['good']),
             'goodSaleParam' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? $this->getGoodSaleParamById()
+                ? GoodSaleParam::getById($this->apiGateway, $this->saleParamId)
                 : GoodSaleParam::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getArrayFromFullActiveRecordForGoodSaleParam()),
             'invoice' => ($this->completenessLevel == Completeness::OnlyBasicDto)
                 ? $this->getInvoiceById()
                 : Invoice::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['document']),
             default => $this->originalDto->$name
         };
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    private function getGoodById(): ?Good
-    {
-        return $this->goodId ? Good::getById($this->apiGateway, $this->goodId) : null;
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    private function getGoodSaleParamById(): ?GoodSaleParam
-    {
-        return $this->saleParamId ? GoodSaleParam::getById($this->apiGateway, $this->saleParamId) : null;
     }
 
     /** @throws VetmanagerApiGatewayException */

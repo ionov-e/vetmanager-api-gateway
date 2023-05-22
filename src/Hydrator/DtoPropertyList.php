@@ -36,12 +36,14 @@ class DtoPropertyList
                 );
             }
 
+            /** @psalm-suppress TypeDoesNotContainType Psalm уверен, что будут строки, потому что так объявлено в PHPDoc*/
             if (!is_string($array[0])) {
                 throw new VetmanagerApiGatewayRequestException(
                     __CLASS__ . ":  Вместо название свойства DTO в виде строки получили: " . json_encode($array[0])
                 );
             }
 
+            /** @psalm-suppress TypeDoesNotContainType */
             if (!is_string($array[1])) {
                 throw new VetmanagerApiGatewayRequestException("Вместо строки для ключа в итоговом массиве получили: " . json_encode($array[1]));
             }

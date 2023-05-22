@@ -27,8 +27,8 @@ final class InvoiceDocumentDto extends AbstractDTO
     /** @var ?positive-int Default: '0' */
     public ?int $responsibleUserId;
     public bool $isDefaultResponsible;
-    /** @var ?positive-int Default: '0' */
-    public ?int $saleParamId;
+    /** @var positive-int Default in BD: '0'. Но не видел 0 */
+    public int $saleParamId;
     /** @var ?positive-int Default: '0' */
     public ?int $tagId;
     public ?DiscountType $discountType;
@@ -93,7 +93,7 @@ final class InvoiceDocumentDto extends AbstractDTO
         $instance->price = ApiFloat::fromStringOrNull((string)$originalDataArray['price'])->float;
         $instance->responsibleUserId = ApiInt::fromStringOrNull($originalDataArray['responsible_user_id'])->positiveIntOrNull;
         $instance->isDefaultResponsible = ApiBool::fromStringOrNull($originalDataArray['is_default_responsible'])->bool;
-        $instance->saleParamId = ApiInt::fromStringOrNull($originalDataArray['sale_param_id'])->positiveIntOrNull;
+        $instance->saleParamId = ApiInt::fromStringOrNull($originalDataArray['sale_param_id'])->positiveInt;
         $instance->tagId = ApiInt::fromStringOrNull($originalDataArray['tag_id'])->positiveIntOrNull;
         $instance->discountType = $originalDataArray['discount_type'] ? DiscountType::from($originalDataArray['discount_type']) : null;
         $instance->discountDocumentId = ApiInt::fromStringOrNull($originalDataArray['discount_document_id'])->positiveIntOrNull;

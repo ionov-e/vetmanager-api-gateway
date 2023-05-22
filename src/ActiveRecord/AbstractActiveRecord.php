@@ -32,7 +32,7 @@ abstract class AbstractActiveRecord
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
 
-        if (!$dtoClassName instanceof AbstractDTO) {
+        if (!is_subclass_of($dtoClassName, AbstractDTO::class)) {
             throw new VetmanagerApiGatewayRequestException();
         }
 
@@ -120,7 +120,7 @@ abstract class AbstractActiveRecord
     /** Используется при АПИ-запросах (роуты и имена моделей из тела JSON-ответа на АПИ запрос) */
     abstract public static function getApiModel(): ApiModel;
 
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value)
     {
         $this->userMadeDto->$name = $value;
     }

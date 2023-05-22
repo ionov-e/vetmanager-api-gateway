@@ -104,13 +104,13 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  *                      picture: ?string,
  *                      weight: ?string,
  *                      edit_date: string,
- *                      pet_type_data: array{}|array{
+ *                      pet_type_data?: array{}|array{
  *                              id: string,
  *                              title: string,
  *                              picture: string,
  *                              type: ?string
  *                      },
- *                      breed_data: array{
+ *                      breed_data?: array{
  *                              id: string,
  *                              title: string,
  *                              pet_type_id: string
@@ -260,8 +260,7 @@ final class Admission extends AbstractActiveRecord implements AllRequestsInterfa
             'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
                 ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['pet_type_data'])
                 : null,
-            /** @psalm-suppress DocblockTypeContradiction */
-            'petBreed' => !empty($this->originalDataArray['pet']['breed_data'])
+            'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
                 ? Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
                 : null,
             'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->string,

@@ -10,6 +10,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
+/** @property int $id */
 trait RequestGetByIdTrait
 {
     /** @inheritDoc
@@ -52,7 +53,8 @@ trait RequestGetByIdTrait
         }
     }
 
-    /** @throws VetmanagerApiGatewayException */
+    /** @throws VetmanagerApiGatewayException
+     * @psalm-suppress PropertyTypeCoercion */
     private function fillCurrentObjectWithGetByIdData(): void
     {
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
