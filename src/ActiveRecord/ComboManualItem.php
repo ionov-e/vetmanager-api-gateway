@@ -16,14 +16,14 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read ComboManualItemDto $originalDto
- * @property positive-int id
- * @property positive-int comboManualId
- * @property string title Default: ''
- * @property string value Default: ''
- * @property string dopParam1 Default: ''
- * @property string dopParam2 Default: ''
- * @property string dopParam3 Default: ''
- * @property bool isActive Default: true
+ * @property positive-int $id
+ * @property positive-int $comboManualId
+ * @property string $title Default: ''
+ * @property string $value Default: ''
+ * @property string $dopParam1 Default: ''
+ * @property string $dopParam2 Default: ''
+ * @property string $dopParam3 Default: ''
+ * @property bool $isActive Default: true
  * @property-read array{
  *       id: string,
  *       combo_manual_id: string,

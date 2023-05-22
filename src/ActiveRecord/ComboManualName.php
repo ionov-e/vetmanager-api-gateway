@@ -19,10 +19,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
  * @property-read ComboManualNameDto $originalDto
- * @property positive-int id
- * @property non-empty-string title
- * @property bool isReadonly
- * @property non-empty-string name
+ * @property positive-int $id
+ * @property non-empty-string $title
+ * @property bool $isReadonly
+ * @property non-empty-string $name
  * @property-read array{
  *       id: string,
  *       title: string,

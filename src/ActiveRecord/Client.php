@@ -49,46 +49,46 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  * @property string $numberOfJournal Default: ''
  * @property string $phonePrefix
  * @property-read  array{
- *   "id": string,
- *   "address": string,
- *   "home_phone": string,
- *   "work_phone": string,
- *   "note": string,
- *   "type_id": ?string,
- *   "how_find": ?string,
- *   "balance": string,
- *   "email": string,
- *   "city": string,
- *   "city_id": ?string,
- *   "date_register": string,
- *   "cell_phone": string,
- *   "zip": string,
- *   "registration_index": ?string,
- *   "vip": string,
- *   "last_name": string,
- *   "first_name": string,
- *   "middle_name": string,
- *   "status": string,
- *   "discount": string,
- *   "passport_series": string,
- *   "lab_number": string,
- *   "street_id": string,
- *   "apartment": string,
- *   "unsubscribe": string,
- *   "in_blacklist": string,
- *   "last_visit_date": string,
- *   "number_of_journal": string,
- *   "phone_prefix": ?string,
- *   "city_data"?: array {
- *      "id": string,
- *      "title": string,
- *      "type_id": string
+ *   id: string,
+ *   address: string,
+ *   home_phone: string,
+ *   work_phone: string,
+ *   note: string,
+ *   type_id: ?string,
+ *   how_find: ?string,
+ *   balance: string,
+ *   email: string,
+ *   city: string,
+ *   city_id: ?string,
+ *   date_register: string,
+ *   cell_phone: string,
+ *   zip: string,
+ *   registration_index: ?string,
+ *   vip: string,
+ *   last_name: string,
+ *   first_name: string,
+ *   middle_name: string,
+ *   status: string,
+ *   discount: string,
+ *   passport_series: string,
+ *   lab_number: string,
+ *   street_id: string,
+ *   apartment: string,
+ *   unsubscribe: string,
+ *   in_blacklist: string,
+ *   last_visit_date: string,
+ *   number_of_journal: string,
+ *   phone_prefix: ?string,
+ *   city_data?: array {
+ *      id: string,
+ *      title: string,
+ *      type_id: string
  *      },
- *   "client_type_data"?: array {
- *      "id": string,
- *      "title": string
+ *   client_type_data?: array {
+ *      id: string,
+ *      title: string
  *      }
- * } $originalData
+ * } $originalDataArray
  * @property-read ?City $city
  * @property-read string $typeTitle
  * @property-read Admission[] $admissions
@@ -123,7 +123,7 @@ final class Client extends AbstractActiveRecord implements AllRequestsInterface
         }
 
         return match ($name) {
-            'city' => !empty($originalData['city_data'])
+            'city' => !empty($this->originalDataArray['city_data'])
                 ? City::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['city_data'])
                 : null,
             'typeTitle' => ApiString::fromStringOrNull(

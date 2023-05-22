@@ -59,27 +59,27 @@ final class GoodDto extends AbstractDTO
      *     group?: array,
      *     unitStorage?: array,
      *     goodSaleParams?: array
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->groupId = ApiInt::fromStringOrNull($originalData['group_id'])->positiveIntOrNull;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->unitStorageId = ApiInt::fromStringOrNull($originalData['unit_storage_id'])->positiveIntOrNull;
-        $instance->isWarehouseAccount = ApiBool::fromStringOrNull($originalData['is_warehouse_account'])->bool;
-        $instance->isActive = ApiBool::fromStringOrNull($originalData['is_active'])->bool;
-        $instance->code = ApiString::fromStringOrNull($originalData['code'])->string;
-        $instance->isCall = ApiBool::fromStringOrNull($originalData['is_call'])->bool;
-        $instance->isForSale = ApiBool::fromStringOrNull($originalData['is_for_sale'])->bool;
-        $instance->barcode = ApiString::fromStringOrNull($originalData['barcode'])->string;
-        $instance->createDate = ApiDateTime::fromOnlyDateString($originalData['create_date'])->dateTimeOrNull;
-        $instance->description = ApiString::fromStringOrNull($originalData['description'])->string;
-        $instance->primeCost = ApiFloat::fromStringOrNull($originalData['prime_cost'])->float;
-        $instance->categoryId = ApiInt::fromStringOrNull($originalData['category_id'])->positiveIntOrNull;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->groupId = ApiInt::fromStringOrNull($originalDataArray['group_id'])->positiveIntOrNull;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->unitStorageId = ApiInt::fromStringOrNull($originalDataArray['unit_storage_id'])->positiveIntOrNull;
+        $instance->isWarehouseAccount = ApiBool::fromStringOrNull($originalDataArray['is_warehouse_account'])->bool;
+        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->bool;
+        $instance->code = ApiString::fromStringOrNull($originalDataArray['code'])->string;
+        $instance->isCall = ApiBool::fromStringOrNull($originalDataArray['is_call'])->bool;
+        $instance->isForSale = ApiBool::fromStringOrNull($originalDataArray['is_for_sale'])->bool;
+        $instance->barcode = ApiString::fromStringOrNull($originalDataArray['barcode'])->string;
+        $instance->createDate = ApiDateTime::fromOnlyDateString($originalDataArray['create_date'])->dateTimeOrNull;
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->string;
+        $instance->primeCost = ApiFloat::fromStringOrNull($originalDataArray['prime_cost'])->float;
+        $instance->categoryId = ApiInt::fromStringOrNull($originalDataArray['category_id'])->positiveIntOrNull;
         return $instance;
     }
 

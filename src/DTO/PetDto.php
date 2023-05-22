@@ -72,32 +72,32 @@ final class PetDto extends AbstractDTO
      *          type?: array,
      *          breed?: array,
      *          color?: array
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->ownerId = ApiInt::fromStringOrNull($originalData['owner_id'])->positiveInt;
-        $instance->typeId = ApiInt::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $instance->alias = ApiString::fromStringOrNull($originalData['alias'])->string;
-        $instance->sex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
-        $instance->dateRegister = ApiDateTime::fromOnlyDateString($originalData['date_register'])->dateTime;
-        $instance->birthday = ApiDateTime::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
-        $instance->note = ApiString::fromStringOrNull($originalData['note'])->string;
-        $instance->breedId = ApiInt::fromStringOrNull($originalData['breed_id'])->positiveIntOrNull;
-        $instance->oldId = ApiInt::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
-        $instance->colorId = ApiInt::fromStringOrNull($originalData['color_id'])->positiveIntOrNull;
-        $instance->deathNote = ApiString::fromStringOrNull($originalData['deathnote'])->string;
-        $instance->deathDate = ApiString::fromStringOrNull($originalData['deathdate'])->string;
-        $instance->chipNumber = ApiString::fromStringOrNull($originalData['chip_number'])->string;
-        $instance->labNumber = ApiString::fromStringOrNull($originalData['lab_number'])->string;
-        $instance->status = Status::from($originalData['status']);
-        $instance->picture = ApiString::fromStringOrNull($originalData['picture'])->string;
-        $instance->weight = ApiFloat::fromStringOrNull($originalData['weight'])->nonZeroFloatOrNull;
-        $instance->editDate = ApiDateTime::fromOnlyDateString($originalData['edit_date'])->dateTime;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->ownerId = ApiInt::fromStringOrNull($originalDataArray['owner_id'])->positiveInt;
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveIntOrNull;
+        $instance->alias = ApiString::fromStringOrNull($originalDataArray['alias'])->string;
+        $instance->sex = $originalDataArray['sex'] ? Sex::from($originalDataArray['sex']) : Sex::Unknown;
+        $instance->dateRegister = ApiDateTime::fromOnlyDateString($originalDataArray['date_register'])->dateTime;
+        $instance->birthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->dateTimeOrNull;
+        $instance->note = ApiString::fromStringOrNull($originalDataArray['note'])->string;
+        $instance->breedId = ApiInt::fromStringOrNull($originalDataArray['breed_id'])->positiveIntOrNull;
+        $instance->oldId = ApiInt::fromStringOrNull($originalDataArray['old_id'])->positiveIntOrNull;
+        $instance->colorId = ApiInt::fromStringOrNull($originalDataArray['color_id'])->positiveIntOrNull;
+        $instance->deathNote = ApiString::fromStringOrNull($originalDataArray['deathnote'])->string;
+        $instance->deathDate = ApiString::fromStringOrNull($originalDataArray['deathdate'])->string;
+        $instance->chipNumber = ApiString::fromStringOrNull($originalDataArray['chip_number'])->string;
+        $instance->labNumber = ApiString::fromStringOrNull($originalDataArray['lab_number'])->string;
+        $instance->status = Status::from($originalDataArray['status']);
+        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->string;
+        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->nonZeroFloatOrNull;
+        $instance->editDate = ApiDateTime::fromOnlyDateString($originalDataArray['edit_date'])->dateTime;
         return $instance;
     }
 

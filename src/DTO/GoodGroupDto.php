@@ -30,19 +30,19 @@ final class GoodGroupDto extends AbstractDTO
      *     "markup": ?string,
      *     "is_show_in_vaccines": string,
      *     "price_id": ?string
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->priceId = ApiInt::fromStringOrNull($originalData['price_id'])->positiveIntOrNull;
-        $instance->isService = ApiBool::fromStringOrNull($originalData['is_service'])->bool;
-        $instance->markup = ApiFloat::fromStringOrNull($originalData['markup'])->floatOrNull;
-        $instance->isShowInVaccines = ApiBool::fromStringOrNull($originalData['is_show_in_vaccines'])->bool;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->priceId = ApiInt::fromStringOrNull($originalDataArray['price_id'])->positiveIntOrNull;
+        $instance->isService = ApiBool::fromStringOrNull($originalDataArray['is_service'])->bool;
+        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->floatOrNull;
+        $instance->isShowInVaccines = ApiBool::fromStringOrNull($originalDataArray['is_show_in_vaccines'])->bool;
         return $instance;
     }
 

@@ -34,17 +34,17 @@ final class StreetDto extends AbstractDTO
      *              "title": ?string,
      *              "type_id": ?string
      *     }
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveInt;
-        $instance->type = Type::from($originalData['type']);
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->positiveInt;
+        $instance->type = Type::from($originalDataArray['type']);
         return $instance;
     }
 

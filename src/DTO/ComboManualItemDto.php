@@ -42,21 +42,21 @@ final class ComboManualItemDto extends AbstractDTO
      *       dop_param3: string,
      *       is_active: string,
      *       comboManualName?: array
-     *   } $originalData
+     *   } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->comboManualId = ApiInt::fromStringOrNull($originalData['combo_manual_id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->value = ApiString::fromStringOrNull($originalData['value'])->string;
-        $instance->dopParam1 = ApiString::fromStringOrNull($originalData['dop_param1'])->string;
-        $instance->dopParam2 = ApiString::fromStringOrNull($originalData['dop_param2'])->string;
-        $instance->dopParam3 = ApiString::fromStringOrNull($originalData['dop_param3'])->string;
-        $instance->isActive = ApiBool::fromStringOrNull($originalData['is_active'])->bool;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->comboManualId = ApiInt::fromStringOrNull($originalDataArray['combo_manual_id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->value = ApiString::fromStringOrNull($originalDataArray['value'])->string;
+        $instance->dopParam1 = ApiString::fromStringOrNull($originalDataArray['dop_param1'])->string;
+        $instance->dopParam2 = ApiString::fromStringOrNull($originalDataArray['dop_param2'])->string;
+        $instance->dopParam3 = ApiString::fromStringOrNull($originalDataArray['dop_param3'])->string;
+        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->bool;
         return $instance;
     }
 

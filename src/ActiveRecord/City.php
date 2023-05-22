@@ -11,15 +11,16 @@ use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\CityDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/** @property-read CityDto $originalDto
- * @property positive-int id
- * @property string title
- * @property positive-int typeId Default: 1
- * @property-read CityType type
+/**
+ * @property CityDto $originalDto
+ * @property positive-int $id
+ * @property string $title
+ * @property positive-int $typeId Default: 1
+ * @property-read CityType $type
  * @property-read array{
- *     "id": string,
- *     "title": string,
- *     "type_id": string,
+ *     id: string,
+ *     title: string,
+ *     type_id: string
  * } $originalDataArray
  */
 final class City extends AbstractActiveRecord implements AllRequestsInterface

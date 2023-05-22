@@ -73,30 +73,30 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO
      *     next_admission_id: numeric-string,
      *     next_visit_time: string,
      *     pet_age_at_time_vaccination: string
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->name = ApiString::fromStringOrNull($originalData['name'])->string;
-        $instance->petId = ApiInt::fromStringOrNull($originalData['pet_id'])->positiveInt;
-        $instance->date = ApiDateTime::fromFullDateTimeString($originalData['date'])->dateTimeOrNull;
-        $dateTimeServiceForNextDate = ApiDateTime::fromOnlyDateString($originalData['date_nexttime']);
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->string;
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['pet_id'])->positiveInt;
+        $instance->date = ApiDateTime::fromFullDateTimeString($originalDataArray['date'])->dateTimeOrNull;
+        $dateTimeServiceForNextDate = ApiDateTime::fromOnlyDateString($originalDataArray['date_nexttime']);
         $instance->nextDateTime = $dateTimeServiceForNextDate->dateTimeOrNull;
         $instance->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
-        $instance->goodId = ApiInt::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
-        $instance->medicalCardId = ApiInt::fromStringOrNull($originalData['medcard_id'])->positiveInt;
-        $instance->doseTypeId = ApiInt::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
-        $instance->doseValue = ApiFloat::fromStringOrNull($originalData['doza_value'])->float;
-        $instance->saleParamId = ApiInt::fromStringOrNull($originalData['sale_param_id'])->positiveInt;
-        $instance->vaccineType = ApiInt::fromStringOrNull($originalData['vaccine_type'])->positiveIntOrNull;
-        $instance->vaccineDescription = ApiString::fromStringOrNull($originalData['vaccine_description'])->string;
-        $instance->vaccineTypeTitle = ApiString::fromStringOrNull($originalData['vaccine_type_title'])->string;
-        $instance->nextAdmissionId = ApiInt::fromStringOrNull($originalData['next_admission_id'])->positiveIntOrNull;
-        $instance->petBirthday = ApiDateTime::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
+        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['vaccine_id'])->positiveInt;
+        $instance->medicalCardId = ApiInt::fromStringOrNull($originalDataArray['medcard_id'])->positiveInt;
+        $instance->doseTypeId = ApiInt::fromStringOrNull($originalDataArray['doza_type_id'])->positiveInt;
+        $instance->doseValue = ApiFloat::fromStringOrNull($originalDataArray['doza_value'])->float;
+        $instance->saleParamId = ApiInt::fromStringOrNull($originalDataArray['sale_param_id'])->positiveInt;
+        $instance->vaccineType = ApiInt::fromStringOrNull($originalDataArray['vaccine_type'])->positiveIntOrNull;
+        $instance->vaccineDescription = ApiString::fromStringOrNull($originalDataArray['vaccine_description'])->string;
+        $instance->vaccineTypeTitle = ApiString::fromStringOrNull($originalDataArray['vaccine_type_title'])->string;
+        $instance->nextAdmissionId = ApiInt::fromStringOrNull($originalDataArray['next_admission_id'])->positiveIntOrNull;
+        $instance->petBirthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->dateTimeOrNull;
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
         return $instance;

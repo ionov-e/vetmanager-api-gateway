@@ -79,33 +79,33 @@ final class InvoiceDto extends AbstractDTO
      *     pet?: array,
      *     doctor?: array,
      *     invoiceDocuments?: array
-     *  } $originalData
+     *  } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->doctorId = ApiInt::fromStringOrNull($originalData['doctor_id'])->positiveIntOrNull;
-        $instance->clientId = ApiInt::fromStringOrNull($originalData['client_id'])->positiveInt;
-        $instance->petId = ApiInt::fromStringOrNull($originalData['pet_id'])->positiveInt;
-        $instance->description = ApiString::fromStringOrNull($originalData['description'])->string;
-        $instance->percent = ApiFloat::fromStringOrNull($originalData['percent'])->float;
-        $instance->amount = ApiFloat::fromStringOrNull($originalData['amount'])->float;
-        $instance->status = Status::from($originalData['status']);
-        $instance->invoiceDate = ApiDateTime::fromOnlyDateString($originalData['invoice_date'])->dateTime;
-        $instance->oldId = ApiInt::fromStringOrNull($originalData['old_id'])->positiveIntOrNull;
-        $instance->night = ApiInt::fromStringOrNull($originalData['night'])->positiveIntOrNull;
-        $instance->increase = ApiFloat::fromStringOrNull($originalData['increase'])->float;
-        $instance->discount = ApiFloat::fromStringOrNull($originalData['discount'])->float;
-        $instance->call = ApiInt::fromStringOrNull($originalData['call'])->positiveIntOrNull;
-        $instance->paidAmount = ApiFloat::fromStringOrNull($originalData['paid_amount'])->float;
-        $instance->createDate = ApiDateTime::fromOnlyDateString($originalData['create_date'])->dateTime;
-        $instance->paymentStatus = PaymentStatus::from($originalData['payment_status']);
-        $instance->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $instance->creatorId = ApiInt::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
-        $instance->fiscalSectionId = ApiInt::fromStringOrNull($originalData['fiscal_section_id'])->positiveIntOrNull;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->doctorId = ApiInt::fromStringOrNull($originalDataArray['doctor_id'])->positiveIntOrNull;
+        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->positiveInt;
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['pet_id'])->positiveInt;
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->string;
+        $instance->percent = ApiFloat::fromStringOrNull($originalDataArray['percent'])->float;
+        $instance->amount = ApiFloat::fromStringOrNull($originalDataArray['amount'])->float;
+        $instance->status = Status::from($originalDataArray['status']);
+        $instance->invoiceDate = ApiDateTime::fromOnlyDateString($originalDataArray['invoice_date'])->dateTime;
+        $instance->oldId = ApiInt::fromStringOrNull($originalDataArray['old_id'])->positiveIntOrNull;
+        $instance->night = ApiInt::fromStringOrNull($originalDataArray['night'])->positiveIntOrNull;
+        $instance->increase = ApiFloat::fromStringOrNull($originalDataArray['increase'])->float;
+        $instance->discount = ApiFloat::fromStringOrNull($originalDataArray['discount'])->float;
+        $instance->call = ApiInt::fromStringOrNull($originalDataArray['call'])->positiveIntOrNull;
+        $instance->paidAmount = ApiFloat::fromStringOrNull($originalDataArray['paid_amount'])->float;
+        $instance->createDate = ApiDateTime::fromOnlyDateString($originalDataArray['create_date'])->dateTime;
+        $instance->paymentStatus = PaymentStatus::from($originalDataArray['payment_status']);
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
+        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->positiveIntOrNull;
+        $instance->fiscalSectionId = ApiInt::fromStringOrNull($originalDataArray['fiscal_section_id'])->positiveIntOrNull;
         return $instance;
     }
 

@@ -6,16 +6,16 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 abstract class AbstractDTO
 {
-    protected function __construct()
+    protected function __construct(public array $originalDataArray)
     {
     }
 
     public static function createEmpty(): static
     {
-        return new static();
+        return new static([]);
     }
 
-    abstract public static function fromApiResponseArray(array $originalData): self;
+    abstract public static function fromApiResponseArray(array $originalDataArray): self;
 
     /** Список обязательных ключей
      * @return string[]

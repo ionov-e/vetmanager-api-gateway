@@ -65,75 +65,75 @@ final class ClientDto extends AbstractDTO
     public string $phonePrefix;
 
     /** @param array{
-     *      "id": string,
-     *      "address": string,
-     *      "home_phone": string,
-     *      "work_phone": string,
-     *      "note": string,
-     *      "type_id": ?string,
-     *      "how_find": ?string,
-     *      "balance": string,
-     *      "email": string,
-     *      "city": string,
-     *      "city_id": ?string,
-     *      "date_register": string,
-     *      "cell_phone": string,
-     *      "zip": string,
-     *      "registration_index": ?string,
-     *      "vip": string,
-     *      "last_name": string,
-     *      "first_name": string,
-     *      "middle_name": string,
-     *      "status": string,
-     *      "discount": string,
-     *      "passport_series": string,
-     *      "lab_number": string,
-     *      "street_id": string,
-     *      "apartment": string,
-     *      "unsubscribe": string,
-     *      "in_blacklist": string,
-     *      "last_visit_date": string,
-     *      "number_of_journal": string,
-     *      "phone_prefix": ?string,
-     *      "city_data"?: array,
-     *      "client_type_data"?: array,
-     * } $originalData
+     *      id: string,
+     *      address: string,
+     *      home_phone: string,
+     *      work_phone: string,
+     *      note: string,
+     *      type_id: ?string,
+     *      how_find: ?string,
+     *      balance: string,
+     *      email: string,
+     *      city: string,
+     *      city_id: ?string,
+     *      date_register: string,
+     *      cell_phone: string,
+     *      zip: string,
+     *      registration_index: ?string,
+     *      vip: string,
+     *      last_name: string,
+     *      first_name: string,
+     *      middle_name: string,
+     *      status: string,
+     *      discount: string,
+     *      passport_series: string,
+     *      lab_number: string,
+     *      street_id: string,
+     *      apartment: string,
+     *      unsubscribe: string,
+     *      in_blacklist: string,
+     *      last_visit_date: string,
+     *      number_of_journal: string,
+     *      phone_prefix: ?string,
+     *      city_data?: array,
+     *      client_type_data?: array,
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->address = ApiString::fromStringOrNull($originalData['address'])->string;
-        $instance->homePhone = ApiString::fromStringOrNull($originalData['home_phone'])->string;
-        $instance->workPhone = ApiString::fromStringOrNull($originalData['work_phone'])->string;
-        $instance->note = ApiString::fromStringOrNull($originalData['note'])->string;
-        $instance->typeId = ApiInt::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $instance->howFind = ApiInt::fromStringOrNull($originalData['how_find'])->positiveIntOrNull;
-        $instance->balance = ApiFloat::fromStringOrNull($originalData['balance'])->float;
-        $instance->email = ApiString::fromStringOrNull($originalData['email'])->string;
-        $instance->cityTitle = ApiString::fromStringOrNull($originalData['city'])->string;
-        $instance->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
-        $instance->dateRegister = ApiDateTime::fromFullDateTimeString($originalData['date_register'])->dateTimeOrNull;
-        $instance->cellPhone = ApiString::fromStringOrNull($originalData['cell_phone'])->string;
-        $instance->zip = ApiString::fromStringOrNull($originalData['zip'])->string;
-        $instance->registrationIndex = ApiString::fromStringOrNull($originalData['registration_index'])->string;
-        $instance->isVip = ApiBool::fromStringOrNull($originalData['vip'])->bool;
-        $instance->lastName = ApiString::fromStringOrNull($originalData['last_name'])->string;
-        $instance->firstName = ApiString::fromStringOrNull($originalData['first_name'])->string;
-        $instance->middleName = ApiString::fromStringOrNull($originalData['middle_name'])->string;
-        $instance->status = Status::from($originalData['status']);
-        $instance->discount = ApiInt::fromStringOrNull($originalData['discount'])->int;
-        $instance->passportSeries = ApiString::fromStringOrNull($originalData['passport_series'])->string;
-        $instance->labNumber = ApiString::fromStringOrNull($originalData['lab_number'])->string;
-        $instance->streetId = ApiInt::fromStringOrNull($originalData['street_id'])->positiveIntOrNull;
-        $instance->apartment = ApiString::fromStringOrNull($originalData['apartment'])->string;
-        $instance->isUnsubscribed = ApiBool::fromStringOrNull($originalData['unsubscribe'])->bool;
-        $instance->isBlacklisted = ApiBool::fromStringOrNull($originalData['in_blacklist'])->bool;
-        $instance->lastVisitDate = ApiDateTime::fromFullDateTimeString($originalData['last_visit_date'])->dateTimeOrNull;
-        $instance->numberOfJournal = ApiString::fromStringOrNull($originalData['number_of_journal'])->string;
-        $instance->phonePrefix = ApiString::fromStringOrNull($originalData['phone_prefix'])->string;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->string;
+        $instance->homePhone = ApiString::fromStringOrNull($originalDataArray['home_phone'])->string;
+        $instance->workPhone = ApiString::fromStringOrNull($originalDataArray['work_phone'])->string;
+        $instance->note = ApiString::fromStringOrNull($originalDataArray['note'])->string;
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveIntOrNull;
+        $instance->howFind = ApiInt::fromStringOrNull($originalDataArray['how_find'])->positiveIntOrNull;
+        $instance->balance = ApiFloat::fromStringOrNull($originalDataArray['balance'])->float;
+        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->string;
+        $instance->cityTitle = ApiString::fromStringOrNull($originalDataArray['city'])->string;
+        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->positiveIntOrNull;
+        $instance->dateRegister = ApiDateTime::fromFullDateTimeString($originalDataArray['date_register'])->dateTimeOrNull;
+        $instance->cellPhone = ApiString::fromStringOrNull($originalDataArray['cell_phone'])->string;
+        $instance->zip = ApiString::fromStringOrNull($originalDataArray['zip'])->string;
+        $instance->registrationIndex = ApiString::fromStringOrNull($originalDataArray['registration_index'])->string;
+        $instance->isVip = ApiBool::fromStringOrNull($originalDataArray['vip'])->bool;
+        $instance->lastName = ApiString::fromStringOrNull($originalDataArray['last_name'])->string;
+        $instance->firstName = ApiString::fromStringOrNull($originalDataArray['first_name'])->string;
+        $instance->middleName = ApiString::fromStringOrNull($originalDataArray['middle_name'])->string;
+        $instance->status = Status::from($originalDataArray['status']);
+        $instance->discount = ApiInt::fromStringOrNull($originalDataArray['discount'])->int;
+        $instance->passportSeries = ApiString::fromStringOrNull($originalDataArray['passport_series'])->string;
+        $instance->labNumber = ApiString::fromStringOrNull($originalDataArray['lab_number'])->string;
+        $instance->streetId = ApiInt::fromStringOrNull($originalDataArray['street_id'])->positiveIntOrNull;
+        $instance->apartment = ApiString::fromStringOrNull($originalDataArray['apartment'])->string;
+        $instance->isUnsubscribed = ApiBool::fromStringOrNull($originalDataArray['unsubscribe'])->bool;
+        $instance->isBlacklisted = ApiBool::fromStringOrNull($originalDataArray['in_blacklist'])->bool;
+        $instance->lastVisitDate = ApiDateTime::fromFullDateTimeString($originalDataArray['last_visit_date'])->dateTimeOrNull;
+        $instance->numberOfJournal = ApiString::fromStringOrNull($originalDataArray['number_of_journal'])->string;
+        $instance->phonePrefix = ApiString::fromStringOrNull($originalDataArray['phone_prefix'])->string;
         return $instance;
     }
 

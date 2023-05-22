@@ -56,28 +56,28 @@ final class ClinicDto extends AbstractDTO
      *     "telegram": string,
      *     "whatsapp": string,
      *     "email": string
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->address = ApiString::fromStringOrNull($originalData['address'])->string;
-        $instance->phone = ApiString::fromStringOrNull($originalData['phone'])->string;
-        $instance->cityId = ApiInt::fromStringOrNull($originalData['city_id'])->positiveIntOrNull;
-        $instance->startTime = ApiString::fromStringOrNull($originalData['start_time'])->string;
-        $instance->endTime = ApiString::fromStringOrNull($originalData['end_time'])->string;
-        $instance->internetAddress = ApiString::fromStringOrNull($originalData['internet_address'])->string;
-        $instance->guestClientId = ApiInt::fromStringOrNull($originalData['guest_client_id'])->positiveIntOrNull;
-        $instance->timeZone = ApiString::fromStringOrNull($originalData['time_zone'])->string;
-        $instance->logoUrl = ApiString::fromStringOrNull($originalData['logo_url'])->string;
-        $instance->status = Status::from($originalData['status']);
-        $instance->telegram = ApiString::fromStringOrNull($originalData['telegram'])->string;
-        $instance->whatsapp = ApiString::fromStringOrNull($originalData['whatsapp'])->string;
-        $instance->email = ApiString::fromStringOrNull($originalData['email'])->string;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->string;
+        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->string;
+        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->positiveIntOrNull;
+        $instance->startTime = ApiString::fromStringOrNull($originalDataArray['start_time'])->string;
+        $instance->endTime = ApiString::fromStringOrNull($originalDataArray['end_time'])->string;
+        $instance->internetAddress = ApiString::fromStringOrNull($originalDataArray['internet_address'])->string;
+        $instance->guestClientId = ApiInt::fromStringOrNull($originalDataArray['guest_client_id'])->positiveIntOrNull;
+        $instance->timeZone = ApiString::fromStringOrNull($originalDataArray['time_zone'])->string;
+        $instance->logoUrl = ApiString::fromStringOrNull($originalDataArray['logo_url'])->string;
+        $instance->status = Status::from($originalDataArray['status']);
+        $instance->telegram = ApiString::fromStringOrNull($originalDataArray['telegram'])->string;
+        $instance->whatsapp = ApiString::fromStringOrNull($originalDataArray['whatsapp'])->string;
+        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->string;
         return $instance;
     }
 

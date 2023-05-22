@@ -20,15 +20,15 @@ final class CityTypeDto extends AbstractDTO
     /** @param array{
      *     "id": string,
      *     "title": string,
-     * } $originalData
+     * } $originalDataArray
      * @psalm-suppress MoreSpecificImplementedParamType
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
         return $instance;
     }
 

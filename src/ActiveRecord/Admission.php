@@ -108,12 +108,12 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  *                              id: string,
  *                              title: string,
  *                              picture: string,
- *                              type: ?string,
+ *                              type: ?string
  *                      },
  *                      breed_data: array{
  *                              id: string,
  *                              title: string,
- *                              pet_type_id: string,
+ *                              pet_type_id: string
  *                      }
  *          },
  *          doctor_data?: array{
@@ -146,7 +146,7 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  *                      dop_param1: string,
  *                      dop_param2: string,
  *                      dop_param3: string,
- *                      is_active: string,
+ *                      is_active: string
  *          },
  *          wait_time?: string,
  *          invoices?: array<int, array{
@@ -172,18 +172,18 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  *                              fiscal_section_id: string,
  *                              d: string
  *           }>
- *     } originalDataArray Массив, полученный по ID отличается от Get All лишь наличием двух дополнительных DTO: 1) {@see self::type} из элемента admission_type_data; 2) {@see self::user} из элемента doctor_data
- * @property-read string waitTime
- * @property-read Client client
+ *     } $originalDataArray Массив, полученный по ID отличается от Get All лишь наличием двух дополнительных DTO: 1) {@see self::type} из элемента admission_type_data; 2) {@see self::user} из элемента doctor_data
+ * @property-read string $waitTime
+ * @property-read Client $client
  * @property-read ?Pet $pet Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null
- * @property-read ?PetType petType
- * @property-read ?Breed petBreed
- * @property-read Invoice[] invoices Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется. При других запросах такого элемента нет
- * @property-read ?User user
- * @property-read ?ComboManualItem type
- * @property-read ?Clinic clinic
- * @property-read Admission[] admissionsOfPet
- * @property-read Admission[] admissionsOfOwner
+ * @property-read ?PetType $petType
+ * @property-read ?Breed $petBreed
+ * @property-read Invoice[] $invoices Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется. При других запросах такого элемента нет
+ * @property-read ?User $user
+ * @property-read ?ComboManualItem $type
+ * @property-read ?Clinic $clinic
+ * @property-read Admission[] $admissionsOfPet
+ * @property-read Admission[] $admissionsOfOwner
  */
 final class Admission extends AbstractActiveRecord implements AllRequestsInterface
 {

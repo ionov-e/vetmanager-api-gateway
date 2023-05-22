@@ -24,16 +24,16 @@ final class RoleDto extends AbstractDTO
      *     "id": numeric-string,
      *     "name": string,
      *     "super": string,
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->name = ApiString::fromStringOrNull($originalData['name'])->string;
-        $instance->isSuper = ApiBool::fromStringOrNull($originalData['super'])->bool;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->string;
+        $instance->isSuper = ApiBool::fromStringOrNull($originalDataArray['super'])->bool;
         return $instance;
     }
 

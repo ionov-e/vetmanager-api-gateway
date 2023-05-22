@@ -24,16 +24,16 @@ final class UnitDto extends AbstractDTO
      *     "id": string,
      *     "title": string,
      *     "status": string,
-     * } $originalData
+     * } $originalDataArray
      * @psalm-suppress MoreSpecificImplementedParamType
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->status = Status::from($originalData['status']);
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->status = Status::from($originalDataArray['status']);
         return $instance;
     }
 

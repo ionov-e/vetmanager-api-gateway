@@ -22,8 +22,8 @@ trait RequestGetAllTrait
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleDtoArrayAsFromGetAllOrByQuery(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayAsFromGetAllOrByQuery(ApiGateway $apiGateway, array $originalDataArray): self
     {
-        return self::fromSingleDtoArray($apiGateway, $originalData, static::getCompletenessFromGetAllOrByQuery());
+        return self::fromSingleDtoArray($apiGateway, $originalDataArray, static::getCompletenessFromGetAllOrByQuery());
     }
 }

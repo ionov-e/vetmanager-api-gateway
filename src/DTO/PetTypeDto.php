@@ -23,17 +23,17 @@ final class PetTypeDto extends AbstractDTO
      *     title: string,
      *     picture: string,
      *     type: ?string,
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->picture = ApiString::fromStringOrNull($originalData['picture'])->string;
-        $instance->type = ApiString::fromStringOrNull($originalData['type'])->string;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->string;
+        $instance->type = ApiString::fromStringOrNull($originalDataArray['type'])->string;
         return $instance;
     }
 

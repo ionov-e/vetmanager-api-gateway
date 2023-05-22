@@ -56,7 +56,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     next_admission_id: numeric-string,
  *     next_visit_time: string,
  *     pet_age_at_time_vaccination: string
- * } $originalData
+ * } $originalDataArray
  * @property-read MedicalCard medicalCard
  * @property-read ?Admission nextAdmission
  * @property-read ?DateInterval petAgeAtVaccinationMoment
@@ -65,6 +65,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 final class MedicalCardAsVaccination extends AbstractActiveRecord implements AllRequestsInterface
 {
     use AllRequestsTrait;
+
     /** @return ApiModel::MedicalCardsVaccinations */
     public static function getApiModel(): ApiModel
     {

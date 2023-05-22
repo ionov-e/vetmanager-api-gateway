@@ -23,11 +23,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     picture: string,
  *     type: ?string,
  *     breeds: list<array{
- *              "id": string,
- *              "title": string,
- *              "pet_type_id": string,
- *          }
- *     >
+ *              id: string,
+ *              title: string,
+ *              pet_type_id: string
+ *          }>
  * } $originalDataArray 'breeds' массив только при GetById
  */
 final class PetType extends AbstractActiveRecord implements AllRequestsInterface

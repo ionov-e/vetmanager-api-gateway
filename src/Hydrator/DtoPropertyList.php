@@ -46,7 +46,7 @@ class DtoPropertyList
                 throw new VetmanagerApiGatewayRequestException("Вместо строки для ключа в итоговом массиве получили: " . json_encode($array[1]));
             }
 
-            if ((isset($array[2]) && $array[2] instanceof DtoPropertyMode)) {
+            if ((isset($array[2]) && !$array[2] instanceof DtoPropertyMode)) {
                 throw new VetmanagerApiGatewayRequestException(
                     __CLASS__ . ":  Вместо значения Enum в третьем параметре получили: " . json_encode($array[2])
                 );

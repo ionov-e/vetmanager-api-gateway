@@ -134,8 +134,8 @@ final class Good extends AbstractActiveRecord implements AllRequestsInterface
     /** @return array<string, ?string> */
     private function getOnlyGoodContentsArray(): array
     {
-        $originalData = $this->originalDataArray;
-        unset($originalData['group'], $originalData['unitStorage'], $originalData['goodSaleParams']);
-        return $originalData;
+        $originalDataArray = $this->originalDataArray;
+        unset($originalDataArray['group'], $originalDataArray['unitStorage'], $originalDataArray['goodSaleParams']);
+        return $originalDataArray;
     }
 }

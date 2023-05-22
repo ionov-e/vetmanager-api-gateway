@@ -29,17 +29,17 @@ final class ComboManualNameDto extends AbstractDTO
      *       is_readonly: string,
      *       name: string,
      *       comboManualItems?: array
-     *   } $originalData 'comboManualItems' не используем
+     *   } $originalDataArray 'comboManualItems' не используем
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->nonEmptyString;
-        $instance->isReadonly = ApiBool::fromStringOrNull($originalData['is_readonly'])->bool;
-        $instance->name = ApiString::fromStringOrNull($originalData['name'])->nonEmptyString;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->nonEmptyString;
+        $instance->isReadonly = ApiBool::fromStringOrNull($originalDataArray['is_readonly'])->bool;
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->nonEmptyString;
         return $instance;
     }
 

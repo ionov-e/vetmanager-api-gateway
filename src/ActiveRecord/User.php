@@ -36,37 +36,37 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property string $sipNumber Default: ''. Самые разные строки могут быть
  * @property string $userInn Default: ''
  * @property-read array{
- *     "id": string,
- *     "last_name": string,
- *     "first_name": string,
- *     "middle_name": string,
- *     "login": string,
- *     "passwd": string,
- *     "position_id": string,
- *     "email": string,
- *     "phone": string,
- *     "cell_phone": string,
- *     "address": string,
- *     "role_id": ?string,
- *     "is_active": string,
- *     "calc_percents": string,
- *     "nickname": ?string,
- *     "last_change_pwd_date": string,
- *     "is_limited": string,
- *     "carrotquest_id": ?string,
- *     "sip_number": ?string,
- *     "user_inn": string,
- *     "position"?: array{
- *           "id": string,
- *           "title": string,
- *           "admission_length": string
+ *     id: string,
+ *     last_name: string,
+ *     first_name: string,
+ *     middle_name: string,
+ *     login: string,
+ *     passwd: string,
+ *     position_id: string,
+ *     email: string,
+ *     phone: string,
+ *     cell_phone: string,
+ *     address: string,
+ *     role_id: ?string,
+ *     is_active: string,
+ *     calc_percents: string,
+ *     nickname: ?string,
+ *     last_change_pwd_date: string,
+ *     is_limited: string,
+ *     carrotquest_id: ?string,
+ *     sip_number: ?string,
+ *     user_inn: string,
+ *     position?: array{
+ *           id: string,
+ *           title: string,
+ *           admission_length: string
  *     },
- *     "role"?: array{
- *           "id": string,
- *           "name": string,
- *           "super": string
+ *     role?: array{
+ *           id: string,
+ *           name: string,
+ *           super: string
  *     }
- * } $originalData
+ * } $originalDataArray
  * @property-read ?Role $role
  * @property-read ?UserPosition $position
  */
@@ -96,10 +96,10 @@ final class User extends AbstractActiveRecord implements AllRequestsInterface
         }
 
         return match ($name) {
-            'role' => !empty($originalData['role'])
+            'role' => !empty($this->originalDataArray['role'])
                 ? Role::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['role'])
                 : null,
-            'position' => !empty($originalData['position'])
+            'position' => !empty($this->originalDataArray['position'])
                 ? UserPosition::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['position'])
                 : null,
             'fullName' => new FullName(

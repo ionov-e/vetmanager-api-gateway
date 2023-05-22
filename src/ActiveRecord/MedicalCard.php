@@ -35,7 +35,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property ?positive-int $admissionId Возможно null никогда не будет
  * @property string $diagnoseText Пример: "Анемия;\nАнорексия, кахексия;\nАтопия"
  * @property string $diagnoseTypeText Пример: "Анемия (Окончательные);\nАнорексия, кахексия (Окончательные);\nАтопия (Окончательные)"
- * @property ?positive-int $clinicId Возможно null никогда не будет. Default: 0 - переводим в null
+ * @property ?positive-int $clinicId Может прийти null. Нашел 6 клиник, где не указано
  * @property-read array{
  *     id: numeric-string,
  *     patient_id: numeric-string,
@@ -77,12 +77,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *          status: string,
  *          picture: ?string,
  *          weight: ?string,
- *          edit_date: string,
+ *          edit_date: string
  *          }
- *      } $originalData
+ *      } $originalDataArray
  * @property-read Pet $pet
  * @property-read ?Clinic $clinic
- * @property-read bool $isOnlineSigningUpAvailableForClinic
+ * @property-read ?bool $isOnlineSigningUpAvailableForClinic Придет null, если clinic_id в БД не указан (очень редкий случай - 6 клиник)
  * @property-read ?Admission $admission
  * @property-read ?Admission $nextMeet
  * @property-read ?ComboManualItem $admissionType
@@ -114,7 +114,7 @@ final class MedicalCard extends AbstractActiveRecord implements AllRequestsInter
                 ? Pet::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['patient'])
                 : Pet::getById($this->apiGateway, $this->petId),
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'isOnlineSigningUpAvailableForClinic' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId),
+            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId) : null,
             'admission' => $this->admissionId ? Admission::getById($this->apiGateway, $this->admissionId) : null,
             'nextMeet' => $this->nextMeetId ? Admission::getById($this->apiGateway, $this->nextMeetId) : null,
             'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,

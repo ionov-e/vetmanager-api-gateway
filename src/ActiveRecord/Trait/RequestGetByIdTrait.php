@@ -25,9 +25,9 @@ trait RequestGetByIdTrait
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleDtoArrayAsFromGetById(ApiGateway $apiGateway, array $originalData): self
+    public static function fromSingleDtoArrayAsFromGetById(ApiGateway $apiGateway, array $originalDataArray): self
     {
-        return self::fromSingleDtoArray($apiGateway, $originalData, Completeness::Full);
+        return self::fromSingleDtoArray($apiGateway, $originalDataArray, Completeness::Full);
     }
 
     /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$completenessLevel}
@@ -57,7 +57,6 @@ trait RequestGetByIdTrait
     {
         $instanceFromGetById = self::getById($this->apiGateway, $this->id);
         $this->originalDto = $instanceFromGetById->getAsDto();
-        $this->originalDataArray = $instanceFromGetById->getAsOriginalDataArray();
         $this->completenessLevel = Completeness::Full;
     }
 }

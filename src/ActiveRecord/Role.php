@@ -12,14 +12,14 @@ use VetmanagerApiGateway\DTO\RoleDto;
 
 /**
  * @property-read RoleDto $originalDto
- * @property positive-int $id;
+ * @property positive-int $id
  * @property string $name
  * @property bool $isSuper Default: False
  * @property-read array{
- *     "id": numeric-string,
- *     "name": string,
- *     "super": string,
- * } $originalData
+ *     id: numeric-string,
+ *     name: string,
+ *     super: string
+ * } $originalDataArray
  */
 final class Role extends AbstractActiveRecord implements AllRequestsInterface
 {

@@ -76,33 +76,33 @@ final class UserDto extends AbstractDTO
      *     "user_inn": string,
      *     "position"?: array,
      *     "role"?: array
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->lastName = ApiString::fromStringOrNull($originalData['last_name'])->string;
-        $instance->firstName = ApiString::fromStringOrNull($originalData['first_name'])->string;
-        $instance->middleName = ApiString::fromStringOrNull($originalData['middle_name'])->string;
-        $instance->login = ApiString::fromStringOrNull($originalData['login'])->string;
-        $instance->password = ApiString::fromStringOrNull($originalData['passwd'])->string;
-        $instance->positionId = ApiInt::fromStringOrNull($originalData['position_id'])->positiveInt;
-        $instance->email = ApiString::fromStringOrNull($originalData['email'])->string;
-        $instance->phone = ApiString::fromStringOrNull($originalData['phone'])->string;
-        $instance->cellPhone = ApiString::fromStringOrNull($originalData['cell_phone'])->string;
-        $instance->address = ApiString::fromStringOrNull($originalData['address'])->string;
-        $instance->roleId = ApiInt::fromStringOrNull($originalData['role_id'])->positiveIntOrNull;
-        $instance->isActive = ApiBool::fromStringOrNull($originalData['is_active'])->bool;
-        $instance->isPercentCalculated = ApiBool::fromStringOrNull($originalData['calc_percents'])->bool;
-        $instance->nickname = ApiString::fromStringOrNull($originalData['nickname'])->string;
-        $instance->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalData['last_change_pwd_date'])->dateTimeOrNull;
-        $instance->isLimited = ApiBool::fromStringOrNull($originalData['is_limited'])->bool;
-        $instance->carrotquestId = ApiString::fromStringOrNull($originalData['carrotquest_id'])->string;
-        $instance->sipNumber = ApiString::fromStringOrNull($originalData['sip_number'])->string;
-        $instance->userInn = ApiString::fromStringOrNull($originalData['user_inn'])->string;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->lastName = ApiString::fromStringOrNull($originalDataArray['last_name'])->string;
+        $instance->firstName = ApiString::fromStringOrNull($originalDataArray['first_name'])->string;
+        $instance->middleName = ApiString::fromStringOrNull($originalDataArray['middle_name'])->string;
+        $instance->login = ApiString::fromStringOrNull($originalDataArray['login'])->string;
+        $instance->password = ApiString::fromStringOrNull($originalDataArray['passwd'])->string;
+        $instance->positionId = ApiInt::fromStringOrNull($originalDataArray['position_id'])->positiveInt;
+        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->string;
+        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->string;
+        $instance->cellPhone = ApiString::fromStringOrNull($originalDataArray['cell_phone'])->string;
+        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->string;
+        $instance->roleId = ApiInt::fromStringOrNull($originalDataArray['role_id'])->positiveIntOrNull;
+        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->bool;
+        $instance->isPercentCalculated = ApiBool::fromStringOrNull($originalDataArray['calc_percents'])->bool;
+        $instance->nickname = ApiString::fromStringOrNull($originalDataArray['nickname'])->string;
+        $instance->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->dateTimeOrNull;
+        $instance->isLimited = ApiBool::fromStringOrNull($originalDataArray['is_limited'])->bool;
+        $instance->carrotquestId = ApiString::fromStringOrNull($originalDataArray['carrotquest_id'])->string;
+        $instance->sipNumber = ApiString::fromStringOrNull($originalDataArray['sip_number'])->string;
+        $instance->userInn = ApiString::fromStringOrNull($originalDataArray['user_inn'])->string;
         return $instance;
     }
 

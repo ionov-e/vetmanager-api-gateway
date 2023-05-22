@@ -19,16 +19,16 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property Type $type Default: 'street'
  * @property positive-int $cityId
  * @property-read array{
- *     "id": string,
- *     "title": string,
- *     "city_id": string,
- *     "type": string,
- *     "city"?: array{
- *              "id": string,
- *              "title": ?string,
- *              "type_id": ?string
+ *     id: string,
+ *     title: string,
+ *     city_id: string,
+ *     type: string,
+ *     city?: array{
+ *              id: string,
+ *              title: ?string,
+ *              type_id: ?string
  *     }
- * } $originalData
+ * } $originalDataArray
  * @property-read ?City $city
  */
 final class Street extends AbstractActiveRecord implements AllRequestsInterface
@@ -51,8 +51,8 @@ final class Street extends AbstractActiveRecord implements AllRequestsInterface
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'city' => !empty($originalData['city'])
-                ? City::fromSingleDtoArrayAsFromGetById($this->apiGateway, $originalData['city'])
+            'city' => !empty($this->originalDataArray['city'])
+                ? City::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['city'])
                 : null,
             default => $this->originalDto->$name,
         };

@@ -17,12 +17,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read PetDto $originalDto
- * @property positive-int $id;
+ * @property positive-int $id
  * @property positive-int $ownerId Ни в одной БД не нашел "null" или "0"
- * @property ?positive-int $typeId;
- * @property string $alias;
- * @property Sex $sex;
- * @property DateTime $dateRegister;
+ * @property ?positive-int $typeId
+ * @property string $alias
+ * @property Sex $sex
+ * @property DateTime $dateRegister
  * @property ?DateTime $birthday Дата без времени
  * @property string $note
  * @property ?positive-int $breedId
@@ -109,7 +109,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *      dop_param3: string,
  *      is_active: string
  *      }
- * } $originalData
+ * } $originalDataArray
  * @property-read ?Client $client
  * @property-read ?PetType $type
  * @property-read ?Breed $breed
@@ -153,17 +153,15 @@ final class Pet extends AbstractActiveRecord implements AllRequestsInterface
         }
 
         return match ($name) {
-            'client' => !empty($this->originalData['owner'])
-                ? Client::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['owner'])
+            'client' => !empty($this->originalDataArray['owner'])
+                ? Client::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['owner'])
                 : null,
-            'type' => !empty($this->originalData['type'])
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['type'])
+            'type' => !empty($this->originalDataArray['type'])
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['type'])
                 : null,
-            'breed' => !empty($this->originalData['breed'])
-                ? Breed::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getFullDataForBreed())
-                : null,
-            'color' => !empty($this->originalData['color'])
-                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalData['color'])
+            'breed' => $this->getBreedActiveRecordOrNull(),
+            'color' => !empty($this->originalDataArray['color'])
+                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['color'])
                 : null,
             'admissions' => Admission::getByPetId($this->apiGateway, $this->id),
             'admissionsOfOwner' => Admission::getByClientId($this->apiGateway, $this->ownerId),
@@ -176,11 +174,22 @@ final class Pet extends AbstractActiveRecord implements AllRequestsInterface
         };
     }
 
-    private function getFullDataForBreed(): array
+    /** @throws VetmanagerApiGatewayException */
+    private function getBreedActiveRecordOrNull(): ?Breed
     {
-        return array_merge(
+        if (empty($this->originalDataArray['breed'])) {
+            return null;
+        }
+
+        $typeArray = (!empty($this->originalDataArray['type']))
+            ? ["petType" => $this->originalDataArray['type']]
+            : [];
+
+        $arrayForFullBreedActiveRecord = array_merge(
             $this->originalDataArray['breed'],
-            ["petType" => $this->originalDataArray['type']]
+            $typeArray
         );
+
+        return Breed::fromSingleDtoArrayAsFromGetById($this->apiGateway, $arrayForFullBreedActiveRecord);
     }
 }

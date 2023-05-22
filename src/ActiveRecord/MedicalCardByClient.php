@@ -80,7 +80,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     editable: string,
  *     meet_result_title: string,
  *     admission_type_title: string
- * } $originalData
+ * } $originalDataArray
  * @property-read ?ComboManualItem admissionType
  * @property-read ?ComboManualItem meetResult
  * @property-read ?Client client

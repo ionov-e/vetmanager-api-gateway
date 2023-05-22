@@ -99,7 +99,7 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
  *              payment_status: string,
  *              clinic_id: string,
  *              creator_id: ?string,
- *              fiscal_section_id: string,
+ *              fiscal_section_id: string
  *     },
  *     good: array{
  *              id: string,

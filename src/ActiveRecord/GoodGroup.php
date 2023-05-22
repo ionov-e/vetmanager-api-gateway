@@ -18,12 +18,12 @@ use VetmanagerApiGateway\DTO\GoodGroupDto;
  * @property ?float $markup
  * @property bool $isShowInVaccines Default: false
  * @property-read array{
- *     "id": string,
- *     "title": string,
- *     "is_service": string,
- *     "markup": ?string,
- *     "is_show_in_vaccines": string,
- *     "price_id": ?string
+ *     id: string,
+ *     title: string,
+ *     is_service: string,
+ *     markup: ?string,
+ *     is_show_in_vaccines: string,
+ *     price_id: ?string
  * } $originalDataArray
  */
 final class GoodGroup extends AbstractActiveRecord implements AllRequestsInterface

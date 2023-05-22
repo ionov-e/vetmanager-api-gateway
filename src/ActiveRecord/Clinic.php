@@ -46,7 +46,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     telegram: string,
  *     whatsapp: string,
  *     email: string
- * } $originalData
+ * } $originalDataArray
  * @property-read FullPhone $fullPhone
  * @property-read bool $isOnlineSigningUpAvailable
  */

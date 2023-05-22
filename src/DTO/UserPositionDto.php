@@ -21,19 +21,19 @@ final class UserPositionDto extends AbstractDTO
     public ?DateInterval $admissionLength;
 
     /** @param array{
-     *     "id": numeric-string,
-     *     "name": string,
-     *     "super": string,
-     * } $originalData
+     *     id: string,
+     *     title: string,
+     *     admission_length: string
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalData['title'])->string;
-        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
+        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->dateIntervalOrNull;
         return $instance;
     }
 

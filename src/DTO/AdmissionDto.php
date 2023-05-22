@@ -78,30 +78,30 @@ final class AdmissionDto extends AbstractDTO
      *          invoices?: array,
      *          doctor_data?: array,
      *          admission_type_data?: array
-     *     } $originalData
+     *     } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->date = ApiDateTime::fromFullDateTimeString($originalData['admission_date'])->dateTimeOrNull;
-        $instance->description = ApiString::fromStringOrNull($originalData['description'])->string;
-        $instance->clientId = ApiInt::fromStringOrNull($originalData['client_id'])->positiveIntOrNull;
-        $instance->petId = ApiInt::fromStringOrNull($originalData['patient_id'])->positiveIntOrNull;
-        $instance->userId = ApiInt::fromStringOrNull($originalData['user_id'])->positiveIntOrNull;
-        $instance->typeId = ApiInt::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
-        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalData['admission_length'])->dateIntervalOrNull;
-        $instance->status = $originalData['status'] ? Status::from($originalData['status']) : null;
-        $instance->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $instance->isDirectDirection = ApiBool::fromStringOrNull($originalData['direct_direction'])->bool;
-        $instance->creatorId = ApiInt::fromStringOrNull($originalData['creator_id'])->positiveIntOrNull;
-        $instance->createDate = ApiDateTime::fromFullDateTimeString($originalData['create_date'])->dateTimeOrNull;
-        $instance->escortId = ApiInt::fromStringOrNull($originalData['escorter_id'])->positiveIntOrNull;
-        $instance->receptionWriteChannel = ApiString::fromStringOrNull($originalData['reception_write_channel'])->string;
-        $instance->isAutoCreate = ApiBool::fromStringOrNull($originalData['is_auto_create'])->bool;
-        $instance->invoicesSum = ApiFloat::fromStringOrNull($originalData['invoices_sum'])->float;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->date = ApiDateTime::fromFullDateTimeString($originalDataArray['admission_date'])->dateTimeOrNull;
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->string;
+        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->positiveIntOrNull;
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['patient_id'])->positiveIntOrNull;
+        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['user_id'])->positiveIntOrNull;
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveIntOrNull;
+        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->dateIntervalOrNull;
+        $instance->status = $originalDataArray['status'] ? Status::from($originalDataArray['status']) : null;
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
+        $instance->isDirectDirection = ApiBool::fromStringOrNull($originalDataArray['direct_direction'])->bool;
+        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->positiveIntOrNull;
+        $instance->createDate = ApiDateTime::fromFullDateTimeString($originalDataArray['create_date'])->dateTimeOrNull;
+        $instance->escortId = ApiInt::fromStringOrNull($originalDataArray['escorter_id'])->positiveIntOrNull;
+        $instance->receptionWriteChannel = ApiString::fromStringOrNull($originalDataArray['reception_write_channel'])->string;
+        $instance->isAutoCreate = ApiBool::fromStringOrNull($originalDataArray['is_auto_create'])->bool;
+        $instance->invoicesSum = ApiFloat::fromStringOrNull($originalDataArray['invoices_sum'])->float;
         return $instance;
     }
 

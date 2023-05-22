@@ -16,7 +16,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read InvoiceDto $originalDto
- * @property positive-int $id;
+ * @property positive-int $id
  * @property ?positive-int $doctorId Ни в одной базе не нашел, чтобы было 0 или null
  * @property positive-int $clientId Ни в одной базе не нашел, чтобы было 0 или null
  * @property positive-int $petId Ни в одной базе не нашел, чтобы было 0 или null
@@ -33,12 +33,9 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property float $paidAmount Примеры: '0.0000000000', "240.0000000000"
  * @property DateTime $createDate DB default: '0000-00-00 00:00:00'
  * @property PaymentStatus $paymentStatus Default: 'none'
- * @property ?positive-int DB default: '0' - переводим в null. В БД не видел 0/null
- * @property ?int $clinicId
- * @property ?positive-int
- * @property ?int $creatorId
- * @property ?positive-int Default: '0' - переводим в null. Редко вижу не 0
- * @property ?int $fiscalSectionId
+ * @property ?positive-int $clinicId DB default: '0' - переводим в null. В БД не видел 0/null
+ * @property ?positive-int $creatorId
+ * @property ?positive-int $fiscalSectionId Default: '0' - переводим в null. Редко вижу не 0
  * @property-read array{
  *     id: string,
  *     doctor_id: ?numeric-string,
@@ -90,7 +87,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *            in_blacklist: string,
  *            last_visit_date: string,
  *            number_of_journal: string,
- *            phone_prefix: ?string,
+ *            phone_prefix: ?string
  *      },
  *      pet: array{
  *             id: string,
@@ -144,7 +141,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *                  is_limited: string,
  *                  carrotquest_id: ?string,
  *                  sip_number: string,
- *                  user_inn: string,
+ *                  user_inn: string
  *       },
  *       invoiceDocuments: list<array{
  *                  id: string,
@@ -186,7 +183,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *                                      title: string,
  *                                      status: string
  *                              }
- *                     }
+ *                  }
  *          }>
  *  } $originalDataArray В Get All отсутствует invoiceDocuments
  * @property-read Client $client

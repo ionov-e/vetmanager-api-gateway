@@ -49,25 +49,25 @@ final class GoodSaleParamDto extends AbstractDTO
      *     price_formation: ?string,
      *     unitSale?: array,
      *     good?: array
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->goodId = ApiInt::fromStringOrNull($originalData['good_id'])->positiveIntOrNull;
-        $instance->price = ApiFloat::fromStringOrNull($originalData['price'])->floatOrNull;
-        $instance->coefficient = ApiFloat::fromStringOrNull($originalData['coefficient'])->float;
-        $instance->unitSaleId = ApiInt::fromStringOrNull($originalData['unit_sale_id'])->positiveIntOrNull;
-        $instance->minPriceInPercents = ApiFloat::fromStringOrNull($originalData['min_price'])->floatOrNull;
-        $instance->maxPriceInPercents = ApiFloat::fromStringOrNull($originalData['max_price'])->floatOrNull;
-        $instance->barcode = ApiString::fromStringOrNull($originalData['barcode'])->string;
-        $instance->status = Status::from($originalData['status']);
-        $instance->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
-        $instance->markup = ApiFloat::fromStringOrNull($originalData['markup'])->floatOrNull;
-        $instance->priceFormation = PriceFormation::from((string)$originalData['price_formation']);
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['good_id'])->positiveIntOrNull;
+        $instance->price = ApiFloat::fromStringOrNull($originalDataArray['price'])->floatOrNull;
+        $instance->coefficient = ApiFloat::fromStringOrNull($originalDataArray['coefficient'])->float;
+        $instance->unitSaleId = ApiInt::fromStringOrNull($originalDataArray['unit_sale_id'])->positiveIntOrNull;
+        $instance->minPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['min_price'])->floatOrNull;
+        $instance->maxPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['max_price'])->floatOrNull;
+        $instance->barcode = ApiString::fromStringOrNull($originalDataArray['barcode'])->string;
+        $instance->status = Status::from($originalDataArray['status']);
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
+        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->floatOrNull;
+        $instance->priceFormation = PriceFormation::from((string)$originalDataArray['price_formation']);
         return $instance;
     }
 

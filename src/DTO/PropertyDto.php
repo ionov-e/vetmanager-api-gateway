@@ -28,18 +28,18 @@ final class PropertyDto extends AbstractDTO
      *     "property_value": string,
      *     "property_title": ?string,
      *     "clinic_id": string
-     * } $originalData
+     * } $originalDataArray
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalData): self
+    public static function fromApiResponseArray(array $originalDataArray): self
     {
-        $instance = new self();
-        $instance->id = ApiInt::fromStringOrNull($originalData['id'])->positiveInt;
-        $instance->name = ApiString::fromStringOrNull($originalData['property_name'])->string;
-        $instance->value = ApiString::fromStringOrNull($originalData['property_value'])->string;
-        $instance->title = ApiString::fromStringOrNull($originalData['property_title'])->string;
-        $instance->clinicId = ApiInt::fromStringOrNull($originalData['clinic_id'])->positiveIntOrNull;
+        $instance = new self($originalDataArray);
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['property_name'])->string;
+        $instance->value = ApiString::fromStringOrNull($originalDataArray['property_value'])->string;
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['property_title'])->string;
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
         return $instance;
     }
 

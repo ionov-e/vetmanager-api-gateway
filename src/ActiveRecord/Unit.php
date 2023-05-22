@@ -17,10 +17,10 @@ use VetmanagerApiGateway\DTO\UnitDto;
  * @property string $title
  * @property Status $status Default: 'active'
  * @property-read array{
- *     "id": string,
- *     "title": string,
- *     "status": string,
- * } $originalData
+ *     id: numeric-string,
+ *     title: string,
+ *     status: string
+ * } $originalDataArray
  */
 final class Unit extends AbstractActiveRecord implements AllRequestsInterface
 {

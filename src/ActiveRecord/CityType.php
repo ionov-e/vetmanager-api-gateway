@@ -10,12 +10,13 @@ use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\CityTypeDto;
 
-/** @property-read CityTypeDto $originalDto
- * @property positive-int id
- * @property string title
+/**
+ * @property-read CityTypeDto $originalDto
+ * @property positive-int $id
+ * @property string $title
  * @property-read array{
- *     "id": string,
- *     "title": string,
+ *     id: string,
+ *     title: string
  * } $originalDataArray
  */
 final class CityType extends AbstractActiveRecord implements AllRequestsInterface

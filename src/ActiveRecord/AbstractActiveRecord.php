@@ -15,7 +15,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 abstract class AbstractActiveRecord
 {
-    protected readonly AbstractDTO $originalDto;
+    protected AbstractDTO $originalDto;
     /** Здесь будут данные в виде DTO для отправки в ветменеджер (создание новой записи или редактирование существующей) */
     protected AbstractDTO $userMadeDto;
 
@@ -27,7 +27,7 @@ abstract class AbstractActiveRecord
      */
     protected function __construct(
         protected readonly ApiGateway $apiGateway,
-        protected array               $originalDataArray,
+        array                         $originalDataArray,
         protected Completeness        $completenessLevel = Completeness::OnlyBasicDto,
     ) {
         $dtoClassName = static::getApiModel()->getDtoClass();
@@ -41,18 +41,18 @@ abstract class AbstractActiveRecord
     }
 
 //    /** @throws VetmanagerApiGatewayException */ #TODO implement
-//    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfGet = Source::OnlyBasicDto): self
+//    public static function fromArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalDataArray, Source $typeOfGet = Source::OnlyBasicDto): self
 //    {
-//        return static($apiGateway, $originalData);
+//        return static($apiGateway, $originalDataArray);
 //    }
 
 //    /** @throws VetmanagerApiGatewayException */
-//    public static function fromSingleObjectArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalData, Source $typeOfSource = Source::OnlyBasicDto): self
+//    public static function fromSingleObjectArrayAndTypeOfGet(ApiGateway $apiGateway, array $originalDataArray, Source $typeOfSource = Source::OnlyBasicDto): self
 //    {
 //        return match ($typeOfSource) {
-//            Source::GetById => self::fromSingleArrayUsingGetById($apiGateway, $originalData),
-//            Source::GetByAllList => self::fromSingleArrayUsingGetAll($apiGateway, $originalData),
-//            Source::GetByQuery => self::fromSingleArrayUsingGetByQuery($apiGateway, $originalData),
+//            Source::GetById => self::fromSingleArrayUsingGetById($apiGateway, $originalDataArray),
+//            Source::GetByAllList => self::fromSingleArrayUsingGetAll($apiGateway, $originalDataArray),
+//            Source::GetByQuery => self::fromSingleArrayUsingGetByQuery($apiGateway, $originalDataArray),
 //            Source::OnlyBasicDto => throw new \Exception('To be implemented')
 //        };
 //    }
@@ -66,7 +66,6 @@ abstract class AbstractActiveRecord
         $modelKey = static::getApiModel()->getResponseKey();
 
         if (!isset($apiResponse[$modelKey])) {
-            /** @psalm-suppress PossiblyInvalidCast Бредовое предупреждение */
             throw new VetmanagerApiGatewayResponseException("Ключ модели не найден в ответе АПИ: '$modelKey'");
         }
 
@@ -95,7 +94,6 @@ abstract class AbstractActiveRecord
 
     /** @param array $singleDtoAsArray Содержимое: {id: 13, ...}
      * @throws VetmanagerApiGatewayException
-     * @psalm-suppress UnsafeInstantiation
      */
     public static function fromSingleDtoArrayUsingBasicDto(
         ApiGateway $apiGateway,
@@ -129,7 +127,7 @@ abstract class AbstractActiveRecord
 
     public function getAsOriginalDataArray(): array
     {
-        return $this->originalDataArray;
+        return $this->originalDto->originalDataArray;
     }
 
     /** Возвращает в виде DTO в основе текущего объекта Active Record */

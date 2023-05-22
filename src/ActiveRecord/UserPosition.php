@@ -17,10 +17,10 @@ use VetmanagerApiGateway\DTO\UserPositionDto;
  * @property string $title
  * @property ?DateInterval $admissionLength Default: '00:30:00'
  * @property-read array{
- *     "id": string,
- *     "title": string,
- *     "admission_length": string,
- * } $originalData
+ *     id: string,
+ *     title: string,
+ *     admission_length: string
+ * } $originalDataArray
  */
 final class UserPosition extends AbstractActiveRecord implements AllRequestsInterface
 {

@@ -43,7 +43,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *     unitSale?: array{
  *             id: string,
  *             title: string,
- *             status: string,
+ *             status: string
  *     },
  *     good: array{
  *              id: string,
@@ -59,9 +59,11 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *              create_date: string,
  *              description: string,
  *              prime_cost: string,
- *              category_id: ?string,
+ *              category_id: ?string
  *     }
  * } $originalDataArray 'unitSale' и 'good' присутствуют и при GetById и GetAll
+ * @property-read ?Unit $unit
+ * @property-read Good $good
  */
 final class GoodSaleParam extends AbstractActiveRecord implements AllRequestsInterface
 {
@@ -89,10 +91,10 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllRequestsInt
         }
 
         return match ($name) {
-            'unit' => Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale']),
-            'good' => !empty($this->originalDataArray['good'])
-                ? Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good'])
+            'unit' => !empty($this->originalDataArray['unitSale'])
+                ? Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale'])
                 : null,
+            'good' => Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good']),
             default => $this->originalDto->$name
         };
     }

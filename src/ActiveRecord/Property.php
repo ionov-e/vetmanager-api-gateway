@@ -27,9 +27,9 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
  *     "property_value": string,
  *     "property_title": ?string,
  *     "clinic_id": string
- * } $originalData
+ * } $originalDataArray
  * @property-read ?Clinic $clinic
- * @property-read bool $isOnlineSigningUpAvailableForClinic
+ * @property-read ?bool $isOnlineSigningUpAvailableForClinic null возвращается, если вдруг clinic_id = null
  */
 final class Property extends AbstractActiveRecord implements AllRequestsInterface
 {
@@ -85,7 +85,7 @@ final class Property extends AbstractActiveRecord implements AllRequestsInterfac
     {
         return match ($name) {
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'isOnlineSigningUpAvailableForClinic' => self::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId),
+            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? self::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId) : null,
             default => $this->originalDto->$name
         };
     }
