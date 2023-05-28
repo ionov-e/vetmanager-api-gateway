@@ -17,18 +17,18 @@ trait RequestGetByIdTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function getById(ApiGateway $apiGateway, int $id): self
+    public static function getById(ApiGateway $apiGateway, int $id): static
     {
-        return self::fromSingleDtoArrayAsFromGetById(
+        return static::fromSingleDtoArrayAsFromGetById(
             $apiGateway,
-            $apiGateway->getWithId(self::getApiModel(), $id)
+            $apiGateway->getWithId(static::getApiModel(), $id)
         );
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleDtoArrayAsFromGetById(ApiGateway $apiGateway, array $originalDataArray): self
+    public static function fromSingleDtoArrayAsFromGetById(ApiGateway $apiGateway, array $originalDataArray): static
     {
-        return self::fromSingleDtoArray($apiGateway, $originalDataArray, Completeness::Full);
+        return static::fromSingleDtoArray($apiGateway, $originalDataArray, Completeness::Full);
     }
 
     /** Перезаписывает DTO {@see AbstractActiveRecord::$originalDto} и Source {@see AbstractActiveRecord::$completenessLevel}
@@ -57,7 +57,7 @@ trait RequestGetByIdTrait
      * @psalm-suppress PropertyTypeCoercion */
     private function fillCurrentObjectWithGetByIdData(): void
     {
-        $instanceFromGetById = self::getById($this->apiGateway, $this->id);
+        $instanceFromGetById = static::getById($this->apiGateway, $this->id);
         $this->originalDto = $instanceFromGetById->getAsDto();
         $this->completenessLevel = Completeness::Full;
     }

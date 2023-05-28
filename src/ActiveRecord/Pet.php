@@ -142,7 +142,7 @@ final class Pet extends AbstractActiveRecord implements AllRequestsInterface
         if ($this->completenessLevel != Completeness::Full) {
             switch ($name) {
                 case 'client':
-                    return $this->ownerId ? Client::getById($this->apiGateway, $this->ownerId) : null;
+                    return Client::getById($this->apiGateway, $this->ownerId);
                 case 'type':
                     return $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null;
                 case 'breed':

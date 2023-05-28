@@ -10,7 +10,6 @@ use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class BreedDto extends AbstractDTO
 {
     /** @var positive-int */

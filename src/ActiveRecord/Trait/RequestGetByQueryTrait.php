@@ -13,25 +13,25 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 trait RequestGetByQueryTrait
 {
     /** @inheritDoc
-     * @return self[]
+     * @return static[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
     public static function getByQueryBuilder(ApiGateway $apiGateway, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        $response = $apiGateway->getWithQueryBuilder(self::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return self::fromApiResponseArray($apiGateway, $response, static::getCompletenessFromGetAllOrByQuery());
+        $response = $apiGateway->getWithQueryBuilder(static::getApiModel(), $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return static::fromApiResponseArray($apiGateway, $response, static::getCompletenessFromGetAllOrByQuery());
     }
 
     /** @inheritDoc
-     * @return self[]
+     * @return static[]
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
     public static function getByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $response = $apiGateway->getWithPagedQuery(self::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
-        return self::fromApiResponseArray($apiGateway, $response, static::getCompletenessFromGetAllOrByQuery());
+        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
+        return static::fromApiResponseArray($apiGateway, $response, static::getCompletenessFromGetAllOrByQuery());
     }
 
     /** @inheritDoc
@@ -40,16 +40,16 @@ trait RequestGetByQueryTrait
      */
     public static function getByParametersAsString(ApiGateway $apiGateway, string $getParameters): array
     {
-        return self::fromApiResponseArray(
+        return static::fromApiResponseArray(
             $apiGateway,
-            $apiGateway->getWithGetParametersAsString(self::getApiModel(), $getParameters),
+            $apiGateway->getWithGetParametersAsString(static::getApiModel(), $getParameters),
             static::getCompletenessFromGetAllOrByQuery()
         );
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleDtoArrayAsFromGetByQuery(ApiGateway $apiGateway, array $originalDataArray): self
+    public static function fromSingleDtoArrayAsFromGetByQuery(ApiGateway $apiGateway, array $originalDataArray): static
     {
-        return self::fromSingleDtoArray($apiGateway, $originalDataArray, static::getCompletenessFromGetAllOrByQuery());
+        return static::fromSingleDtoArray($apiGateway, $originalDataArray, static::getCompletenessFromGetAllOrByQuery());
     }
 }

@@ -14,7 +14,6 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
-/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class MedicalCardAsVaccinationDto extends AbstractDTO
 {
     /** @var positive-int id из таблицы vaccine_pets */

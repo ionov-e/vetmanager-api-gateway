@@ -60,7 +60,7 @@ class DtoProperty
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    private function getOnlyDateFromDateTime()
+    private function getOnlyDateFromDateTime(): ?string
     {
         $propertyKey = $this->propertyKey;
         $propertyValue = $this->dto->$propertyKey;

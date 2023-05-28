@@ -10,7 +10,6 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-/** @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
 final class GoodGroupDto extends AbstractDTO
 {
     /** @var positive-int */

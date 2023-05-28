@@ -6,12 +6,15 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class DtoPropertyList
 {
     /** @var list<array{0: string, 1:string, 2?: DtoPropertyMode}> */
     private array $arrays;
 
-    /** @param list<array{0: string, 1:string, 2?: DtoPropertyMode}> $arrays Первый элемент - название свойства DTO. Второй - ключ в итоговом массиве для значения свойства DTO. Третий - необязательный флаг по какому правилу будем преобразовывать значение из свойства DTO */
+    /** @param list<array{0: string, 1:string, 2?: DtoPropertyMode}> $arrays Первый элемент - название свойства DTO. Второй - ключ в итоговом массиве для значения свойства DTO. Третий - необязательный флаг по какому правилу будем преобразовывать значение из свойства DTO
+     * @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая */
+
     public function __construct(
         private readonly AbstractDTO $dto,
         array                        ...$arrays
@@ -30,6 +33,7 @@ class DtoPropertyList
 
         foreach ($this->arrays as $array) {
 
+            /** @psalm-suppress DocblockTypeContradiction */
             if (!is_array($array) || !isset($array[0]) || !isset($array[1])) {
                 throw new VetmanagerApiGatewayRequestException(
                     __CLASS__ . ": в одном из элементов был не массив с двумя обязательными первыми элементами в виде строк: " . json_encode($array)

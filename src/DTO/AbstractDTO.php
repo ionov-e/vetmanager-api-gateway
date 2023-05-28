@@ -10,6 +10,7 @@ abstract class AbstractDTO
     {
     }
 
+    /** @psalm-suppress UnsafeInstantiation */
     public static function createEmpty(): static
     {
         return new static([]);

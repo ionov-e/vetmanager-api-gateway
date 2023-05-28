@@ -14,9 +14,9 @@ trait RequestPutTrait
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function edit(): self
+    public function edit(): static
     {
-        return self::editUsingIdAndArray(
+        return static::editUsingIdAndArray(
             $this->apiGateway,
             $this->userMadeDto->getIdForPutRequest(),
             $this->userMadeDto->getAsArrayForPutRequest()
@@ -27,11 +27,11 @@ trait RequestPutTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function editUsingIdAndArray(ApiGateway $apiGateway, int $id, array $data): self
+    public static function editUsingIdAndArray(ApiGateway $apiGateway, int $id, array $data): static
     {
-        return new self(
+        return new static(
             $apiGateway,
-            $apiGateway->put(self::getApiModel(), $id, $data)
+            $apiGateway->put(static::getApiModel(), $id, $data)
         );
     }
 }

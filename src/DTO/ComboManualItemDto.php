@@ -9,9 +9,7 @@ use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-/** Обращается в таблицу combo_manual_items
- * @psalm-suppress PropertyNotSetInConstructor, RedundantPropertyInitializationCheck - одобрено в доках PSALM для этого случая
- */
+/** Обращается в таблицу combo_manual_items */
 final class ComboManualItemDto extends AbstractDTO
 {
     /** @var positive-int ID записи цвета в таблице combo_manual_items */

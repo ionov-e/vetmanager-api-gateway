@@ -14,12 +14,12 @@ trait RequestPostTrait
      * @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function createAsNew(): self
+    public function createAsNew(): static
     {
-        return self::createAsNewUsingArray(
+        return static::createAsNewUsingArray(
             $this->apiGateway,
             $this->apiGateway->post(
-                self::getApiModel(),
+                static::getApiModel(),
                 $this->userMadeDto->getAsArrayForPostRequest()
             )
         );
@@ -29,11 +29,11 @@ trait RequestPostTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function createAsNewUsingArray(ApiGateway $apiGateway, array $data): self
+    public static function createAsNewUsingArray(ApiGateway $apiGateway, array $data): static
     {
-        return new self(
+        return new static(
             $apiGateway,
-            $apiGateway->post(self::getApiModel(), $data)
+            $apiGateway->post(static::getApiModel(), $data)
         );
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO;
 
 use DateTime;
-use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
@@ -15,9 +14,6 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
-/**
- * @property-read FullName $fullName
- */
 final class UserDto extends AbstractDTO
 {
     /** @var positive-int */

@@ -179,16 +179,10 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsI
                 ? GoodSaleParam::getById($this->apiGateway, $this->saleParamId)
                 : GoodSaleParam::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getArrayFromFullActiveRecordForGoodSaleParam()),
             'invoice' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? $this->getInvoiceById()
+                ? Invoice::getById($this->apiGateway, $this->invoiceId)
                 : Invoice::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['document']),
             default => $this->originalDto->$name
         };
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    private function getInvoiceById(): ?Invoice
-    {
-        return $this->invoiceId ? Invoice::getById($this->apiGateway, $this->invoiceId) : null;
     }
 
     private function getArrayFromFullActiveRecordForGoodSaleParam(): array
