@@ -7,11 +7,11 @@ namespace VetmanagerApiGateway;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Otis22\VetmanagerRestApi\Headers;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ServiceName;
-use Otis22\VetmanagerRestApi\Headers\WithAuth;
 use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use Otis22\VetmanagerRestApi\Model;
 use Otis22\VetmanagerRestApi\Query\Builder;
@@ -29,10 +29,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 final class ApiGateway
 {
     public function __construct(
-        public readonly string               $subDomain,
-        public readonly string               $apiUrl,
-        protected Client                     $guzzleClient,
-        protected WithAuthAndParams|WithAuth $allHeaders
+        public readonly string   $subDomain,
+        public readonly string   $apiUrl,
+        private readonly Client  $guzzleClient,
+        private readonly Headers $allHeaders
     ) {
     }
 
