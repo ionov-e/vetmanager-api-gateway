@@ -3,44 +3,23 @@
 namespace VetmanagerApiGateway\Unit\DTO;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\ClientDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
 
-#[CoversClass(ApiBool::class)]
+#[CoversClass(ClientDto::class)]
 class ClientDtoTest extends TestCase
 {
-//    public static function dataProviderForStingOrNull(): array
-//    {
-//        return [
-//            [null, null],
-//            [true, '1'],
-//            [true, 'true'],
-//            [true, 'on'],
-//            [true, 'yes'],
-//            [false, 'off'],
-//            [false, '0'],
-//            [false, 'false'],
-//            [false, 'no'],
-//            [false, ''],
-//        ];
-//    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-//    #[DataProvider('dataProviderForStingOrNull')]
-    public function testStringOrNullMethod(): void
+    public static function dataProviderClientJson(): array
     {
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizers, $encoders);
-
-
-        $data = '
+        return [
+            [
+                /** @lang JSON */
+                <<<'EOF'
 {
 "id": "1",
 "address": "",
@@ -58,9 +37,9 @@ class ClientDtoTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "������",
-"first_name": "�������",
-"middle_name": "Тестович",
+"last_name": "Last Name",
+"first_name": "First Name",
+"middle_name": "Middle Name",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",
@@ -72,13 +51,21 @@ class ClientDtoTest extends TestCase
 "last_visit_date": "2023-07-06 12:20:19",
 "number_of_journal": "",
 "phone_prefix": "38"
-}';
-        $person = $serializer->deserialize($data, ClientDto::class, 'json');
+}
+EOF
+                , "getId", 1]
+        ];
+    }
 
-        $this->assertEquals(
-            1,
-            $person->getId(),
-            'haha'
-        );
+    /** @throws VetmanagerApiGatewayResponseException */
+    #[DataProvider('dataProviderClientJson')]
+    public function testStringOrNullMethod(string $json, string $getMethodName, int|string $expected): void
+    {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $client = $serializer->deserialize($json, ClientDto::class, 'json');
+
+        $this->assertEquals($expected, $client->$getMethodName());
     }
 }

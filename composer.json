@@ -14,7 +14,8 @@
     "guzzlehttp/guzzle": "^7.5",
     "otis22/vetmanager-rest-api": "^0.1.11",
     "ext-mbstring": "*",
-    "symfony/serializer": "^6.3"
+    "symfony/serializer": "^6.3",
+    "symfony/property-access": "^6.3"
   },
   "autoload": {
     "psr-4": {

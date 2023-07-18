@@ -7,95 +7,59 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use VetmanagerApiGateway\DTO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
 use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 final class ClientDto // extends AbstractDTO #TODO return
 {
-
-        private ?string $id;
-        private ?string $address;
-        private ?string $home_phone;
-        private ?string $work_phone;
-        private ?string $note;
-        private ?string $type_id;
-        private ?string $how_find;
-        private ?string $balance;
-        private ?string $email;
-        private ?string $city;
-        private ?string $city_id;
-        private ?string $date_register;
-        private ?string $cell_phone;
-        private ?string $zip;
-        private ?string $registration_index;
-        private ?string $vip;
-        private ?string $last_name;
-        private ?string $first_name;
-        private ?string $middle_name;
-        private ?string $status;
-        private ?string $discount;
-        private ?string $passport_series;
-        private ?string $lab_number;
-        private ?string $street_id;
-        private ?string $apartment;
-        private ?string $unsubscribe;
-        private ?string $in_blacklist;
-        private ?string $last_visit_date;
-        private ?string $number_of_journal;
-        private ?string $phone_prefix;
-
-
-//    /**
-//     * @param string|null $email Default: ''
-//     * @param string|null $date_register В БД бывает дефолтное значение: '0000-00-00 00:00:00'
-//     * @param string|null $status Default: Active
-//     * @param string|null $street_id Default: 0
-//     * @param string|null $apartment Default: ''
-//     * @param string|null $unsubscribe Default: 0
-//     * @param string|null $in_blacklist Default: 0
-//     * @param string|null $last_visit_date В БД бывает дефолтное значение: '0000-00-00 00:00:00'
-//     * @param string|null $number_of_journal Default: ''
-//     */
-//    public function __construct(
-//        private ?string $id,
-//        private ?string $address,
-//        private ?string $home_phone,
-//        private ?string $work_phone,
-//        private ?string $note,
-//        private ?string $type_id,
-//        private ?string $how_find,
-//        private ?string $balance,
-//        private ?string $email,
-//        private ?string $city,
-//        private ?string $city_id,
-//        private ?string $date_register,
-//        private ?string $cell_phone,
-//        private ?string $zip,
-//        private ?string $registration_index,
-//        private ?string $vip,
-//        private ?string $last_name,
-//        private ?string $first_name,
-//        private ?string $middle_name,
-//        private ?string $status,
-//        private ?string $discount,
-//        private ?string $passport_series,
-//        private ?string $lab_number,
-//        private ?string $street_id,
-//        private ?string $apartment,
-//        private ?string $unsubscribe,
-//        private ?string $in_blacklist,
-//        private ?string $last_visit_date,
-//        private ?string $number_of_journal,
-//        private ?string $phone_prefix
-//    ) {
-//        parent::__construct();   #TODO remake
-//    }
+    /**
+     * @param string|null $email Default: ''
+     * @param string|null $date_register В БД бывает дефолтное значение: '0000-00-00 00:00:00'
+     * @param string|null $status Default: Active
+     * @param string|null $street_id Default: 0
+     * @param string|null $apartment Default: ''
+     * @param string|null $unsubscribe Default: 0
+     * @param string|null $in_blacklist Default: 0
+     * @param string|null $last_visit_date В БД бывает дефолтное значение: '0000-00-00 00:00:00'
+     * @param string|null $number_of_journal Default: ''
+     */
+    public function __construct(
+        private ?string $id,
+        private ?string $address,
+        private ?string $home_phone,
+        private ?string $work_phone,
+        private ?string $note,
+        private ?string $type_id,
+        private ?string $how_find,
+        private ?string $balance,
+        private ?string $email,
+        private ?string $city,
+        private ?string $city_id,
+        private ?string $date_register,
+        private ?string $cell_phone,
+        private ?string $zip,
+        private ?string $registration_index,
+        private ?string $vip,
+        private ?string $last_name,
+        private ?string $first_name,
+        private ?string $middle_name,
+        private ?string $status,
+        private ?string $discount,
+        private ?string $passport_series,
+        private ?string $lab_number,
+        private ?string $street_id,
+        private ?string $apartment,
+        private ?string $unsubscribe,
+        private ?string $in_blacklist,
+        private ?string $last_visit_date,
+        private ?string $number_of_journal,
+        private ?string $phone_prefix
+    ) {
+    }
 
     /** @return positive-int
      * @throws VetmanagerApiGatewayResponseException
@@ -462,86 +426,5 @@ final class ClientDto // extends AbstractDTO #TODO return
     {
         $this->phone_prefix = $phonePrefix;
         return $this;
-    }
-
-    /** @param array{
-     *      id: string,
-     *      address: string,
-     *      home_phone: string,
-     *      work_phone: string,
-     *      note: string,
-     *      type_id: ?string,
-     *      how_find: ?string,
-     *      balance: string,
-     *      email: string,
-     *      city: string,
-     *      city_id: ?string,
-     *      date_register: string,
-     *      cell_phone: string,
-     *      zip: string,
-     *      registration_index: ?string,
-     *      vip: string,
-     *      last_name: string,
-     *      first_name: string,
-     *      middle_name: string,
-     *      status: string,
-     *      discount: string,
-     *      passport_series: string,
-     *      lab_number: string,
-     *      street_id: string,
-     *      apartment: string,
-     *      unsubscribe: string,
-     *      in_blacklist: string,
-     *      last_visit_date: string,
-     *      number_of_journal: string,
-     *      phone_prefix: ?string,
-     *      city_data?: array,
-     *      client_type_data?: array,
-     * } $originalDataArray
-     */     #TODO Move
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['address', 'address'],
-            ['homePhone', 'home_phone'],
-            ['workPhone', 'work_phone'],
-            ['note', 'note'],
-            ['typeId', 'type_id'],
-            ['howFind', 'how_find'],
-            ['balance', 'balance'],
-            ['email', 'email'],
-            ['cityTitle', 'city'],
-            ['cityId', 'city_id'],
-            ['dateRegister', 'date_register'],
-            ['cellPhone', 'cell_phone'],
-            ['zip', 'zip'],
-            ['registrationIndex', 'registration_index'],
-            ['isVip', 'vip'],
-            ['lastName', 'last_name'],
-            ['firstName', 'first_name'],
-            ['middleName', 'middle_name'],
-            ['status', 'status'],
-            ['discount', 'discount'],
-            ['passportSeries', 'passport_series'],
-            ['labNumber', 'lab_number'],
-            ['streetId', 'street_id'],
-            ['apartment', 'apartment'],
-            ['isUnsubscribed', 'unsubscribe'],
-            ['isBlacklisted', 'in_blacklist'],
-            ['lastVisitDate', 'last_visit_date'],
-            ['numberOfJournal', 'number_of_journal'],
-            ['phonePrefix', 'phone_prefix'],
-        ))->toArray();
     }
 }
