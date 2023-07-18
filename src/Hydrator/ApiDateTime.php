@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\Hydrator;
 
 use DateTime;
 use Exception;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiDateTime
@@ -67,5 +68,15 @@ final class ApiDateTime
     public function isTimePresent(): bool
     {
         return ($this->dateTimeOrNull && $this->dateTimeOrNull->format('H:i:s') !== '00:00:00');
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getAsDataBaseStringOrThrowIfNull(): string
+    {
+        if (is_null($this->dateTimeOrNull)) {
+            throw new VetmanagerApiGatewayException("Не должно было быть null");
+        }
+
+        return $this->dateTimeOrNull->format('Y-m-d H:i:s');
     }
 }
