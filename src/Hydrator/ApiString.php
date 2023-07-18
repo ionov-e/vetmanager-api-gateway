@@ -6,11 +6,6 @@ namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * @property-read string string Даже если null приходит - пустую строку возвращает
- * @property-read string stringOrThrowIfNull Для тех случаев, когда уверены, что null не будет
- * @property-read non-empty-string nonEmptyString Для тех случаев, когда уверены, что не пустая строка должна прийти
- */
 class ApiString
 {
     public function __construct(public readonly ?string $stringOrNull)
@@ -22,24 +17,16 @@ class ApiString
         return new self($stringOrNull);
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'string' => $this->getStringEvenIfNullGiven(),
-            'stringOrThrowIfNull' => $this->getStringOrThrowIfNull(),
-            'nonEmptyString' => $this->getNonEmptyStringOrThrow(),
-            default => $this->$name,
-        };
-    }
-
-    private function getStringEvenIfNullGiven(): string
+    /** Даже если null приходит - пустую строку возвращает */
+    public function getStringEvenIfNullGiven(): string
     {
         return $this->stringOrNull ?? '';
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function getStringOrThrowIfNull(): string
+    /** Для тех случаев, когда уверены, что null не будет
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getStringOrThrowIfNull(): string
     {
         if (is_null($this->stringOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
@@ -48,10 +35,11 @@ class ApiString
         return $this->stringOrNull;
     }
 
-    /** @return non-empty-string
+    /** Для тех случаев, когда уверены, что не пустая строка должна прийти
+     * @return non-empty-string
      * @throws VetmanagerApiGatewayResponseException
      */
-    private function getNonEmptyStringOrThrow(): string
+    public function getNonEmptyStringOrThrow(): string
     {
         if (empty($this->stringOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить пустую строку");

@@ -30,9 +30,9 @@ final class UserPositionDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->dateIntervalOrNull;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->getDateIntervalOrNull();
         return $instance;
     }
 

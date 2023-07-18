@@ -36,12 +36,12 @@ final class GoodGroupDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->priceId = ApiInt::fromStringOrNull($originalDataArray['price_id'])->positiveIntOrNull;
-        $instance->isService = ApiBool::fromStringOrNull($originalDataArray['is_service'])->bool;
-        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->floatOrNull;
-        $instance->isShowInVaccines = ApiBool::fromStringOrNull($originalDataArray['is_show_in_vaccines'])->bool;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->priceId = ApiInt::fromStringOrNull($originalDataArray['price_id'])->getPositiveIntOrNull();
+        $instance->isService = ApiBool::fromStringOrNull($originalDataArray['is_service'])->getBoolOrThrowIfNull();
+        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->getNonZeroFloatOrNull();
+        $instance->isShowInVaccines = ApiBool::fromStringOrNull($originalDataArray['is_show_in_vaccines'])->getBoolOrThrowIfNull();
         return $instance;
     }
 

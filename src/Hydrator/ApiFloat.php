@@ -6,10 +6,6 @@ namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * @property-read float $float Для тех случаев, когда уверены, что null и пустых значений не будет
- * @property-read ?float $nonZeroFloatOrNull Преобразует 0 в null
- */
 class ApiFloat
 {
     public function __construct(public readonly ?float $floatOrNull)
@@ -34,23 +30,16 @@ class ApiFloat
         throw new VetmanagerApiGatewayResponseException("Ожидали float или null. Получено: $floatAsStringOrNull");
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'float' => $this->getFloat(),
-            'nonZeroFloatOrNull' => $this->getNonZeroFloatOrNull(),
-            default => $this->$name,
-        };
-    }
-
-    private function getNonZeroFloatOrNull(): ?float
+    /** Преобразует 0 в null */
+    public function getNonZeroFloatOrNull(): ?float
     {
         return ($this->floatOrNull === 0.0) ? null : $this->floatOrNull;
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function getFloat(): float
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getFloatOrThrow(): float
     {
         if (is_null($this->floatOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");

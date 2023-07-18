@@ -90,28 +90,28 @@ final class MedicalCardDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['patient_id'])->positiveInt;
-        $instance->dateCreate = ApiDateTime::fromOnlyDateString($originalDataArray['date_create'])->dateTime;
-        $instance->dateEdit = ApiDateTime::fromOnlyDateString($originalDataArray['date_edit'])->dateTime;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['patient_id'])->getPositiveInt();
+        $instance->dateCreate = ApiDateTime::fromOnlyDateString($originalDataArray['date_create'])->getDateTimeOrThrow();
+        $instance->dateEdit = ApiDateTime::fromOnlyDateString($originalDataArray['date_edit'])->getDateTimeOrThrow();
         $diagnose = ($originalDataArray['diagnos'] !== '0') ? $originalDataArray['diagnos'] : '';
-        $instance->diagnose = ApiString::fromStringOrNull($diagnose)->string;
-        $instance->recommendation = ApiString::fromStringOrNull($originalDataArray['recomendation'])->string;
-        $instance->invoiceId = ApiInt::fromStringOrNull($originalDataArray['invoice'])->positiveIntOrNull;
-        $instance->admissionTypeId = ApiInt::fromStringOrNull($originalDataArray['admission_type'])->positiveIntOrNull;
-        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->floatOrNull;
-        $instance->temperature = ApiFloat::fromStringOrNull($originalDataArray['temperature'])->floatOrNull;
-        $instance->meetResultId = ApiInt::fromStringOrNull($originalDataArray['meet_result_id'])->positiveIntOrNull;
-        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->string;
-        $instance->nextMeetId = ApiInt::fromStringOrNull($originalDataArray['next_meet_id'])->positiveIntOrNull;
-        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['doctor_id'])->positiveIntOrNull;
-        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->positiveIntOrNull;
+        $instance->diagnose = ApiString::fromStringOrNull($diagnose)->getStringEvenIfNullGiven();
+        $instance->recommendation = ApiString::fromStringOrNull($originalDataArray['recomendation'])->getStringEvenIfNullGiven();
+        $instance->invoiceId = ApiInt::fromStringOrNull($originalDataArray['invoice'])->getPositiveIntOrNull();
+        $instance->admissionTypeId = ApiInt::fromStringOrNull($originalDataArray['admission_type'])->getPositiveIntOrNull();
+        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
+        $instance->temperature = ApiFloat::fromStringOrNull($originalDataArray['temperature'])->getNonZeroFloatOrNull();
+        $instance->meetResultId = ApiInt::fromStringOrNull($originalDataArray['meet_result_id'])->getPositiveIntOrNull();
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->getStringEvenIfNullGiven();
+        $instance->nextMeetId = ApiInt::fromStringOrNull($originalDataArray['next_meet_id'])->getPositiveIntOrNull();
+        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNull();
+        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNull();
         $instance->status = Status::from($originalDataArray['status']);
-        $instance->callingId = ApiInt::fromStringOrNull($originalDataArray['calling_id'])->positiveIntOrNull;
-        $instance->admissionId = ApiInt::fromStringOrNull($originalDataArray['admission_id'])->positiveIntOrNull;
-        $instance->diagnoseText = ApiString::fromStringOrNull($originalDataArray['diagnos_text'])->string;
-        $instance->diagnoseTypeText = ApiString::fromStringOrNull($originalDataArray['diagnos_type_text'])->string;
-        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
+        $instance->callingId = ApiInt::fromStringOrNull($originalDataArray['calling_id'])->getPositiveIntOrNull();
+        $instance->admissionId = ApiInt::fromStringOrNull($originalDataArray['admission_id'])->getPositiveIntOrNull();
+        $instance->diagnoseText = ApiString::fromStringOrNull($originalDataArray['diagnos_text'])->getStringEvenIfNullGiven();
+        $instance->diagnoseTypeText = ApiString::fromStringOrNull($originalDataArray['diagnos_type_text'])->getStringEvenIfNullGiven();
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
         return $instance;
     }
 

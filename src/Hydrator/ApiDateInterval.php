@@ -8,7 +8,6 @@ use DateInterval;
 use Throwable;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/** @property-read DateInterval $dateInterval Для тех случаев, когда уверены, что null и пустых значений не будет */
 final class ApiDateInterval
 {
     public function __construct(public readonly ?DateInterval $dateIntervalOrNull)
@@ -36,11 +35,9 @@ final class ApiDateInterval
         return new self($dateTime);
     }
 
-    public function __get(string $name): mixed
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет */
+    public function getDateIntervalOrNull(): ?DateInterval
     {
-        return match ($name) {
-            'dateInterval' => $this->dateIntervalOrNull,
-            default => $this->$name,
-        };
+        return $this->dateIntervalOrNull;
     }
 }

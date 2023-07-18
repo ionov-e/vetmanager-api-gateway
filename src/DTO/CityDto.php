@@ -29,9 +29,9 @@ final class CityDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveInt;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveInt();
         return $instance;
     }
 

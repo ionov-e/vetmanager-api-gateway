@@ -55,17 +55,17 @@ final class GoodSaleParamDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['good_id'])->positiveIntOrNull;
-        $instance->price = ApiFloat::fromStringOrNull($originalDataArray['price'])->floatOrNull;
-        $instance->coefficient = ApiFloat::fromStringOrNull($originalDataArray['coefficient'])->float;
-        $instance->unitSaleId = ApiInt::fromStringOrNull($originalDataArray['unit_sale_id'])->positiveIntOrNull;
-        $instance->minPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['min_price'])->floatOrNull;
-        $instance->maxPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['max_price'])->floatOrNull;
-        $instance->barcode = ApiString::fromStringOrNull($originalDataArray['barcode'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['good_id'])->getPositiveIntOrNull();
+        $instance->price = ApiFloat::fromStringOrNull($originalDataArray['price'])->getNonZeroFloatOrNull();
+        $instance->coefficient = ApiFloat::fromStringOrNull($originalDataArray['coefficient'])->getNonZeroFloatOrNull();
+        $instance->unitSaleId = ApiInt::fromStringOrNull($originalDataArray['unit_sale_id'])->getPositiveIntOrNull();
+        $instance->minPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['min_price'])->getNonZeroFloatOrNull();
+        $instance->maxPriceInPercents = ApiFloat::fromStringOrNull($originalDataArray['max_price'])->getNonZeroFloatOrNull();
+        $instance->barcode = ApiString::fromStringOrNull($originalDataArray['barcode'])->getStringEvenIfNullGiven();
         $instance->status = Status::from($originalDataArray['status']);
-        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
-        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->floatOrNull;
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
+        $instance->markup = ApiFloat::fromStringOrNull($originalDataArray['markup'])->getNonZeroFloatOrNull();
         $instance->priceFormation = PriceFormation::from((string)$originalDataArray['price_formation']);
         return $instance;
     }

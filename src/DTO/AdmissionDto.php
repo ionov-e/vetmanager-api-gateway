@@ -85,23 +85,23 @@ final class AdmissionDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->date = ApiDateTime::fromFullDateTimeString($originalDataArray['admission_date'])->dateTimeOrNull;
-        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->string;
-        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->positiveIntOrNull;
-        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['patient_id'])->positiveIntOrNull;
-        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['user_id'])->positiveIntOrNull;
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveIntOrNull;
-        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->dateIntervalOrNull;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->date = ApiDateTime::fromFullDateTimeString($originalDataArray['admission_date'])->getDateTimeOrThrow();
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->getStringEvenIfNullGiven();
+        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->getPositiveIntOrNull();
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['patient_id'])->getPositiveIntOrNull();
+        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['user_id'])->getPositiveIntOrNull();
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveIntOrNull();
+        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->getDateIntervalOrNull();
         $instance->status = $originalDataArray['status'] ? Status::from($originalDataArray['status']) : null;
-        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
-        $instance->isDirectDirection = ApiBool::fromStringOrNull($originalDataArray['direct_direction'])->bool;
-        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->positiveIntOrNull;
-        $instance->createDate = ApiDateTime::fromFullDateTimeString($originalDataArray['create_date'])->dateTimeOrNull;
-        $instance->escortId = ApiInt::fromStringOrNull($originalDataArray['escorter_id'])->positiveIntOrNull;
-        $instance->receptionWriteChannel = ApiString::fromStringOrNull($originalDataArray['reception_write_channel'])->string;
-        $instance->isAutoCreate = ApiBool::fromStringOrNull($originalDataArray['is_auto_create'])->bool;
-        $instance->invoicesSum = ApiFloat::fromStringOrNull($originalDataArray['invoices_sum'])->float;
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
+        $instance->isDirectDirection = ApiBool::fromStringOrNull($originalDataArray['direct_direction'])->getBoolOrThrowIfNull();
+        $instance->creatorId = ApiInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNull();
+        $instance->createDate = ApiDateTime::fromFullDateTimeString($originalDataArray['create_date'])->getDateTimeOrThrow();
+        $instance->escortId = ApiInt::fromStringOrNull($originalDataArray['escorter_id'])->getPositiveIntOrNull();
+        $instance->receptionWriteChannel = ApiString::fromStringOrNull($originalDataArray['reception_write_channel'])->getStringEvenIfNullGiven();
+        $instance->isAutoCreate = ApiBool::fromStringOrNull($originalDataArray['is_auto_create'])->getBoolOrThrowIfNull();
+        $instance->invoicesSum = ApiFloat::fromStringOrNull($originalDataArray['invoices_sum'])->getNonZeroFloatOrNull();
         return $instance;
     }
 

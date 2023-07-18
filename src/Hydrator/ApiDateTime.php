@@ -8,7 +8,6 @@ use DateTime;
 use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/** @property-read DateTime $dateTime Для тех случаев, когда уверены, что null и пустых значений не будет */
 final class ApiDateTime
 {
     public function __construct(public readonly ?DateTime $dateTimeOrNull)
@@ -53,27 +52,20 @@ final class ApiDateTime
         }
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'dateTime' => $this->getDateTime(),
-            default => $this->$name,
-        };
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function getDateTime(): DateTime
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getDateTimeOrThrow(): DateTime
     {
         if (is_null($this->dateTimeOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
 
-        return $this->dateTimeOrNull;
+        return $this->getDateTimeOrThrow();
     }
 
     public function isTimePresent(): bool
     {
-        return ($this->dateTimeOrNull && $this->dateTimeOrNull->format('H:i:s') !== '01:00:00');
+        return ($this->dateTimeOrNull && $this->dateTimeOrNull->format('H:i:s') !== '00:00:00');
     }
 }

@@ -62,21 +62,21 @@ final class ClinicDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->string;
-        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->string;
-        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->positiveIntOrNull;
-        $instance->startTime = ApiString::fromStringOrNull($originalDataArray['start_time'])->string;
-        $instance->endTime = ApiString::fromStringOrNull($originalDataArray['end_time'])->string;
-        $instance->internetAddress = ApiString::fromStringOrNull($originalDataArray['internet_address'])->string;
-        $instance->guestClientId = ApiInt::fromStringOrNull($originalDataArray['guest_client_id'])->positiveIntOrNull;
-        $instance->timeZone = ApiString::fromStringOrNull($originalDataArray['time_zone'])->string;
-        $instance->logoUrl = ApiString::fromStringOrNull($originalDataArray['logo_url'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
+        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
+        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->getPositiveIntOrNull();
+        $instance->startTime = ApiString::fromStringOrNull($originalDataArray['start_time'])->getStringEvenIfNullGiven();
+        $instance->endTime = ApiString::fromStringOrNull($originalDataArray['end_time'])->getStringEvenIfNullGiven();
+        $instance->internetAddress = ApiString::fromStringOrNull($originalDataArray['internet_address'])->getStringEvenIfNullGiven();
+        $instance->guestClientId = ApiInt::fromStringOrNull($originalDataArray['guest_client_id'])->getPositiveIntOrNull();
+        $instance->timeZone = ApiString::fromStringOrNull($originalDataArray['time_zone'])->getStringEvenIfNullGiven();
+        $instance->logoUrl = ApiString::fromStringOrNull($originalDataArray['logo_url'])->getStringEvenIfNullGiven();
         $instance->status = Status::from($originalDataArray['status']);
-        $instance->telegram = ApiString::fromStringOrNull($originalDataArray['telegram'])->string;
-        $instance->whatsapp = ApiString::fromStringOrNull($originalDataArray['whatsapp'])->string;
-        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->string;
+        $instance->telegram = ApiString::fromStringOrNull($originalDataArray['telegram'])->getStringEvenIfNullGiven();
+        $instance->whatsapp = ApiString::fromStringOrNull($originalDataArray['whatsapp'])->getStringEvenIfNullGiven();
+        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
         return $instance;
     }
 

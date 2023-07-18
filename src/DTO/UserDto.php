@@ -79,26 +79,26 @@ final class UserDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->lastName = ApiString::fromStringOrNull($originalDataArray['last_name'])->string;
-        $instance->firstName = ApiString::fromStringOrNull($originalDataArray['first_name'])->string;
-        $instance->middleName = ApiString::fromStringOrNull($originalDataArray['middle_name'])->string;
-        $instance->login = ApiString::fromStringOrNull($originalDataArray['login'])->string;
-        $instance->password = ApiString::fromStringOrNull($originalDataArray['passwd'])->string;
-        $instance->positionId = ApiInt::fromStringOrNull($originalDataArray['position_id'])->positiveInt;
-        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->string;
-        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->string;
-        $instance->cellPhone = ApiString::fromStringOrNull($originalDataArray['cell_phone'])->string;
-        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->string;
-        $instance->roleId = ApiInt::fromStringOrNull($originalDataArray['role_id'])->positiveIntOrNull;
-        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->bool;
-        $instance->isPercentCalculated = ApiBool::fromStringOrNull($originalDataArray['calc_percents'])->bool;
-        $instance->nickname = ApiString::fromStringOrNull($originalDataArray['nickname'])->string;
-        $instance->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->dateTimeOrNull;
-        $instance->isLimited = ApiBool::fromStringOrNull($originalDataArray['is_limited'])->bool;
-        $instance->carrotquestId = ApiString::fromStringOrNull($originalDataArray['carrotquest_id'])->string;
-        $instance->sipNumber = ApiString::fromStringOrNull($originalDataArray['sip_number'])->string;
-        $instance->userInn = ApiString::fromStringOrNull($originalDataArray['user_inn'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->lastName = ApiString::fromStringOrNull($originalDataArray['last_name'])->getStringEvenIfNullGiven();
+        $instance->firstName = ApiString::fromStringOrNull($originalDataArray['first_name'])->getStringEvenIfNullGiven();
+        $instance->middleName = ApiString::fromStringOrNull($originalDataArray['middle_name'])->getStringEvenIfNullGiven();
+        $instance->login = ApiString::fromStringOrNull($originalDataArray['login'])->getStringEvenIfNullGiven();
+        $instance->password = ApiString::fromStringOrNull($originalDataArray['passwd'])->getStringEvenIfNullGiven();
+        $instance->positionId = ApiInt::fromStringOrNull($originalDataArray['position_id'])->getPositiveInt();
+        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
+        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
+        $instance->cellPhone = ApiString::fromStringOrNull($originalDataArray['cell_phone'])->getStringEvenIfNullGiven();
+        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
+        $instance->roleId = ApiInt::fromStringOrNull($originalDataArray['role_id'])->getPositiveIntOrNull();
+        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
+        $instance->isPercentCalculated = ApiBool::fromStringOrNull($originalDataArray['calc_percents'])->getBoolOrThrowIfNull();
+        $instance->nickname = ApiString::fromStringOrNull($originalDataArray['nickname'])->getStringEvenIfNullGiven();
+        $instance->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->getDateTimeOrThrow();
+        $instance->isLimited = ApiBool::fromStringOrNull($originalDataArray['is_limited'])->getBoolOrThrowIfNull();
+        $instance->carrotquestId = ApiString::fromStringOrNull($originalDataArray['carrotquest_id'])->getStringEvenIfNullGiven();
+        $instance->sipNumber = ApiString::fromStringOrNull($originalDataArray['sip_number'])->getStringEvenIfNullGiven();
+        $instance->userInn = ApiString::fromStringOrNull($originalDataArray['user_inn'])->getStringEvenIfNullGiven();
         return $instance;
     }
 

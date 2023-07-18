@@ -6,9 +6,6 @@ namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * @property-read bool $bool Для тех случаев, когда уверены, что null и пустых значений не будет
- */
 class ApiBool
 {
     public function __construct(public readonly ?bool $boolOrNull)
@@ -35,17 +32,10 @@ class ApiBool
         throw new VetmanagerApiGatewayResponseException("Ожидали null или bool (даже если 'on', 'yes', ..), а получили: $boolAsStringOrNull");
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'bool' => $this->getBool(),
-            default => $this->$name,
-        };
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function getBool(): bool
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getBoolOrThrowIfNull(): bool
     {
         if (is_null($this->boolOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");

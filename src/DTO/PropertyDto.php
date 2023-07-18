@@ -34,11 +34,11 @@ final class PropertyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['property_name'])->string;
-        $instance->value = ApiString::fromStringOrNull($originalDataArray['property_value'])->string;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['property_title'])->string;
-        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->positiveIntOrNull;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['property_name'])->getStringEvenIfNullGiven();
+        $instance->value = ApiString::fromStringOrNull($originalDataArray['property_value'])->getStringEvenIfNullGiven();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['property_title'])->getStringEvenIfNullGiven();
+        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
         return $instance;
     }
 

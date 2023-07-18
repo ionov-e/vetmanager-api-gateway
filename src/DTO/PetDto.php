@@ -79,25 +79,25 @@ final class PetDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->ownerId = ApiInt::fromStringOrNull($originalDataArray['owner_id'])->positiveInt;
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->positiveIntOrNull;
-        $instance->alias = ApiString::fromStringOrNull($originalDataArray['alias'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->ownerId = ApiInt::fromStringOrNull($originalDataArray['owner_id'])->getPositiveInt();
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveIntOrNull();
+        $instance->alias = ApiString::fromStringOrNull($originalDataArray['alias'])->getStringEvenIfNullGiven();
         $instance->sex = $originalDataArray['sex'] ? Sex::from($originalDataArray['sex']) : Sex::Unknown;
-        $instance->dateRegister = ApiDateTime::fromOnlyDateString($originalDataArray['date_register'])->dateTime;
-        $instance->birthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->dateTimeOrNull;
-        $instance->note = ApiString::fromStringOrNull($originalDataArray['note'])->string;
-        $instance->breedId = ApiInt::fromStringOrNull($originalDataArray['breed_id'])->positiveIntOrNull;
-        $instance->oldId = ApiInt::fromStringOrNull($originalDataArray['old_id'])->positiveIntOrNull;
-        $instance->colorId = ApiInt::fromStringOrNull($originalDataArray['color_id'])->positiveIntOrNull;
-        $instance->deathNote = ApiString::fromStringOrNull($originalDataArray['deathnote'])->string;
-        $instance->deathDate = ApiString::fromStringOrNull($originalDataArray['deathdate'])->string;
-        $instance->chipNumber = ApiString::fromStringOrNull($originalDataArray['chip_number'])->string;
-        $instance->labNumber = ApiString::fromStringOrNull($originalDataArray['lab_number'])->string;
+        $instance->dateRegister = ApiDateTime::fromOnlyDateString($originalDataArray['date_register'])->getDateTimeOrThrow();
+        $instance->birthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
+        $instance->note = ApiString::fromStringOrNull($originalDataArray['note'])->getStringEvenIfNullGiven();
+        $instance->breedId = ApiInt::fromStringOrNull($originalDataArray['breed_id'])->getPositiveIntOrNull();
+        $instance->oldId = ApiInt::fromStringOrNull($originalDataArray['old_id'])->getPositiveIntOrNull();
+        $instance->colorId = ApiInt::fromStringOrNull($originalDataArray['color_id'])->getPositiveIntOrNull();
+        $instance->deathNote = ApiString::fromStringOrNull($originalDataArray['deathnote'])->getStringEvenIfNullGiven();
+        $instance->deathDate = ApiString::fromStringOrNull($originalDataArray['deathdate'])->getStringEvenIfNullGiven();
+        $instance->chipNumber = ApiString::fromStringOrNull($originalDataArray['chip_number'])->getStringEvenIfNullGiven();
+        $instance->labNumber = ApiString::fromStringOrNull($originalDataArray['lab_number'])->getStringEvenIfNullGiven();
         $instance->status = Status::from($originalDataArray['status']);
-        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->string;
-        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->nonZeroFloatOrNull;
-        $instance->editDate = ApiDateTime::fromOnlyDateString($originalDataArray['edit_date'])->dateTime;
+        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->getStringEvenIfNullGiven();
+        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
+        $instance->editDate = ApiDateTime::fromOnlyDateString($originalDataArray['edit_date'])->getDateTimeOrThrow();
         return $instance;
     }
 

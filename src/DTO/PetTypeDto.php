@@ -29,10 +29,10 @@ final class PetTypeDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->string;
-        $instance->type = ApiString::fromStringOrNull($originalDataArray['type'])->string;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->getStringEvenIfNullGiven();
+        $instance->type = ApiString::fromStringOrNull($originalDataArray['type'])->getStringEvenIfNullGiven();
         return $instance;
     }
 

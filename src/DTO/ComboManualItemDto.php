@@ -47,14 +47,14 @@ final class ComboManualItemDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->comboManualId = ApiInt::fromStringOrNull($originalDataArray['combo_manual_id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->string;
-        $instance->value = ApiString::fromStringOrNull($originalDataArray['value'])->string;
-        $instance->dopParam1 = ApiString::fromStringOrNull($originalDataArray['dop_param1'])->string;
-        $instance->dopParam2 = ApiString::fromStringOrNull($originalDataArray['dop_param2'])->string;
-        $instance->dopParam3 = ApiString::fromStringOrNull($originalDataArray['dop_param3'])->string;
-        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->bool;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->comboManualId = ApiInt::fromStringOrNull($originalDataArray['combo_manual_id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->value = ApiString::fromStringOrNull($originalDataArray['value'])->getStringEvenIfNullGiven();
+        $instance->dopParam1 = ApiString::fromStringOrNull($originalDataArray['dop_param1'])->getStringEvenIfNullGiven();
+        $instance->dopParam2 = ApiString::fromStringOrNull($originalDataArray['dop_param2'])->getStringEvenIfNullGiven();
+        $instance->dopParam3 = ApiString::fromStringOrNull($originalDataArray['dop_param3'])->getStringEvenIfNullGiven();
+        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
         return $instance;
     }
 

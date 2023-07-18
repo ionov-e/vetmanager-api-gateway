@@ -108,33 +108,33 @@ final class MedicalCardByClientDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['medical_card_id'])->positiveInt;
-        $instance->dateEdit = ApiDateTime::fromOnlyDateString($originalDataArray['date_edit'])->dateTimeOrNull;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['medical_card_id'])->getPositiveInt();
+        $instance->dateEdit = ApiDateTime::fromOnlyDateString($originalDataArray['date_edit'])->getDateTimeOrThrow();
         $diagnose = ($originalDataArray['diagnos'] !== '0') ? $originalDataArray['diagnos'] : '';
-        $instance->diagnose = ApiString::fromStringOrNull($diagnose)->string;
-        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['doctor_id'])->positiveIntOrNull;
+        $instance->diagnose = ApiString::fromStringOrNull($diagnose)->getStringEvenIfNullGiven();
+        $instance->userId = ApiInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNull();
         $instance->status = Status::from($originalDataArray['medical_card_status']);
-        $instance->description = ApiString::fromStringOrNull($originalDataArray['healing_process'])->string;
-        $instance->recommendation = ApiString::fromStringOrNull($originalDataArray['recomendation'])->string;
-        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->floatOrNull;
-        $instance->temperature = ApiFloat::fromStringOrNull($originalDataArray['temperature'])->floatOrNull;
-        $instance->meetResultId = ApiInt::fromStringOrNull($originalDataArray['meet_result_id'])->positiveIntOrNull;
-        $instance->admissionTypeId = ApiInt::fromStringOrNull($originalDataArray['admission_type'])->positiveIntOrNull;
-        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['pet_id'])->positiveInt;
-        $instance->petAlias = ApiString::fromStringOrNull($originalDataArray['alias'])->string;
-        $instance->petBirthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->dateTimeOrNull;
+        $instance->description = ApiString::fromStringOrNull($originalDataArray['healing_process'])->getStringEvenIfNullGiven();
+        $instance->recommendation = ApiString::fromStringOrNull($originalDataArray['recomendation'])->getStringEvenIfNullGiven();
+        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
+        $instance->temperature = ApiFloat::fromStringOrNull($originalDataArray['temperature'])->getNonZeroFloatOrNull();
+        $instance->meetResultId = ApiInt::fromStringOrNull($originalDataArray['meet_result_id'])->getPositiveIntOrNull();
+        $instance->admissionTypeId = ApiInt::fromStringOrNull($originalDataArray['admission_type'])->getPositiveIntOrNull();
+        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveInt();
+        $instance->petAlias = ApiString::fromStringOrNull($originalDataArray['alias'])->getStringEvenIfNullGiven();
+        $instance->petBirthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
         $instance->petSex = $originalDataArray['sex'] ? Sex::from($originalDataArray['sex']) : Sex::Unknown;
-        $instance->petNote = ApiString::fromStringOrNull($originalDataArray['note'])->string;
-        $instance->petTypeTitle = ApiString::fromStringOrNull($originalDataArray['pet_type'])->string;
-        $instance->petBreedTitle = ApiString::fromStringOrNull($originalDataArray['breed'])->string;
-        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->positiveInt;
+        $instance->petNote = ApiString::fromStringOrNull($originalDataArray['note'])->getStringEvenIfNullGiven();
+        $instance->petTypeTitle = ApiString::fromStringOrNull($originalDataArray['pet_type'])->getStringEvenIfNullGiven();
+        $instance->petBreedTitle = ApiString::fromStringOrNull($originalDataArray['breed'])->getStringEvenIfNullGiven();
+        $instance->clientId = ApiInt::fromStringOrNull($originalDataArray['client_id'])->getPositiveInt();
         $instance->ownerFullName = new FullName($originalDataArray['first_name'], $originalDataArray['middle_name'], $originalDataArray['last_name']);
-        $instance->ownerPhone = ApiString::fromStringOrNull($originalDataArray['phone'])->string;
-        $instance->userLogin = ApiString::fromStringOrNull($originalDataArray['doctor_nickname'])->string;
+        $instance->ownerPhone = ApiString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
+        $instance->userLogin = ApiString::fromStringOrNull($originalDataArray['doctor_nickname'])->getStringEvenIfNullGiven();
         $instance->userFullName = new FullName($originalDataArray['doctor_first_name'], $originalDataArray['doctor_middle_name'], $originalDataArray['doctor_last_name']);
-        $instance->isEditable = ApiBool::fromStringOrNull($originalDataArray['editable'])->bool;
-        $instance->meetResultTitle = ApiString::fromStringOrNull($originalDataArray['meet_result_title'])->string;
-        $instance->admissionTypeTitle = ApiString::fromStringOrNull($originalDataArray['admission_type_title'])->string;
+        $instance->isEditable = ApiBool::fromStringOrNull($originalDataArray['editable'])->getBoolOrThrowIfNull();
+        $instance->meetResultTitle = ApiString::fromStringOrNull($originalDataArray['meet_result_title'])->getStringEvenIfNullGiven();
+        $instance->admissionTypeTitle = ApiString::fromStringOrNull($originalDataArray['admission_type_title'])->getStringEvenIfNullGiven();
         return $instance;
     }
 

@@ -30,9 +30,9 @@ final class RoleDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->string;
-        $instance->isSuper = ApiBool::fromStringOrNull($originalDataArray['super'])->bool;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->getStringEvenIfNullGiven();
+        $instance->isSuper = ApiBool::fromStringOrNull($originalDataArray['super'])->getBoolOrThrowIfNull();
         return $instance;
     }
 

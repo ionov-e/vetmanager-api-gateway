@@ -31,9 +31,9 @@ final class BreedDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->stringOrThrowIfNull;
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['pet_type_id'])->positiveInt;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringOrThrowIfNull();
+        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['pet_type_id'])->getPositiveInt();
         return $instance;
     }
 

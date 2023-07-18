@@ -42,24 +42,26 @@ class StringContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            ApiString::fromStringOrNull($stringOrNull)->string,
+            ApiString::fromStringOrNull($stringOrNull)->getStringEvenIfNullGiven(),
             $messageInCaseOfError
         );
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function testStringOrThrowIfNullMethod(): void
     {
-        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->stringOrThrowIfNull);
+        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->getStringOrThrowIfNull());
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        ApiString::fromStringOrNull(null)->stringOrThrowIfNull;
+        ApiString::fromStringOrNull(null)->getStringOrThrowIfNull();
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function testNonEmptyStringMethod(): void
     {
-        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->nonEmptyString);
+        $this->assertEquals('Hello1', ApiString::fromStringOrNull('Hello1')->getNonEmptyStringOrThrow());
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        ApiString::fromStringOrNull('')->nonEmptyString;
+        ApiString::fromStringOrNull('')->getNonEmptyStringOrThrow();
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        ApiString::fromStringOrNull(null)->nonEmptyString;
+        ApiString::fromStringOrNull(null)->getNonEmptyStringOrThrow();
     }
 }

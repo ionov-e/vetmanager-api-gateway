@@ -59,10 +59,10 @@ class BoolContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            ApiBool::fromStringOrNull($forConstructor)->bool,
+            ApiBool::fromStringOrNull($forConstructor)->getBoolOrThrowIfNull(),
             $messageInCaseOfError
         );
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        ApiBool::fromStringOrNull(null)->bool;
+        ApiBool::fromStringOrNull(null)->getBoolOrThrowIfNull();
     }
 }

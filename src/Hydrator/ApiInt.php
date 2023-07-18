@@ -6,12 +6,6 @@ namespace VetmanagerApiGateway\Hydrator;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * @property-read int $int Для тех случаев, когда уверены, что null и пустых значений не будет
- * @property-read ?int $noneZeroIntOrNull Преобразует 0 в null
- * @property-read positive-int $positiveInt Для тех случаев, когда уверены, что null и пустых значений не будет
- * @property-read ?positive-int $positiveIntOrNull Преобразует 0 в null
- */
 class ApiInt
 {
     public function __construct(private readonly ?int $intOrNull)
@@ -38,25 +32,22 @@ class ApiInt
         throw new VetmanagerApiGatewayResponseException("Ожидали int или null. Получено: $intAsStringOrNull");
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'int' => $this->getInt(),
-            'noneZeroIntOrNull' => $this->getNonZeroIntOrNull(),
-            'positiveInt' => $this->getPositiveInt(),
-            'positiveIntOrNull' => $this->getPositiveIntOrNull(),
-            default => $this->$name,
-        };
-    }
-
-    private function getNonZeroIntOrNull(): ?int
+    /** Преобразует 0 в null */
+    public function getNonZeroIntOrNull(): ?int
     {
         return ($this->intOrNull === 0) ? null : $this->intOrNull;
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    private function getInt(): int
+    /** Преобразует null в 0 */
+    public function getIntEvenIfNullGiven(): int
+    {
+        return $this->intOrNull ?? 0;
+    }
+
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIntOrThrow(): int
     {
         if (is_null($this->intOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
@@ -65,10 +56,11 @@ class ApiInt
         return $this->intOrNull;
     }
 
-    /** @return positive-int
+    /** Для тех случаев, когда уверены, что null и пустых значений не будет
+     * @return positive-int
      * @throws VetmanagerApiGatewayResponseException
      */
-    private function getPositiveInt(): int
+    public function getPositiveInt(): int
     {
         if (is_null($this->intOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
@@ -84,7 +76,7 @@ class ApiInt
     /** @return ?positive-int Вместо 0 - вернет null
      * @throws VetmanagerApiGatewayResponseException
      */
-    private function getPositiveIntOrNull(): ?int
+    public function getPositiveIntOrNull(): ?int
     {
         if (!is_null($this->intOrNull) && $this->intOrNull < 0) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали не positive-int");

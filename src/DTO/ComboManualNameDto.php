@@ -35,10 +35,10 @@ final class ComboManualNameDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->positiveInt;
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->nonEmptyString;
-        $instance->isReadonly = ApiBool::fromStringOrNull($originalDataArray['is_readonly'])->bool;
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->nonEmptyString;
+        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getNonEmptyStringOrThrow();
+        $instance->isReadonly = ApiBool::fromStringOrNull($originalDataArray['is_readonly'])->getBoolOrThrowIfNull();
+        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->getNonEmptyStringOrThrow();
         return $instance;
     }
 
