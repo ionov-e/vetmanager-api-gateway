@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 final class CityDto // extends AbstractDTO
 {
+    /** @var string[] */
+    public array $editedProperties = [];
 
     /** @param string|null $type_id Default: 1 */
     public function __construct(
@@ -19,6 +19,14 @@ final class CityDto // extends AbstractDTO
         private ?string $title,
         private ?string $type_id
     ) {
+    }
+
+    public function setProperty(string $propertyName, ?string $value): self
+    {
+        $clone = clone $this;
+        $clone->$propertyName = $value;  #TODO maybe check property before (throw exception)
+        $clone->editedProperties[] = $propertyName;
+        return $clone;
     }
 
     /** @return positive-int
@@ -29,10 +37,9 @@ final class CityDto // extends AbstractDTO
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    public function setId(string $id): self
+    public function setId(int $id): self
     {
-        $this->id = $id;
-        return $this;
+        return $this->setProperty('id', (string) $id);
     }
 
     public function getTitle(): string
@@ -42,8 +49,7 @@ final class CityDto // extends AbstractDTO
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
-        return $this;
+        return $this->setProperty('title', $title);
     }
 
     /** @return positive-int
@@ -54,10 +60,9 @@ final class CityDto // extends AbstractDTO
         return ApiInt::fromStringOrNull($this->type_id)->getPositiveInt();
     }
 
-    public function setTypeId(string $type_id): self
+    public function setTypeId(int $type_id): self
     {
-        $this->type_id = $type_id;
-        return $this;
+        return $this->setProperty('type_id', (string)$type_id);
     }
 //    /** @param array{
 //     *     "id": string,
