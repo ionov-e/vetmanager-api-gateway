@@ -10,46 +10,77 @@ use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class CityDto extends AbstractDTO
+final class CityDto // extends AbstractDTO
 {
-    /** @var positive-int */
-    public int $id;
-    public string $title;
-    /** @var positive-int Default: 1 */
-    public int $typeId;
 
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "type_id": string,
-     * } $originalDataArray
-     * @psalm-suppress MoreSpecificImplementedParamType
+    /** @param string|null $type_id Default: 1 */
+    public function __construct(
+        private string $id,
+        private ?string $title,
+        private ?string $type_id
+    ) {
+    }
+
+    /** @return positive-int
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function getId(): int
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveInt();
-        return $instance;
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO check
+    public function setId(string $id): self
     {
-        return ['title', 'type_id'];
+        $this->id = $id;
+        return $this;
     }
 
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
+    public function getTitle(): string
+    {
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /** @return positive-int
+     * @throws VetmanagerApiGatewayResponseException
      */
-    protected function getSetValuesWithoutId(): array
+    public function getTypeId(): int
     {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['typeId', 'type_id'],
-        ))->toArray();
+        return ApiInt::fromStringOrNull($this->type_id)->getPositiveInt();
     }
+
+    public function setTypeId(string $type_id): self
+    {
+        $this->type_id = $type_id;
+        return $this;
+    }
+//    /** @param array{
+//     *     "id": string,
+//     *     "title": string,
+//     *     "type_id": string,
+//     * } $originalDataArray
+//     */
+//
+//    /** @inheritdoc */
+//    public function getRequiredKeysForPostArray(): array #TODO check
+//    {
+//        return ['title', 'type_id'];
+//    }
+//
+//    /** @inheritdoc
+//     * @throws VetmanagerApiGatewayRequestException
+//     */
+//    protected function getSetValuesWithoutId(): array
+//    {
+//        return (new DtoPropertyList(
+//            $this,
+//            ['title', 'title'],
+//            ['typeId', 'type_id'],
+//        ))->toArray();
+//    }
 }
