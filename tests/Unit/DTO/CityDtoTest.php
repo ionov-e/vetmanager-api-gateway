@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-//use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\CityDto;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
@@ -63,7 +63,9 @@ EOF
         $this->assertEquals($expected, $data['id']);
     }
 
-    /** @throws ExceptionInterface */
+    /** @throws VetmanagerApiGatewayInnerException
+     * @throws ExceptionInterface
+     */
     #[DataProvider('dataProviderClientJson')]
     public function testNormalizationWithSpecificAttributeAfterSetters(string $json, string $getMethodName, int|string $expected): void
     {
@@ -71,14 +73,13 @@ EOF
         $serializer = new Serializer([new ObjectNormalizer()]);
         $dto = $serializer->denormalize($array, CityDto::class);
 
-        if (!is_a($dto, CityDto::class)) {
-            throw new \Exception("Impossible has happened");
-        }
+        $this->assertInstanceOf(CityDto::class, $dto);
 
         $dto = $dto->setTitle("Test103");
         $dto = $dto->setTypeId(103);
 
-        $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->editedProperties]);
+        $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
+
         $this->assertEquals(["title" => "Test103", "type_id" => "103"], $data);
     }
 }

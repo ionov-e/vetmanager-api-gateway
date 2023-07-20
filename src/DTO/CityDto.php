@@ -4,29 +4,20 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class CityDto // extends AbstractDTO
+final class CityDto extends AbstractNewDTO
 {
-    /** @var string[] */
-    public array $editedProperties = [];
-
     /** @param string|null $type_id Default: 1 */
     public function __construct(
-        private string $id,
-        private ?string $title,
-        private ?string $type_id
-    ) {
-    }
-
-    public function setProperty(string $propertyName, ?string $value): self
+        protected ?string  $id,
+        protected ?string $title,
+        protected ?string $type_id
+    )
     {
-        $clone = clone $this;
-        $clone->$propertyName = $value;  #TODO maybe check property before (throw exception)
-        $clone->editedProperties[] = $propertyName;
-        return $clone;
     }
 
     /** @return positive-int
@@ -37,9 +28,10 @@ final class CityDto // extends AbstractDTO
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setId(int $id): self
     {
-        return $this->setProperty('id', (string) $id);
+        return self::setPropertyFluently($this, 'id', (string)$id);
     }
 
     public function getTitle(): string
@@ -47,9 +39,10 @@ final class CityDto // extends AbstractDTO
         return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(string $title): self
     {
-        return $this->setProperty('title', $title);
+        return self::setPropertyFluently($this, 'title', $title);
     }
 
     /** @return positive-int
@@ -60,9 +53,10 @@ final class CityDto // extends AbstractDTO
         return ApiInt::fromStringOrNull($this->type_id)->getPositiveInt();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setTypeId(int $type_id): self
     {
-        return $this->setProperty('type_id', (string)$type_id);
+        return self::setPropertyFluently($this, 'type_id', (string)$type_id);
     }
 //    /** @param array{
 //     *     "id": string,
