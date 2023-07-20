@@ -16,7 +16,7 @@ class AbstractNewDTO
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public static function setPropertyFluently(self $object, string $propertyName, ?string $value): static
+    protected static function setPropertyFluently(self $object, string $propertyName, ?string $value): static
     {
         $clone = clone $object;
 
