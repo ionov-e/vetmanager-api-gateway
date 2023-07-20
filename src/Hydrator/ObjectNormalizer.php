@@ -41,15 +41,11 @@ class ObjectNormalizer extends \Symfony\Component\Serializer\Normalizer\ObjectNo
     /** @throws \ReflectionException */
     protected function extractAttributes(object $object, string $format = null, array $context = []): array
     {
-        if (\stdClass::class === $object::class) {
-            return array_keys((array) $object);
-        }
-
         $attributes = [];
         $class = ($this->objectClassResolver)($object);
-        $reflClass = new \ReflectionClass($class);
+        $reflectionClass = new \ReflectionClass($class);
 
-        foreach ($reflClass->getProperties() as $reflProperty) {
+        foreach ($reflectionClass->getProperties() as $reflProperty) {
 
             if ($reflProperty->isStatic() || !$this->isAllowedAttribute($object, $reflProperty->name, $format, $context)) {
                 continue;
