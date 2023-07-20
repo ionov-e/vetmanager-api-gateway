@@ -7,6 +7,7 @@ namespace VetmanagerApiGateway\DTO;
 use DateTime;
 use VetmanagerApiGateway\DTO\Enum\Client\Status;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
@@ -14,7 +15,7 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class ClientDto // extends AbstractDTO #TODO return
+final class ClientDto extends AbstractNewDTO
 {
     /**
      * @param string|null $email Default: ''
@@ -28,37 +29,38 @@ final class ClientDto // extends AbstractDTO #TODO return
      * @param string|null $number_of_journal Default: ''
      */
     public function __construct(
-        private ?string $id,
-        private ?string $address,
-        private ?string $home_phone,
-        private ?string $work_phone,
-        private ?string $note,
-        private ?string $type_id,
-        private ?string $how_find,
-        private ?string $balance,
-        private ?string $email,
-        private ?string $city,
-        private ?string $city_id,
-        private ?string $date_register,
-        private ?string $cell_phone,
-        private ?string $zip,
-        private ?string $registration_index,
-        private ?string $vip,
-        private ?string $last_name,
-        private ?string $first_name,
-        private ?string $middle_name,
-        private ?string $status,
-        private ?string $discount,
-        private ?string $passport_series,
-        private ?string $lab_number,
-        private ?string $street_id,
-        private ?string $apartment,
-        private ?string $unsubscribe,
-        private ?string $in_blacklist,
-        private ?string $last_visit_date,
-        private ?string $number_of_journal,
-        private ?string $phone_prefix
-    ) {
+        protected ?string $id,
+        protected ?string $address,
+        protected ?string $home_phone,
+        protected ?string $work_phone,
+        protected ?string $note,
+        protected ?string $type_id,
+        protected ?string $how_find,
+        protected ?string $balance,
+        protected ?string $email,
+        protected ?string $city,
+        protected ?string $city_id,
+        protected ?string $date_register,
+        protected ?string $cell_phone,
+        protected ?string $zip,
+        protected ?string $registration_index,
+        protected ?string $vip,
+        protected ?string $last_name,
+        protected ?string $first_name,
+        protected ?string $middle_name,
+        protected ?string $status,
+        protected ?string $discount,
+        protected ?string $passport_series,
+        protected ?string $lab_number,
+        protected ?string $street_id,
+        protected ?string $apartment,
+        protected ?string $unsubscribe,
+        protected ?string $in_blacklist,
+        protected ?string $last_visit_date,
+        protected ?string $number_of_journal,
+        protected ?string $phone_prefix
+    )
+    {
     }
 
     /** @return positive-int
@@ -69,10 +71,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setId(int $id): self
     {
-        $this->id = (string)$id;
-        return $this;
+        return self::setPropertyFluently($this, 'id', (string)$id);
     }
 
     public function getAddress(): string
@@ -80,10 +82,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setAddress(string $address): self
     {
-        $this->address = $address;
-        return $this;
+        return self::setPropertyFluently($this, 'address', $address);
     }
 
     public function getHomePhone(): string
@@ -91,10 +93,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->home_phone)->getStringEvenIfNullGiven();
     }
 
-    public function setHomePhone(string $homePhone): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setHomePhone(string $home_phone): self
     {
-        $this->home_phone = $homePhone;
-        return $this;
+        return self::setPropertyFluently($this, 'home_phone', $home_phone);
     }
 
     public function getWorkPhone(): string
@@ -102,10 +104,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->work_phone)->getStringEvenIfNullGiven();
     }
 
-    public function setWorkPhone(string $workPhone): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setWorkPhone(string $work_phone): self
     {
-        $this->work_phone = $workPhone;
-        return $this;
+        return self::setPropertyFluently($this, 'work_phone', $work_phone);
     }
 
     public function getNote(): string
@@ -113,10 +115,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->note)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setNote(string $note): self
     {
-        $this->note = $note;
-        return $this;
+        return self::setPropertyFluently($this, 'note', $note);
     }
 
     /** @return ?positive-int
@@ -127,10 +129,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setTypeId(string $type_id): self
     {
-        $this->type_id = $type_id;
-        return $this;
+        return self::setPropertyFluently($this, 'type_id', $type_id);
     }
 
     /** @return ?positive-int
@@ -141,22 +143,22 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->how_find)->getPositiveIntOrNull();
     }
 
-    public function setHowFind(string $howFind): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setHowFind(string $how_find): self
     {
-        $this->how_find = $howFind;
-        return $this;
+        return self::setPropertyFluently($this, 'how_find', $how_find);
     }
 
-    /** @throws VetmanagerApiGatewayResponseException*/
+    /** @throws VetmanagerApiGatewayResponseException */
     public function getBalance(): float
     {
         return ApiFloat::fromStringOrNull($this->balance)->getFloatOrThrow();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setBalance(string $balance): self
     {
-        $this->balance = $balance;
-        return $this;
+        return self::setPropertyFluently($this, 'balance', $balance);
     }
 
     public function getEmail(): string
@@ -164,10 +166,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setEmail(string $email): self
     {
-        $this->email = $email;
-        return $this;
+        return self::setPropertyFluently($this, 'email', $email);
     }
 
     public function getCity(): string
@@ -175,10 +177,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->city)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCity(string $city): self
     {
-        $this->city = $city;
-        return $this;
+        return self::setPropertyFluently($this, 'city', $city);
     }
 
     /** @return ?positive-int
@@ -189,10 +191,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCityId(string $city_id): self
     {
-        $this->city_id = $city_id;
-        return $this;
+        return self::setPropertyFluently($this, 'city_id', $city_id);
     }
 
     /** Пустые значения переводятся в null
@@ -203,10 +205,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiDateTime::fromFullDateTimeString($this->date_register)->getDateTimeOrThrow();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setDateRegister(string $date_register): self
     {
-        $this->date_register = $date_register;
-        return $this;
+        return self::setPropertyFluently($this, 'date_register', $date_register);
     }
 
     public function getCellPhone(): string
@@ -214,10 +216,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->cell_phone)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCellPhone(string $cell_phone): self
     {
-        $this->cell_phone = $cell_phone;
-        return $this;
+        return self::setPropertyFluently($this, 'cell_phone', $cell_phone);
     }
 
     public function getZip(): string
@@ -225,10 +227,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->zip)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setZip(string $zip): self
     {
-        $this->zip = $zip;
-        return $this;
+        return self::setPropertyFluently($this, 'zip', $zip);
     }
 
     public function getRegistrationIndex(): string
@@ -236,10 +238,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->registration_index)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setRegistrationIndex(string $registrationIndex): self
     {
-        $this->registration_index = $registrationIndex;
-        return $this;
+        return self::setPropertyFluently($this, 'registration_index', $registrationIndex);
     }
 
     /** Default: 0
@@ -250,10 +252,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiBool::fromStringOrNull($this->vip)->getBoolOrThrowIfNull();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setIsVip(string $vip): self
     {
-        $this->vip = $vip;
-        return $this;
+        return self::setPropertyFluently($this, 'vip', $vip);
     }
 
     public function getLastName(): string
@@ -261,10 +263,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->last_name)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setLastName(string $last_name): self
     {
-        $this->last_name = $last_name;
-        return $this;
+        return self::setPropertyFluently($this, 'last_name', $last_name);
     }
 
     public function getFirstName(): string
@@ -272,10 +274,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->first_name)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setFirstName(string $first_name): self
     {
-        $this->first_name = $first_name;
-        return $this;
+        return self::setPropertyFluently($this, 'first_name', $first_name);
     }
 
     public function getMiddleName(): string
@@ -283,10 +285,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->middle_name)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setMiddleName(string $middle_name): self
     {
-        $this->middle_name = $middle_name;
-        return $this;
+        return self::setPropertyFluently($this, 'middle_name', $middle_name);
     }
 
     public function getStatus(): Status
@@ -294,10 +296,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return Status::from($this->status);
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setStatus(Status $status): self
     {
-        $this->status = $status->value;
-        return $this;
+        return self::setPropertyFluently($this, 'status', $status->value);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -306,10 +308,11 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->discount)->getIntEvenIfNullGiven();
     }
 
+
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setDiscount(int $discount): self
     {
-        $this->discount = (string) $discount;
-        return $this;
+        return self::setPropertyFluently($this, 'discount', (string)$discount);
     }
 
     public function getPassportSeries(): string
@@ -317,10 +320,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->passport_series)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setPassportSeries(string $passport_series): self
     {
-        $this->passport_series = $passport_series;
-        return $this;
+        return self::setPropertyFluently($this, 'passport_series', $passport_series);
     }
 
     public function getLabNumber(): string
@@ -328,10 +331,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->lab_number)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setLabNumber(string $lab_number): self
     {
-        $this->lab_number = $lab_number;
-        return $this;
+        return self::setPropertyFluently($this, 'lab_number', $lab_number);
     }
 
     /** @return ?positive-int
@@ -342,10 +345,14 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiInt::fromStringOrNull($this->street_id)->getPositiveIntOrNull();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setStreetId(?int $streetId): self
     {
-        $this->street_id = is_null($streetId) ? null : (string)$streetId;
-        return $this;
+        return self::setPropertyFluently(
+            $this,
+            'streetId',
+            is_null($streetId) ? null : (string)$streetId
+        );
     }
 
     public function getApartment(): string
@@ -353,10 +360,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->apartment)->getStringEvenIfNullGiven();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setApartment(string $apartment): self
     {
-        $this->apartment = $apartment;
-        return $this;
+        return self::setPropertyFluently($this, 'apartment', $apartment);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -365,10 +372,14 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiBool::fromStringOrNull($this->unsubscribe)->getBoolOrThrowIfNull();
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setUnsubscribe(?bool $isUnsubscribed): self
     {
-        $this->unsubscribe = is_null($isUnsubscribed) ? "0" : (int) $isUnsubscribed;
-        return $this;
+        return self::setPropertyFluently(
+            $this,
+            'unsubscribe',
+            is_null($isUnsubscribed) ? "0" : (string)(int)$isUnsubscribed
+        );
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -377,10 +388,14 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiBool::fromStringOrNull($this->in_blacklist)->getBoolOrThrowIfNull();
     }
 
-    public function setInBlacklist(?bool $isBlacklisted): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setInBlacklist(?bool $in_blacklist): self
     {
-        $this->in_blacklist = is_null($isBlacklisted) ? "0" : (int) $isBlacklisted;
-        return $this;
+        return self::setPropertyFluently(
+            $this,
+            'in_blacklist',
+            is_null($in_blacklist) ? "0" : (string)(int)$in_blacklist
+        );
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -392,18 +407,22 @@ final class ClientDto // extends AbstractDTO #TODO return
     /** @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayException
      */
-    public function setLastVisitDateFromSting(?string $lastVisitDate): self
+    public function setLastVisitDateFromSting(?string $last_visit_date): self
     {
-        $this->last_visit_date = is_null($lastVisitDate)
+        $value = is_null($last_visit_date)
             ? "0000-00-00 00:00:00"
-            : ApiDateTime::fromFullDateTimeString($lastVisitDate)->getAsDataBaseStringOrThrowIfNull();
-        return $this;
+            : ApiDateTime::fromFullDateTimeString($last_visit_date)->getAsDataBaseStringOrThrowIfNull();
+        return self::setPropertyFluently(
+            $this,
+            'last_visit_date',
+            $value
+        );
     }
 
-    public function setLastVisitDateFromDateTime(DateTime $lastVisitDate): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setLastVisitDateFromDateTime(DateTime $last_visit_date): self
     {
-        $this->last_visit_date = $lastVisitDate->format('Y-m-d H:i:s');
-        return $this;
+        return self::setPropertyFluently($this, 'last_visit_date', $last_visit_date->format('Y-m-d H:i:s'));
     }
 
     public function getNumberOfJournal(): string
@@ -411,10 +430,10 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->number_of_journal)->getStringEvenIfNullGiven();
     }
 
-    public function setNumberOfJournal(string $numberOfJournal): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setNumberOfJournal(string $number_of_journal): self
     {
-        $this->number_of_journal = $numberOfJournal;
-        return $this;
+        return self::setPropertyFluently($this, 'number_of_journal', $number_of_journal);
     }
 
     public function getPhonePrefix(): string
@@ -422,9 +441,9 @@ final class ClientDto // extends AbstractDTO #TODO return
         return ApiString::fromStringOrNull($this->phone_prefix)->getStringEvenIfNullGiven();
     }
 
-    public function setPhonePrefix(string $phonePrefix): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setPhonePrefix(string $phone_prefix): self
     {
-        $this->phone_prefix = $phonePrefix;
-        return $this;
+        return self::setPropertyFluently($this, 'phone_prefix', $phone_prefix);
     }
 }
