@@ -11,7 +11,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiDateTime
 {
-    public function __construct(public readonly ?DateTime $dateTimeOrNull)
+    public function __construct(private readonly ?DateTime $dateTimeOrNull)
     {
     }
 

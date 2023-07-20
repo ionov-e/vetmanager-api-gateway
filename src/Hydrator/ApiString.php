@@ -8,7 +8,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class ApiString
 {
-    public function __construct(public readonly ?string $stringOrNull)
+    public function __construct(private readonly ?string $stringOrNull)
     {
     }
 

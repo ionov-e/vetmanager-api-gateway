@@ -8,7 +8,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class ApiBool
 {
-    public function __construct(public readonly ?bool $boolOrNull)
+    public function __construct(private readonly ?bool $boolOrNull)
     {
     }
 
@@ -30,6 +30,11 @@ class ApiBool
         }
 
         throw new VetmanagerApiGatewayResponseException("Ожидали null или bool (даже если 'on', 'yes', ..), а получили: $boolAsStringOrNull");
+    }
+
+    public function getBoolOrNull(): ?bool
+    {
+        return $this->boolOrNull;
     }
 
     /** Для тех случаев, когда уверены, что null и пустых значений не будет

@@ -11,24 +11,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 #[CoversClass(ApiString::class)]
 class StringContainerTest extends TestCase
 {
-    public static function dataProviderForStingOrNull(): array
-    {
-        return [
-            [null, null],
-            ['Hello1', 'Hello1'],
-        ];
-    }
-
-    #[DataProvider('dataProviderForStingOrNull')]
-    public function testStringOrNullMethod(?string $forConstructor, ?string $expected, string $messageInCaseOfError = ''): void
-    {
-        $this->assertEquals(
-            $expected,
-            ApiString::fromStringOrNull($forConstructor)->stringOrNull,
-            $messageInCaseOfError
-        );
-    }
-
     public static function dataProviderForSting(): array
     {
         return [

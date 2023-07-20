@@ -8,7 +8,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class ApiFloat
 {
-    public function __construct(public readonly ?float $floatOrNull)
+    public function __construct(private readonly ?float $floatOrNull)
     {
     }
 

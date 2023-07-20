@@ -33,7 +33,7 @@ class BoolContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            ApiBool::fromStringOrNull($forConstructor)->boolOrNull,
+            ApiBool::fromStringOrNull($forConstructor)->getBoolOrNull(),
             $messageInCaseOfError
         );
     }

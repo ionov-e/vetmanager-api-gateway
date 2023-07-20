@@ -167,10 +167,10 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsI
         }
 
         return match ($name) {
-            'minPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price'])->float,
-            'maxPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price'])->float,
-            'minPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->float,
-            'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->float,
+            'minPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price'])->getNonZeroFloatOrNull(),
+            'maxPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price'])->getNonZeroFloatOrNull(),
+            'minPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->getNonZeroFloatOrNull(),
+            'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->getNonZeroFloatOrNull(),
             'partyInfo' => $this->originalDataArray['party_info'],
             'good' => ($this->completenessLevel == Completeness::OnlyBasicDto)
                 ? Good::getById($this->apiGateway, $this->goodId)

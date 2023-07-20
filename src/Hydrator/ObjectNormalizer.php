@@ -1,7 +1,10 @@
-<?php
+<?php /** @noinspection PhpDocFinalChecksInspection */
 
 namespace VetmanagerApiGateway\Hydrator;
 
+use Closure;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /** Super wacky & hacky solution to change default Symfony ObjectNormalizer to access private methods.
@@ -11,16 +14,16 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class ObjectNormalizer extends \Symfony\Component\Serializer\Normalizer\ObjectNormalizer
 {
     protected $propertyAccessor;
-    private readonly \Closure $objectClassResolver;
+    private readonly Closure $objectClassResolver;
 
     public function __construct()
     {
         parent::__construct();
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $this->objectClassResolver = (static fn ($class) => \is_object($class) ? $class::class : $class)(...);
+        $this->objectClassResolver = (static fn ($class) => is_object($class) ? $class::class : $class)(...);
     }
 
-    /** @throws \ReflectionException */
+    /** @throws ReflectionException */
     protected function getAttributes(object $object, ?string $format, array $context): array
     {
         $allowedAttributes = $this->getAllowedAttributes($object, $context, true);
@@ -38,12 +41,12 @@ class ObjectNormalizer extends \Symfony\Component\Serializer\Normalizer\ObjectNo
         return $attributes;
     }
 
-    /** @throws \ReflectionException */
+    /** @throws ReflectionException */
     protected function extractAttributes(object $object, string $format = null, array $context = []): array
     {
         $attributes = [];
         $class = ($this->objectClassResolver)($object);
-        $reflectionClass = new \ReflectionClass($class);
+        $reflectionClass = new ReflectionClass($class);
 
         foreach ($reflectionClass->getProperties() as $reflProperty) {
 

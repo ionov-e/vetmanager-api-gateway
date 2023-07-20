@@ -128,7 +128,7 @@ final class Client extends AbstractActiveRecord implements AllRequestsInterface
                 : null,
             'typeTitle' => ApiString::fromStringOrNull(
                 $this->originalDataArray['client_type_data']['title'] ?? ''
-            )->string,
+            )->getStringEvenIfNullGiven(),
             'admissions' => Admission::getByClientId($this->apiGateway, $this->id),
             'medicalCards' => MedicalCardByClient::getByClientId($this->apiGateway, $this->id),
             'petsAlive' => $this->getPetsAlive(),

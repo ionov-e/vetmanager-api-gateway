@@ -263,7 +263,7 @@ final class Admission extends AbstractActiveRecord implements AllRequestsInterfa
             'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
                 ? Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
                 : null,
-            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->string,
+            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
             'invoices' => Invoice::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
             'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
             'admissionsOfPet' => $this->petId ? self::getByPetId($this->apiGateway, $this->petId) : [],

@@ -10,7 +10,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiDateInterval
 {
-    public function __construct(public readonly ?DateInterval $dateIntervalOrNull)
+    public function __construct(private readonly ?DateInterval $dateIntervalOrNull)
     {
     }
 
