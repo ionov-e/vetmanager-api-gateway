@@ -15,7 +15,7 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class ClientDto extends AbstractNewDTO
+class ClientDto extends AbstractModelDTO
 {
     /**
      * @param string|null $email Default: ''
@@ -172,13 +172,13 @@ final class ClientDto extends AbstractNewDTO
         return self::setPropertyFluently($this, 'email', $email);
     }
 
-    public function getCity(): string
+    public function getCityTitle(): string
     {
         return ApiString::fromStringOrNull($this->city)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCity(string $city): self
+    public function setCityTitle(string $city): self
     {
         return self::setPropertyFluently($this, 'city', $city);
     }

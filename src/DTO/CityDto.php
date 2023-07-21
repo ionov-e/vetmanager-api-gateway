@@ -9,7 +9,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class CityDto extends AbstractNewDTO
+final class CityDto extends AbstractModelDTO
 {
     /** @param string|null $type_id Default: 1 */
     public function __construct(

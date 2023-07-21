@@ -4,7 +4,7 @@ namespace VetmanagerApiGateway\DTO;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
-class AbstractNewDTO
+class AbstractModelDTO
 {
     /** @var string[] list of properties provided by client from setters */
     protected array $propertiesSet = [];
