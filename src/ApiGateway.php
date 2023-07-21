@@ -28,6 +28,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiGateway
 {
+    public DtoFactory $factory;
+
     public function __construct(
         public readonly string   $subDomain,
         public readonly string   $apiUrl,
@@ -103,6 +105,15 @@ final class ApiGateway
         } catch (\Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
+    }
+
+    public function getFactory(): DtoFactory
+    {
+        if (!isset ($this->factory)) {
+            $this->factory = new DtoFactory($this);
+        }
+
+        return $this->factory;
     }
 
     /**

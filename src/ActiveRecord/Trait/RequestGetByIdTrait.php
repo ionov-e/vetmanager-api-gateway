@@ -58,7 +58,7 @@ trait RequestGetByIdTrait
     private function fillCurrentObjectWithGetByIdData(): void
     {
         $instanceFromGetById = static::getById($this->apiGateway, $this->id);
-        $this->originalDto = $instanceFromGetById->getAsDto();
+        $this->originalDto = $instanceFromGetById->getPrimaryDto();
         $this->completenessLevel = Completeness::Full;
     }
 }
