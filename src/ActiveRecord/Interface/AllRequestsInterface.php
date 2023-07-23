@@ -2,9 +2,9 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Interface;
 
-interface AllRequestsInterface extends
-    AllGetRequestsInterface,
-    RequestPostInterface,
-    RequestPutInterface
+interface AllRequestsInterface extends AllGetRequestsInterface
+//    AllGetRequestsInterface,
+//    RequestPostInterface,
+//    RequestPutInterface
 {
 }

@@ -28,21 +28,15 @@ final class CityDto extends AbstractModelDTO
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $id): self
-    {
-        return self::setPropertyFluently($this, 'id', (string)$id);
-    }
-
     public function getTitle(): string
     {
         return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTitle(string $title): self
+    public function setTitle(string $value): self
     {
-        return self::setPropertyFluently($this, 'title', $title);
+        return self::setPropertyFluently($this, 'title', $value);
     }
 
     /** @return positive-int
@@ -54,9 +48,9 @@ final class CityDto extends AbstractModelDTO
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeId(int $type_id): self
+    public function setTypeId(int $value): self
     {
-        return self::setPropertyFluently($this, 'type_id', (string)$type_id);
+        return self::setPropertyFluently($this, 'type_id', (string)$value);
     }
 //    /** @param array{
 //     *     "id": string,

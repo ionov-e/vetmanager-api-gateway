@@ -10,16 +10,16 @@ use VetmanagerApiGateway\DTO\AbstractModelDTO;
 
 abstract class AbstractActiveRecord
 {
-    protected readonly ApiGateway $apiGateway;
-
-    /** Возвращает в виде DTO в основе текущего объекта Active Record */
-    abstract protected function getPrimaryDto(): AbstractModelDTO;
+    protected ApiGateway $apiGateway;
+    protected AbstractModelDTO $modelDTO;
 
     /** Используется при АПИ-запросах (роуты и имена моделей из тела JSON-ответа на АПИ запрос) */
     abstract public static function getApiModel(): ApiModel;
 
-    public function __set(string $name, mixed $value)
+    protected static function setNewModelDtoFluently(self $object, AbstractModelDTO $newModelDto): static
     {
-        $this->userMadeDto->$name = $value;
+        $clone = clone $object;
+        $clone->modelDTO = $newModelDto;
+        return $clone;
     }
 }
