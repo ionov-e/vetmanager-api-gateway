@@ -102,6 +102,13 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
 {
     use AllRequestsTrait;
 
+    public function __construct(ApiGateway $apiGateway, ClientDto $modelDTO)
+    {
+        parent::__construct($apiGateway, $modelDTO);
+        $this->apiGateway = $apiGateway;
+        $this->modelDTO = $modelDTO;
+    }
+
     /** @return ApiModel::Client */
     public static function getApiModel(): ApiModel
     {
