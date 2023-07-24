@@ -77,7 +77,7 @@ enum ApiModel
     /** @return class-string
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getDtoClass(): string
+    public function getDtoClass(): string   #TODO Delete
     {
         return match ($this) {
             self::Admission => AdmissionDto::class,

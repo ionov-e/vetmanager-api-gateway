@@ -10,8 +10,12 @@ use VetmanagerApiGateway\DTO\AbstractModelDTO;
 
 abstract class AbstractActiveRecord
 {
-    protected ApiGateway $apiGateway;
-    protected AbstractModelDTO $modelDTO;
+    public function __construct(
+        protected ApiGateway       $apiGateway,
+        protected AbstractModelDTO $modelDTO
+    )
+    {
+    }
 
     /** Используется при АПИ-запросах (роуты и имена моделей из тела JSON-ответа на АПИ запрос) */
     abstract public static function getApiModel(): ApiModel;

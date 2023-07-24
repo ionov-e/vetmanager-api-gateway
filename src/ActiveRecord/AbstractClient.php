@@ -102,12 +102,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
 {
     use AllRequestsTrait;
 
-    public function __construct(ApiGateway $apiGateway, ClientDto $modelDTO)
-    {
-        $this->apiGateway = $apiGateway;
-        $this->modelDTO = $modelDTO;
-    }
-
     /** @return ApiModel::Client */
     public static function getApiModel(): ApiModel
     {
@@ -494,20 +488,20 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return MedicalCardByClient::getByClientId($this->apiGateway, $this->id);
     }
 
-    /** @return Pet[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function getPetsAlive(): array
-    {
-        $pets = $this->apiGateway->getWithQueryBuilder(
-            ApiModel::Pet,
-            (new Builder())
-                ->where('owner_id', (string)$this->id)
-                ->where('status', Enum\Pet\Status::Alive->value)
-        );
-
-        return Pet::fromResponse($this->apiGateway, $pets);     #TODO
-    }
+//    /** @return Pet[]
+//     * @throws VetmanagerApiGatewayException
+//     */
+//    public function getPetsAlive(): array
+//    {
+//        $pets = $this->apiGateway->getWithQueryBuilder(         #TODO Move to facade of Pet
+//            ApiModel::Pet,
+//            (new Builder())
+//                ->where('owner_id', (string)$this->id)
+//                ->where('status', Enum\Pet\Status::Alive->value)
+//        );
+//
+//        return Pet::fromMultipleDtosArrays($this->apiGateway, $pets);     #TODO
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function getStreet(): ?Street
