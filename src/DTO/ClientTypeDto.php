@@ -2,15 +2,28 @@
 
 namespace VetmanagerApiGateway\DTO;
 
-final class ClientTypeDto
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Hydrator\ApiInt;
+
+final class ClientTypeDto extends AbstractModelDTO
 {
-    public function __construct(private string $id, private string $title)
+    public function __construct(protected ?string $id, protected ?string $title)
     {
     }
 
-    public function getId(): string
+    /** @return positive-int
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getId(): int
     {
-        return $this->id;
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setId(int $value): self
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
     }
 
     public function getTitle(): string
@@ -18,15 +31,9 @@ final class ClientTypeDto
         return $this->title;
     }
 
-    public function setId(string $id): self
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setTitle(string $value): self
     {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-        return $this;
+        return self::setPropertyFluently($this, 'title', $value);
     }
 }
