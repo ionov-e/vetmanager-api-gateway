@@ -9,7 +9,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class CityDto extends AbstractModelDTO
+final class CityDto extends AbstractModelDTO implements CityDtoInterface
 {
     /** @param string|null $type_id Default: 1 */
     public function __construct(
@@ -28,13 +28,18 @@ final class CityDto extends AbstractModelDTO
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
     public function getTitle(): string
     {
         return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTitle(string $value): self
+    public function setTitle(string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);
     }
@@ -48,7 +53,7 @@ final class CityDto extends AbstractModelDTO
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeId(int $value): self
+    public function setTypeId(int $value): static
     {
         return self::setPropertyFluently($this, 'type_id', (string)$value);
     }

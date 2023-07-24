@@ -9,6 +9,7 @@ use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\CityDto;
+use VetmanagerApiGateway\DTO\CityDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
@@ -25,13 +26,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     type_id: string
  * } $originalDataArray
  */
-final class City extends AbstractActiveRecord implements AllRequestsInterface
+final class City extends AbstractActiveRecord implements AllRequestsInterface, CityDtoInterface
 {
-
     use AllRequestsTrait;
 
     public function __construct(ApiGateway $apiGateway, CityDto $modelDTO)
     {
+        parent::__construct($apiGateway, $modelDTO);
         $this->apiGateway = $apiGateway;
         $this->modelDTO = $modelDTO;
     }
@@ -50,16 +51,19 @@ final class City extends AbstractActiveRecord implements AllRequestsInterface
         return $this->modelDTO->getId();
     }
 
+    public function setId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
     public function getTitle(): string
     {
         return $this->modelDTO->getTitle();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(string $value): static
     {
-        $this->modelDTO = $this->modelDTO->setTitle($value);
-        return $this;
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
     }
 
     /** @return positive-int
@@ -73,8 +77,8 @@ final class City extends AbstractActiveRecord implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setTypeId(int $value): static
     {
-        $this->modelDTO = $this->modelDTO->setTypeId($value);
-        return $this;
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeId($value));
+
     }
 
 //    public static function getCompletenessFromGetAllOrByQuery(): Completeness

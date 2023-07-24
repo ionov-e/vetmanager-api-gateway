@@ -4,47 +4,52 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class CityTypeDto extends AbstractDTO
+final class CityTypeDto extends AbstractModelDTO implements CityTypeDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    public string $title;
+    public function __construct(
+        public string $id,
+        public string $title
+    ) {
+    }
 
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     * } $originalDataArray
-     * @psalm-suppress MoreSpecificImplementedParamType
+    /** @return positive-int
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function getId(): int
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        return $instance;
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setId(int $value): static
     {
-        return ['title'];
+        return self::setPropertyFluently($this, 'id', (string)$value);
     }
 
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
+    public function getTitle(): string
     {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-        ))->toArray();
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setTitle(string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+//    /** @param array{
+//     *     "id": string,
+//     *     "title": string,
+//     * }
+//     */
+
+//    /** @inheritdoc */
+//    public function getRequiredKeysForPostArray(): array
+//    {
+//        return ['title'];
+//    }
 }
