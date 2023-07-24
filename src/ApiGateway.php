@@ -28,14 +28,15 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiGateway
 {
-    public DtoFactory $factory;
+    private DtoFactory $factory;
 
     public function __construct(
         public readonly string   $subDomain,
         public readonly string   $apiUrl,
         private readonly Client  $guzzleClient,
         private readonly Headers $allHeaders
-    ) {
+    )
+    {
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -45,28 +46,42 @@ final class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self {
+    ): self
+    {
         $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndServiceNameAndApiKey($baseApiUrl, $subDomain, $serviceName, $apiKey, $timezone);
+    }
 
-        $guzzleClient = new Client(
-            [
-                'base_uri' => $baseApiUrl,
-                'http_errors' => false,
-                'verify' => false,
-            ]
+    public static function fromFullUrlAndServiceNameAndApiKey(
+        string $baseApiUrl,
+        string $subDomain,
+        string $serviceName,
+        string $apiKey,
+        string $timezone = '+03:00'
+    ): self
+    {
+        return new self(
+            $subDomain,
+            $baseApiUrl,
+            self::getGuzzleClientForServiceNameAndApiKey($baseApiUrl),
+            self::getHeadersForServiceNameAndApiKey($serviceName, $apiKey, $timezone)
         );
+    }
 
-        $allHeaders = new WithAuthAndParams(
+    private static function getGuzzleClientForServiceNameAndApiKey(string $baseApiUrl): Client
+    {
+        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'verify' => false]);
+    }
+
+    private static function getHeadersForServiceNameAndApiKey(string $serviceName, string $apiKey, string $timezone): WithAuthAndParams
+    {
+        return new WithAuthAndParams(
             new ByServiceApiKey(
                 new ServiceName($serviceName),
                 new ApiKey($apiKey)
             ),
-            [
-                'X-REST-TIME-ZONE' => $timezone,
-            ]
+            ['X-REST-TIME-ZONE' => $timezone]
         );
-
-        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -75,24 +90,38 @@ final class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self {
+    ): self
+    {
         $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndApiKey($subDomain, $baseApiUrl, $apiKey, $timezone);
+    }
 
-        $guzzleClient = new Client(
-            [
-                'base_uri' => $baseApiUrl,
-                'http_errors' => false,
-            ]
+    public static function fromFullUrlAndApiKey(
+        string $subDomain,
+        string $baseApiUrl,
+        string $apiKey,
+        string $timezone = '+03:00'
+    ): self
+    {
+        return new self(
+            $subDomain,
+            $baseApiUrl,
+            self::getGuzzleClientForApiKey($baseApiUrl),
+            self::getHeadersForApiKey($apiKey, $timezone)
         );
+    }
 
-        $allHeaders = new WithAuthAndParams(
+    private static function getGuzzleClientForApiKey(string $baseApiUrl): Client
+    {
+        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false]);
+    }
+
+    private static function getHeadersForApiKey(string $apiKey, string $timezone): WithAuthAndParams
+    {
+        return new WithAuthAndParams(
             new ByApiKey(new ApiKey($apiKey)),
-            [
-                'X-REST-TIME-ZONE' => $timezone,
-            ]
+            ['X-REST-TIME-ZONE' => $timezone]
         );
-
-        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -107,10 +136,10 @@ final class ApiGateway
         }
     }
 
-    public function getFactory(): DtoFactory
+    public function getDtoFactory(): DtoFactory
     {
         if (!isset ($this->factory)) {
-            $this->factory = new DtoFactory($this);
+            $this->factory = DtoFactory::withDefaultSerializers();
         }
 
         return $this->factory;
