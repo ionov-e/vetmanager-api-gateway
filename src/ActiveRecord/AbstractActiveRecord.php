@@ -17,7 +17,31 @@ abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
     {
     }
 
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): static
+    {
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromApiResponseAsArray(
+            $apiResponseAsArray,
+            static::getModelKeyInResponse(),
+            static::class,
+            static::getDtoClass()
+        );
+    }
 
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromModelAsArray(ApiGateway $apiGateway, array $modelAsArray): static
+    {
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromModelAsArray(
+            $modelAsArray,
+            static::class,
+            static::getDtoClass()
+        );
+    }
+
+    public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): static
+    {
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromDto($modelDto, static::class);
+    }
 
     /** @return class-string<AbstractModelDTO> */
     abstract public static function getDtoClass(): string;

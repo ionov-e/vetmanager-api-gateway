@@ -1,18 +1,18 @@
 <?php
 
-namespace VetmanagerApiGateway\Unit\Facade;
+namespace VetmanagerApiGateway\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Facade\Client;
 
-#[CoversClass(ClientPlusTypeAndCity::class)]
-class ClientTest extends TestCase
+#[CoversClass(ActiveRecordFactory::class)]
+class ActiveRecordFactoryTest extends TestCase
 {
     public static function dataProviderClientJson(): array
     {
@@ -68,26 +68,14 @@ EOF
 
     /** @throws VetmanagerApiGatewayException */
     #[DataProvider('dataProviderClientJson')]
-    public function testCreationFromModelArray(string $json, string $getMethodName, int|string $expected): void
+    public function testCreationFromModelAsArray(string $json, string $getMethodName, int|string $expected): void
     {
         $modelDtoAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = Client::fromModelAsArray($apiGateway, $modelDtoAsArray);
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
-        $this->assertEquals($expected, $activeRecord->$getMethodName());
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    #[DataProvider('dataProviderClientJson')]
-    public function testCreationFromModelDto(string $json, string $getMethodName, int|string $expected): void
-    {
-        $modelDtoAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $dto = $apiGateway->getDtoFactory()->getAsDtoFromSingleModelAsArray($modelDtoAsArray, ClientPlusTypeAndCityDto::class);
-        $this->assertInstanceOf(ClientPlusTypeAndCityDto::class, $dto);
-
-        $activeRecord = Client::fromSingleDto($apiGateway, $dto);
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
+        $activeRecord = $apiGateway->getActiveRecordFactory()->getActiveRecordFromModelAsArray(
+            $modelDtoAsArray, ClientPlusTypeAndCity::class,ClientPlusTypeAndCityDto::class
+        );
+        $this->assertInstanceOf(ClientPlusTypeAndCity::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }
 }

@@ -13,6 +13,11 @@ class Client extends AbstractFacade
         return ActiveRecord\ClientPlusTypeAndCity::getApiModel();
     }
 
+    public static function getDefaultActiveRecord(): string
+    {
+        return ActiveRecord\Client::class;
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\ClientPlusTypeAndCity
     {

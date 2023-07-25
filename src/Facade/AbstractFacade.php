@@ -3,78 +3,34 @@
 namespace VetmanagerApiGateway\Facade;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
+use VetmanagerApiGateway\ActiveRecord\ActiveRecordBuildInterface;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AbstractModelDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/**
- * @template TActiveRecord of AbstractActiveRecord
- * @template TModelDTO of AbstractModelDTO
- */
-abstract class AbstractFacade
+abstract class AbstractFacade implements ActiveRecordBuildInterface
 {
     public function __construct(protected ApiGateway $apiGateway)
     {
     }
 
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @param class-string<TModelDTO> $dtoRecordClass
-     * @return TActiveRecord
-     * @throws VetmanagerApiGatewayException
-     */
-    protected static function protectedGetById(ApiGateway $apiGateway, ApiModel $apiModel, string $activeRecordClass, string $dtoRecordClass, int $id)
+    /** @return class-string<AbstractActiveRecord> */
+    abstract public static function getDefaultActiveRecord(): string;
+
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): AbstractActiveRecord
     {
-        $apiResponseAsArray = $apiGateway->getWithId($apiModel, $id);
-        return self::getActiveRecordFromApiResponseAsArray($apiGateway, $apiResponseAsArray, $apiModel, $activeRecordClass, $dtoRecordClass);
+        return static::getDefaultActiveRecord()::fromResponseAsArray($apiGateway, $apiResponseAsArray);
     }
 
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @param class-string<TModelDTO> $dtoClass
-     * @return TActiveRecord
-     * @throws VetmanagerApiGatewayException
-     */
-    public static function getActiveRecordFromApiResponseAsArray(
-        ApiGateway $apiGateway,
-        array      $apiResponseAsArray,
-        ApiModel   $apiModel,
-        string     $activeRecordClass,
-        string     $dtoClass
-    ): AbstractActiveRecord
+    /** @throws VetmanagerApiGatewayException */
+    public static function fromModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord
     {
-        $dto = $apiGateway->getDtoFactory()->getAsDtoFromApiResponseAsArray(
-            $apiResponseAsArray,
-            $apiModel->getResponseKey(),
-            $dtoClass
-        );
-        return self::getActiveRecordFromDto($apiGateway, $dto, $activeRecordClass);
+        return static::getDefaultActiveRecord()::fromModelAsArray($apiGateway, $modelAsArray);
     }
 
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @param class-string<TModelDTO> $dtoClass
-     * @return TActiveRecord
-     * @throws VetmanagerApiGatewayException
-     */
-    public static function getActiveRecordFromModelAsArray(
-        ApiGateway $apiGateway,
-        array      $modelAsArray,
-        string     $activeRecordClass,
-        string     $dtoClass
-    ): AbstractActiveRecord
+    public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): AbstractActiveRecord
     {
-        $dto = $apiGateway->getDtoFactory()->getAsDtoFromSingleModelAsArray($modelAsArray, $dtoClass);
-        return self::getActiveRecordFromDto($apiGateway, $dto, $activeRecordClass);
-    }
-
-    public static function getActiveRecordFromDto(
-        ApiGateway       $apiGateway,
-        AbstractModelDTO $modelAsArray,
-        string           $activeRecordClass
-    ): AbstractActiveRecord
-    {
-        return new $activeRecordClass($apiGateway, $modelAsArray);
+        return static::getDefaultActiveRecord()::fromSingleDto($apiGateway, $modelDto);
     }
 }
