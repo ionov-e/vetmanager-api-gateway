@@ -6,10 +6,10 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\AbstractModelDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
+/** @template TModelDTO of AbstractModelDTO */
 class DtoFactory
 {
     public function __construct(
@@ -32,72 +32,54 @@ class DtoFactory
      * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getAsDtoFromApiResponseAsArray(array $apiResponse, string $modelKey, string $dtoClassName): AbstractModelDTO
+    public function getAsDtoFromApiResponseWithSingleModelArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
     {
-        $dtoAsArray = $this->getModelDataFromApiResponseArray($apiResponse, $modelKey);
-
-        return $this->getAsDtoFromSingleModelAsArray($dtoAsArray, $dtoClassName);
+        $modelAsArray = ApiGateway::getModelsContentsFromApiResponseDataElement($apiResponse, $modelKeyInResponse);
+        return $this->getAsDtoFromSingleModelAsArray($modelAsArray, $dtoClassName);
     }
 
     /**
      * @param class-string<AbstractModelDTO> $dtoClassName
+     * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getAsDtoFromSingleModelAsArray(array $dtoAsArray, string $dtoClassName): AbstractModelDTO
+    public function getAsDtoFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
     {
-        if (!is_subclass_of($dtoClassName, AbstractModelDTO::class)) {
-            throw new VetmanagerApiGatewayInnerException("$dtoClassName is not a subclass of " . AbstractModelDTO::class);
-        }
-
-        $dto = $this->serializerArrayToObject->denormalize($dtoAsArray, $dtoClassName);
-
-        if (!is_a($dto, $dtoClassName)) {
-            throw new VetmanagerApiGatewayInnerException(get_class($this) . " couldn't make DTO: $dtoClassName");
-        }
-
-        return $dto;
+        $modelAsArray = ApiGateway::getModelsContentsFromApiResponseDataElement($apiResponse, $modelKeyInResponse);
+        return $this->getAsMultipleDtosFromModelsAsArrays($modelAsArray, $dtoClassName);
     }
 
-    /** Создание Active Record из АПИ-ответа в виде массива (раздекодированного JSON)
-     * @throws VetmanagerApiGatewayResponseException
+    /**
+     * @param array $listOfMultipleDtosAsArrays Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
+     * @param class-string<TModelDTO> $dtoClass
+     * @return TModelDTO[]
+     * @throws VetmanagerApiGatewayInnerException
      */
-    public function getModelDataFromApiResponseArray(array $apiResponse, string $modelKey): array
-    {
-        if (!isset($apiResponse[$modelKey])) {
-            throw new VetmanagerApiGatewayResponseException("Ключ модели не найден в ответе АПИ: '$modelKey'");
-        }
-
-        return self::fromMultipleDtosArrays($apiResponse[$modelKey]);
-    }
-
-    #TODO getAsDtos method
-
-    /** @param array $listOfMultipleDtosAsArrays Массив объектов. Каждый элемент которого - массив с содержимым объекта: {id: 13, ...}
-     * @throws VetmanagerApiGatewayResponseEmptyException
-     */
-    public static function fromMultipleDtosArrays(array $listOfMultipleDtosAsArrays): array
+    public function getAsMultipleDtosFromModelsAsArrays(array $listOfMultipleDtosAsArrays, string $dtoClass): array
     {
         return array_map(
-            fn(array $objectContents): static => $this->fromSingleDtoArray($objectContents),
+            fn(array $singleDtoAsArray): AbstractModelDTO => $this->getAsDtoFromSingleModelAsArray($singleDtoAsArray, $dtoClass),
             $listOfMultipleDtosAsArrays
         );
     }
-
-    /** @param array $singleDtoAsArray Содержимое: {id: 13, ...}
-     * @throws VetmanagerApiGatewayResponseEmptyException
-     * @psalm-suppress UnsafeInstantiation
+    
+    /**
+     * @param class-string<AbstractModelDTO> $dtoClass
+     * @return TModelDTO
+     * @throws VetmanagerApiGatewayInnerException
      */
-    public function fromSingleDtoArray(array $singleDtoAsArray): static
+    public function getAsDtoFromSingleModelAsArray(array $singleDtoAsArray, string $dtoClass): AbstractModelDTO
     {
-        if (empty($singleDtoAsArray)) {
-            throw new VetmanagerApiGatewayResponseEmptyException();
+        if (!is_subclass_of($dtoClass, AbstractModelDTO::class)) {
+            throw new VetmanagerApiGatewayInnerException("$dtoClass is not a subclass of " . AbstractModelDTO::class);
         }
 
-        return new static ();   #TODO
-    }
+        $dto = $this->serializerArrayToObject->denormalize($singleDtoAsArray, $dtoClass);
 
-    private function denormalizeDtoFromArray(array $array, string $className)
-    {
-        return $this->serializerArrayToObject->denormalize($array, $className);
+        if (!is_a($dto, $dtoClass)) {
+            throw new VetmanagerApiGatewayInnerException(get_class($this) . " couldn't make DTO: $dtoClass");
+        }
+
+        return $dto;
     }
 }

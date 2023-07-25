@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\FullName;
@@ -98,7 +95,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Street $street
  * @property-read FullName $fullName
  * */
-abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface, AllRequestsInterface
+abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface//, AllRequestsInterface
 {
     use AllRequestsTrait;
 
@@ -109,31 +106,15 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         $this->modelDTO = $modelDTO;
     }
 
-    /** @return ApiModel::Client */
-    public static function getApiModel(): ApiModel
+    public static function getRouteKey(): string
     {
-        return ApiModel::Client;
+        return 'client';
     }
 
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness     #TODO
 //    {
 //        return Completeness::Full;
 //    }
-
-    /** @return Pet[]
-     * @throws VetmanagerApiGatewayException
-     */
-    private function getPetsAlive(): array
-    {
-        $pets = $this->apiGateway->getWithQueryBuilder(
-            ApiModel::Pet,
-            (new Builder())
-                ->where('owner_id', (string)$this->getId())
-                ->where('status', Enum\Pet\Status::Alive->value)
-        );
-
-        return Pet::fromApiResponseArray($this->apiGateway, $pets);
-    }
 
     /** @inheritDoc */
     public function getId(): int
@@ -483,8 +464,9 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setPhonePrefix($value));
     }
 
-    abstract function getCity(): City;
+    abstract function getCity(): ?City;
 
+    /** Вернет пустую строку если ничего */
     abstract function getClientTypeTitle(): string;
 
     /** @return MedicalCardByClient[]

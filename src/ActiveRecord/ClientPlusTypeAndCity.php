@@ -14,13 +14,19 @@ class ClientPlusTypeAndCity extends AbstractClient
         $this->modelDTO = $modelDTO;
     }
 
-    function getCity(): City
+    public static function getDtoClass(): string
     {
-        return new City($this->apiGateway, $this->modelDTO->getCity());
+        return ClientPlusTypeAndCityDto::class;
+    }
+
+    function getCity(): ?City
+    {
+        return $this->modelDTO->getCity() ? new City($this->apiGateway, $this->modelDTO->getCity()) : null;
     }
 
     function getClientTypeTitle(): string
     {
-        return $this->modelDTO->getCityTitle();
+        $clientType = $this->modelDTO->getClientType();
+        return $clientType ? $clientType->getTitle() : "";
     }
 }

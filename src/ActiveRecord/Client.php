@@ -4,6 +4,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ClientDto;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Client extends AbstractClient
 {
@@ -14,13 +15,20 @@ class Client extends AbstractClient
         $this->modelDTO = $modelDTO;
     }
 
-    function getCity(): City
+    public static function getDtoClass(): string
     {
-        // TODO: Implement getCity() method.
+        return ClientDto::class;
     }
 
+    /** @throws VetmanagerApiGatewayException */
+    function getCity(): ?City
+    {
+        return $this->getCityId() ? City::getById($this->apiGateway, $this->getCityId()) : null;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
     function getClientTypeTitle(): string
     {
-        // TODO: Implement getClientTypeTitle() method.
+        return ClientPlusTypeAndCity::getById($this->apiGateway, $this->getId())->getClientTypeTitle();
     }
 }

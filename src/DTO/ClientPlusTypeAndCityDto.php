@@ -35,8 +35,8 @@ class ClientPlusTypeAndCityDto extends ClientDto
         protected ?string       $last_visit_date,
         protected ?string       $number_of_journal,
         protected ?string       $phone_prefix,
-        protected CityDto       $city_data,
-        protected ClientTypeDto $client_type_data
+        protected ?CityDto       $city_data,
+        protected ?ClientTypeDto $client_type_data
     )
     {
         parent::__construct(
@@ -73,13 +73,13 @@ class ClientPlusTypeAndCityDto extends ClientDto
         );
     }
 
-    public function getCity(): CityDto
+    public function getCity(): ?CityDto
     {
-        return $this->city_data;
+        return ($this->city_data) ?: null;
     }
 
-    public function getClientType(): ClientTypeDto
+    public function getClientType(): ?ClientTypeDto
     {
-        return $this->client_type_data;
+        return $this->client_type_data ?: null;
     }
 }

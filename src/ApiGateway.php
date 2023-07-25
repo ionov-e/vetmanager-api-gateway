@@ -20,7 +20,6 @@ use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
@@ -28,7 +27,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiGateway
 {
-    private DtoFactory $factory;
+    private DtoFactory $dtoFactory;
+    private ActiveRecordFactory $activeRecordFactory;
 
     public function __construct(
         public readonly string   $subDomain,
@@ -138,20 +138,29 @@ final class ApiGateway
 
     public function getDtoFactory(): DtoFactory
     {
-        if (!isset ($this->factory)) {
-            $this->factory = DtoFactory::withDefaultSerializers();
+        if (!isset ($this->dtoFactory)) {
+            $this->dtoFactory = DtoFactory::withDefaultSerializers();
         }
 
-        return $this->factory;
+        return $this->dtoFactory;
+    }
+
+    public function getActiveRecordFactory(): ActiveRecordFactory
+    {
+        if (!isset ($this->activeRecordFactory)) {
+            $this->activeRecordFactory = new ActiveRecordFactory($this);
+        }
+
+        return $this->activeRecordFactory;
     }
 
     /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithId(ApiModel $apiModel, int $modelId): array
+    public function getWithId(string $modelKeyInResponse, string $modelRouteKey, int $modelId): array
     {
-        return $this->getModelsInnerContentsFromApi('GET', $apiModel, $modelId);
+        return $this->getModelsInnerContentsFromApi('GET', $modelRouteKey, $modelKeyInResponse, $modelId);
     }
 
     /**
@@ -159,10 +168,10 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getContentsWithGetParametersAsString(ApiModel $apiModel, string $getParameters): array
+    public function getContentsWithGetParametersAsString(string $modelKeyInResponse, string $modelRouteKey, string $getParameters): array
     {
-        $apiDataContents = $this->getWithGetParametersAsString($apiModel, $getParameters);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiModel);
+        $apiDataContents = $this->getWithGetParametersAsString($modelRouteKey, $getParameters);
+        return self::getModelsContentsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /**
@@ -170,10 +179,10 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithGetParametersAsString(ApiModel $apiModel, string $getParameters): array
+    public function getWithGetParametersAsString(string $modelRouteKey, string $getParameters): array
     {
         try {
-            $url = (new RestApiPrefix())->asString() . $apiModel->getRoute() . '?' . $getParameters;
+            $url = (new RestApiPrefix())->asString() . $modelRouteKey . '?' . $getParameters;
         } catch (\Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
@@ -187,10 +196,10 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getContentsWithQueryBuilder(ApiModel $apiModel, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public function getContentsWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        $apiDataContents = $this->getWithQueryBuilder($apiModel, $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiModel);
+        $apiDataContents = $this->getWithQueryBuilder($modelKeyInResponse, $modelRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return self::getModelsContentsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /**
@@ -199,10 +208,10 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithQueryBuilder(ApiModel $apiModel, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public function getWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
         $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
-        return self::getWithPagedQuery($apiModel, $pagedQuery, $maxLimitOfReturnedModels);
+        return self::getWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
     private function getPagedQueryFromQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): PagedQuery
@@ -215,28 +224,23 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithPagedQuery(ApiModel $apiModel, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $modelResponseKeyInJson = $apiModel->getResponseKey();
         $arrayOfModelsWithTheirContents = [];
 
         do {
-            $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiModel, $pagedQuery);
-            if (!isset($modelDataContents[$modelResponseKeyInJson]) || !is_array($modelDataContents[$modelResponseKeyInJson])) {
-                throw new VetmanagerApiGatewayResponseException(
-                    "В Json под ключом '$modelResponseKeyInJson' должна быть строка"
-                );
-            }
-            $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
+            $apiResponseDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($modelRouteKey, $pagedQuery);
+            $modelsInResponse = $this->getModelsContentsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
+            $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelsInResponse);
             $pagedQuery->next();
         } while (
-            (int)$modelDataContents['totalCount'] < $maxLimitOfReturnedModels &&
+            (int)$apiResponseDataContents['totalCount'] < $maxLimitOfReturnedModels &&
             count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels
         );
 
         return [
-            'totalCount' => $modelDataContents['totalCount'],
-            $apiModel->getResponseKey() => $arrayOfModelsWithTheirContents
+            'totalCount' => $apiResponseDataContents['totalCount'],
+            $modelKeyInResponse => $arrayOfModelsWithTheirContents
         ];
     }
 
@@ -244,9 +248,9 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    private function getModelsDataContentsUsingPagedQueryWithOneRequest(ApiModel $apiModel, PagedQuery $pagedQuery): array
+    private function getModelsDataContentsUsingPagedQueryWithOneRequest(string $modelRouteKey, PagedQuery $pagedQuery): array
     {
-        $url = $this->getUrlForGuzzleRequest($apiModel);
+        $url = $this->getUrlForGuzzleRequest($modelRouteKey);
         $response = $this->getResponseFromGuzzleClient('GET', $url, pagedQuery: $pagedQuery);
         return $this->getDataContentsFromResponseOrThrowOnFail($response);
     }
@@ -257,37 +261,37 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getContentsWithPagedQuery(ApiModel $apiModel, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getContentsWithPagedQuery(string $modelRouteKey, string $modelKeyInResponse, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $apiDataContents = $this->getWithPagedQuery($apiModel, $pagedQuery, $maxLimitOfReturnedModels);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiModel);
+        $apiDataContents = $this->getWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return self::getModelsContentsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function post(ApiModel $apiModel, array $data): array
+    public function post(string $modelRouteKey, string $modelKeyInResponse, array $data): array
     {
-        return $this->getModelsInnerContentsFromApi('POST', $apiModel, data: $data);
+        return $this->getModelsInnerContentsFromApi('POST', $modelRouteKey, $modelKeyInResponse, data: $data);
     }
 
     /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function put(ApiModel $apiModel, int $modelId, array $data): array
+    public function put(string $modelRouteKey, string $modelKeyInResponse, int $modelId, array $data): array
     {
-        return $this->getModelsInnerContentsFromApi('PUT', $apiModel, $modelId, $data);
+        return $this->getModelsInnerContentsFromApi('PUT', $modelRouteKey, $modelKeyInResponse, $modelId, $data);
     }
 
     /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function delete(ApiModel $apiModel, int $modelId): void
+    public function delete(string $modelRouteKey, int $modelId): void
     {
-        $this->getDataContentsFromResponseFromApi('DELETE', $apiModel, $modelId);
+        $this->getDataContentsFromResponseFromApi('DELETE', $modelRouteKey, $modelId);
         // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
     }
 
@@ -296,28 +300,27 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    private function getModelsInnerContentsFromApi(string $method, ApiModel $apiModel, int $modelId = 0, array $data = []): array
+    private function getModelsInnerContentsFromApi(string $method, string $modelRouteKey, string $modelKeyInResponse, int $modelId = 0, array $data = []): array
     {
-        $apiDataContents = $this->getDataContentsFromResponseFromApi($method, $apiModel, $modelId, $data);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiModel);
+        $apiDataContents = $this->getDataContentsFromResponseFromApi($method, $modelRouteKey, $modelId, $data);
+        return self::getModelsContentsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /**
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    private function getDataContentsFromResponseFromApi(string $method, ApiModel $apiModel, int $modelId = 0, array $data = []): array
+    private function getDataContentsFromResponseFromApi(string $method, string $modelRouteKey, int $modelId = 0, array $data = []): array
     {
-        $url = $this->getUrlForGuzzleRequest($apiModel, $modelId);
+        $url = $this->getUrlForGuzzleRequest($modelRouteKey, $modelId);
         $response = $this->getResponseFromGuzzleClient($method, $url, $data);
         return $this->getDataContentsFromResponseOrThrowOnFail($response);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    private function getUrlForGuzzleRequest(ApiModel $apiModel, int $modelId = 0): string
+    private function getUrlForGuzzleRequest(string $modelRouteKey, int $modelId = 0): string
     {
-        $modelKey = $apiModel->getRoute();
-        $uri = ($modelId) ? new WithId(new Model($modelKey), $modelId) : new OnlyModel(new Model($modelKey));
+        $uri = ($modelId) ? new WithId(new Model($modelRouteKey), $modelId) : new OnlyModel(new Model($modelRouteKey));
 
         try {
             return $uri->asString();
@@ -368,6 +371,7 @@ final class ApiGateway
      * @throws VetmanagerApiGatewayResponseEmptyException
      * @throws VetmanagerApiGatewayResponseException
      * @psalm-suppress RedundantCastGivenDocblockType
+     * @return array{data: array, success: bool, message?: string}
      */
     private function getDataContentsFromResponseOrThrowOnFail(ResponseInterface $response): array
     {
@@ -382,22 +386,17 @@ final class ApiGateway
                 $contents['message'] ? (string)$contents['message'] : 'Неизвестная ошибка работы с апи'
             );
         }
-        /** @var array{data: array, success: bool, message?: string} $contents */
 
         return (array)$contents['data'];
     }
 
-    /**
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getModelsContentsFromApiResponseDataElement(array $apiDataContents, ApiModel $apiModel): array
+    /** @throws VetmanagerApiGatewayResponseException */
+    public static function getModelsContentsFromApiResponseDataElement(array $apiDataContents, string $modelKeyInResponse): array
     {
-        $modelKey = $apiModel->getResponseKey();
-
-        if (!isset($apiDataContents[$modelKey])) {
-            throw new VetmanagerApiGatewayResponseException("Не найден ключ модели '$modelKey' в JSON ответе от АПИ");
+        if (!isset($apiDataContents[$modelKeyInResponse])) {
+            throw new VetmanagerApiGatewayResponseException("Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ");
         }
 
-        return $apiDataContents[$modelKey];
+        return $apiDataContents[$modelKeyInResponse];
     }
 }
