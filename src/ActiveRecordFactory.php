@@ -31,7 +31,7 @@ class ActiveRecordFactory
     ): AbstractActiveRecord
     {
         $apiResponseAsArray = $this->apiGateway->getWithId($modelKeyInResponse, $modelRouteKey, $id);
-        return self::getActiveRecordFromApiResponseAsArray(
+        return self::getActiveRecordFromApiResponseWithSingleModelAsArray(
             $apiResponseAsArray, $modelKeyInResponse, $activeRecordClass, $dtoClass
         );
     }
@@ -42,7 +42,7 @@ class ActiveRecordFactory
      * @return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
-    public function getActiveRecordFromApiResponseAsArray(
+    public function getActiveRecordFromApiResponseWithSingleModelAsArray(
         array  $apiResponseAsArray,
         string $modelKeyInResponse,
         string $activeRecordClass,
@@ -54,7 +54,28 @@ class ActiveRecordFactory
             $modelKeyInResponse,
             $dtoClass
         );
-        return self::getActiveRecordFromDto($dto, $activeRecordClass);
+        return self::getActiveRecordFromSingleDto($dto, $activeRecordClass);
+    }
+
+    /**
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @param class-string<TModelDTO> $dtoClass
+     * @return TActiveRecord[]
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getActiveRecordFromApiResponseWithMultipleModelsAsArray(
+        array  $apiResponseAsArray,
+        string $modelKeyInResponse,
+        string $activeRecordClass,
+        string $dtoClass
+    ): array
+    {
+        $dtos = $this->apiGateway->getDtoFactory()->getAsDtoFromApiResponseWithMultipleModelsArray(
+            $apiResponseAsArray,
+            $modelKeyInResponse,
+            $dtoClass
+        );
+        return self::getActiveRecordFromSingleDto($dtos, $activeRecordClass);
     }
 
     /**
@@ -63,21 +84,34 @@ class ActiveRecordFactory
      * @return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
-    public function getActiveRecordFromModelAsArray(
+    public function getActiveRecordFromSingleModelAsArray(
         array  $modelAsArray,
         string $activeRecordClass,
         string $dtoClass
     ): AbstractActiveRecord
     {
         $dto = $this->apiGateway->getDtoFactory()->getAsDtoFromSingleModelAsArray($modelAsArray, $dtoClass);
-        return $this->getActiveRecordFromDto($dto, $activeRecordClass);
+        return $this->getActiveRecordFromSingleDto($dto, $activeRecordClass);
+    }
+
+    /**
+     * @param AbstractModelDTO[] $modelDTOs
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @return TActiveRecord[]
+     */
+    public function getActiveRecordsFromMultipleDtos(array $modelDTOs, string $activeRecordClass): array
+    {
+        return array_map(
+            fn(AbstractModelDTO $modelDTO): AbstractActiveRecord => $this->getActiveRecordFromSingleDto($modelDTO, $activeRecordClass),
+            $modelDTOs
+        );
     }
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord
      */
-    public function getActiveRecordFromDto(AbstractModelDTO $modelDTO, string $activeRecordClass): AbstractActiveRecord
+    public function getActiveRecordFromSingleDto(AbstractModelDTO $modelDTO, string $activeRecordClass): AbstractActiveRecord
     {
         return new $activeRecordClass($this->apiGateway, $modelDTO);
     }

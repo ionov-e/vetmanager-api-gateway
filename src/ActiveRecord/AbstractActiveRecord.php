@@ -10,17 +10,14 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
 {
-    public function __construct(
-        protected ApiGateway       $apiGateway,
-        protected AbstractModelDTO $modelDTO
-    )
+    public function __construct(protected ApiGateway $apiGateway, protected AbstractModelDTO $modelDTO)
     {
     }
 
     /** @throws VetmanagerApiGatewayException */
     public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): static
     {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromApiResponseAsArray(
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromApiResponseWithSingleModelAsArray(
             $apiResponseAsArray,
             static::getModelKeyInResponse(),
             static::class,
@@ -29,9 +26,9 @@ abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromModelAsArray(ApiGateway $apiGateway, array $modelAsArray): static
+    public static function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): static
     {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromModelAsArray(
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromSingleModelAsArray(
             $modelAsArray,
             static::class,
             static::getDtoClass()
@@ -40,7 +37,7 @@ abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
 
     public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): static
     {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromDto($modelDto, static::class);
+        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromSingleDto($modelDto, static::class);
     }
 
     /** @return class-string<AbstractModelDTO> */

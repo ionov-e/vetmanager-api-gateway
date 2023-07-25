@@ -12,7 +12,7 @@ interface ActiveRecordBuildInterface
     public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): AbstractActiveRecord;
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord;
+    public static function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord;
 
     public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): AbstractActiveRecord;
 }

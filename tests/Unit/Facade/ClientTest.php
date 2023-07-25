@@ -72,7 +72,7 @@ EOF
     {
         $modelDtoAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = Client::fromModelAsArray($apiGateway, $modelDtoAsArray);
+        $activeRecord = Client::fromSingleModelAsArray($apiGateway, $modelDtoAsArray);
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }

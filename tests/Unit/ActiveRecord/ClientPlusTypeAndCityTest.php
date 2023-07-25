@@ -86,7 +86,7 @@ EOF
     {
         $modelDtoAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = ClientPlusTypeAndCity::fromModelAsArray($apiGateway, $modelDtoAsArray);
+        $activeRecord = ClientPlusTypeAndCity::fromSingleModelAsArray($apiGateway, $modelDtoAsArray);
         $this->assertInstanceOf(ClientPlusTypeAndCity::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }
