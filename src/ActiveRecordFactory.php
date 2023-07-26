@@ -30,7 +30,7 @@ class ActiveRecordFactory
         int    $id
     ): AbstractActiveRecord
     {
-        $apiResponseAsArray = $this->apiGateway->getWithId($modelKeyInResponse, $modelRouteKey, $id);
+        $apiResponseAsArray = $this->apiGateway->getApiService()->getWithId($modelKeyInResponse, $modelRouteKey, $id);
         return self::getActiveRecordFromApiResponseWithSingleModelAsArray(
             $apiResponseAsArray, $modelKeyInResponse, $activeRecordClass, $dtoClass
         );
