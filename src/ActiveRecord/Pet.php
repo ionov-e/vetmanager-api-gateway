@@ -142,34 +142,34 @@ final class Pet extends AbstractActiveRecord implements AllRequestsInterface
         if ($this->completenessLevel != Completeness::Full) {
             switch ($name) {
                 case 'client':
-                    return Client::getById($this->apiGateway, $this->ownerId);
+                    return Client::getById($this->activeRecordFactory, $this->ownerId);
                 case 'type':
-                    return $this->typeId ? PetType::getById($this->apiGateway, $this->typeId) : null;
+                    return $this->typeId ? PetType::getById($this->activeRecordFactory, $this->typeId) : null;
                 case 'breed':
-                    return $this->breedId ? Breed::getById($this->apiGateway, $this->breedId) : null;
+                    return $this->breedId ? Breed::getById($this->activeRecordFactory, $this->breedId) : null;
                 case 'color':
-                    return $this->colorId ? ComboManualItem::getByPetColorId($this->apiGateway, $this->colorId) : null;
+                    return $this->colorId ? ComboManualItem::getByPetColorId($this->activeRecordFactory, $this->colorId) : null;
             }
         }
 
         return match ($name) {
             'client' => !empty($this->originalDataArray['owner'])
-                ? Client::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['owner'])
+                ? Client::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['owner'])
                 : null,
             'type' => !empty($this->originalDataArray['type'])
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['type'])
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['type'])
                 : null,
             'breed' => $this->getBreedActiveRecordOrNull(),
             'color' => !empty($this->originalDataArray['color'])
-                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['color'])
+                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['color'])
                 : null,
-            'admissions' => Admission::getByPetId($this->apiGateway, $this->id),
-            'admissionsOfOwner' => Admission::getByClientId($this->apiGateway, $this->ownerId),
+            'admissions' => Admission::getByPetId($this->activeRecordFactory, $this->id),
+            'admissionsOfOwner' => Admission::getByClientId($this->activeRecordFactory, $this->ownerId),
             'medicalCards' => MedicalCard::getByPagedQuery(
-                $this->apiGateway,
+                $this->activeRecordFactory,
                 (new Builder())->where('patient_id', (string)$this->id)->paginateAll()
             ),
-            'vaccines' => MedicalCardAsVaccination::getByPetId($this->apiGateway, $this->id),
+            'vaccines' => MedicalCardAsVaccination::getByPetId($this->activeRecordFactory, $this->id),
             default => $this->originalDto->$name,
         };
     }
@@ -190,6 +190,6 @@ final class Pet extends AbstractActiveRecord implements AllRequestsInterface
             $typeArray
         );
 
-        return Breed::fromSingleDtoArrayAsFromGetById($this->apiGateway, $arrayForFullBreedActiveRecord);
+        return Breed::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $arrayForFullBreedActiveRecord);
     }
 }

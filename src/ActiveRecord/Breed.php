@@ -49,8 +49,8 @@ final class Breed extends AbstractActiveRecord implements AllRequestsInterface
     {
         return match ($name) {
             'type' => ($this->completenessLevel == Completeness::Full)
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['petType'])
-                : PetType::getById($this->apiGateway, $this->typeId),
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['petType'])
+                : PetType::getById($this->activeRecordFactory, $this->typeId),
             default => $this->originalDto->$name,
         };
     }

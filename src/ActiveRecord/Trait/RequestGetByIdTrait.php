@@ -57,7 +57,7 @@ trait RequestGetByIdTrait
      * @psalm-suppress PropertyTypeCoercion */
     private function fillCurrentObjectWithGetByIdData(): void
     {
-        $instanceFromGetById = static::getById($this->apiGateway, $this->id);
+        $instanceFromGetById = static::getById($this->activeRecordFactory, $this->id);
         $this->originalDto = $instanceFromGetById->getPrimaryDto();
         $this->completenessLevel = Completeness::Full;
     }

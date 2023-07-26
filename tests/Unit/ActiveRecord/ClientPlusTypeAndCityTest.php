@@ -5,12 +5,20 @@ namespace VetmanagerApiGateway\Unit\ActiveRecord;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
+use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\Client;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DTO\ClientDto;
 use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
+use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
-#[CoversClass(ClientPlusTypeAndCity::class)]
+#[CoversClass(ActiveRecord\ClientPlusTypeAndCity::class)]
+#[CoversClass(ClientPlusTypeAndCityDto::class)]
+#[CoversClass(ClientDto::class)]
+#[CoversClass(Client::class)]
+#[CoversClass(Facade\Client::class)]
 class ClientPlusTypeAndCityTest extends TestCase
 {
     public static function dataProviderClientJson(): array
@@ -67,42 +75,44 @@ EOF
 
     public function testGetDtoClass()
     {
-        $this->assertEquals(ClientPlusTypeAndCityDto::class, ClientPlusTypeAndCity::getDtoClass());
+        $this->assertEquals(ClientPlusTypeAndCityDto::class, ActiveRecord\ClientPlusTypeAndCity::getDtoClass());
     }
 
     public function testGetRouteKey()
     {
-        $this->assertEquals('client', ClientPlusTypeAndCity::getRouteKey());
+        $this->assertEquals('client', ActiveRecord\ClientPlusTypeAndCity::getRouteKey());
     }
 
     public function testGetModelKeyInResponse()
     {
-        $this->assertEquals('client', ClientPlusTypeAndCity::getModelKeyInResponse());
+        $this->assertEquals('client', ActiveRecord\ClientPlusTypeAndCity::getModelKeyInResponse());
     }
 
     /** @throws VetmanagerApiGatewayException */
     #[DataProvider('dataProviderClientJson')]
-    public function testFromModelAsArray(string $json, string $getMethodName, int|string $expected)
+    public function testFromModelAsArray(string $json, string $getMethodName, int|string $expected): void
     {
-        $modelDtoAsArray = json_decode($json, true);
+        $modelAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = ClientPlusTypeAndCity::fromSingleModelAsArray($apiGateway, $modelDtoAsArray);
-        $this->assertInstanceOf(ClientPlusTypeAndCity::class, $activeRecord);
+        $clientFacade = $apiGateway->getClient();
+        $this->assertInstanceOf(\VetmanagerApiGateway\Facade\Client::class, $clientFacade);
+        $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);
+        $this->assertInstanceOf(Client::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }
 
     /** @throws VetmanagerApiGatewayException */
     #[DataProvider('dataProviderClientJson')]
-    public function testFromSingleDto(string $json, string $getMethodName, int|string $expected)
+    public function testFromSingleDtoAndGetClientPlusActiveRecord(string $json, string $getMethodName, int|string $expected): void
     {
-        $modelDtoAsArray = json_decode($json, true);
+        $modelAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $dto = $apiGateway->getDtoFactory()->getAsDtoFromSingleModelAsArray($modelDtoAsArray, ClientPlusTypeAndCityDto::class);
-        $this->assertInstanceOf(ClientPlusTypeAndCityDto::class, $dto);
-
-        $activeRecord = ClientPlusTypeAndCity::fromSingleDto($apiGateway, $dto);
-        $this->assertInstanceOf(ClientPlusTypeAndCity::class, $activeRecord);
-        $this->assertEquals($expected, $activeRecord->$getMethodName());
-        $this->assertEquals("Временный", $activeRecord->getClientTypeTitle());
+        $dto = DtoFactory::withDefaultSerializers()->getAsDtoFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
+        $activeRecordClient = $apiGateway->getClient()->specificARFromSingleDto($dto, ActiveRecord\ClientPlusTypeAndCity::class);
+        $this->assertInstanceOf(ActiveRecord\ClientPlusTypeAndCity::class, $activeRecordClient);
+        $activeRecordCity = $activeRecordClient->getCity();
+        $this->assertInstanceOf(ActiveRecord\City::class, $activeRecordCity);
+        $this->assertEquals(251, $activeRecordCity->getId());
+        $this->assertEquals("Временный", $activeRecordClient->getClientTypeTitle());
     }
 }

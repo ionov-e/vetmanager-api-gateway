@@ -2,12 +2,16 @@
 
 namespace VetmanagerApiGateway\Unit\Facade;
 
+use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
+use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
+use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
-use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
+use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiService;
+use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Client;
 
@@ -70,23 +74,14 @@ EOF
     #[DataProvider('dataProviderClientJson')]
     public function testCreationFromModelArray(string $json, string $getMethodName, int|string $expected): void
     {
-        $modelDtoAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = Client::fromSingleModelAsArray($apiGateway, $modelDtoAsArray);
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
-        $this->assertEquals($expected, $activeRecord->$getMethodName());
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    #[DataProvider('dataProviderClientJson')]
-    public function testCreationFromModelDto(string $json, string $getMethodName, int|string $expected): void
-    {
-        $modelDtoAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $dto = $apiGateway->getDtoFactory()->getAsDtoFromSingleModelAsArray($modelDtoAsArray, ClientPlusTypeAndCityDto::class);
-        $this->assertInstanceOf(ClientPlusTypeAndCityDto::class, $dto);
-
-        $activeRecord = Client::fromSingleDto($apiGateway, $dto);
+        $apiService = new ApiService(new \GuzzleHttp\Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $activeRecordFactory = new ActiveRecordFactory(
+            $apiService,
+            DtoFactory::withDefaultSerializers()
+        );
+        $clientFacade = new Client($activeRecordFactory);
+        $modelAsArray = json_decode($json, true);
+        $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }

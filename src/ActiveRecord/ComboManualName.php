@@ -94,7 +94,7 @@ final class ComboManualName extends AbstractActiveRecord implements AllRequestsI
             case 'comboManualItems':
                 $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
                 return ComboManualItem::fromMultipleDtosArrays(
-                    $this->apiGateway,
+                    $this->activeRecordFactory,
                     $this->originalDataArray['comboManualItems']
                 );
             default:

@@ -106,12 +106,12 @@ final class Good extends AbstractActiveRecord implements AllRequestsInterface
         }
 
         return match ($name) {
-            'group' => GoodGroup::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['group']),
+            'group' => GoodGroup::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['group']),
             'unit' => !empty($this->originalDataArray['unitStorage'])
-                ? Unit::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['unitStorage'])
+                ? Unit::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['unitStorage'])
                 : null,
             'goodSaleParams' => GoodSaleParam::fromMultipleDtosArrays(
-                $this->apiGateway,
+                $this->activeRecordFactory,
                 $this->getFullDataForGoodSaleParamActiveRecords(),
                 Completeness::Full
             ),

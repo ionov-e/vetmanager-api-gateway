@@ -28,9 +28,9 @@ trait RequestGetByQueryTrait
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public static function getByPagedQuery(ApiGateway $apiGateway, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public static function getByPagedQuery(ApiGateway $apiGateway, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $response = $apiGateway->getWithPagedQuery(static::getApiModel(), $pagedQuery, $maxLimitOfReturnedModels);
+        $response = $apiGateway->getWithPagedQuery($modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
         return static::fromApiResponseArray($apiGateway, $response, static::getCompletenessFromGetAllOrByQuery());
     }
 

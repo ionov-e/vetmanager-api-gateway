@@ -2,15 +2,15 @@
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
 
 class ClientPlusTypeAndCity extends AbstractClient
 {
-    public function __construct(ApiGateway $apiGateway, ClientPlusTypeAndCityDto $modelDTO)
+    public function __construct(ActiveRecordFactory $activeRecordFactory, ClientPlusTypeAndCityDto $modelDTO)
     {
-        parent::__construct($apiGateway, $modelDTO);
-        $this->apiGateway = $apiGateway;
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->activeRecordFactory = $activeRecordFactory;
         $this->modelDTO = $modelDTO;
     }
 
@@ -21,7 +21,7 @@ class ClientPlusTypeAndCity extends AbstractClient
 
     function getCity(): ?City
     {
-        return $this->modelDTO->getCity() ? new City($this->apiGateway, $this->modelDTO->getCity()) : null;
+        return $this->modelDTO->getCity() ? new City($this->activeRecordFactory, $this->modelDTO->getCity()) : null;
     }
 
     function getClientTypeTitle(): string

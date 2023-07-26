@@ -111,16 +111,16 @@ final class MedicalCard extends AbstractActiveRecord implements AllRequestsInter
     {
         return match ($name) {
             'pet' => ($this->completenessLevel == Completeness::Full)
-                ? Pet::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['patient'])
-                : Pet::getById($this->apiGateway, $this->petId),
-            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId) : null,
-            'admission' => $this->admissionId ? Admission::getById($this->apiGateway, $this->admissionId) : null,
-            'nextMeet' => $this->nextMeetId ? Admission::getById($this->apiGateway, $this->nextMeetId) : null,
-            'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
-            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
-            'invoice' => $this->invoiceId ? Invoice::getById($this->apiGateway, $this->invoiceId) : null,
-            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+                ? Pet::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['patient'])
+                : Pet::getById($this->activeRecordFactory, $this->petId),
+            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
+            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? Property::isOnlineSigningUpAvailableForClinic($this->activeRecordFactory, $this->clinicId) : null,
+            'admission' => $this->admissionId ? Admission::getById($this->activeRecordFactory, $this->admissionId) : null,
+            'nextMeet' => $this->nextMeetId ? Admission::getById($this->activeRecordFactory, $this->nextMeetId) : null,
+            'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->activeRecordFactory, $this->admissionTypeId) : null,
+            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->activeRecordFactory, $this->meetResultId) : null,
+            'invoice' => $this->invoiceId ? Invoice::getById($this->activeRecordFactory, $this->invoiceId) : null,
+            'user' => $this->userId ? User::getById($this->activeRecordFactory, $this->userId) : null,
             default => $this->originalDto->$name
         };
     }

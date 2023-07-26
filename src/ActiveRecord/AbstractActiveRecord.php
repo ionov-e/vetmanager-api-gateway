@@ -4,40 +4,16 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\AbstractModelDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
+abstract class AbstractActiveRecord //implements ActiveRecordBuildInterface
 {
-    public function __construct(protected ApiGateway $apiGateway, protected AbstractModelDTO $modelDTO)
+    public function __construct(
+        protected ActiveRecordFactory $activeRecordFactory,
+        protected AbstractModelDTO    $modelDTO
+    )
     {
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): static
-    {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromApiResponseWithSingleModelAsArray(
-            $apiResponseAsArray,
-            static::getModelKeyInResponse(),
-            static::class,
-            static::getDtoClass()
-        );
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): static
-    {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromSingleModelAsArray(
-            $modelAsArray,
-            static::class,
-            static::getDtoClass()
-        );
-    }
-
-    public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): static
-    {
-        return $apiGateway->getActiveRecordFactory()->getActiveRecordFromSingleDto($modelDto, static::class);
     }
 
     /** @return class-string<AbstractModelDTO> */
@@ -62,7 +38,7 @@ abstract class AbstractActiveRecord implements ActiveRecordBuildInterface
      */
     public static function getModelKeyInResponse(): string
     {
-        return static::getRouteKey();
+        return static::getRouteKey(); // Дефолтное значение. В редких случаях нужно перезаписать
     }
 
     protected static function setNewModelDtoFluently(self $object, AbstractModelDTO $newModelDto): static

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\CityTypeDto;
 use VetmanagerApiGateway\DTO\CityTypeDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
@@ -21,14 +20,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     title: string
  * } $originalDataArray
  */
-final class CityType extends AbstractActiveRecord implements CityTypeDtoInterface, AllRequestsInterface
+final class CityType extends AbstractActiveRecord implements CityTypeDtoInterface //, AllRequestsInterface
 {
     use AllRequestsTrait;
 
-    public function __construct(ApiGateway $apiGateway, CityTypeDto $modelDTO)
+    public function __construct(ActiveRecordFactory $activeRecordFactory, CityTypeDto $modelDTO)
     {
-        parent::__construct($apiGateway, $modelDTO);
-        $this->apiGateway = $apiGateway;
+        parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
     }
 
@@ -36,6 +34,16 @@ final class CityType extends AbstractActiveRecord implements CityTypeDtoInterfac
     public static function getApiModel(): ApiModel
     {
         return ApiModel::CityType;
+    }
+
+    public static function getDtoClass(): string
+    {
+        return CityTypeDto::class;
+    }
+
+    public static function getRouteKey(): string
+    {
+        return 'cityType';
     }
 
     /** @return positive-int

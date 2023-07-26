@@ -97,10 +97,10 @@ final class User extends AbstractActiveRecord implements AllRequestsInterface
 
         return match ($name) {
             'role' => !empty($this->originalDataArray['role'])
-                ? Role::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['role'])
+                ? Role::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['role'])
                 : null,
             'position' => !empty($this->originalDataArray['position'])
-                ? UserPosition::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['position'])
+                ? UserPosition::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['position'])
                 : null,
             'fullName' => new FullName(
                 $this->originalDataArray['first_name'],

@@ -123,11 +123,11 @@ final class MedicalCardByClient extends AbstractActiveRecord implements AllReque
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->apiGateway, $this->admissionTypeId) : null,
-            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->apiGateway, $this->meetResultId) : null,
-            'client' => $this->clientId ? Client::getById($this->apiGateway, $this->clientId) : null,
-            'pet' => Pet::getById($this->apiGateway, $this->petId),
-            'user' => $this->userId ? User::getById($this->apiGateway, $this->userId) : null,
+            'admissionType' => $this->admissionTypeId ? ComboManualItem::getByAdmissionTypeId($this->activeRecordFactory, $this->admissionTypeId) : null,
+            'meetResult' => $this->meetResultId ? ComboManualItem::getByAdmissionResultId($this->activeRecordFactory, $this->meetResultId) : null,
+            'client' => $this->clientId ? Client::getById($this->activeRecordFactory, $this->clientId) : null,
+            'pet' => Pet::getById($this->activeRecordFactory, $this->petId),
+            'user' => $this->userId ? User::getById($this->activeRecordFactory, $this->userId) : null,
             default => $this->originalDto->$name
         };
     }

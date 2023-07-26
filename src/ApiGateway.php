@@ -21,7 +21,6 @@ final class ApiGateway
         public readonly string      $subDomain,
         public readonly string      $apiUrl,
         private readonly ApiService $apiService,
-        private readonly DtoFactory $dtoFactory
     )
     {
     }
@@ -34,12 +33,10 @@ final class ApiGateway
     ): self
     {
         $apiService = new ApiService($guzzleClient, $allHeaders);
-        $dtoFactory = DtoFactory::withDefaultSerializers();
         return new self(
             $subDomain,
             $apiUrl,
-            $apiService,
-            $dtoFactory
+            $apiService
         );
     }
 
@@ -140,22 +137,17 @@ final class ApiGateway
         }
     }
 
-    public function getActiveRecordFactory(): ActiveRecordFactory
+    private function getActiveRecordFactory(): ActiveRecordFactory
     {
         if (!isset ($this->activeRecordFactory)) {
-            $this->activeRecordFactory = new ActiveRecordFactory($this);
+            $this->activeRecordFactory = new ActiveRecordFactory($this->apiService, DtoFactory::withDefaultSerializers());
         }
 
         return $this->activeRecordFactory;
     }
 
-    public function getDtoFactory(): DtoFactory
+    public function getClient(): Facade\Client
     {
-        return $this->dtoFactory;
-    }
-
-    public function getApiService(): ApiService
-    {
-        return $this->apiService;
+        return new Facade\Client($this->getActiveRecordFactory());
     }
 }

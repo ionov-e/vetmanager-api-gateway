@@ -84,8 +84,8 @@ final class Property extends AbstractActiveRecord implements AllRequestsInterfac
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? self::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->clinicId) : null,
+            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
+            'isOnlineSigningUpAvailableForClinic' => $this->clinicId ? self::isOnlineSigningUpAvailableForClinic($this->activeRecordFactory, $this->clinicId) : null,
             default => $this->originalDto->$name
         };
     }

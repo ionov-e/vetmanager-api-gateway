@@ -17,8 +17,8 @@ trait RequestPostTrait
     public function createAsNew(): static
     {
         return static::createAsNewUsingArray(
-            $this->apiGateway,
-            $this->apiGateway->post(
+            $this->activeRecordFactory,
+            $this->activeRecordFactory->post(
                 static::getApiModel(),
                 $this->userMadeDto->getAsArrayForPostRequest()
             )

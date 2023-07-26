@@ -2,16 +2,15 @@
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ClientDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class Client extends AbstractClient
 {
-    public function __construct(ApiGateway $apiGateway, ClientDto $modelDTO)
+    public function __construct(ActiveRecordFactory $activeRecordFactory, ClientDto $modelDTO)
     {
-        parent::__construct($apiGateway, $modelDTO);
-        $this->apiGateway = $apiGateway;
+        parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
     }
 
@@ -23,12 +22,12 @@ class Client extends AbstractClient
     /** @throws VetmanagerApiGatewayException */
     function getCity(): ?City
     {
-        return $this->getCityId() ? City::getById($this->apiGateway, $this->getCityId()) : null;
+        return $this->getCityId() ? City::getById($this->activeRecordFactory, $this->getCityId()) : null;
     }
 
     /** @throws VetmanagerApiGatewayException */
     function getClientTypeTitle(): string
     {
-        return ClientPlusTypeAndCity::getById($this->apiGateway, $this->getId())->getClientTypeTitle();
+        return ClientPlusTypeAndCity::getById($this->activeRecordFactory, $this->getId())->getClientTypeTitle();
     }
 }

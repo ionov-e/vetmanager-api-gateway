@@ -71,7 +71,7 @@ final class Clinic extends AbstractActiveRecord implements AllRequestsInterface
     {
         return match ($name) {
             'fullPhone' => $this->getFullPhone(),
-            'isOnlineSigningUpAvailable' => Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $this->id),
+            'isOnlineSigningUpAvailable' => Property::isOnlineSigningUpAvailableForClinic($this->activeRecordFactory, $this->id),
             default => $this->originalDto->$name
         };
     }
@@ -79,8 +79,8 @@ final class Clinic extends AbstractActiveRecord implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     private function getFullPhone(): FullPhone
     {
-        $phonePrefix = Property::getValueByClinicIdAndPropertyName($this->apiGateway, $this->id, "unisender_phone_pristavka");
-        $phoneMask = Property::getValueByClinicIdAndPropertyName($this->apiGateway, $this->id, "phone_mask");
+        $phonePrefix = Property::getValueByClinicIdAndPropertyName($this->activeRecordFactory, $this->id, "unisender_phone_pristavka");
+        $phoneMask = Property::getValueByClinicIdAndPropertyName($this->activeRecordFactory, $this->id, "phone_mask");
         return (new FullPhone($phonePrefix ?? '', $this->phone, $phoneMask ?? ''));
     }
 }

@@ -17,7 +17,7 @@ trait RequestPutTrait
     public function edit(): static
     {
         return static::editUsingIdAndArray(
-            $this->apiGateway,
+            $this->activeRecordFactory,
             $this->userMadeDto->getIdForPutRequest(),
             $this->userMadeDto->getAsArrayForPutRequest()
         );

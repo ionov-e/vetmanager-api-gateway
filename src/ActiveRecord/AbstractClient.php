@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\ClientDto;
@@ -95,14 +96,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Street $street
  * @property-read FullName $fullName
  * */
-abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface//, AllRequestsInterface
+abstract class AbstractClient extends AbstractActiveRecord //implements ClientDtoInterface//, AllRequestsInterface
 {
     use AllRequestsTrait;
 
-    public function __construct(ApiGateway $apiGateway, ClientDto $modelDTO)
+    public function __construct(ActiveRecordFactory $activeRecordFactory, ClientDto $modelDTO)
     {
-        parent::__construct($apiGateway, $modelDTO);
-        $this->apiGateway = $apiGateway;
+        parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
     }
 
@@ -474,7 +474,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
      */
     public function getMedicalCards(): array
     {
-        return MedicalCardByClient::getByClientId($this->apiGateway, $this->id);
+        return MedicalCardByClient::getByClientId($this->activeRecordFactory, $this->id);
     }
 
 //    /** @return Pet[]
@@ -495,7 +495,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
     /** @throws VetmanagerApiGatewayException */
     public function getStreet(): ?Street
     {
-        return $this->streetId ? Street::getById($this->apiGateway, $this->streetId) : null;
+        return $this->streetId ? Street::getById($this->activeRecordFactory, $this->streetId) : null;
     }
 
     public function getFullName(): FullName

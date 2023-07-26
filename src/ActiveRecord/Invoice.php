@@ -224,17 +224,17 @@ final class Invoice extends AbstractActiveRecord implements AllRequestsInterface
         }
 
         return match ($name) {
-            'client' => Client::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['client']),
-            'pet' => Pet::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['pet']),
+            'client' => Client::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['client']),
+            'pet' => Pet::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['pet']),
             'petBreed' => !empty($this->originalDataArray['pet']['breed_data'])
-                ? Breed::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
+                ? Breed::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
                 : null,
             'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
-                ? PetType::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['pet']['pet_type_data'])
+                ? PetType::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])
                 : null,
-            'user' => User::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['doctor']),
+            'user' => User::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['doctor']),
             'invoiceDocuments' => InvoiceDocument::fromMultipleDtosArrays(
-                $this->apiGateway,
+                $this->activeRecordFactory,
                 $this->originalDataArray['invoiceDocuments'],
                 Completeness::OnlyBasicDto
                 // На самом деле приходит еще и с полным goodSaleParam внутри. Но проигнорировал

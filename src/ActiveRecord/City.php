@@ -7,7 +7,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
 use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\CityDto;
 use VetmanagerApiGateway\DTO\CityDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -26,14 +26,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     type_id: string
  * } $originalDataArray
  */
-final class City extends AbstractActiveRecord implements AllRequestsInterface, CityDtoInterface
+final class City extends AbstractActiveRecord implements CityDtoInterface
 {
     use AllRequestsTrait;
 
-    public function __construct(ApiGateway $apiGateway, CityDto $modelDTO)
+    public function __construct(ActiveRecordFactory $activeRecordFactory, CityDto $modelDTO)
     {
-        parent::__construct($apiGateway, $modelDTO);
-        $this->apiGateway = $apiGateway;
+        parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
     }
 
@@ -41,6 +40,15 @@ final class City extends AbstractActiveRecord implements AllRequestsInterface, C
     public static function getApiModel(): ApiModel
     {
         return ApiModel::City;
+    }
+    public static function getDtoClass(): string
+    {
+        return CityDto::class;
+    }
+
+    public static function getRouteKey(): string
+    {
+        return 'city';
     }
 
     /** @return positive-int
@@ -89,6 +97,6 @@ final class City extends AbstractActiveRecord implements AllRequestsInterface, C
     /** @throws VetmanagerApiGatewayException */
     public function getCityType(): CityType
     {
-        return CityType::getById($this->apiGateway, $this->modelDTO->getTypeId());
+        return CityType::getById($this->activeRecordFactory, $this->modelDTO->getTypeId());
     }
 }

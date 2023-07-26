@@ -173,14 +173,14 @@ final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsI
             'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->getNonZeroFloatOrNull(),
             'partyInfo' => $this->originalDataArray['party_info'],
             'good' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? Good::getById($this->apiGateway, $this->goodId)
-                : Good::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['good']),
+                ? Good::getById($this->activeRecordFactory, $this->goodId)
+                : Good::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['good']),
             'goodSaleParam' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? GoodSaleParam::getById($this->apiGateway, $this->saleParamId)
-                : GoodSaleParam::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->getArrayFromFullActiveRecordForGoodSaleParam()),
+                ? GoodSaleParam::getById($this->activeRecordFactory, $this->saleParamId)
+                : GoodSaleParam::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->getArrayFromFullActiveRecordForGoodSaleParam()),
             'invoice' => ($this->completenessLevel == Completeness::OnlyBasicDto)
-                ? Invoice::getById($this->apiGateway, $this->invoiceId)
-                : Invoice::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['document']),
+                ? Invoice::getById($this->activeRecordFactory, $this->invoiceId)
+                : Invoice::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['document']),
             default => $this->originalDto->$name
         };
     }

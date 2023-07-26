@@ -40,10 +40,11 @@ class DtoFactory
 
     /**
      * @param class-string<AbstractModelDTO> $dtoClassName
+     * @return AbstractModelDTO[]
      * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getAsDtoFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
+    public function getAsDtosFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): array
     {
         $modelAsArray = ApiService::getModelsContentsFromApiResponseDataElement($apiResponse, $modelKeyInResponse);
         return $this->getAsMultipleDtosFromModelsAsArrays($modelAsArray, $dtoClassName);

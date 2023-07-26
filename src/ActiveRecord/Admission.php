@@ -248,26 +248,26 @@ final class Admission extends AbstractActiveRecord implements AllRequestsInterfa
 
         return match ($name) {
             'user' => !empty($this->originalDataArray['doctor_data'])
-                ? User::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['doctor_data'])
+                ? User::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['doctor_data'])
                 : null,
             'type' => !empty($this->originalDataArray['admission_type_data'])
-                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['admission_type_data'])
+                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['admission_type_data'])
                 : null,
-            'client' => Client::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['client']),
+            'client' => Client::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['client']),
             'pet' => !empty($this->originalDataArray['pet'])
-                ? Pet::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet'])
+                ? Pet::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet'])
                 : null,
             'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['pet_type_data'])
+                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])
                 : null,
             'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
-                ? Breed::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['pet']['breed_data'])
+                ? Breed::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
                 : null,
             'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
-            'invoices' => Invoice::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
-            'clinic' => $this->clinicId ? Clinic::getById($this->apiGateway, $this->clinicId) : null,
-            'admissionsOfPet' => $this->petId ? self::getByPetId($this->apiGateway, $this->petId) : [],
-            'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->apiGateway, $this->clientId) : [],
+            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
+            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
+            'admissionsOfPet' => $this->petId ? self::getByPetId($this->activeRecordFactory, $this->petId) : [],
+            'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->activeRecordFactory, $this->clientId) : [],
             default => $this->originalDto->$name
         };
     }

@@ -50,7 +50,7 @@ final class PetType extends AbstractActiveRecord implements AllRequestsInterface
         switch ($name) {
             case 'breeds':
                 $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
-                return Breed::fromMultipleDtosArrays($this->apiGateway, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
+                return Breed::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
             default:
                 return $this->originalDto->$name;
         }

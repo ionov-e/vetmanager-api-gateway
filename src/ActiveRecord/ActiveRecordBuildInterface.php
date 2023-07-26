@@ -9,10 +9,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 interface ActiveRecordBuildInterface
 {
     /** @throws VetmanagerApiGatewayException */
-    public static function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): AbstractActiveRecord;
+    public function fromResponseAsArray(ApiGateway $apiGateway, array $apiResponseAsArray): AbstractActiveRecord;
 
     /** @throws VetmanagerApiGatewayException */
-    public static function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord;
+    public function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord;
 
-    public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): AbstractActiveRecord;
+    public function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): AbstractActiveRecord;
 }

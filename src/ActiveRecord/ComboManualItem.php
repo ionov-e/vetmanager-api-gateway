@@ -146,8 +146,8 @@ final class ComboManualItem extends AbstractActiveRecord implements AllRequestsI
     {
         return match ($name) {
             'comboManualName' => ($this->completenessLevel == Completeness::Full)
-                ? ComboManualName::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['comboManualName'])
-                : ComboManualName::getById($this->apiGateway, $this->comboManualId),
+                ? ComboManualName::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['comboManualName'])
+                : ComboManualName::getById($this->activeRecordFactory, $this->comboManualId),
             default => $this->originalDto->$name
         };
     }

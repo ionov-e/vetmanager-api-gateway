@@ -92,9 +92,9 @@ final class GoodSaleParam extends AbstractActiveRecord implements AllRequestsInt
 
         return match ($name) {
             'unit' => !empty($this->originalDataArray['unitSale'])
-                ? Unit::fromSingleDtoArrayUsingBasicDto($this->apiGateway, $this->originalDataArray['unitSale'])
+                ? Unit::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['unitSale'])
                 : null,
-            'good' => Good::fromSingleDtoArray($this->apiGateway, $this->originalDataArray['good']),
+            'good' => Good::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['good']),
             default => $this->originalDto->$name
         };
     }

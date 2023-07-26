@@ -24,7 +24,7 @@ class ApiService
     {
     }
 
-    /**
+    /** Возвращает только модель в виде массива
      * @throws VetmanagerApiGatewayException - общее родительское исключение
      * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */

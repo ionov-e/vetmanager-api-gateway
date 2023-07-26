@@ -52,7 +52,7 @@ final class Street extends AbstractActiveRecord implements AllRequestsInterface
     {
         return match ($name) {
             'city' => !empty($this->originalDataArray['city'])
-                ? City::fromSingleDtoArrayAsFromGetById($this->apiGateway, $this->originalDataArray['city'])
+                ? City::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['city'])
                 : null,
             default => $this->originalDto->$name,
         };

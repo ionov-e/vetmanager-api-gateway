@@ -3,25 +3,18 @@
 namespace VetmanagerApiGateway\Facade;
 
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\DTO\CityTypeDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class CityType extends AbstractFacade
 {
-    private static function getApiModel()
+    static public function getDefaultActiveRecord(): string
     {
-        return ActiveRecord\CityType::getApiModel();
+        return ActiveRecord\CityType::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\CityType
     {
-        return self::protectedGetById(
-            $this->apiGateway,
-            self::getApiModel(),
-            ActiveRecord\CityType::class,
-            CityTypeDto::class,
-            $id
-        );
+        return $this->protectedGetById($id, ActiveRecord\CityType::class);
     }
 }
