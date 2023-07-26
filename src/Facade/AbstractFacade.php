@@ -26,7 +26,7 @@ abstract class AbstractFacade implements ActiveRecordBuildInterface
     /** @throws VetmanagerApiGatewayException */
     public static function fromSingleModelAsArray(ApiGateway $apiGateway, array $modelAsArray): AbstractActiveRecord
     {
-        return static::getDefaultActiveRecord()::fromModelAsArray($apiGateway, $modelAsArray);
+        return static::getDefaultActiveRecord()::fromSingleModelAsArray($apiGateway, $modelAsArray);
     }
 
     public static function fromSingleDto(ApiGateway $apiGateway, AbstractModelDTO $modelDto): AbstractActiveRecord
