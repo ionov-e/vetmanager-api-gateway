@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VetmanagerApiGateway;
 
 use Symfony\Component\Serializer\Encoder\JsonEncoder;

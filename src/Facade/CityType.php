@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
 
@@ -15,6 +16,6 @@ class CityType extends AbstractFacade
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\CityType
     {
-        return $this->protectedGetById($id, ActiveRecord\CityType::class);
+        return $this->protectedGetById(ActiveRecord\CityType::class, $id);
     }
 }

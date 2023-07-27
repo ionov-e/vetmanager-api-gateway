@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
 
@@ -15,6 +16,6 @@ class Client extends AbstractFacade
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\ClientPlusTypeAndCity
     {
-        return $this->protectedGetById($id, ActiveRecord\ClientPlusTypeAndCity::class);
+        return $this->protectedGetById(ActiveRecord\ClientPlusTypeAndCity::class, $id);
     }
 }

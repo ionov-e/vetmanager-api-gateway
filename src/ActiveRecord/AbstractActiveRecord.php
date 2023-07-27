@@ -6,8 +6,9 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\AbstractModelDTO;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
-abstract class AbstractActiveRecord //implements ActiveRecordBuildInterface
+abstract class AbstractActiveRecord
 {
     public function __construct(
         protected ActiveRecordFactory $activeRecordFactory,
@@ -46,5 +47,39 @@ abstract class AbstractActiveRecord //implements ActiveRecordBuildInterface
         $clone = clone $object;
         $clone->modelDTO = $newModelDto;
         return $clone;
+    }
+
+    /**
+     * @param class-string<self> $activeRecordClass
+     * @return class-string<AbstractModelDTO>
+     * @throws VetmanagerApiGatewayInnerException
+     */
+    public static function getDtoClassFromActiveRecordClass(string $activeRecordClass): string
+    {
+        if (!is_subclass_of($activeRecordClass, self::class)) {
+            throw new VetmanagerApiGatewayInnerException("$activeRecordClass is not a subclass of " . self::class);
+        }
+
+        return $activeRecordClass::getDtoClass();
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public static function getModelKeyInResponseFromActiveRecordClass(string $activeRecordClass): string
+    {
+        if (!is_subclass_of($activeRecordClass, self::class)) {
+            throw new VetmanagerApiGatewayInnerException("$activeRecordClass is not a subclass of " . self::class);
+        }
+
+        return $activeRecordClass::getModelKeyInResponse();
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public static function getModelRouteKeyFromActiveRecordClass(string $activeRecordClass): string
+    {
+        if (!is_subclass_of($activeRecordClass, self::class)) {
+            throw new VetmanagerApiGatewayInnerException("$activeRecordClass is not a subclass of " . self::class);
+        }
+
+        return $activeRecordClass::getRouteKey();
     }
 }

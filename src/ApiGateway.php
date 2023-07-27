@@ -150,4 +150,9 @@ final class ApiGateway
     {
         return new Facade\Client($this->getActiveRecordFactory());
     }
+
+    public function getCityType(): Facade\CityType
+    {
+        return new Facade\CityType($this->getActiveRecordFactory());
+    }
 }

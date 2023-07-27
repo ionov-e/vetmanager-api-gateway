@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VetmanagerApiGateway;
 
 use Exception;
@@ -36,7 +38,7 @@ class ApiService
      */
     public function getModelsWithGetParametersAsString(string $modelKeyInResponse, string $modelRouteKey, string $getParameters): array
     {
-        $apiDataContents = $this->getWithGetParametersAsString($modelRouteKey, $getParameters);
+        $apiDataContents = $this->getResponseWithGetParametersAsString($modelRouteKey, $getParameters);
         return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
@@ -44,7 +46,7 @@ class ApiService
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
      * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithGetParametersAsString(string $modelRouteKey, string $getParameters): array
+    public function getResponseWithGetParametersAsString(string $modelRouteKey, string $getParameters): array
     {
         try {
             $url = (new RestApiPrefix())->asString() . $modelRouteKey . '?' . $getParameters;
@@ -62,7 +64,7 @@ class ApiService
      */
     public function getModelsWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        $apiDataContents = $this->getWithQueryBuilder($modelKeyInResponse, $modelRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        $apiDataContents = $this->getResponseWithQueryBuilder($modelKeyInResponse, $modelRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
         return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
@@ -71,10 +73,10 @@ class ApiService
      * @param int $pageNumber При использовании пагинации
      * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public function getResponseWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
         $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
-        return $this->getWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->getResponseWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
     private function getPagedQueryFromQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): PagedQuery
@@ -82,16 +84,27 @@ class ApiService
         return $builder->paginate($maxLimitOfReturnedModels, $pageNumber);
     }
 
+    /** Вернет массив с моделями в виде массивов
+     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
+     * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     */
+    public function getModelsWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    {
+        $apiResponseAsArray = $this->getResponseWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return self::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
+    }
+
+
     /** Вернет весь ответ в виде массива {success: true, message: ..., data: {...}}
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
      * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getResponseWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
         $arrayOfModelsWithTheirContents = [];
 
         do {
-            $apiResponseDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($modelRouteKey, $pagedQuery);
+            $apiResponseDataContents = $this->getDataContentsUsingPagedQueryWithOneRequest($modelRouteKey, $pagedQuery);
             $modelsInResponse = self::getModelsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
             $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelsInResponse);
             $pagedQuery->next();
@@ -107,7 +120,7 @@ class ApiService
     }
 
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
-    private function getModelsDataContentsUsingPagedQueryWithOneRequest(string $modelRouteKey, PagedQuery $pagedQuery): array
+    private function getDataContentsUsingPagedQueryWithOneRequest(string $modelRouteKey, PagedQuery $pagedQuery): array
     {
         $url = $this->getUrlForGuzzleRequest($modelRouteKey);
         $response = $this->getResponseAfterApiRequest('GET', $url, pagedQuery: $pagedQuery);
@@ -119,9 +132,9 @@ class ApiService
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
      * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    public function getContentsWithPagedQuery(string $modelRouteKey, string $modelKeyInResponse, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getModelsOrModelWithPagedQuery(string $modelRouteKey, string $modelKeyInResponse, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        $apiDataContents = $this->getWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        $apiDataContents = $this->getResponseWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
         return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VetmanagerApiGateway\DTO;
 
 class ClientPlusTypeAndCityDto extends ClientDto
