@@ -32,9 +32,9 @@ class DtoFactory
      * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getAsDtoFromApiResponseWithSingleModelArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
+    public function getAsDtoFromApiResponseWithSingleModelAsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
     {
-        $modelAsArray = ApiService::getModelsContentsFromApiResponseDataElement($apiResponse, $modelKeyInResponse);
+        $modelAsArray = ApiService::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
         return $this->getAsDtoFromSingleModelAsArray($modelAsArray, $dtoClassName);
     }
 
@@ -46,8 +46,8 @@ class DtoFactory
      */
     public function getAsDtosFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): array
     {
-        $modelAsArray = ApiService::getModelsContentsFromApiResponseDataElement($apiResponse, $modelKeyInResponse);
-        return $this->getAsMultipleDtosFromModelsAsArrays($modelAsArray, $dtoClassName);
+        $modelsAsArrays = ApiService::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
+        return $this->getAsMultipleDtosFromModelsAsArrays($modelsAsArrays, $dtoClassName);
     }
 
     /**
