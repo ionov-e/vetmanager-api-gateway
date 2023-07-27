@@ -6,6 +6,6 @@ namespace VetmanagerApiGateway\ActiveRecord\Interface;
 
 interface CreateInterface
 {
-    /** Отправка записи на сервер. Вернется созданная модель (с присвоенным ID) */
+    /** Отправка новой записи на сервер. Вернется созданная модель в виде Active Record (с присвоенным ID) */
     public function create(): static;
 }

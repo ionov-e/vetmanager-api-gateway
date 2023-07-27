@@ -9,7 +9,7 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 interface RequestPutInterface
 {
     /** Редактировать запись в БД
-     * @param array $data Стоит отправлять лишь то, что требуется изменить
+     * @param array $modelAsArray Стоит отправлять лишь то, что требуется изменить
      */
-    public function updateUsingIdAndArray(int $id, array $data): AbstractActiveRecord;
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): AbstractActiveRecord;
 }

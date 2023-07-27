@@ -6,7 +6,6 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
@@ -64,15 +63,19 @@ class Client extends AbstractFacade implements AllRequestsInterface
         return $this->activeRecordFactory->getEmpty(ActiveRecord\Client::class);
     }
 
-    /** @inheritDoc */
+    /** @inheritDoc
+     * @throws VetmanagerApiGatewayException
+     */
     public function createNewUsingArray(array $modelAsArray): ActiveRecord\Client
     {
-        // TODO: Implement createNewUsingArray() method.
+        return $this->protectedCreateNewUsingArray(ActiveRecord\Client::class, $modelAsArray);
     }
 
-    /** @inheritDoc */
-    public function updateUsingIdAndArray(int $id, array $data): AbstractActiveRecord
+    /** @inheritDoc
+     * @throws VetmanagerApiGatewayException
+     */
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Client
     {
-        // TODO: Implement updateUsingIdAndArray() method.
+        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Client::class, $id, $modelAsArray);
     }
 }

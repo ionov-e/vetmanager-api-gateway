@@ -182,4 +182,35 @@ abstract class AbstractFacade
         );
         return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
+
+    /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @return TActiveRecord
+     * @throws VetmanagerApiGatewayException
+     */
+    protected function protectedCreateNewUsingArray(string $activeRecordClass, array $modelAsArray): AbstractActiveRecord
+    {
+        $createdModelAsArray = $this->activeRecordFactory->apiService->post(
+            $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
+            $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
+            $modelAsArray
+        );
+        return $this->activeRecordFactory->getFromSingleModelAsArray($createdModelAsArray, $activeRecordClass);
+    }
+
+    /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @return TActiveRecord
+     * @throws VetmanagerApiGatewayException
+     */
+    protected function protectedUpdateUsingIdAndArray(string $activeRecordClass, int $id, array $modelAsArray): AbstractActiveRecord
+    {
+        $createdModelAsArray = $this->activeRecordFactory->apiService->put(
+            $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
+            $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
+            $id,
+            $modelAsArray
+        );
+        return $this->activeRecordFactory->getFromSingleModelAsArray($createdModelAsArray, $activeRecordClass);
+    }
 }
