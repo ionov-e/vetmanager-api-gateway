@@ -112,8 +112,6 @@ enum ApiModel
     public function getRoute(): string
     {
         return match ($this) {
-            self::Admission => 'admission',
-            self::Breed => 'breed',
             self::Cassa => 'cassa',
             self::CassaClose => 'cassaclose',
             self::CassaRashod => 'cassarashod',

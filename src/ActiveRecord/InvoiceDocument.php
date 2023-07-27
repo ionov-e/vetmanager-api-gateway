@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\InvoiceDocument\DiscountType;
 use VetmanagerApiGateway\DTO\GoodDto;
 use VetmanagerApiGateway\DTO\GoodSaleParamDto;
@@ -140,19 +137,12 @@ use VetmanagerApiGateway\Hydrator\ApiFloat;
  *                           price: ?string
  *           }> $partyInfo Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
  */
-final class InvoiceDocument extends AbstractActiveRecord implements AllRequestsInterface
+final class InvoiceDocument extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::InvoiceDocument;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Partial;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Partial;
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

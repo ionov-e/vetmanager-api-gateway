@@ -4,16 +4,8 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
 use DateTime;
-use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
-use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\AdmissionDto;
 use VetmanagerApiGateway\DTO\Enum\Admission\Status;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 /**
  * @property-read AdmissionDto $originalDto
@@ -185,90 +177,64 @@ use VetmanagerApiGateway\Hydrator\ApiString;
  * @property-read Admission[] $admissionsOfPet
  * @property-read Admission[] $admissionsOfOwner
  */
-final class Admission extends AbstractActiveRecord implements AllRequestsInterface
+final class Admission extends AbstractActiveRecord //implements AllRequestsInterface
 {
-    use AllRequestsTrait;
 
-    /** Не возвращаются со статусом "удален"
-     * @return self[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public static function getByClientId(ApiGateway $apiGateway, int $clientId, int $maxLimit = 100): array
+    public static function getDtoClass(): string
     {
-        return self::getByQueryBuilder(
-            $apiGateway,
-            (new Builder())
-                ->where('client_id', (string)$clientId)
-                ->where('status', '!=', 'deleted'),
-            $maxLimit
-        );
+        return AdmissionDto::class;
     }
 
-    /** Не возвращаются со статусом "удален"
-     * @return self[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public static function getByPetId(ApiGateway $apiGateway, int $petId, int $maxLimit = 100): array
+    public static function getRouteKey(): string
     {
-        return self::getByQueryBuilder(
-            $apiGateway,
-            (new Builder())
-                ->where('patient_id', (string)$petId)
-                ->where('status', '!=', 'deleted'),
-            $maxLimit
-        );
+        return 'admission';
     }
 
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Admission;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Partial;
+//    }
 
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Partial;
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        switch ($name) {
-            case 'user':
-            case 'type':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
-                break;
-            case 'client':
-            case 'pet':
-            case 'petType':
-            case 'petBreed':
-            case 'waitTime':
-            case 'invoices':
-                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
-        }
-
-        return match ($name) {
-            'user' => !empty($this->originalDataArray['doctor_data'])
-                ? User::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['doctor_data'])
-                : null,
-            'type' => !empty($this->originalDataArray['admission_type_data'])
-                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['admission_type_data'])
-                : null,
-            'client' => Client::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['client']),
-            'pet' => !empty($this->originalDataArray['pet'])
-                ? Pet::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet'])
-                : null,
-            'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])
-                : null,
-            'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
-                ? Breed::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
-                : null,
-            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
-            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
-            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
-            'admissionsOfPet' => $this->petId ? self::getByPetId($this->activeRecordFactory, $this->petId) : [],
-            'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->activeRecordFactory, $this->clientId) : [],
-            default => $this->originalDto->$name
-        };
-    }
+//    /** @throws VetmanagerApiGatewayException */
+//    public function __get(string $name): mixed
+//    {
+//        switch ($name) {
+//            case 'user':
+//            case 'type':
+//                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
+//                break;
+//            case 'client':
+//            case 'pet':
+//            case 'petType':
+//            case 'petBreed':
+//            case 'waitTime':
+//            case 'invoices':
+//                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
+//        }
+//
+//        return match ($name) {
+//            'user' => !empty($this->originalDataArray['doctor_data'])
+//                ? User::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['doctor_data'])
+//                : null,
+//            'type' => !empty($this->originalDataArray['admission_type_data'])
+//                ? ComboManualItem::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['admission_type_data'])
+//                : null,
+//            'client' => Client::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['client']),
+//            'pet' => !empty($this->originalDataArray['pet'])
+//                ? Pet::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet'])
+//                : null,
+//            'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
+//                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])
+//                : null,
+//            'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
+//                ? Breed::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
+//                : null,
+//            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
+//            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
+//            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
+//            'admissionsOfPet' => $this->petId ? self::getByPetId($this->activeRecordFactory, $this->petId) : [],
+//            'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->activeRecordFactory, $this->clientId) : [],
+//            default => $this->originalDto->$name
+//        };
+//    }
 }

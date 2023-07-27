@@ -17,7 +17,9 @@ abstract class AbstractFacade
     {
     }
 
-    /** @return class-string<AbstractActiveRecord> */
+    /** Дефолтный Active Record с самым минимальным DTO (без вложенных DTO)
+     * @return class-string<AbstractActiveRecord>
+     */
     abstract static public function getDefaultActiveRecord(): string;
 
     /**
@@ -36,7 +38,7 @@ abstract class AbstractFacade
      */
     public function specificARFromApiResponseWithMultipleModelsAsArray(array $apiResponseAsArray, string $activeRecordClass): array
     {
-        return $this->activeRecordFactory->getActiveRecordsFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, $activeRecordClass);
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -52,7 +54,7 @@ abstract class AbstractFacade
      */
     public function specificARFromApiResponseWithSingleModelAsArray(array $apiResponseAsArray, string $activeRecordClass): AbstractActiveRecord
     {
-        return $this->activeRecordFactory->getActiveRecordFromApiResponseWithSingleModelAsArray($apiResponseAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromApiResponseWithSingleModelAsArray($apiResponseAsArray, $activeRecordClass);
     }
 
     /**
@@ -71,7 +73,7 @@ abstract class AbstractFacade
      */
     public function specificARFromMultipleModelsAsArray(array $modelsAsArray, string $activeRecordClass): array
     {
-        return $this->activeRecordFactory->getActiveRecordsFromMultipleModelsAsArray($modelsAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecordClass);
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -87,7 +89,7 @@ abstract class AbstractFacade
      */
     public function specificARFromSingleModelAsArray(array $modelAsArray, string $activeRecordClass): AbstractActiveRecord
     {
-        return $this->activeRecordFactory->getActiveRecordFromSingleModelAsArray($modelAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecordClass);
     }
 
     public function fromSingleDto(AbstractModelDTO $modelDto): AbstractActiveRecord
@@ -102,7 +104,7 @@ abstract class AbstractFacade
     public function specificARFromSingleDto(AbstractModelDTO $modelDto, string $activeRecordClass): AbstractActiveRecord
     {
         $activeRecordClass = $activeRecordClass ?: static::getDefaultActiveRecord();
-        return $this->activeRecordFactory->getActiveRecordFromSingleDto($modelDto, $activeRecordClass);
+        return $this->activeRecordFactory->getFromSingleDto($modelDto, $activeRecordClass);
     }
 
     /**
@@ -115,7 +117,7 @@ abstract class AbstractFacade
         $modelKeyInResponse = $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass);
         $modelRouteKey = $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass);
         $modelAsArray = $this->activeRecordFactory->apiService->getModelById($modelKeyInResponse, $modelRouteKey, $id);
-        return $this->activeRecordFactory->getActiveRecordFromSingleModelAsArray($modelAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecordClass);
     }
 
     /**
@@ -130,7 +132,7 @@ abstract class AbstractFacade
             $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
             (new Builder())->top($maxLimitOfReturnedModels)
         );
-        return $this->activeRecordFactory->getActiveRecordsFromMultipleModelsAsArray($modelsAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecordClass);
     }
 
     /**
@@ -138,7 +140,7 @@ abstract class AbstractFacade
      * @return TActiveRecord[]
      * @throws VetmanagerApiGatewayException
      */
-    protected function protectedGetByQuery(string $activeRecordClass, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    protected function protectedGetByPagedQuery(string $activeRecordClass, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
         $modelsAsArrays = $this->activeRecordFactory->apiService->getModelsWithPagedQuery(
             $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
@@ -146,7 +148,7 @@ abstract class AbstractFacade
             $pagedQuery,
             $maxLimitOfReturnedModels
         );
-        return $this->activeRecordFactory->getActiveRecordsFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
 
     /**
@@ -163,6 +165,21 @@ abstract class AbstractFacade
             $maxLimitOfReturnedModels,
             $pageNumber
         );
-        return $this->activeRecordFactory->getActiveRecordsFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
+    }
+
+    /**
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @return TActiveRecord[]
+     * @throws VetmanagerApiGatewayException
+     */
+    protected function protectedGetByGetParametersAsString(string $activeRecordClass, string $getParameters): array
+    {
+        $modelsAsArrays = $this->activeRecordFactory->apiService->getModelsWithGetParametersAsString(
+            $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
+            $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
+            $getParameters
+        );
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
 }

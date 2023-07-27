@@ -7,10 +7,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\Enum\MedicalCard\Status;
@@ -87,20 +83,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read Pet pet
  * @property-read ?User user
  */
-final class MedicalCardByClient extends AbstractActiveRecord implements AllRequestsInterface
+final class MedicalCardByClient extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::MedicalCardsByClient */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::MedicalCardsByClient;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     /**
      * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},

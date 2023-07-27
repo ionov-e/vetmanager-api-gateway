@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DO\FullPhone;
 use VetmanagerApiGateway\DTO\ClinicDto;
 use VetmanagerApiGateway\DTO\Enum\Clinic\Status;
@@ -50,15 +47,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read FullPhone $fullPhone
  * @property-read bool $isOnlineSigningUpAvailable
  */
-final class Clinic extends AbstractActiveRecord implements AllRequestsInterface
+final class Clinic extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Clinic;
-    }
-
     public static function getCompletenessFromGetAllOrByQuery(): Completeness
     {
         return Completeness::Full;

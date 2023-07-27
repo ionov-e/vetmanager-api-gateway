@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\GoodGroupDto;
 
 /**
@@ -26,20 +22,13 @@ use VetmanagerApiGateway\DTO\GoodGroupDto;
  *     price_id: ?string
  * } $originalDataArray
  */
-final class GoodGroup extends AbstractActiveRecord implements AllRequestsInterface
+final class GoodGroup extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
 
-    /** @return ApiModel::GoodGroup */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::GoodGroup;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     public function __get(string $name): mixed
     {

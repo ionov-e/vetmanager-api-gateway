@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ComboManualItemDto;
 use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
@@ -42,15 +39,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *  } $originalDataArray comboManualName при GetAll тоже
  * @property-read ComboManualName $comboManualName
  */
-final class ComboManualItem extends AbstractActiveRecord implements AllRequestsInterface
+final class ComboManualItem extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::ComboManualItem */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::ComboManualItem;
-    }
 
     public static function getCompletenessFromGetAllOrByQuery(): Completeness
     {

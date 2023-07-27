@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\Invoice\PaymentStatus;
 use VetmanagerApiGateway\DTO\Enum\Invoice\Status;
 use VetmanagerApiGateway\DTO\InvoiceDto;
@@ -193,20 +190,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read User $user
  * @property-read InvoiceDocument[] $invoiceDocuments
  */
-final class Invoice extends AbstractActiveRecord implements AllRequestsInterface
+final class Invoice extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::Invoice */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Invoice;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Partial;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Partial;
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

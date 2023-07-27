@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\RoleDto;
 
 /**
@@ -21,21 +17,12 @@ use VetmanagerApiGateway\DTO\RoleDto;
  *     super: string
  * } $originalDataArray
  */
-final class Role extends AbstractActiveRecord implements AllRequestsInterface
+final class Role extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
-    /** @return ApiModel::Role */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Role;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     public function __get(string $name): mixed
     {

@@ -80,7 +80,7 @@ EOF
             DtoFactory::withDefaultSerializers()
         );
         $modelDtoAsArray = json_decode($json, true);
-        $activeRecord = $activeRecordFactory->getActiveRecordFromSingleModelAsArray(
+        $activeRecord = $activeRecordFactory->getFromSingleModelAsArray(
             $modelDtoAsArray, ClientPlusTypeAndCity::class
         );
         $this->assertInstanceOf(ClientPlusTypeAndCity::class, $activeRecord);

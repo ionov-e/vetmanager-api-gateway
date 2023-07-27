@@ -8,10 +8,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\MedicalCardAsVaccinationDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -62,16 +59,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  * @property-read ?DateInterval petAgeAtVaccinationMoment
  * @property-read ?DateInterval currentPetAgeIfStillAlive
  */
-final class MedicalCardAsVaccination extends AbstractActiveRecord implements AllRequestsInterface
+final class MedicalCardAsVaccination extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::MedicalCardsVaccinations */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::MedicalCardsVaccinations;
-    }
-
     /**
      * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
      * @return self[]

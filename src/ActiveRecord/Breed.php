@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\BreedDto;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**
  * @property-read BreedDto $originalDto
@@ -29,29 +24,26 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * } $originalDataArray 'petType' массив только при GetById
  * @property-read PetType $type
  */
-final class Breed extends AbstractActiveRecord implements AllRequestsInterface
+final class Breed extends AbstractActiveRecord //implements AllRequestsInterface
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::Breed */
-    public static function getApiModel(): ApiModel
+    public static function getDtoClass(): string
     {
-        return ApiModel::Breed;
+        return Breed::class;
     }
 
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+    public static function getRouteKey(): string
     {
-        return Completeness::OnlyBasicDto;
+        return 'breed';
     }
 
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'type' => ($this->completenessLevel == Completeness::Full)
-                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['petType'])
-                : PetType::getById($this->activeRecordFactory, $this->typeId),
-            default => $this->originalDto->$name,
-        };
-    }
+//    /** @throws VetmanagerApiGatewayException */
+//    public function __get(string $name): mixed
+//    {
+//        return match ($name) {
+//            'type' => ($this->completenessLevel == Completeness::Full)
+//                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['petType'])
+//                : PetType::getById($this->activeRecordFactory, $this->typeId),
+//            default => $this->originalDto->$name,
+//        };
+//    }
 }

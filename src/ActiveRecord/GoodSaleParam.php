@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\PriceFormation;
 use VetmanagerApiGateway\DTO\Enum\GoodSaleParam\Status;
 use VetmanagerApiGateway\DTO\GoodSaleParamDto;
@@ -65,21 +61,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Unit $unit
  * @property-read Good $good
  */
-final class GoodSaleParam extends AbstractActiveRecord implements AllRequestsInterface
+final class GoodSaleParam extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
-    /** @return ApiModel::GoodSaleParam */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::GoodSaleParam;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

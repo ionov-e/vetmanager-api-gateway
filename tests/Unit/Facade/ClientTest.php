@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -75,14 +76,21 @@ EOF
     public function testCreationFromModelArray(string $json, string $getMethodName, int|string $expected): void
     {
         $apiService = new ApiService(new \GuzzleHttp\Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
-        $activeRecordFactory = new ActiveRecordFactory(
-            $apiService,
-            DtoFactory::withDefaultSerializers()
-        );
+        $activeRecordFactory = new ActiveRecordFactory($apiService, DtoFactory::withDefaultSerializers());
         $clientFacade = new Client($activeRecordFactory);
         $modelAsArray = json_decode($json, true);
         $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function testCreateNewEmptyAndSetters(): void
+    {
+        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
+        $activeRecord = $apiGateway->getClient()->getNewEmpty();
+        $newActiveRecord = $activeRecord->setAddress("Street 13")->setCellPhone("911");
+        $this->assertEquals("Street 13", $newActiveRecord->getAddress());
+        $this->assertEquals("911", $newActiveRecord->getCellPhone());
     }
 }

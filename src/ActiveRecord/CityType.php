@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\CityTypeDto;
 use VetmanagerApiGateway\DTO\CityTypeDtoInterface;
@@ -20,20 +18,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *     title: string
  * } $originalDataArray
  */
-final class CityType extends AbstractActiveRecord implements CityTypeDtoInterface //, AllRequestsInterface
+final class CityType extends AbstractActiveRecord implements CityTypeDtoInterface
 {
-    use AllRequestsTrait;
-
     public function __construct(ActiveRecordFactory $activeRecordFactory, CityTypeDto $modelDTO)
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
-    }
-
-    /** @return ApiModel::CityType */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::CityType;
     }
 
     public static function getDtoClass(): string

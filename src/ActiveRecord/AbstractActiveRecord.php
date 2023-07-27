@@ -42,13 +42,6 @@ abstract class AbstractActiveRecord
         return static::getRouteKey(); // Дефолтное значение. В редких случаях нужно перезаписать
     }
 
-    protected static function setNewModelDtoFluently(self $object, AbstractModelDTO $newModelDto): static
-    {
-        $clone = clone $object;
-        $clone->modelDTO = $newModelDto;
-        return $clone;
-    }
-
     /**
      * @param class-string<self> $activeRecordClass
      * @return class-string<AbstractModelDTO>
@@ -81,5 +74,12 @@ abstract class AbstractActiveRecord
         }
 
         return $activeRecordClass::getRouteKey();
+    }
+
+    protected static function setNewModelDtoFluently(self $object, AbstractModelDTO $newModelDto): static
+    {
+        $clone = clone $object;
+        $clone->modelDTO = $newModelDto;
+        return $clone;
     }
 }

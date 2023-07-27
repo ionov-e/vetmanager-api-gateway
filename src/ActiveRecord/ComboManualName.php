@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ComboManualNameDto;
 use VetmanagerApiGateway\DTO\Enum\ComboManualName\Name;
@@ -42,20 +38,13 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  *   } $originalDataArray 'comboManualItems' массив только при GetById
  * @property-read comboManualItem[] comboManualItems
  */
-final class ComboManualName extends AbstractActiveRecord implements AllRequestsInterface
+final class ComboManualName extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
 
-    /** @return ApiModel::ComboManualName */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::ComboManualName;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::OnlyBasicDto;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::OnlyBasicDto;
+//    }
 
     /**
      * @throws VetmanagerApiGatewayException - родительское исключение

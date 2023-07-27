@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\GoodDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -80,16 +77,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Unit $unit
  * @property-read GoodSaleParam[] $goodSaleParams
  */
-final class Good extends AbstractActiveRecord implements AllRequestsInterface
+final class Good extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Good;
-    }
-
     public static function getCompletenessFromGetAllOrByQuery(): Completeness
     {
         return Completeness::Full;

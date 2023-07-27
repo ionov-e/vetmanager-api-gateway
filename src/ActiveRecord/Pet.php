@@ -6,10 +6,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\Pet\Sex;
 use VetmanagerApiGateway\DTO\Enum\Pet\Status;
 use VetmanagerApiGateway\DTO\PetDto;
@@ -119,20 +116,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read MedicalCard[] medicalCards
  * @property-read MedicalCardAsVaccination[] vaccines
  */
-final class Pet extends AbstractActiveRecord implements AllRequestsInterface
+final class Pet extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::Pet */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Pet;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     /** @throws VetmanagerApiGatewayException
      * @psalm-suppress DocblockTypeContradiction

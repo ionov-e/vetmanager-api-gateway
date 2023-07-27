@@ -1,6 +1,8 @@
 <?php
 
-namespace VetmanagerApiGateway\ActiveRecord\Interface;
+declare(strict_types=1);
+
+namespace VetmanagerApiGateway\Facade\Interface;
 
 interface AllGetRequestsInterface extends
     RequestGetAllInterface,

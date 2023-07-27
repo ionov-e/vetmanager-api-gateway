@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
 use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\PetTypeDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
@@ -29,20 +26,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  *          }>
  * } $originalDataArray 'breeds' массив только при GetById
  */
-final class PetType extends AbstractActiveRecord implements AllRequestsInterface
+final class PetType extends AbstractActiveRecord
 {
-    use AllRequestsTrait;
-
-    /** @return ApiModel::PetType */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::PetType;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::OnlyBasicDto;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::OnlyBasicDto;
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

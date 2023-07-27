@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateTime;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\UserDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -70,21 +66,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * @property-read ?Role $role
  * @property-read ?UserPosition $position
  */
-final class User extends AbstractActiveRecord implements AllRequestsInterface
+final class User extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
-    /** @return ApiModel::User */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::User;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function __get(string $name): mixed

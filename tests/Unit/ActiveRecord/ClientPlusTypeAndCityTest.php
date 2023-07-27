@@ -107,7 +107,7 @@ EOF
     {
         $modelAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $dto = DtoFactory::withDefaultSerializers()->getAsDtoFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
+        $dto = DtoFactory::withDefaultSerializers()->getFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
         $activeRecordClient = $apiGateway->getClient()->specificARFromSingleDto($dto, ActiveRecord\ClientPlusTypeAndCity::class);
         $this->assertInstanceOf(ActiveRecord\ClientPlusTypeAndCity::class, $activeRecordClient);
         $activeRecordCity = $activeRecordClient->getCity();

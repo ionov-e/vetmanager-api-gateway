@@ -63,6 +63,11 @@ class ClientDto extends AbstractModelDTO implements ClientDtoInterface
     {
     }
 
+    public static function createBlanc(): self
+    {
+        return new self(...array_fill(0,30, null));
+    }
+
     /** @return positive-int
      * @throws VetmanagerApiGatewayResponseException
      */

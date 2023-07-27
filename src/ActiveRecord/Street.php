@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\Enum\Street\Type;
 use VetmanagerApiGateway\DTO\StreetDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -31,30 +27,21 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
  * } $originalDataArray
  * @property-read ?City $city
  */
-final class Street extends AbstractActiveRecord implements AllRequestsInterface
+final class Street extends AbstractActiveRecord
 {
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
-    use AllRequestsTrait;
-
-    /** @return ApiModel::Street */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Street;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function __get(string $name): mixed
-    {
-        return match ($name) {
-            'city' => !empty($this->originalDataArray['city'])
-                ? City::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['city'])
-                : null,
-            default => $this->originalDto->$name,
-        };
-    }
+//    /** @throws VetmanagerApiGatewayException */
+//    public function __get(string $name): mixed
+//    {
+//        return match ($name) {
+//            'city' => !empty($this->originalDataArray['city'])
+//                ? City::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['city'])
+//                : null,
+//            default => $this->originalDto->$name,
+//        };
+//    }
 }

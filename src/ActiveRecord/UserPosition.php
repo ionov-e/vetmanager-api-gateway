@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use DateInterval;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\DTO\UserPositionDto;
 
 /**
@@ -22,24 +18,10 @@ use VetmanagerApiGateway\DTO\UserPositionDto;
  *     admission_length: string
  * } $originalDataArray
  */
-final class UserPosition extends AbstractActiveRecord implements AllRequestsInterface
+final class UserPosition extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
-    /** @return ApiModel::UserPosition */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::UserPosition;
-    }
-
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
-
-    public function __get(string $name): mixed
-    {
-        return $this->originalDto->$name;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 }

@@ -5,6 +5,7 @@ namespace VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ClientDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 class Client extends AbstractClient
 {
@@ -22,12 +23,12 @@ class Client extends AbstractClient
     /** @throws VetmanagerApiGatewayException */
     function getCity(): ?City
     {
-        return $this->getCityId() ? City::getById($this->activeRecordFactory, $this->getCityId()) : null;
+        return $this->getCityId() ? (new Facade\City($this->activeRecordFactory))->getById($this->getCityId()) : null;
     }
 
     /** @throws VetmanagerApiGatewayException */
     function getClientTypeTitle(): string
     {
-        return ClientPlusTypeAndCity::getById($this->activeRecordFactory, $this->getId())->getClientTypeTitle();
+        return (new Facade\Client($this->activeRecordFactory))->getById($this->getId())->getClientTypeTitle();
     }
 }

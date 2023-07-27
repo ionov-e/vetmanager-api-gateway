@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ActiveRecord\Enum\ApiModel;
-use VetmanagerApiGateway\ActiveRecord\Enum\Completeness;
-use VetmanagerApiGateway\ActiveRecord\Interface\AllRequestsInterface;
-use VetmanagerApiGateway\ActiveRecord\Trait\AllRequestsTrait;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\PropertyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -31,11 +27,8 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
  * @property-read ?Clinic $clinic
  * @property-read ?bool $isOnlineSigningUpAvailableForClinic null возвращается, если вдруг clinic_id = null
  */
-final class Property extends AbstractActiveRecord implements AllRequestsInterface
+final class Property extends AbstractActiveRecord
 {
-
-    use AllRequestsTrait;
-
     /**
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
      * @throws VetmanagerApiGatewayException
@@ -53,16 +46,10 @@ final class Property extends AbstractActiveRecord implements AllRequestsInterfac
         return $filteredProperties[0] ?? null;
     }
 
-    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-    {
-        return Completeness::Full;
-    }
-
-    /** @return ApiModel::Property */
-    public static function getApiModel(): ApiModel
-    {
-        return ApiModel::Property;
-    }
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    {
+//        return Completeness::Full;
+//    }
 
     /**
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
