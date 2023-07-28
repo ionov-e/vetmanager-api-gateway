@@ -5,8 +5,9 @@ namespace VetmanagerApiGateway\Facade;
 
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
-class CityType extends AbstractFacade
+class CityType extends AbstractFacade implements AllRequestsInterface
 {
     static public function getBasicActiveRecord(): string
     {

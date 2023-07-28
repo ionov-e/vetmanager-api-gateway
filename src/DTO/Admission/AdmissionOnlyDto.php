@@ -9,14 +9,12 @@ use DateTime;
 use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateInterval;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
 use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 class AdmissionOnlyDto extends AbstractDTO
 {
@@ -105,35 +103,29 @@ class AdmissionOnlyDto extends AbstractDTO
         return $instance;
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['date', 'admission_date'],
-            ['description', 'description'],
-            ['clientId', 'client_id'],
-            ['petId', 'patient_id'],
-            ['userId', 'user_id'],
-            ['typeId', 'type_id'],
-            ['admissionLength', 'admission_length'],
-            ['status', 'status'],
-            ['clinicId', 'clinic_id'],
-            ['isDirectDirection', 'direct_direction'],
-            ['creatorId', 'creator_id'],
-            ['createDate', 'create_date'],
-            ['escortId', 'escorter_id'],
-            ['receptionWriteChannel', 'reception_write_channel'],
-            ['isAutoCreate', 'is_auto_create'],
-            ['invoicesSum', 'invoices_sum'],
-        ))->toArray();
-    }
+//    /** @inheritdoc       #TODO
+//     * @throws VetmanagerApiGatewayRequestException
+//     */
+//    protected function getSetValuesWithoutId(): array
+//    {
+//        return (new DtoPropertyList(
+//            $this,
+//            ['date', 'admission_date'],
+//            ['description', 'description'],
+//            ['clientId', 'client_id'],
+//            ['petId', 'patient_id'],
+//            ['userId', 'user_id'],
+//            ['typeId', 'type_id'],
+//            ['admissionLength', 'admission_length'],
+//            ['status', 'status'],
+//            ['clinicId', 'clinic_id'],
+//            ['isDirectDirection', 'direct_direction'],
+//            ['creatorId', 'creator_id'],
+//            ['createDate', 'create_date'],
+//            ['escortId', 'escorter_id'],
+//            ['receptionWriteChannel', 'reception_write_channel'],
+//            ['isAutoCreate', 'is_auto_create'],
+//            ['invoicesSum', 'invoices_sum'],
+//        ))->toArray();
+//    }
 }

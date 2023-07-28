@@ -188,12 +188,6 @@ use VetmanagerApiGateway\DTO\Admission\StatusEnum;
  */
 abstract class AbstractAdmission extends AbstractActiveRecord
 {
-
-    public static function getDtoClass(): string
-    {
-        return AdmissionOnlyDto::class;
-    }
-
     public static function getRouteKey(): string
     {
         return 'admission';
