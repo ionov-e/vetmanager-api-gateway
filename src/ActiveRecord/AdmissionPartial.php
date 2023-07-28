@@ -2,6 +2,6 @@
 
 namespace VetmanagerApiGateway\ActiveRecord;
 
-final class Admission extends AbstractAdmission
+final class AdmissionPartial extends AbstractAdmission
 {
 }

@@ -18,7 +18,7 @@ use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class AdmissionDto extends AbstractDTO
+class AdmissionDto extends AbstractDTO
 {
     /** @var positive-int */
     public int $id;
