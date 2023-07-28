@@ -4,78 +4,35 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO;
 
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 abstract class AbstractDTO
 {
-    protected function __construct(public array $originalDataArray)
+    /** @var string[] list of properties provided by client from setters */
+    protected array $propertiesSet = [];
+
+    /** Returns list of properties set by client (this library user) */
+    public function getPropertiesSet(): array
     {
+        return $this->propertiesSet;
     }
 
-    /** @psalm-suppress UnsafeInstantiation */
-    public static function createEmpty(): static
+    /** @throws VetmanagerApiGatewayInnerException */
+    protected static function setPropertyFluently(self $object, string $propertyName, ?string $value): static
     {
-        return new static([]);
-    }
+        $clone = clone $object;
 
-    abstract public static function fromApiResponseArray(array $originalDataArray): self;
-
-    /** Список обязательных ключей
-     * @return string[]
-     */
-    abstract public function getRequiredKeysForPostArray(): array;
-
-    /** Получение записанного пользователем DTO в виде массива (без поля с ID) для Post или Put запроса
-     * @return array<string, null|int|float|string|array>
-     */
-    abstract protected function getSetValuesWithoutId(): array;
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    public function getAsArrayForPostRequest(): array
-    {
-        $this->throwIfRequiredFieldForPostIsMissing();
-        return $this->getAsArrayForPostOrPutRequest();
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    public function getAsArrayForPutRequest(): array
-    {
-        return $this->getAsArrayForPostOrPutRequest();
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    public function getIdForPutRequest(): int
-    {
-        if (!isset($this->id)) {
-            throw new VetmanagerApiGatewayRequestException('Не предоставлен ID для Put запроса');
+        if (!property_exists($clone, $propertyName)) {
+            throw new VetmanagerApiGatewayInnerException("There's no property '$propertyName' in " . $clone::class);
         }
 
-        return $this->id;
+        $clone->$propertyName = $value;
+        $clone->propertiesSet[] = $propertyName;
+        return $clone;
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
-    private function throwIfRequiredFieldForPostIsMissing(): void
-    {
-        $arrayForPostRequest = $this->getAsArrayForPostOrPutRequest();
-
-        foreach ($this->getRequiredKeysForPostArray() as $requiredKey) {
-            if (!array_key_exists($requiredKey, $arrayForPostRequest)) {
-                throw new VetmanagerApiGatewayRequestException(
-                    "Пытались отправить Post-запрос объекта " . self::class . " без обязательного поля: $requiredKey"
-                );
-            }
-        }
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    private function getAsArrayForPostOrPutRequest(): array
-    {
-        $arrayToSend = $this->getSetValuesWithoutId();
-
-        if (empty($arrayToSend)) {
-            throw new VetmanagerApiGatewayRequestException('Пытаемся отправить пустую модель');
-        }
-
-        return $arrayToSend;
-    }
+//    public function getAsArrayForPostOrPutRequest(): array
+//    {
+//        return #TODO
+//    }
 }
