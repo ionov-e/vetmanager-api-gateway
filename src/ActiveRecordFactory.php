@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\DTO\AbstractModelDTO;
+use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 /**
  * @template TActiveRecord of AbstractActiveRecord
- * @template TModelDTO of AbstractModelDTO
+ * @template TModelDTO of AbstractDTO
  */
 class ActiveRecordFactory
 {
@@ -94,14 +94,14 @@ class ActiveRecordFactory
     }
 
     /**
-     * @param AbstractModelDTO[] $modelDTOs
+     * @param AbstractDTO[] $modelDTOs
      * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord[]
      */
     public function getFromMultipleDtos(array $modelDTOs, string $activeRecordClass): array
     {
         return array_map(
-            fn(AbstractModelDTO $modelDTO): AbstractActiveRecord => $this->getFromSingleDto($modelDTO, $activeRecordClass),
+            fn(AbstractDTO $modelDTO): AbstractActiveRecord => $this->getFromSingleDto($modelDTO, $activeRecordClass),
             $modelDTOs
         );
     }
@@ -110,7 +110,7 @@ class ActiveRecordFactory
      * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord
      */
-    public function getFromSingleDto(AbstractModelDTO $modelDTO, string $activeRecordClass): AbstractActiveRecord
+    public function getFromSingleDto(AbstractDTO $modelDTO, string $activeRecordClass): AbstractActiveRecord
     {
         return new $activeRecordClass($this, $modelDTO);
     }

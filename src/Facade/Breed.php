@@ -5,19 +5,20 @@ namespace VetmanagerApiGateway\Facade;
 
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
-class Breed extends AbstractFacade
+class Breed extends AbstractFacade implements AllRequestsInterface
 {
     /** @inheritDoc */
-    static public function getDefaultActiveRecord(): string
+    static public function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Breed::class;
+        return ActiveRecord\Breed\Breed::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Breed
+    public function getById(int $id): ActiveRecord\Breed\Breed
     {
-        return $this->protectedGetById(self::getDefaultActiveRecord(), $id);
+        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
 
 
@@ -25,7 +26,7 @@ class Breed extends AbstractFacade
 
 
 
-    //    public static function getCompletenessFromGetAllOrByQuery(): Completeness
+//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
 //    {
 //        return Completeness::OnlyBasicDto;
 //    }

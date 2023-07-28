@@ -8,7 +8,7 @@ use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
+use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\ApiService;
@@ -42,9 +42,9 @@ class ClientTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "Last Name",
-"first_name": "First Name",
-"middle_name": "Middle Name",
+"last_name": "Last NameEnum",
+"first_name": "First NameEnum",
+"middle_name": "Middle NameEnum",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",
@@ -80,7 +80,7 @@ EOF
         $clientFacade = new Client($activeRecordFactory);
         $modelAsArray = json_decode($json, true);
         $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client::class, $activeRecord);
+        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Client\ClientOnly::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }
 

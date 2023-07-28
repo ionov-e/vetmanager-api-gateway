@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord;
 
 use VetmanagerApiGateway\ActiveRecordFactory;
-use VetmanagerApiGateway\DTO\AbstractModelDTO;
+use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 abstract class AbstractActiveRecord
 {
     public function __construct(
         protected ActiveRecordFactory $activeRecordFactory,
-        protected AbstractModelDTO    $modelDTO
+        protected AbstractDTO $modelDTO
     )
     {
     }
 
-    /** @return class-string<AbstractModelDTO> */
+    /** @return class-string<AbstractDTO> */
     abstract public static function getDtoClass(): string;
 
     /** Model key in ApiRequest path. Example: "{{Domain URL}}/rest/api/client" - "client" is a route key  */
@@ -44,7 +44,7 @@ abstract class AbstractActiveRecord
 
     /**
      * @param class-string<self> $activeRecordClass
-     * @return class-string<AbstractModelDTO>
+     * @return class-string<AbstractDTO>
      * @throws VetmanagerApiGatewayInnerException
      */
     public static function getDtoClassFromActiveRecordClass(string $activeRecordClass): string
@@ -76,7 +76,7 @@ abstract class AbstractActiveRecord
         return $activeRecordClass::getRouteKey();
     }
 
-    protected static function setNewModelDtoFluently(self $object, AbstractModelDTO $newModelDto): static
+    protected static function setNewModelDtoFluently(self $object, AbstractDTO $newModelDto): static
     {
         $clone = clone $object;
         $clone->modelDTO = $newModelDto;

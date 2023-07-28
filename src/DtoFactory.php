@@ -7,12 +7,12 @@ namespace VetmanagerApiGateway;
 use ReflectionClass;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use VetmanagerApiGateway\DTO\AbstractModelDTO;
+use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
-/** @template TModelDTO of AbstractModelDTO */
+/** @template TModelDTO of AbstractDTO */
 class DtoFactory
 {
     public function __construct(
@@ -31,19 +31,19 @@ class DtoFactory
     }
 
     /**
-     * @param class-string<AbstractModelDTO> $dtoClassName
+     * @param class-string<AbstractDTO> $dtoClassName
      * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getFromApiResponseWithSingleModelAsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractModelDTO
+    public function getFromApiResponseWithSingleModelAsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractDTO
     {
         $modelAsArray = ApiService::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
         return $this->getFromSingleModelAsArray($modelAsArray, $dtoClassName);
     }
 
     /**
-     * @param class-string<AbstractModelDTO> $dtoClassName
-     * @return AbstractModelDTO[]
+     * @param class-string<AbstractDTO> $dtoClassName
+     * @return AbstractDTO[]
      * @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayInnerException
      */
@@ -62,20 +62,20 @@ class DtoFactory
     public function getFromModelsAsArrays(array $listOfMultipleDtosAsArrays, string $dtoClass): array
     {
         return array_map(
-            fn(array $singleDtoAsArray): AbstractModelDTO => $this->getFromSingleModelAsArray($singleDtoAsArray, $dtoClass),
+            fn(array $singleDtoAsArray): AbstractDTO => $this->getFromSingleModelAsArray($singleDtoAsArray, $dtoClass),
             $listOfMultipleDtosAsArrays
         );
     }
 
     /**
-     * @param class-string<AbstractModelDTO> $dtoClass
+     * @param class-string<AbstractDTO> $dtoClass
      * @return TModelDTO
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getFromSingleModelAsArray(array $singleDtoAsArray, string $dtoClass): AbstractModelDTO
+    public function getFromSingleModelAsArray(array $singleDtoAsArray, string $dtoClass): AbstractDTO
     {
-        if (!is_subclass_of($dtoClass, AbstractModelDTO::class)) {
-            throw new VetmanagerApiGatewayInnerException("$dtoClass is not a subclass of " . AbstractModelDTO::class);
+        if (!is_subclass_of($dtoClass, AbstractDTO::class)) {
+            throw new VetmanagerApiGatewayInnerException("$dtoClass is not a subclass of " . AbstractDTO::class);
         }
 
         $dto = $this->serializerArrayToObject->denormalize($singleDtoAsArray, $dtoClass);
@@ -99,7 +99,7 @@ class DtoFactory
     }
 
     /**
-     * @param class-string<AbstractModelDTO> $dtoClass
+     * @param class-string<AbstractDTO> $dtoClass
      * @throws VetmanagerApiGatewayInnerException
      */
     private function getNumberOfParametersInConstructor(string $dtoClass): int

@@ -9,7 +9,7 @@ use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\ActiveRecord\ClientPlusTypeAndCity;
+use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
@@ -41,9 +41,9 @@ class ActiveRecordFactoryTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "Last Name",
-"first_name": "First Name",
-"middle_name": "Middle Name",
+"last_name": "Last NameEnum",
+"first_name": "First NameEnum",
+"middle_name": "Middle NameEnum",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",

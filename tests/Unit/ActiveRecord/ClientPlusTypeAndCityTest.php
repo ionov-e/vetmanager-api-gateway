@@ -6,18 +6,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Client;
+use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO\ClientDto;
-use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
+use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
+use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
 
-#[CoversClass(ActiveRecord\ClientPlusTypeAndCity::class)]
+#[CoversClass(ActiveRecord\Client\ClientPlusTypeAndCity::class)]
 #[CoversClass(ClientPlusTypeAndCityDto::class)]
-#[CoversClass(ClientDto::class)]
-#[CoversClass(Client::class)]
+#[CoversClass(ClientOnlyDto::class)]
+#[CoversClass(ClientOnly::class)]
 #[CoversClass(Facade\Client::class)]
 class ClientPlusTypeAndCityTest extends TestCase
 {
@@ -44,9 +44,9 @@ class ClientPlusTypeAndCityTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "Last Name",
-"first_name": "First Name",
-"middle_name": "Middle Name",
+"last_name": "Last NameEnum",
+"first_name": "First NameEnum",
+"middle_name": "Middle NameEnum",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",
@@ -75,17 +75,17 @@ EOF
 
     public function testGetDtoClass()
     {
-        $this->assertEquals(ClientPlusTypeAndCityDto::class, ActiveRecord\ClientPlusTypeAndCity::getDtoClass());
+        $this->assertEquals(ClientPlusTypeAndCityDto::class, ActiveRecord\Client\ClientPlusTypeAndCity::getDtoClass());
     }
 
     public function testGetRouteKey()
     {
-        $this->assertEquals('client', ActiveRecord\ClientPlusTypeAndCity::getRouteKey());
+        $this->assertEquals('client', ActiveRecord\Client\ClientPlusTypeAndCity::getRouteKey());
     }
 
     public function testGetModelKeyInResponse()
     {
-        $this->assertEquals('client', ActiveRecord\ClientPlusTypeAndCity::getModelKeyInResponse());
+        $this->assertEquals('client', ActiveRecord\Client\ClientPlusTypeAndCity::getModelKeyInResponse());
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -97,7 +97,7 @@ EOF
         $clientFacade = $apiGateway->getClient();
         $this->assertInstanceOf(\VetmanagerApiGateway\Facade\Client::class, $clientFacade);
         $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);
-        $this->assertInstanceOf(Client::class, $activeRecord);
+        $this->assertInstanceOf(ClientOnly::class, $activeRecord);
         $this->assertEquals($expected, $activeRecord->$getMethodName());
     }
 
@@ -108,10 +108,10 @@ EOF
         $modelAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
         $dto = DtoFactory::withDefaultSerializers()->getFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
-        $activeRecordClient = $apiGateway->getClient()->specificARFromSingleDto($dto, ActiveRecord\ClientPlusTypeAndCity::class);
-        $this->assertInstanceOf(ActiveRecord\ClientPlusTypeAndCity::class, $activeRecordClient);
+        $activeRecordClient = $apiGateway->getClient()->specificARFromSingleDto($dto, ActiveRecord\Client\ClientPlusTypeAndCity::class);
+        $this->assertInstanceOf(ActiveRecord\Client\ClientPlusTypeAndCity::class, $activeRecordClient);
         $activeRecordCity = $activeRecordClient->getCity();
-        $this->assertInstanceOf(ActiveRecord\City::class, $activeRecordCity);
+        $this->assertInstanceOf(ActiveRecord\City\City::class, $activeRecordCity);
         $this->assertEquals(251, $activeRecordCity->getId());
         $this->assertEquals("Временный", $activeRecordClient->getClientTypeTitle());
     }

@@ -8,14 +8,14 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class CityType extends AbstractFacade
 {
-    static public function getDefaultActiveRecord(): string
+    static public function getBasicActiveRecord(): string
     {
-        return ActiveRecord\CityType::class;
+        return ActiveRecord\CityType\CityType::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\CityType
+    public function getById(int $id): ActiveRecord\CityType\CityType
     {
-        return $this->protectedGetById(ActiveRecord\CityType::class, $id);
+        return $this->protectedGetById(ActiveRecord\CityType\CityType::class, $id);
     }
 }

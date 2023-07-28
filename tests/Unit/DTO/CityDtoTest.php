@@ -9,12 +9,12 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use VetmanagerApiGateway\DTO\CityDto;
+use VetmanagerApiGateway\DTO\City\CityOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
-#[CoversClass(CityDto::class)]
+#[CoversClass(CityOnlyDto::class)]
 class CityDtoTest extends TestCase
 {
     public static function dataProviderClientJson(): array
@@ -38,7 +38,7 @@ EOF
     public function testDeserialization(string $json, string $getMethodName, int|string $expected): void
     {
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-        $dto = $serializer->deserialize($json, CityDto::class, 'json');
+        $dto = $serializer->deserialize($json, CityOnlyDto::class, 'json');
         $this->assertEquals($expected, $dto->$getMethodName());
     }
 
@@ -48,7 +48,7 @@ EOF
     {
         $array = json_decode($json, true);
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $dto = $serializer->denormalize($array, CityDto::class);
+        $dto = $serializer->denormalize($array, CityOnlyDto::class);
         $this->assertEquals($expected, $dto->$getMethodName());
     }
 
@@ -58,7 +58,7 @@ EOF
     {
         $array = json_decode($json, true);
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $dto = $serializer->denormalize($array, CityDto::class);
+        $dto = $serializer->denormalize($array, CityOnlyDto::class);
         $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => ['id']]);
         $this->assertEquals($expected, $data['id']);
     }
@@ -71,9 +71,9 @@ EOF
     {
         $array = json_decode($json, true);
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $dto = $serializer->denormalize($array, CityDto::class);
+        $dto = $serializer->denormalize($array, CityOnlyDto::class);
 
-        $this->assertInstanceOf(CityDto::class, $dto);
+        $this->assertInstanceOf(CityOnlyDto::class, $dto);
 
         $dto = $dto->setTitle("Test103");
         $dto = $dto->setTypeId(103);

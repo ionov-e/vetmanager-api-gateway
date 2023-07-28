@@ -12,41 +12,41 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Admission extends AbstractFacade implements AllRequestsInterface
 {
-    static public function getDefaultActiveRecord(): string
+    static public function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Admission::class;
+        return ActiveRecord\Admission\AdmissionOnly::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\AdmissionFull
+    public function getById(int $id): ActiveRecord\Admission\AdmissionFull
     {
-        return $this->protectedGetById(self::getDefaultActiveRecord(), $id);
+        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
 
     /**
-     * @return ActiveRecord\AdmissionPartial[]
+     * @return \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ActiveRecord\AdmissionPartial::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\Admission\AdmissionPartial::class, $maxLimitOfReturnedModels);
     }
 
     /**
-     * @return ActiveRecord\AdmissionPartial[]
+     * @return \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ActiveRecord\AdmissionPartial::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\Admission\AdmissionPartial::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\AdmissionPartial[]
+    /** @return \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ActiveRecord\AdmissionPartial::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\Admission\AdmissionPartial::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
     /** @inheritDoc
@@ -54,36 +54,36 @@ class Admission extends AbstractFacade implements AllRequestsInterface
      */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ActiveRecord\AdmissionPartial::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\Admission\AdmissionPartial::class, $getParameters);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getNewEmpty(): ActiveRecord\AdmissionPartial
+    public function getNewEmpty(): ActiveRecord\Admission\AdmissionPartial
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\AdmissionPartial::class);
+        return $this->activeRecordFactory->getEmpty(ActiveRecord\Admission\AdmissionPartial::class);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function createNewUsingArray(array $modelAsArray): ActiveRecord\AdmissionPartial
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Admission\AdmissionPartial
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\AdmissionPartial::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray(ActiveRecord\Admission\AdmissionPartial::class, $modelAsArray);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\AdmissionPartial
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Admission\AdmissionPartial
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\AdmissionPartial::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Admission\AdmissionPartial::class, $id, $modelAsArray);
     }
 
 
     /** Не возвращаются со статусом "удален"
-     * @return ActiveRecord\AdmissionPartial[]
+     * @return \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByClientId(int $clientId, int $maxLimit = 100): array
@@ -97,7 +97,7 @@ class Admission extends AbstractFacade implements AllRequestsInterface
     }
 
     /** Не возвращаются со статусом "удален"
-     * @return ActiveRecord\AdmissionPartial[]
+     * @return \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPetId(int $petId, int $maxLimit = 100): array

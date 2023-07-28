@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use VetmanagerApiGateway\DTO\ClientPlusTypeAndCityDto;
+use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
@@ -40,9 +40,9 @@ class ClientPlusTypeAndCityDtoTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "Last Name",
-"first_name": "First Name",
-"middle_name": "Middle Name",
+"last_name": "Last NameEnum",
+"first_name": "First NameEnum",
+"middle_name": "Middle NameEnum",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",

@@ -44,9 +44,9 @@ EOF
         $apiResponseAsArray = json_decode($json, true);
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
         $activeRecords = $apiGateway->getCityType()->fromApiResponseWithMultipleModelsAsArray($apiResponseAsArray);
-        $this->assertContainsOnlyInstancesOf(\VetmanagerApiGateway\ActiveRecord\CityType::class, $activeRecords);
+        $this->assertContainsOnlyInstancesOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $activeRecords);
         $singleAR = $activeRecords[0];
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType::class, $singleAR);
+        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $singleAR);
         $this->assertEquals("Деревня", $singleAR->getTitle());
     }
 
@@ -74,7 +74,7 @@ EOF
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
         $activeRecords = $apiGateway->getCityType()->fromMultipleModelsAsArray($modelsAsArray);
         $singleAR = $activeRecords[0];
-        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType::class, $singleAR);
+        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $singleAR);
         $this->assertEquals("Деревня", $singleAR->getTitle());
     }
 }

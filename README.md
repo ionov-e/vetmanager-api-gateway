@@ -195,7 +195,7 @@ $clientStreet = $client->street; // В переменной будет null ил
 $streetName = !is_null($clientStreet) ? $clientStreet->title : ''; // Название улицы или пустая строка
 
 $clientPets = $client->petsAlive; // Массив с DTO питомцев 
-$firstPet = (!empty($client->petsAlive)) ? $clientPets[0] : null; // Будет DTO Pet или null
+$firstPet = (!empty($client->petsAlive)) ? $clientPets[0] : null; // Будет DTO PetOnly или null
 $firstPetName = !is_null($firstPet) ? $firstPet->color->title : ''; // Получение названия цвета питомца
 ```
 

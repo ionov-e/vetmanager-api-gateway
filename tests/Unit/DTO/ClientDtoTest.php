@@ -9,12 +9,12 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use VetmanagerApiGateway\DTO\ClientDto;
+use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
-#[CoversClass(ClientDto::class)]
+#[CoversClass(ClientOnlyDto::class)]
 class ClientDtoTest extends TestCase
 {
     public static function dataProviderClientJson(): array
@@ -40,9 +40,9 @@ class ClientDtoTest extends TestCase
 "zip": "",
 "registration_index": null,
 "vip": "0",
-"last_name": "Last Name",
-"first_name": "First Name",
-"middle_name": "Middle Name",
+"last_name": "Last NameEnum",
+"first_name": "First NameEnum",
+"middle_name": "Middle NameEnum",
 "status": "ACTIVE",
 "discount": "3",
 "passport_series": "",
@@ -65,7 +65,7 @@ EOF
     public function testStringOrNullMethod(string $json, string $getMethodName, int|string $expected): void
     {
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-        $dto = $serializer->deserialize($json, ClientDto::class, 'json');
+        $dto = $serializer->deserialize($json, ClientOnlyDto::class, 'json');
         $this->assertEquals($expected, $dto->$getMethodName());
     }
 
@@ -77,9 +77,9 @@ EOF
     {
         $array = json_decode($json, true);
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $dto = $serializer->denormalize($array, ClientDto::class);
+        $dto = $serializer->denormalize($array, ClientOnlyDto::class);
 
-        $this->assertInstanceOf(ClientDto::class, $dto);
+        $this->assertInstanceOf(ClientOnlyDto::class, $dto);
 
         $dto = $dto->setAddress("Address 112");
         $dto = $dto->setCityId(103);

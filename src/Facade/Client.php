@@ -12,39 +12,39 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Client extends AbstractFacade implements AllRequestsInterface
 {
-    public static function getDefaultActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Client::class;
+        return ActiveRecord\Client\ClientOnly::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\ClientPlusTypeAndCity
+    public function getById(int $id): ActiveRecord\Client\ClientPlusTypeAndCity
     {
-        return $this->protectedGetById(ActiveRecord\ClientPlusTypeAndCity::class, $id);
+        return $this->protectedGetById(ActiveRecord\Client\ClientPlusTypeAndCity::class, $id);
     }
 
-    /** @return ActiveRecord\ClientPlusTypeAndCity[]
+    /** @return \VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ActiveRecord\ClientPlusTypeAndCity::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\Client\ClientPlusTypeAndCity::class, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\ClientPlusTypeAndCity[]
+    /** @return \VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ActiveRecord\ClientPlusTypeAndCity::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\Client\ClientPlusTypeAndCity::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\ClientPlusTypeAndCity[]
+    /** @return \VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ActiveRecord\ClientPlusTypeAndCity::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\Client\ClientPlusTypeAndCity::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
     /** @inheritDoc
@@ -52,30 +52,30 @@ class Client extends AbstractFacade implements AllRequestsInterface
      */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ActiveRecord\ClientPlusTypeAndCity::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\Client\ClientPlusTypeAndCity::class, $getParameters);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function getNewEmpty(): ActiveRecord\Client
+    public function getNewEmpty(): ActiveRecord\Client\ClientOnly
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\Client::class);
+        return $this->activeRecordFactory->getEmpty(ActiveRecord\Client\ClientOnly::class);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Client
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Client\ClientOnly
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\Client::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray(ActiveRecord\Client\ClientOnly::class, $modelAsArray);
     }
 
     /** @inheritDoc
      * @throws VetmanagerApiGatewayException
      */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Client
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Client\ClientOnly
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Client::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Client\ClientOnly::class, $id, $modelAsArray);
     }
 }
