@@ -17,7 +17,6 @@ use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\Client\ClientDtoInterface;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\StatusEnum;
-use VetmanagerApiGateway\DTO\Enum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /**

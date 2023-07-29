@@ -78,12 +78,12 @@ class ClientPlusTypeAndCityDto extends ClientOnlyDto
         );
     }
 
-    public function getCity(): ?CityOnlyDto
+    public function getCityDto(): ?CityOnlyDto
     {
         return ($this->city_data) ?: null;
     }
 
-    public function getClientType(): ?ClientTypeOnlyDto
+    public function getClientTypeDto(): ?ClientTypeOnlyDto
     {
         return $this->client_type_data ?: null;
     }

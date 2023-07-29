@@ -77,7 +77,7 @@ EOF
         $dto = $serializer->deserialize($json, ClientPlusTypeAndCityDto::class, 'json');
         $this->assertInstanceOf(ClientPlusTypeAndCityDto::class, $dto);
         $this->assertEquals($expected, $dto->$getMethodName());
-        $this->assertEquals("Временный", $dto->getClientType()->getTitle());
+        $this->assertEquals("Временный", $dto->getClientTypeDto()->getTitle());
     }
 
     /** @throws VetmanagerApiGatewayInnerException
