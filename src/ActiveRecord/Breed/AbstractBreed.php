@@ -26,19 +26,14 @@ use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
  * } $originalDataArray 'petType' массив только при GetById
  * @property-read PetTypeOnly $type
  */
-final class Breed extends AbstractActiveRecord //implements AllRequestsInterface
+abstract class AbstractBreed extends AbstractActiveRecord
 {
-    public static function getDtoClass(): string
-    {
-        return Breed::class;
-    }
-
     public static function getRouteKey(): string
     {
         return 'breed';
     }
 
-//    /** @throws VetmanagerApiGatewayException */
+//    /** @throws VetmanagerApiGatewayException */      #TODO
 //    public function __get(string $name): mixed
 //    {
 //        return match ($name) {

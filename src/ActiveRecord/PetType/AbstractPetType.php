@@ -42,7 +42,7 @@ abstract class AbstractPetType extends AbstractActiveRecord
 //        switch ($name) {
 //            case 'breeds':
 //                $this->fillCurrentObjectWithGetByIdDataIfSourceIsNotFull();
-//                return Breed::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
+//                return BreedOnly::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['breeds'], Completeness::OnlyBasicDto);
 //            default:
 //                return $this->originalDto->$name;
 //        }

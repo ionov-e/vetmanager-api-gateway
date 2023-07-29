@@ -7,7 +7,7 @@ namespace VetmanagerApiGateway\ActiveRecord\Pet;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionOnly;
-use VetmanagerApiGateway\ActiveRecord\Breed\Breed;
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\AbstractMedicalCard;
@@ -114,7 +114,7 @@ use VetmanagerApiGateway\DTO\Pet\StatusEnum;
  * } $originalDataArray
  * @property-read ?ClientOnly $client
  * @property-read ?PetTypeOnly $type
- * @property-read ?Breed $breed
+ * @property-read ?BreedOnly $breed
  * @property-read ?ComboManualItemOnly $color
  * @property-read AdmissionOnly[] admissions
  * @property-read AdmissionOnly[] admissionsOfOwner
@@ -145,7 +145,7 @@ abstract class AbstractPet extends AbstractActiveRecord
 //                case 'type':
 //                    return $this->typeId ? PetType::getById($this->activeRecordFactory, $this->typeId) : null;
 //                case 'breed':
-//                    return $this->breedId ? Breed::getById($this->activeRecordFactory, $this->breedId) : null;
+//                    return $this->breedId ? BreedOnly::getById($this->activeRecordFactory, $this->breedId) : null;
 //                case 'color':
 //                    return $this->colorId ? ComboManualItemOnly::getByPetColorId($this->activeRecordFactory, $this->colorId) : null;
 //            }
@@ -174,7 +174,7 @@ abstract class AbstractPet extends AbstractActiveRecord
 //    }
 //
 //    /** @throws VetmanagerApiGatewayException */
-//    private function getBreedActiveRecordOrNull(): ?Breed
+//    private function getBreedActiveRecordOrNull(): ?BreedOnly
 //    {
 //        if (empty($this->originalDataArray['breed'])) {
 //            return null;
@@ -189,6 +189,6 @@ abstract class AbstractPet extends AbstractActiveRecord
 //            $typeArray
 //        );
 //
-//        return Breed::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $arrayForFullBreedActiveRecord);
+//        return BreedOnly::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $arrayForFullBreedActiveRecord);
 //    }
 }

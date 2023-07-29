@@ -5,7 +5,7 @@ namespace VetmanagerApiGateway\ActiveRecord\Admission;
 use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Breed\Breed;
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\Clinic\Clinic;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
@@ -178,7 +178,7 @@ use VetmanagerApiGateway\DTO\Admission\StatusEnum;
  * @property-read ClientOnly $client
  * @property-read ?PetOnly $pet Если {@see $petId} будет 0 или null, то вместо DTO тоже будет null
  * @property-read ?PetTypeOnly $petType
- * @property-read ?Breed $petBreed
+ * @property-read ?BreedOnly $petBreed
  * @property-read InvoiceOnly[] $invoices Игнорирую какую-то странную дату со временем под ключом 'd' - не смотрел как формируется. При других запросах такого элемента нет
  * @property-read ?UserOnly $user
  * @property-read ?ComboManualItemOnly $type
@@ -225,7 +225,7 @@ abstract class AbstractAdmission extends AbstractActiveRecord
 //                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])
 //                : null,
 //            'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
-//                ? Breed::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
+//                ? BreedOnly::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
 //                : null,
 //            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
 //            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),

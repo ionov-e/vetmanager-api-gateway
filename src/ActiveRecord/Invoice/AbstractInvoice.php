@@ -32,7 +32,7 @@ abstract class AbstractInvoice extends AbstractActiveRecord
 //            'client' => ClientOnly::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['client']),
 //            'pet' => PetOnly::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['pet']),
 //            'petBreed' => !empty($this->originalDataArray['pet']['breed_data'])
-//                ? Breed::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
+//                ? BreedOnly::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
 //                : null,
 //            'petType' => !empty($this->originalDataArray['pet']['pet_type_data'])
 //                ? PetType::fromSingleDtoArray($this->activeRecordFactory, $this->originalDataArray['pet']['pet_type_data'])

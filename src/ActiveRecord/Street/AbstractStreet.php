@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord\Street;
 
+use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\City\City;
 use VetmanagerApiGateway\DTO\Street\StreetOnlyDto;
 use VetmanagerApiGateway\DTO\Street\TypeEnum;
@@ -27,17 +28,12 @@ use VetmanagerApiGateway\DTO\Street\TypeEnum;
  * } $originalDataArray
  * @property-read ?City $city
  */
-abstract class AbstractStreet extends v
+abstract class AbstractStreet extends AbstractActiveRecord
 {
     public static function getRouteKey(): string
     {
         return 'street';
     }
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
-
 //    /** @throws VetmanagerApiGatewayException */
 //    public function __get(string $name): mixed
 //    {

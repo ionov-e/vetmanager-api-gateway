@@ -12,6 +12,7 @@ use VetmanagerApiGateway\DTO\City\CityOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Facade;
 
 /**
  * @property CityOnlyDto $originalDto
@@ -27,8 +28,6 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
  */
 final class City extends AbstractActiveRecord implements CityDtoInterface
 {
-    
-
     public function __construct(ActiveRecordFactory $activeRecordFactory, CityOnlyDto $modelDTO)
     {
         parent::__construct($activeRecordFactory, $modelDTO);
@@ -80,17 +79,11 @@ final class City extends AbstractActiveRecord implements CityDtoInterface
     public function setTypeId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeId($value));
-
     }
-
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
 
     /** @throws VetmanagerApiGatewayException */
     public function getCityType(): CityType
     {
-        return CityType::getById($this->activeRecordFactory, $this->modelDTO->getTypeId());
+        return (new Facade\CityType($this->activeRecordFactory))->getById($this->modelDTO->getTypeId());
     }
 }
