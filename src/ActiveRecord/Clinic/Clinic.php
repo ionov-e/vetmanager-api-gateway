@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\Clinic;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Property\Property;
 use VetmanagerApiGateway\DO\FullPhone;
 use VetmanagerApiGateway\DTO\Clinic\ClinicOnlyDto;
 use VetmanagerApiGateway\DTO\Clinic\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\Property;
 
 /**
  * @property-read ClinicOnlyDto $originalDto
@@ -75,8 +75,8 @@ final class Clinic extends AbstractActiveRecord
     /** @throws VetmanagerApiGatewayException */
     private function getFullPhone(): FullPhone
     {
-        $phonePrefix = Property::getValueByClinicIdAndPropertyName($this->activeRecordFactory, $this->id, "unisender_phone_pristavka");
-        $phoneMask = Property::getValueByClinicIdAndPropertyName($this->activeRecordFactory, $this->id, "phone_mask");
+        $phonePrefix = (new Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->id, "unisender_phone_pristavka");
+        $phoneMask = (new Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->id, "phone_mask");
         return (new FullPhone($phonePrefix ?? '', $this->phone, $phoneMask ?? ''));
     }
 }

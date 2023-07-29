@@ -30,8 +30,4 @@ final class UserPosition extends AbstractActiveRecord
     {
         return UserPositionOnlyDto::class;
     }
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
 }

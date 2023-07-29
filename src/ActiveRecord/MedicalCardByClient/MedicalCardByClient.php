@@ -101,22 +101,6 @@ final class MedicalCardByClient extends AbstractActiveRecord
         return 'medicalCards/MedicalcardsDataByClient';
     }
 
-//    /**
-//     * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
-//     * @return self[]
-//     * @throws VetmanagerApiGatewayException Родительское исключение
-//     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
-//     */
-//    public static function getByClientId(ApiGateway $apiGateway, int $clientId, string $additionalGetParameters = ''): array
-//    {
-//        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-//        $medicalCardsFromApiResponse = $apiGateway->getContentsWithGetParametersAsString(
-//            self::getApiModel(),
-//            "client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}"
-//        );
-//        return self::fromMultipleDtosArrays($apiGateway, $medicalCardsFromApiResponse);
-//    }
-
 //    /** @throws VetmanagerApiGatewayException
 //     */
 //    public function __get(string $name): mixed

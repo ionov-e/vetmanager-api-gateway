@@ -6,69 +6,68 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
-class Client extends AbstractFacade implements AllRequestsInterface
+class Role extends AbstractFacade implements AllRequestsInterface
 {
-    public static function getBasicActiveRecord(): string
+    static public function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Client\ClientOnly::class;
+        return ActiveRecord\Role\Role::class;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ClientPlusTypeAndCity
+    public function getById(int $id): ActiveRecord\Role\Role
     {
-        return $this->protectedGetById(ClientPlusTypeAndCity::class, $id);
+        return $this->protectedGetById(ActiveRecord\Role\Role::class, $id);
     }
 
-    /** @return ClientPlusTypeAndCity[]
+    /** @return ActiveRecord\Role\Role[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ClientPlusTypeAndCity::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\Role\Role::class, $maxLimitOfReturnedModels);
     }
 
-    /** @return ClientPlusTypeAndCity[]
+    /** @return ActiveRecord\Role\Role[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ClientPlusTypeAndCity::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\Role\Role::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ClientPlusTypeAndCity[]
+    /** @return ActiveRecord\Role\Role[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ClientPlusTypeAndCity::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\Role\Role::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
-    /** @return ClientPlusTypeAndCity[]
+    /** @return ActiveRecord\Role\Role[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ClientPlusTypeAndCity::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\Role\Role::class, $getParameters);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getNewEmpty(): ActiveRecord\Client\ClientOnly
+    public function getNewEmpty(): ActiveRecord\Role\Role
     {
         return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Client\ClientOnly
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Role\Role
     {
         return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Client\ClientOnly
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Role\Role
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }

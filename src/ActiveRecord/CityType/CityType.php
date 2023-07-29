@@ -59,6 +59,4 @@ final class CityType extends AbstractActiveRecord implements CityTypeDtoInterfac
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
     }
-
-    //    public static function getCompletenessFromGetAllOrByQuery(): Completeness { return Completeness::Full; }
 }

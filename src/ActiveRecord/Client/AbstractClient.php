@@ -10,6 +10,7 @@ use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionOnly;
 use VetmanagerApiGateway\ActiveRecord\City\City;
 use VetmanagerApiGateway\ActiveRecord\MedicalCardByClient\MedicalCardByClient;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
+use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
 use VetmanagerApiGateway\ActiveRecord\Street\StreetOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullName;
@@ -113,18 +114,11 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return 'client';
     }
 
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness     #TODO
-//    {
-//        return Completeness::Full;
-//    }
-
-    /** @inheritDoc */
     public function getId(): int
     {
         return $this->modelDTO->getId();
     }
 
-    /** @inheritDoc */
     public function setId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
@@ -135,7 +129,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getAddress();
     }
 
-    /** @inheritDoc */
     public function setAddress(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setAddress($value));
@@ -146,7 +139,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getHomePhone();
     }
 
-    /** @inheritDoc */
     public function setHomePhone(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setHomePhone($value));
@@ -157,7 +149,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getWorkPhone();
     }
 
-    /** @inheritDoc */
     public function setWorkPhone(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setWorkPhone($value));
@@ -168,43 +159,36 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getNote();
     }
 
-    /** @inheritDoc */
     public function setNote(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setNote($value));
     }
 
-    /** @inheritDoc */
     public function getTypeId(): ?int
     {
         return $this->modelDTO->getTypeId();
     }
 
-    /** @inheritDoc */
     public function setTypeId(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeId($value));
     }
 
-    /** @inheritDoc */
     public function getHowFind(): ?int
     {
         return $this->modelDTO->getHowFind();
     }
 
-    /** @inheritDoc */
     public function setHowFind(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setHowFind($value));
     }
 
-    /** @inheritDoc */
     public function getBalance(): float
     {
         return $this->modelDTO->getBalance();
     }
 
-    /** @inheritDoc */
     public function setBalance(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setBalance($value));
@@ -215,7 +199,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getEmail();
     }
 
-    /** @inheritDoc */
     public function setEmail(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setEmail($value));
@@ -226,31 +209,26 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getCityTitle();
     }
 
-    /** @inheritDoc */
     public function setCityTitle(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setCityTitle($value));
     }
 
-    /** @inheritDoc */
     public function getCityId(): ?int
     {
         return $this->modelDTO->getCityId();
     }
 
-    /** @inheritDoc */
     public function setCityId(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setCityId($value));
     }
 
-    /** @inheritDoc */
     public function getDateRegister(): ?DateTime
     {
         return $this->modelDTO->getDateRegister();
     }
 
-    /** @inheritDoc */
     public function setDateRegister(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegister($value));
@@ -261,7 +239,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getCellPhone();
     }
 
-    /** @inheritDoc */
     public function setCellPhone(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setCellPhone($value));
@@ -272,7 +249,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getZip();
     }
 
-    /** @inheritDoc */
     public function setZip(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setZip($value));
@@ -283,19 +259,16 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getRegistrationIndex();
     }
 
-    /** @inheritDoc */
     public function setRegistrationIndex(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setRegistrationIndex($value));
     }
 
-    /** @inheritDoc */
     public function getIsVip(): bool
     {
         return $this->modelDTO->getIsVip();
     }
 
-    /** @inheritDoc */
     public function setIsVip(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setIsVip($value));
@@ -306,7 +279,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getLastName();
     }
 
-    /** @inheritDoc */
     public function setLastName(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setLastName($value));
@@ -317,7 +289,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getFirstName();
     }
 
-    /** @inheritDoc */
     public function setFirstName(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setFirstName($value));
@@ -328,7 +299,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getMiddleName();
     }
 
-    /** @inheritDoc */
     public function setMiddleName(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setMiddleName($value));
@@ -339,19 +309,16 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getStatus();
     }
 
-    /** @inheritDoc */
     public function setStatus(StatusEnum $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setStatus($value));
     }
 
-    /** @inheritDoc */
     public function getDiscount(): int
     {
         return $this->modelDTO->getDiscount();
     }
 
-    /** @inheritDoc */
     public function setDiscount(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setDiscount($value));
@@ -362,7 +329,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getPassportSeries();
     }
 
-    /** @inheritDoc */
     public function setPassportSeries(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setPassportSeries($value));
@@ -373,19 +339,16 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getLabNumber();
     }
 
-    /** @inheritDoc */
     public function setLabNumber(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setLabNumber($value));
     }
 
-    /** @inheritDoc */
     public function getStreetId(): ?int
     {
         return $this->modelDTO->getStreetId();
     }
 
-    /** @inheritDoc */
     public function setStreetId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setStreetId($value));
@@ -396,49 +359,41 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getApartment();
     }
 
-    /** @inheritDoc */
     public function setApartment(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setApartment($value));
     }
 
-    /** @inheritDoc */
     public function getIsUnsubscribed(): bool
     {
         return $this->modelDTO->getIsUnsubscribed();
     }
 
-    /** @inheritDoc */
     public function setUnsubscribe(?bool $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setUnsubscribe($value));
     }
 
-    /** @inheritDoc */
     public function getIsBlacklisted(): bool
     {
         return $this->modelDTO->getIsBlacklisted();
     }
 
-    /** @inheritDoc */
     public function setInBlacklist(?bool $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setInBlacklist($value));
     }
 
-    /** @inheritDoc */
     public function getLastVisitDate(): ?DateTime
     {
         return $this->modelDTO->getLastVisitDate();
     }
 
-    /** @inheritDoc */
     public function setLastVisitDateFromSting(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setLastVisitDateFromSting($value));
     }
 
-    /** @inheritDoc */
     public function setLastVisitDateFromDateTime(DateTime $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setLastVisitDateFromDateTime($value));
@@ -449,7 +404,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getNumberOfJournal();
     }
 
-    /** @inheritDoc */
     public function setNumberOfJournal(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setNumberOfJournal($value));
@@ -460,7 +414,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getPhonePrefix();
     }
 
-    /** @inheritDoc */
     public function setPhonePrefix(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setPhonePrefix($value));
@@ -476,26 +429,19 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
      */
     public function getMedicalCards(): array
     {
-        return MedicalCardByClient::getByClientId($this->activeRecordFactory, $this->id);   #TODO
+        return (new \VetmanagerApiGateway\Facade\MedicalCardByClient($this->activeRecordFactory))->getByClientId($this->getId());
     }
 
-//    /** @return PetOnly[]
-//     * @throws VetmanagerApiGatewayException
-//     */
-//    public function getPetsAlive(): array
-//    {
-//        $pets = $this->apiGateway->getWithQueryBuilder(         #TODO Move to facade of PetOnly
-//            ApiModel::PetOnly,
-//            (new Builder())
-//                ->where('owner_id', (string)$this->id)
-//                ->where('status', Enum\PetOnly\StatusEnum::Alive->value)
-//        );
-//
-//        return PetOnly::fromMultipleDtosArrays($this->apiGateway, $pets);     #TODO
-//    }
+    /** @return PetPlusOwnerAndTypeAndBreedAndColor[]
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getPetsAlive(): array
+    {
+        return (new \VetmanagerApiGateway\Facade\Pet($this->activeRecordFactory))->getOnlyAliveByClientId($this->getId());
+    }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getStreet(): ?StreetOnly
+    public function getStreet(): ?\VetmanagerApiGateway\ActiveRecord\Street\StreetPlusCity
     {
         return $this->getStreetId() ? (new \VetmanagerApiGateway\Facade\Street($this->activeRecordFactory))->getById($this->getStreetId()) : null;
     }

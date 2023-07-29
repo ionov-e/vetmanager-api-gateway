@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord\Breed;
 
-use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\PetType\PetTypeOnly;
 use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
 

@@ -36,43 +36,7 @@ final class Property extends AbstractActiveRecord
     {
         return PropertyOnlyDto::class;
     }
-//    /**
-//     * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
-//     * @throws VetmanagerApiGatewayException
-//     */
-//    public static function getByClinicIdAndPropertyName(ApiGateway $apiGateway, int $clinicId, string $propertyName): ?self
-//    {
-//        $filteredProperties = self::getByQueryBuilder(
-//            $apiGateway,
-//            (new Builder())
-//                ->where('property_name', $propertyName)
-//                ->where('clinic_id', (string)$clinicId),
-//            1
-//        );
-//
-//        return $filteredProperties[0] ?? null;
-//    }
 
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
-
-//    /**
-//     * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
-//     * @throws VetmanagerApiGatewayException
-//     */
-//    public static function getValueByClinicIdAndPropertyName(ApiGateway $apiGateway, int $clinicId, string $propertyName): ?string
-//    {
-//        return self::getByClinicIdAndPropertyName($apiGateway, $clinicId, $propertyName)?->value;
-//    }
-//
-//    /** @throws VetmanagerApiGatewayException */
-//    public static function isOnlineSigningUpAvailableForClinic(ApiGateway $apiGateway, int $clinicId): bool
-//    {
-//        $property = self::getByClinicIdAndPropertyName($apiGateway, $clinicId, 'service.appointmentWidget');
-//        return filter_var($property?->value, FILTER_VALIDATE_BOOL);
-//    }
 //
 //    /** @throws VetmanagerApiGatewayException */
 //    public function __get(string $name): mixed

@@ -31,10 +31,6 @@ abstract class AbstractPetType extends AbstractActiveRecord
     {
         return 'petType';
     }
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::OnlyBasicDto;
-//    }
 
 //    /** @throws VetmanagerApiGatewayException */
 //    public function __get(string $name): mixed

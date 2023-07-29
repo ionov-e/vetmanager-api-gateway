@@ -142,11 +142,6 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord
         return 'invoiceDocument';
     }
 
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Partial;
-//    }
-
 //    /** @throws VetmanagerApiGatewayException */
 //    public function __get(string $name): mixed
 //    {

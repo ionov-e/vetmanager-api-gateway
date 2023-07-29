@@ -69,11 +69,6 @@ use VetmanagerApiGateway\DTO\User\UserOnlyDto;
  */
 abstract class AbstractUser extends AbstractActiveRecord
 {
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
-
     public static function getRouteKey(): string
     {
         return 'user';

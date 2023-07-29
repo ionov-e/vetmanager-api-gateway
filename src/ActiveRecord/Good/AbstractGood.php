@@ -85,12 +85,6 @@ abstract class AbstractGood extends AbstractActiveRecord
     {
         return 'good';
     }
-
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
-
 //    /** @throws VetmanagerApiGatewayException */
 //    public function __get(string $name): mixed
 //    {

@@ -127,12 +127,6 @@ abstract class AbstractPet extends AbstractActiveRecord
     {
         return 'pet';
     }
-
-//    public static function getCompletenessFromGetAllOrByQuery(): Completeness
-//    {
-//        return Completeness::Full;
-//    }
-
 //    /** @throws VetmanagerApiGatewayException
 //     * @psalm-suppress DocblockTypeContradiction
 //     */

@@ -6,7 +6,7 @@ namespace VetmanagerApiGateway\ActiveRecord\InvoiceDocument;
 
 use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDto;
 
-class InvoiceDocumentOnly extends AbstractInvoiceDocument
+final class InvoiceDocumentOnly extends AbstractInvoiceDocument
 {
     public static function getDtoClass(): string
     {

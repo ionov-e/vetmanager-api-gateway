@@ -72,27 +72,12 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord
     {
         return 'medicalCards/Vaccinations';
     }
-//    /**
-//     * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
-//     * @return self[]
-//     * @throws VetmanagerApiGatewayException Родительское исключение
-//     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException
-//     */
-//    public static function getByPetId(ApiGateway $apiGateway, int $petId, string $additionalGetParameters = ''): array
-//    {
-//        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-//        $petsFromApiResponse = $apiGateway->getContentsWithGetParametersAsString(
-//            self::getApiModel(),
-//            "pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}"
-//        );
-//        return self::fromMultipleDtosArrays($apiGateway, $petsFromApiResponse);
-//    }
 
 //    /** @throws VetmanagerApiGatewayException Родительский */
 //    public function __get(string $name): mixed
 //    {
 //        return match ($name) {
-//            'medicalCard' => MedicalCard::getById($this->activeRecordFactory, $this->medicalCardId),
+//            'medicalCard' => MedicalCardOnly::getById($this->activeRecordFactory, $this->medicalCardId),
 //            'nextAdmission' => $this->nextAdmissionId
 //                ? AdmissionOnly::getById($this->activeRecordFactory, $this->nextAdmissionId)
 //                : null,
