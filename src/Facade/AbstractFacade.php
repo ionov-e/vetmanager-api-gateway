@@ -107,6 +107,25 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getFromSingleDto($modelDto, $activeRecordClass);
     }
 
+    /** @param AbstractDTO[] $modelDtos
+     * @return TActiveRecord[]
+     */
+    public function fromMultipleDtos(array $modelDtos): array
+    {
+        return $this->specificARFromMultipleDtos($modelDtos, static::getBasicActiveRecord());
+    }
+
+    /**
+     * @param AbstractDTO[] $modelDtos
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @return TActiveRecord[]
+     */
+    public function specificARFromMultipleDtos(array $modelDtos, string $activeRecordClass): array
+    {
+        $activeRecordClass = $activeRecordClass ?: static::getBasicActiveRecord();
+        return $this->activeRecordFactory->getFromMultipleDtos($modelDtos, $activeRecordClass);
+    }
+
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord

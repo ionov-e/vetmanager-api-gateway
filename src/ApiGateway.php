@@ -143,6 +143,11 @@ final class ApiGateway
         return $this->activeRecordFactory;
     }
 
+    public function getAdmission(): Facade\Admission
+    {
+        return new Facade\Admission($this->getActiveRecordFactory());
+    }
+
     public function getClient(): Facade\Client
     {
         return new Facade\Client($this->getActiveRecordFactory());

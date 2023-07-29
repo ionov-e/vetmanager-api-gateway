@@ -6,15 +6,24 @@ use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
+use VetmanagerApiGateway\ActiveRecord\Client\AbstractClient;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\Clinic\Clinic;
+use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
+use VetmanagerApiGateway\ActiveRecord\Pet\AbstractPet;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
 use VetmanagerApiGateway\ActiveRecord\PetType\PetTypeOnly;
+use VetmanagerApiGateway\ActiveRecord\User\AbstractUser;
 use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionOnlyDto;
+use VetmanagerApiGateway\DTO\Admission\AdmissionOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\Admission\StatusEnum;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Facade;
 
 /**
  * @property-read AdmissionOnlyDto $originalDto
@@ -186,11 +195,267 @@ use VetmanagerApiGateway\DTO\Admission\StatusEnum;
  * @property-read AdmissionOnly[] $admissionsOfPet
  * @property-read AdmissionOnly[] $admissionsOfOwner
  */
-abstract class AbstractAdmission extends AbstractActiveRecord
+abstract class AbstractAdmission extends AbstractActiveRecord implements AdmissionOnlyDtoInterface
 {
     public static function getRouteKey(): string
     {
         return 'admission';
+    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, AdmissionOnlyDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @inheritDoc */
+    public function getId(): int
+    {
+        return $this->modelDTO->getId();
+    }
+
+    /** @inheritDoc */
+    public function getAdmissionDate(): DateTime
+    {
+        return $this->modelDTO->getAdmissionDate();
+    }
+
+    /** @inheritDoc */
+    public function getDescription(): string
+    {
+        return $this->modelDTO->getDescription();
+    }
+
+    /** @inheritDoc */
+    public function getClientId(): ?int
+    {
+        return $this->modelDTO->getClientId();
+    }
+
+    /** @inheritDoc */
+    public function getPetId(): ?int
+    {
+        return $this->modelDTO->getPetId();
+    }
+
+    /** @inheritDoc */
+    public function getUserId(): ?int
+    {
+        return $this->modelDTO->getUserId();
+    }
+
+    /** @inheritDoc */
+    public function getTypeId(): ?int
+    {
+        return $this->modelDTO->getTypeId();
+    }
+
+    /** @inheritDoc */
+    public function getAdmissionLength(): ?DateInterval
+    {
+        return $this->modelDTO->getAdmissionLength();
+    }
+
+    public function getStatus(): ?StatusEnum
+    {
+        return $this->modelDTO->getStatus();
+    }
+
+    /** @inheritDoc */
+    public function getClinicId(): ?int
+    {
+        return $this->modelDTO->getClinicId();
+    }
+
+    /** @inheritDoc */
+    public function getIsDirectDirection(): bool
+    {
+        return $this->modelDTO->getIsDirectDirection();
+    }
+
+    /** @inheritDoc */
+    public function getCreatorId(): ?int
+    {
+        return $this->modelDTO->getCreatorId();
+    }
+
+    /** @inheritDoc */
+    public function getCreateDate(): DateTime
+    {
+        return $this->modelDTO->getCreateDate();
+    }
+
+    /** @inheritDoc */
+    public function getEscortId(): ?int
+    {
+        return $this->modelDTO->getEscortId();
+    }
+
+    /** @inheritDoc */
+    public function getReceptionWriteChannel(): string
+    {
+        return $this->modelDTO->getReceptionWriteChannel();
+    }
+
+    /** @inheritDoc */
+    public function getIsAutoCreate(): bool
+    {
+        return $this->modelDTO->getIsAutoCreate();
+    }
+
+    /** @inheritDoc */
+    public function getInvoicesSum(): ?float
+    {
+        return $this->modelDTO->getInvoicesSum();
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setAdmissionDateAsString(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateAsString($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setAdmissionDateAsDateTime(DateTime $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateAsDateTime($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setDescription(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDescription($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setClientId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setClientId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setPatientId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPatientId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setUserId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setUserId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setTypeId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setAdmissionLengthAsString(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsString($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsDateInterval($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setStatus(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatus($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setClinicId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setClinicId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsDirectDirection(bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsDirectDirection($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCreatorId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreatorId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCreateDateAsString(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsString($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCreateDateAsDateTime(DateTime $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsDateTime($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setEscortId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setEscortId($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setReceptionWriteChannel(string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setReceptionWriteChannel($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsAutoCreate(bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsAutoCreate($value));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setInvoicesSum(?float $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setInvoicesSum($value));
+    }
+
+    abstract public function getUser(): ?AbstractUser;
+    abstract public function getAdmissionType(): ?AbstractComboManualItem;
+    abstract public function getClient(): ?AbstractClient;
+    abstract public function getPet(): ?AbstractPet;
+    /** @return InvoiceOnly[] */
+    abstract public function getInvoices(): array;
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getClinic(): ?Clinic
+    {
+        return $this->getClinicId() ? (new Facade\Clinic($this->activeRecordFactory))->getById($this->getClinicId()) : null;
+    }
+
+    /** @throws VetmanagerApiGatewayException
+     * @return AdmissionPlusClientAndPetAndInvoices[]
+     */
+    public function getAdmissionsOfPet(): array
+    {
+        return $this->getPetId() ? (new Facade\Admission($this->activeRecordFactory))->getByPetId($this->getPetId()) : [];
+    }
+
+    /** @throws VetmanagerApiGatewayException
+     * @return AdmissionPlusClientAndPetAndInvoices[]
+     */
+    public function getAdmissionsOfOwner(): array
+    {
+        return $this->getClientId() ? (new Facade\Admission($this->activeRecordFactory))->getByClientId($this->getClientId()) : [];
     }
 
 //    /** @throws VetmanagerApiGatewayException */
@@ -229,9 +494,6 @@ abstract class AbstractAdmission extends AbstractActiveRecord
 //                : null,
 //            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
 //            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
-//            'clinic' => $this->clinicId ? Clinic::getById($this->activeRecordFactory, $this->clinicId) : null,
-//            'admissionsOfPet' => $this->petId ? self::getByPetId($this->activeRecordFactory, $this->petId) : [],
-//            'admissionsOfOwner' => $this->clientId ? self::getByClientId($this->activeRecordFactory, $this->clientId) : [],
 //            default => $this->originalDto->$name
 //        };
 //    }

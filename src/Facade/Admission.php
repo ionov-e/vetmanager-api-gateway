@@ -6,7 +6,7 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial;
+use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoices;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
@@ -18,41 +18,47 @@ class Admission extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Admission\AdmissionFull
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Admission\AdmissionOnly
+    {
+        return self::specificARFromSingleModelAsArray($modelAsArray, ActiveRecord\Admission\AdmissionOnly::class);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getById(int $id): ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
 
     /**
-     * @return AdmissionPartial[]
+     * @return AdmissionPlusClientAndPetAndInvoices[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(AdmissionPartial::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(AdmissionPlusClientAndPetAndInvoices::class, $maxLimitOfReturnedModels);
     }
 
     /**
-     * @return AdmissionPartial[]
+     * @return AdmissionPlusClientAndPetAndInvoices[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(AdmissionPartial::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(AdmissionPlusClientAndPetAndInvoices::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return AdmissionPartial[]
+    /** @return AdmissionPlusClientAndPetAndInvoices[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(AdmissionPartial::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(AdmissionPlusClientAndPetAndInvoices::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(AdmissionPartial::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(AdmissionPlusClientAndPetAndInvoices::class, $getParameters);
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -75,7 +81,7 @@ class Admission extends AbstractFacade implements AllRequestsInterface
 
 
     /** Не возвращаются со статусом "удален"
-     * @return AdmissionPartial[]
+     * @return AdmissionPlusClientAndPetAndInvoices[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByClientId(int $clientId, int $maxLimit = 100): array
@@ -89,7 +95,7 @@ class Admission extends AbstractFacade implements AllRequestsInterface
     }
 
     /** Не возвращаются со статусом "удален"
-     * @return AdmissionPartial[]
+     * @return AdmissionPlusClientAndPetAndInvoices[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPetId(int $petId, int $maxLimit = 100): array
