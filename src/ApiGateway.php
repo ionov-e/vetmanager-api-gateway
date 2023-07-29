@@ -148,13 +148,118 @@ final class ApiGateway
         return new Facade\Admission($this->getActiveRecordFactory());
     }
 
-    public function getClient(): Facade\Client
+    public function getBreed(): Facade\Breed
     {
-        return new Facade\Client($this->getActiveRecordFactory());
+        return new Facade\Breed($this->getActiveRecordFactory());
+    }
+
+    public function getCity(): Facade\City
+    {
+        return new Facade\City($this->getActiveRecordFactory());
     }
 
     public function getCityType(): Facade\CityType
     {
         return new Facade\CityType($this->getActiveRecordFactory());
+    }
+
+    public function getClient(): Facade\Client
+    {
+        return new Facade\Client($this->getActiveRecordFactory());
+    }
+
+    public function getClinic(): Facade\Clinic
+    {
+        return new Facade\Clinic($this->getActiveRecordFactory());
+    }
+
+    public function getComboManualItem(): Facade\ComboManualItem
+    {
+        return new Facade\ComboManualItem($this->getActiveRecordFactory());
+    }
+
+    public function getComboManualName(): Facade\ComboManualName
+    {
+        return new Facade\ComboManualName($this->getActiveRecordFactory());
+    }
+
+    public function getGood(): Facade\Good
+    {
+        return new Facade\Good($this->getActiveRecordFactory());
+    }
+
+    public function getGoodGroup(): Facade\GoodGroup
+    {
+        return new Facade\GoodGroup($this->getActiveRecordFactory());
+    }
+
+    public function getGoodSaleParam(): Facade\GoodSaleParam
+    {
+        return new Facade\GoodSaleParam($this->getActiveRecordFactory());
+    }
+
+    public function getInvoice(): Facade\Invoice
+    {
+        return new Facade\Invoice($this->getActiveRecordFactory());
+    }
+
+    public function getInvoiceDocument(): Facade\InvoiceDocument
+    {
+        return new Facade\InvoiceDocument($this->getActiveRecordFactory());
+    }
+
+    public function getMedicalCard(): Facade\MedicalCard
+    {
+        return new Facade\MedicalCard($this->getActiveRecordFactory());
+    }
+
+    public function getMedicalCardAsVaccination(): Facade\MedicalCardAsVaccination
+    {
+        return new Facade\MedicalCardAsVaccination($this->getActiveRecordFactory());
+    }
+
+    public function getMedicalCardByClient(): Facade\MedicalCardByClient
+    {
+        return new Facade\MedicalCardByClient($this->getActiveRecordFactory());
+    }
+
+    public function getPet(): Facade\Pet
+    {
+        return new Facade\Pet($this->getActiveRecordFactory());
+    }
+
+    public function getPetType(): Facade\PetType
+    {
+        return new Facade\PetType($this->getActiveRecordFactory());
+    }
+
+    public function getProperty(): Facade\Property
+    {
+        return new Facade\Property($this->getActiveRecordFactory());
+    }
+
+    public function getRole(): Facade\Role
+    {
+        return new Facade\Role($this->getActiveRecordFactory());
+    }
+
+    public function getStreet(): Facade\Street
+    {
+        return new Facade\Street($this->getActiveRecordFactory());
+    }
+
+    public function getUnit(): Facade\Unit
+    {
+        return new Facade\Unit($this->getActiveRecordFactory());
+    }
+
+    public function getUser(): Facade\User
+    {
+        return new Facade\User($this->getActiveRecordFactory());
+    }
+
+    public function getUserPosition(): Facade\UserPosition
+    {
+        return new Facade\UserPosition($this->getActiveRecordFactory());
     }
 }
