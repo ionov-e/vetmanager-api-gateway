@@ -5,54 +5,53 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Breed;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-class BreedOnlyDto extends AbstractDTO
+class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    /** @var non-empty-string */
-    public string $title;
-    /** @var positive-int */
-    public int $typeId;
-
-    /** @param array{
-     *       id: string,
-     *       title: string,
-     *       pet_type_id: string,
-     *       petType?: array
-     *   } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringOrThrowIfNull();
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['pet_type_id'])->getPositiveInt();
-        return $instance;
+    public function __construct(
+        public ?string $id,
+        public ?string $title,
+        public ?string $pet_type_id
+    ) {
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
+    public function getId(): int
     {
-        return ['title', 'pet_type_id'];
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
+    public function getTitle(): string
     {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['typeId', 'pet_type_id'],
-        ))->toArray();
+        return ApiString::fromStringOrNull($this->title)->getStringOrThrowIfNull();
     }
+
+    public function getPetTypeId(): int
+    {
+        return ApiInt::fromStringOrNull($this->pet_type_id)->getPositiveInt();
+    }
+
+    public function setId(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', (string)$value);
+    }
+
+    public function setPetTypeId(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'pet_type_id', (string)$value);
+    }
+
+//    /** @param array{
+//     *       id: string,
+//     *       title: string,
+//     *       pet_type_id: string,
+//     *       petType?: array
+//     *   }
+//     */
 }

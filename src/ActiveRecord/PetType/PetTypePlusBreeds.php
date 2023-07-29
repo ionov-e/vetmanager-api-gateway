@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord\PetType;
 
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\DTO\PetType\PetTypePlusBreedsDto;
+use VetmanagerApiGateway\Facade\Breed;
 
 /**
  * @property-read PetTypeOnlyDto $originalDto
@@ -23,12 +26,24 @@ use VetmanagerApiGateway\DTO\PetType\PetTypePlusBreedsDto;
  *              title: string,
  *              pet_type_id: string
  *          }>
- * } $originalDataArray 'breeds' массив только при GetById
+ * } $originalDataArray
  */
 final class PetTypePlusBreeds extends AbstractPetType
 {
     public static function getDtoClass(): string
     {
         return PetTypePlusBreedsDto::class;
+    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, PetTypePlusBreedsDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @return BreedOnly[] */
+    public function getBreeds(): array
+    {
+        return (new Breed($this->activeRecordFactory))->specificARFromMultipleDtos($this->modelDTO->getBreedsDtos(), BreedOnly::class);
     }
 }
