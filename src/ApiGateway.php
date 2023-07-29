@@ -77,10 +77,7 @@ final class ApiGateway
     private static function getHeadersForServiceNameAndApiKey(string $serviceName, string $apiKey, string $timezone): WithAuthAndParams
     {
         return new WithAuthAndParams(
-            new ByServiceApiKey(
-                new ServiceName($serviceName),
-                new ApiKey($apiKey)
-            ),
+            new ByServiceApiKey(new ServiceName($serviceName), new ApiKey($apiKey)),
             ['X-REST-TIME-ZONE' => $timezone]
         );
     }
