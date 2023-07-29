@@ -8,7 +8,6 @@ use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPartial;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Admission extends AbstractFacade implements AllRequestsInterface
@@ -50,32 +49,28 @@ class Admission extends AbstractFacade implements AllRequestsInterface
         return $this->protectedGetByQueryBuilder(AdmissionPartial::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function getByParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(AdmissionPartial::class, $getParameters);
     }
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function getNewEmpty(): AdmissionPartial
+    /** @throws VetmanagerApiGatewayException */
+    public function getNewEmpty(): ActiveRecord\Admission\AdmissionOnly
     {
-        return $this->activeRecordFactory->getEmpty(AdmissionPartial::class);
+        return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function createNewUsingArray(array $modelAsArray): AdmissionPartial
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Admission\AdmissionOnly
     {
-        return $this->protectedCreateNewUsingArray(AdmissionPartial::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): AdmissionPartial
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Admission\AdmissionOnly
     {
-        return $this->protectedUpdateUsingIdAndArray(AdmissionPartial::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
 
 

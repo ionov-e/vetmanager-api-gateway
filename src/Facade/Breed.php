@@ -58,18 +58,18 @@ class Breed extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getNewEmpty(): ActiveRecord\Breed\BreedOnly
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\Breed\BreedOnly::class);
+        return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function createNewUsingArray(array $modelAsArray): ActiveRecord\Breed\BreedOnly
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\Breed\BreedOnly::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Breed\BreedOnly
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Breed\BreedOnly::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
 }

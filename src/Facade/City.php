@@ -56,18 +56,18 @@ class City extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getNewEmpty(): ActiveRecord\City\City
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\City\City::class);
+        return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function createNewUsingArray(array $modelAsArray): ActiveRecord\City\City
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\City\City::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\City\City
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\City\City::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
 }

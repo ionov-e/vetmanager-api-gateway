@@ -59,18 +59,18 @@ class Client extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getNewEmpty(): ActiveRecord\Client\ClientOnly
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\Client\ClientOnly::class);
+        return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function createNewUsingArray(array $modelAsArray): ActiveRecord\Client\ClientOnly
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\Client\ClientOnly::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Client\ClientOnly
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Client\ClientOnly::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
 }

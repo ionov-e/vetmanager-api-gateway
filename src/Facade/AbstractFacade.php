@@ -183,13 +183,22 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
 
+    /** @return TActiveRecord
+     * @throws VetmanagerApiGatewayException
+     */
+    public function protectedGetNewEmpty(): AbstractActiveRecord
+    {
+        return $this->activeRecordFactory->getEmpty(static::getBasicActiveRecord());
+    }
+
     /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
-     * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
-    protected function protectedCreateNewUsingArray(string $activeRecordClass, array $modelAsArray): AbstractActiveRecord
+    protected function protectedCreateNewUsingArray(array $modelAsArray): AbstractActiveRecord
     {
+        /** @var class-string<AbstractActiveRecord> $activeRecordClass */
+        $activeRecordClass = static::getBasicActiveRecord();
         $createdModelAsArray = $this->activeRecordFactory->apiService->post(
             $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
             $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
@@ -199,12 +208,13 @@ abstract class AbstractFacade
     }
 
     /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
-     * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
-    protected function protectedUpdateUsingIdAndArray(string $activeRecordClass, int $id, array $modelAsArray): AbstractActiveRecord
+    protected function protectedUpdateUsingIdAndArray(int $id, array $modelAsArray): AbstractActiveRecord
     {
+        /** @var class-string<AbstractActiveRecord> $activeRecordClass */
+        $activeRecordClass = static::getBasicActiveRecord();
         $createdModelAsArray = $this->activeRecordFactory->apiService->put(
             $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
             $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),

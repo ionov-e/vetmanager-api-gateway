@@ -57,18 +57,18 @@ class Street extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getNewEmpty(): ActiveRecord\Street\StreetOnly
     {
-        return $this->activeRecordFactory->getEmpty(ActiveRecord\Street\StreetOnly::class);
+        return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function createNewUsingArray(array $modelAsArray): ActiveRecord\Street\StreetOnly
     {
-        return $this->protectedCreateNewUsingArray(ActiveRecord\Street\StreetOnly::class, $modelAsArray);
+        return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Street\StreetOnly
     {
-        return $this->protectedUpdateUsingIdAndArray(ActiveRecord\Street\StreetOnly::class, $id, $modelAsArray);
+        return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
 }
