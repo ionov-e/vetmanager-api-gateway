@@ -57,7 +57,7 @@ abstract class AbstractBreed extends AbstractActiveRecord implements BreedOnlyDt
         return $this->modelDTO->getPetTypeId();
     }
 
-    public function setId(?string $value): static
+    public function setId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
     }
@@ -74,14 +74,4 @@ abstract class AbstractBreed extends AbstractActiveRecord implements BreedOnlyDt
 
     abstract public function getPetType(): AbstractPetType;
 
-//    /** @throws VetmanagerApiGatewayException */      #TODO
-//    public function __get(string $name): mixed
-//    {
-//        return match ($name) {
-//            'type' => ($this->completenessLevel == Completeness::Full)
-//                ? PetType::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['petType'])
-//                : PetType::getById($this->activeRecordFactory, $this->typeId),
-//            default => $this->originalDto->$name,
-//        };
-//    }
 }
