@@ -74,42 +74,42 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
         return ApiBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
-    public function setId(int $value): self
+    public function setId(int $value): static
     {
         return self::setPropertyFluently($this, 'id', $value ? (string)$value : "0");
     }
 
-    public function setComboManualId(int $value): self
+    public function setComboManualId(int $value): static
     {
         return self::setPropertyFluently($this, 'combo_manual_id', $value ? (string)$value : "0");
     }
 
-    public function setTitle(?string $value): self
+    public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);
     }
 
-    public function setValue(?string $value): self
+    public function setValue(?string $value): static
     {
         return self::setPropertyFluently($this, 'value', $value);
     }
 
-    public function setDopParam1(?string $value): self
+    public function setDopParam1(?string $value): static
     {
         return self::setPropertyFluently($this, 'dop_param1', $value);
     }
 
-    public function setDopParam2(?string $value): self
+    public function setDopParam2(?string $value): static
     {
         return self::setPropertyFluently($this, 'dop_param2', $value);
     }
 
-    public function setDopParam3(?string $value): self
+    public function setDopParam3(?string $value): static
     {
         return self::setPropertyFluently($this, 'dop_param3', $value);
     }
 
-    public function setIsActive(bool $value): self
+    public function setIsActive(bool $value): static
     {
         return self::setPropertyFluently($this, 'is_active', (string)(int)$value);
     }
