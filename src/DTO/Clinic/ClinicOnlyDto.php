@@ -5,39 +5,201 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Clinic;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class ClinicOnlyDto extends AbstractDTO
+final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    public string $title;
-    public string $address;
-    public string $phone;
-    /** @var ?positive-int */
-    public ?int $cityId;
-    /** Время вида: "00:00" или пустая строка */
-    public string $startTime;
-    /** Время вида: 23:45 или пустая строка */
-    public string $endTime;
-    public string $internetAddress;
-    /** @var ?positive-int Default: '0' - переводим в null */
-    public ?int $guestClientId;
-    /** Пример: "Europe/Kiev" */
-    public string $timeZone;
-    /** Default: '' */
-    public string $logoUrl;
-    public StatusEnum $status;
-    /** Default: '' */
-    public string $telegram;
-    /** Default: '' */
-    public string $whatsapp;
-    /** Default: '' */
-    public string $email;
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $address
+     * @param string|null $phone
+     * @param string|null $city_id
+     * @param string|null $start_time
+     * @param string|null $end_time
+     * @param string|null $internet_address
+     * @param string|null $guest_client_id
+     * @param string|null $time_zone
+     * @param string|null $logo_url
+     * @param string|null $status
+     * @param string|null $telegram
+     * @param string|null $whatsapp
+     * @param string|null $email
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $title,
+        protected ?string $address,
+        protected ?string $phone,
+        protected ?string $city_id,
+        protected ?string $start_time,
+        protected ?string $end_time,
+        protected ?string $internet_address,
+        protected ?string $guest_client_id,
+        protected ?string $time_zone,
+        protected ?string $logo_url,
+        protected ?string $status,
+        protected ?string $telegram,
+        protected ?string $whatsapp,
+        protected ?string $email
+    ) {
+    }
+
+    public function getId(): int
+    {
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getTitle(): string
+    {
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+    }
+
+    public function getAddress(): string
+    {
+        return ApiString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
+    }
+
+    public function getPhone(): string
+    {
+        return ApiString::fromStringOrNull($this->phone)->getStringEvenIfNullGiven();
+    }
+
+    public function getCityId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
+    }
+
+    public function getStartTime(): string
+    {
+        return ApiString::fromStringOrNull($this->start_time)->getStringEvenIfNullGiven();
+    }
+
+    public function getEndTime(): string
+    {
+        return ApiString::fromStringOrNull($this->end_time)->getStringEvenIfNullGiven();
+    }
+
+    public function getInternetAddress(): string
+    {
+        return ApiString::fromStringOrNull($this->internet_address)->getStringEvenIfNullGiven();
+    }
+
+    public function getGuestClientId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNull();
+    }
+
+    public function getTimeZone(): string
+    {
+        return ApiString::fromStringOrNull($this->time_zone)->getStringEvenIfNullGiven();
+    }
+
+    public function getLogoUrl(): string
+    {
+        return ApiString::fromStringOrNull($this->logo_url)->getStringEvenIfNullGiven();
+    }
+
+    public function getStatus(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
+    {
+        return \VetmanagerApiGateway\DTO\Clinic\StatusEnum::from($this->status);
+    }
+
+    public function getTelegram(): string
+    {
+        return ApiString::fromStringOrNull($this->telegram)->getStringEvenIfNullGiven();
+    }
+
+    public function getWhatsapp(): string
+    {
+        return ApiString::fromStringOrNull($this->whatsapp)->getStringEvenIfNullGiven();
+    }
+
+    public function getEmail(): string
+    {
+        return ApiString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    public function setAddress(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'address', $value);
+    }
+
+    public function setPhone(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'phone', $value);
+    }
+
+    public function setCityId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'city_id', (string)$value);
+    }
+
+    public function setStartTime(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'start_time', $value);
+    }
+
+    public function setEndTime(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'end_time', $value);
+    }
+
+    public function setInternetAddress(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'internet_address', $value);
+    }
+
+    public function setGuestClientId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'guest_client_id', $value ? (string)$value : null);
+    }
+
+    public function setTimeZone(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'time_zone', $value);
+    }
+
+    public function setLogoUrl(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'logo_url', $value);
+    }
+
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Client\StatusEnum $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value->value);
+    }
+
+    public function setStatusFromString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value);
+    }
+
+    public function setTelegram(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'telegram', $value);
+    }
+
+    public function setWhatsapp(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'whatsapp', $value);
+    }
+
+    public function setEmail(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'email', $value);
+    }
 
     /** @param array{
      *     "id": string,
@@ -56,57 +218,5 @@ final class ClinicOnlyDto extends AbstractDTO
      *     "whatsapp": string,
      *     "email": string
      * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
-        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
-        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->getPositiveIntOrNull();
-        $instance->startTime = ApiString::fromStringOrNull($originalDataArray['start_time'])->getStringEvenIfNullGiven();
-        $instance->endTime = ApiString::fromStringOrNull($originalDataArray['end_time'])->getStringEvenIfNullGiven();
-        $instance->internetAddress = ApiString::fromStringOrNull($originalDataArray['internet_address'])->getStringEvenIfNullGiven();
-        $instance->guestClientId = ApiInt::fromStringOrNull($originalDataArray['guest_client_id'])->getPositiveIntOrNull();
-        $instance->timeZone = ApiString::fromStringOrNull($originalDataArray['time_zone'])->getStringEvenIfNullGiven();
-        $instance->logoUrl = ApiString::fromStringOrNull($originalDataArray['logo_url'])->getStringEvenIfNullGiven();
-        $instance->status = StatusEnum::from($originalDataArray['status']);
-        $instance->telegram = ApiString::fromStringOrNull($originalDataArray['telegram'])->getStringEvenIfNullGiven();
-        $instance->whatsapp = ApiString::fromStringOrNull($originalDataArray['whatsapp'])->getStringEvenIfNullGiven();
-        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
-        return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['address', 'address'],
-            ['phone', 'phone'],
-            ['cityId', 'city_id'],
-            ['startTime', 'start_time'],
-            ['endTime', 'end_time'],
-            ['internetAddress', 'internet_address'],
-            ['guestClientId', 'guest_client_id'],
-            ['timeZone', 'time_zone'],
-            ['logoUrl', 'logo_url'],
-            ['status', 'status'],
-            ['telegram', 'telegram'],
-            ['whatsapp', 'whatsapp'],
-            ['email', 'email'],
-        ))->toArray();
-    }
 }
