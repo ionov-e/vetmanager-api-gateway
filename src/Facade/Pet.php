@@ -11,7 +11,7 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Pet extends AbstractFacade implements AllRequestsInterface
 {
-    /** @return class-string<ActiveRecord\Pet\PetOnl> */
+    /** @return class-string<ActiveRecord\Pet\PetOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\Pet\PetOnly::class;

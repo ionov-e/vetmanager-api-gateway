@@ -31,7 +31,7 @@ final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractA
 
     public function getAdmissionType(): ?ComboManualItemOnly
     {
-        return $this->modelDTO->getAdmissionTypeDto() ? new ComboManualItemOnly($this->activeRecordFactory, $this->modelDTO->getUserDto()) : null;
+        return $this->modelDTO->getAdmissionTypeDto() ? new ComboManualItemOnly($this->activeRecordFactory, $this->modelDTO->getAdmissionTypeDto()) : null;
     }
 
     public function getClient(): ?ClientOnly
