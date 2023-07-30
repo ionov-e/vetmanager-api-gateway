@@ -5,22 +5,78 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Property;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class PropertyOnlyDto extends AbstractDTO
+class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    /** Default: '' */
-    public string $name;
-    public string $value;
-    public ?string $title;
-    /** @var ?positive-int Default: '0' (вместо него отдаем null) */
-    public ?int $clinicId;
+    /**
+     * @param string|null $id
+     * @param string|null $property_name
+     * @param string|null $property_value
+     * @param string|null $property_title
+     * @param string|null $clinic_id
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $property_name,
+        protected ?string $property_value,
+        protected ?string $property_title,
+        protected ?string $clinic_id
+    ) {
+    }
+
+    public function getId(): int
+    {
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getName(): ?string
+    {
+        return ApiString::fromStringOrNull($this->property_name)->getStringEvenIfNullGiven();
+    }
+
+    public function getValue(): ?string
+    {
+        return ApiString::fromStringOrNull($this->property_value)->getStringEvenIfNullGiven();
+    }
+
+    public function getTitle(): ?string
+    {
+        return ApiString::fromStringOrNull($this->property_title)->getStringEvenIfNullGiven();
+    }
+
+    public function getClinicId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setName(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'property_name', $value);
+    }
+
+    public function setValue(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'property_value', $value);
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'property_title', $value);
+    }
+
+    public function setClinicId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : (string)$value);
+    }
 
     /** @param array{
      *     "id": string,
@@ -29,31 +85,5 @@ final class PropertyOnlyDto extends AbstractDTO
      *     "property_title": ?string,
      *     "clinic_id": string
      * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['property_name'])->getStringEvenIfNullGiven();
-        $instance->value = ApiString::fromStringOrNull($originalDataArray['property_value'])->getStringEvenIfNullGiven();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['property_title'])->getStringEvenIfNullGiven();
-        $instance->clinicId = ApiInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
-        return $instance;
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['name', 'property_name'],
-            ['value', 'property_value'],
-            ['title', 'property_title'],
-            ['clinicId', 'clinic_id'],
-        ))->toArray();
-    }
 }
