@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\ClientType;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiInt;
+use VetmanagerApiGateway\Hydrator\ApiString;
 
-final class ClientTypeOnlyDto extends AbstractDTO
+class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterface
 {
     /**
      * @param string|null $id
@@ -22,27 +21,22 @@ final class ClientTypeOnlyDto extends AbstractDTO
     {
     }
 
-    /** @return positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getId(): int
     {
         return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): self
+    public function setId(int $value): static
     {
         return self::setPropertyFluently($this, 'id', (string)$value);
     }
 
     public function getTitle(): string
     {
-        return $this->title;
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setTitle(string $value): self
+    public function setTitle(string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);
     }
