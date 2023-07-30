@@ -7,9 +7,12 @@ namespace VetmanagerApiGateway\ActiveRecord\Good;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\GoodGroup\GoodGroup;
+use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\AbstractGoodSaleParam;
 use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\GoodSaleParamOnly;
 use VetmanagerApiGateway\ActiveRecord\Unit\Unit;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
+use VetmanagerApiGateway\DTO\Good\GoodOnlyDtoInterface;
 
 /**
  * @property-read GoodOnlyDto $originalDto
@@ -79,53 +82,193 @@ use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
  * @property-read ?Unit $unit
  * @property-read GoodSaleParamOnly[] $goodSaleParams
  */
-abstract class AbstractGood extends AbstractActiveRecord
+abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoInterface
 {
     public static function getRouteKey(): string
     {
         return 'good';
     }
-//    /** @throws VetmanagerApiGatewayException */
-//    public function __get(string $name): mixed
-//    {
-//        switch ($name) {
-//            case 'group':
-//            case 'unit':
-//            case 'goodSaleParams':
-//                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
-//        }
-//
-//        return match ($name) {
-//            'group' => GoodGroup::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['group']),
-//            'unit' => !empty($this->originalDataArray['unitStorage'])
-//                ? Unit::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['unitStorage'])
-//                : null,
-//            'goodSaleParams' => GoodSaleParam::fromMultipleDtosArrays(
-//                $this->activeRecordFactory,
-//                $this->getFullDataForGoodSaleParamActiveRecords(),
-//                Completeness::Full
-//            ),
-//            default => $this->originalDto->$name
-//        };
-//    }
 
-//    private function getFullDataForGoodSaleParamActiveRecords(): array
-//    {
-//        return array_map(
-//            fn (array $goodSaleParamObject): array => array_merge(
-//                $goodSaleParamObject,
-//                !empty($this->originalDataArray['unitStorage']) ? ['unitSale' => $this->originalDataArray['unitStorage']] : [],
-//                ['good' => $this->getOnlyGoodContentsArray()]
-//            ),
-//            $this->originalDataArray['goodSaleParams']
-//        );
-//    }
-//
-//    /** @return array<string, ?string> */
-//    private function getOnlyGoodContentsArray(): array
-//    {
-//        $originalDataArray = $this->originalDataArray;
-//        unset($originalDataArray['group'], $originalDataArray['unitStorage'], $originalDataArray['goodSaleParams']);
-//        return $originalDataArray;
-//    }
+    public function __construct(ActiveRecordFactory $activeRecordFactory, GoodOnlyDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @inheritDoc */
+    public function getId(): int
+    {
+        return $this->modelDTO->getId();
+    }
+
+    /** @inheritDoc */
+    public function getGroupId(): ?int
+    {
+        return $this->modelDTO->getGroupId();
+    }
+
+    public function getTitle(): string
+    {
+        return $this->modelDTO->getTitle();
+    }
+
+    /** @inheritDoc */
+    public function getUnitId(): ?int
+    {
+        return $this->modelDTO->getUnitId();
+    }
+
+    /** @inheritDoc */
+    public function getIsWarehouseAccount(): bool
+    {
+        return $this->modelDTO->getIsWarehouseAccount();
+    }
+
+    /** @inheritDoc */
+    public function getIsActive(): bool
+    {
+        return $this->modelDTO->getIsActive();
+    }
+
+    public function getCode(): string
+    {
+        return $this->modelDTO->getCode();
+    }
+
+    /** @inheritDoc */
+    public function getIsCall(): bool
+    {
+        return $this->modelDTO->getIsCall();
+    }
+
+    /** @inheritDoc */
+    public function getIsForSale(): bool
+    {
+        return $this->modelDTO->getIsForSale();
+    }
+
+    public function getBarcode(): string
+    {
+        return $this->modelDTO->getBarcode();
+    }
+
+    /** @inheritDoc */
+    public function getCreateDate(): ?DateTime
+    {
+        return $this->modelDTO->getCreateDate();
+    }
+
+    public function getDescription(): string
+    {
+        return $this->modelDTO->getDescription();
+    }
+
+    /** @inheritDoc */
+    public function getPrimeCost(): float
+    {
+        return $this->modelDTO->getPrimeCost();
+    }
+
+    /** @inheritDoc */
+    public function getCategoryId(): ?int
+    {
+        return $this->modelDTO->getCategoryId();
+    }
+
+    /** @inheritDoc */
+    public function setId(?int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
+    /** @inheritDoc */
+    public function setGroupId(?int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setGroupId($value));
+    }
+
+    /** @inheritDoc */
+    public function setTitle(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
+    }
+
+    /** @inheritDoc */
+    public function setUnitStorageId(?int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setUnitStorageId($value));
+    }
+
+    /** @inheritDoc */
+    public function setIsWarehouseAccount(?bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsWarehouseAccount($value));
+    }
+
+    /** @inheritDoc */
+    public function setIsActive(?bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsActive($value));
+    }
+
+    /** @inheritDoc */
+    public function setCode(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCode($value));
+    }
+
+    /** @inheritDoc */
+    public function setIsCall(?bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsCall($value));
+    }
+
+    /** @inheritDoc */
+    public function setIsForSale(?bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsForSale($value));
+    }
+
+    /** @inheritDoc */
+    public function setBarcode(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setBarcode($value));
+    }
+
+    /** @inheritDoc */
+    public function setCreateDateFromString(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromString($value));
+    }
+
+    /** @inheritDoc */
+    public function setCreateDateFromDateTime(DateTime $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromDateTime($value));
+    }
+
+    /** @inheritDoc */
+    public function setDescription(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDescription($value));
+    }
+
+    /** @inheritDoc */
+    public function setPrimeCost(?float $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPrimeCost($value));
+    }
+
+    /** @inheritDoc */
+    public function setCategoryId(?int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCategoryId($value));
+    }
+
+    abstract public function getGoodGroup(): ?GoodGroup;
+
+    abstract public function getUnit(): ?Unit;
+
+    /** @return AbstractGoodSaleParam[] */
+    abstract public function getGoodSaleParams(): array;
 }

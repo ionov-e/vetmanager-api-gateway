@@ -8,8 +8,10 @@ use DateTime;
 use VetmanagerApiGateway\ActiveRecord\GoodGroup\GoodGroup;
 use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\GoodSaleParamOnly;
 use VetmanagerApiGateway\ActiveRecord\Unit\Unit;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
 use VetmanagerApiGateway\DTO\Good\GoodPlusGroupAndUnitAndSaleParamsDto;
+use VetmanagerApiGateway\Facade;
 
 /**
  * @property-read GoodOnlyDto $originalDto
@@ -79,10 +81,36 @@ use VetmanagerApiGateway\DTO\Good\GoodPlusGroupAndUnitAndSaleParamsDto;
  * @property-read ?Unit $unit
  * @property-read GoodSaleParamOnly[] $goodSaleParams
  */
-final class GoodPlus extends AbstractGood
+final class GoodPlusGroupAndUnitAndSaleParams extends AbstractGood
 {
     public static function getDtoClass(): string
     {
         return GoodPlusGroupAndUnitAndSaleParamsDto::class;
+    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, GoodPlusGroupAndUnitAndSaleParamsDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    public function getGoodGroup(): ?GoodGroup
+    {
+        return $this->modelDTO->getGoodGroupOnlyDto() ?
+            (new Facade\GoodGroup($this->activeRecordFactory))->fromSingleDto($this->modelDTO->getGoodGroupOnlyDto())
+            : null;
+    }
+
+    public function getUnit(): ?Unit
+    {
+        return $this->modelDTO->getUnitOnlyDto() ?
+            (new Facade\Unit($this->activeRecordFactory))->fromSingleDto($this->modelDTO->getUnitOnlyDto())
+            : null;
+    }
+
+    /** @inheritDoc */
+    public function getGoodSaleParams(): array
+    {
+        return (new Facade\GoodSaleParam($this->activeRecordFactory))->fromMultipleDtos($this->modelDTO->getGoodSaleParamsOnlyDtos());
     }
 }

@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\DTO\Good;
 
 use VetmanagerApiGateway\DTO\GoodGroup\GoodGroupOnlyDto;
 use VetmanagerApiGateway\DTO\GoodSaleParam\GoodSaleParamOnlyDto;
+use VetmanagerApiGateway\DTO\Unit\UnitOnlyDto;
 
 final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDTO
 {
@@ -25,6 +26,7 @@ final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDTO
      * @param string|null $prime_cost
      * @param string|null $category_id
      * @param GoodGroupOnlyDto|null $group
+     * @param UnitOnlyDto|null $unitStorage
      * @param GoodSaleParamOnlyDto[] $goodSaleParams
      */
     public function __construct(
@@ -43,6 +45,7 @@ final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDTO
         protected ?string           $prime_cost,
         protected ?string           $category_id,
         protected ?GoodGroupOnlyDto $group,
+        protected ?UnitOnlyDto      $unitStorage,
         protected ?array            $goodSaleParams
     )
     {
@@ -67,6 +70,11 @@ final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDTO
     public function getGoodGroupOnlyDto(): ?GoodGroupOnlyDto
     {
         return $this->group;
+    }
+
+    public function getUnitOnlyDto(): ?UnitOnlyDto
+    {
+        return $this->unitStorage;
     }
 
     /** @return GoodSaleParamOnlyDto[] */

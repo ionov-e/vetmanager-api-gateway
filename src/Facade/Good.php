@@ -17,41 +17,41 @@ class Good extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Good\GoodPlus
+    public function getById(int $id): ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams
     {
-        return $this->protectedGetById(ActiveRecord\Good\GoodPlus::class, $id);
+        return $this->protectedGetById(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $id);
     }
 
-    /** @return ActiveRecord\Good\GoodPlus[]
+    /** @return ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ActiveRecord\Good\GoodPlus::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\Good\GoodPlus[]
+    /** @return ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ActiveRecord\Good\GoodPlus::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\Good\GoodPlus[]
+    /** @return ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ActiveRecord\Good\GoodPlus::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
-    /** @return ActiveRecord\Good\GoodPlus[]
+    /** @return ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ActiveRecord\Good\GoodPlus::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $getParameters);
     }
 
     /** @throws VetmanagerApiGatewayException */
