@@ -5,23 +5,68 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\ComboManualName;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-class ComboManualNameOnlyDto extends AbstractDTO
+class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    /** @var non-empty-string BD default: '' */
-    public string $title;
-    /** Default: 0 */
-    public bool $isReadonly;
-    /** @var non-empty-string BD default: '' */
-    public string $name;
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $is_readonly
+     * @param string|null $name
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $title,
+        protected ?string $is_readonly,
+        protected ?string $name
+    )
+    {
+    }
+
+    public function getId(): int
+    {
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getTitle(): string
+    {
+        return ApiString::fromStringOrNull($this->title)->getNonEmptyStringOrThrow();
+    }
+
+    public function getIsReadonly(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_readonly)->getBoolOrThrowIfNull();
+    }
+
+    public function getName(): string
+    {
+        return ApiString::fromStringOrNull($this->name)->getNonEmptyStringOrThrow();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', $value ? (string)$value : "0");
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    public function setIsReadonly(bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_readonly', (string)(int)$value);
+    }
+
+    public function setName(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'name', $value);
+    }
 
     /** @param array{
      *       id: string,
@@ -30,35 +75,5 @@ class ComboManualNameOnlyDto extends AbstractDTO
      *       name: string,
      *       comboManualItems?: array
      *   } $originalDataArray 'comboManualItems' не используем
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getNonEmptyStringOrThrow();
-        $instance->isReadonly = ApiBool::fromStringOrNull($originalDataArray['is_readonly'])->getBoolOrThrowIfNull();
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->getNonEmptyStringOrThrow();
-        return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
-    {
-        return ['title', 'name'];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['isReadonly', 'is_readonly'],
-            ['name', 'name'],
-        ))->toArray();
-    }
 }

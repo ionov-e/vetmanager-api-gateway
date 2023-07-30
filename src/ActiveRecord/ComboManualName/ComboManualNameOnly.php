@@ -6,6 +6,8 @@ namespace VetmanagerApiGateway\ActiveRecord\ComboManualName;
 
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\ComboManualName;
 
 /**
  * @property-read ComboManualNameOnlyDto $originalDto
@@ -37,5 +39,11 @@ final class ComboManualNameOnly extends AbstractComboManualName
     public static function getDtoClass(): string
     {
         return ComboManualNameOnlyDto::class;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getComboManualItems(): array
+    {
+        return (new ComboManualName($this->activeRecordFactory))->getById($this->getId())->getComboManualItems();
     }
 }

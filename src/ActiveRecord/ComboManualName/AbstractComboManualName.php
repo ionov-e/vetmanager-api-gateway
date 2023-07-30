@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\ComboManualName;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
+use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDtoInterface;
 
 /**
  * @property-read ComboManualNameOnlyDto $originalDto
@@ -33,25 +36,67 @@ use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
  *   } $originalDataArray 'comboManualItems' массив только при GetById
  * @property-read ComboManualItemOnly[] comboManualItems
  */
-abstract class AbstractComboManualName extends AbstractActiveRecord
+abstract class AbstractComboManualName extends AbstractActiveRecord implements ComboManualNameOnlyDtoInterface
 {
     public static function getRouteKey(): string
     {
         return 'comboManualName';
     }
 
-//    /** @throws VetmanagerApiGatewayException */
-//    public function __get(string $name): mixed
-//    {
-//        switch ($name) {
-//            case 'comboManualItems':
-//                $this->fillCurrentObjectWithGetByIdDataIfSourceIsFromBasicDto();
-//                return ComboManualItemOnly::fromMultipleDtosArrays(
-//                    $this->activeRecordFactory,
-//                    $this->originalDataArray['comboManualItems']
-//                );
-//            default:
-//                return $this->originalDto->$name;
-//        }
-//    }
+    public function __construct(ActiveRecordFactory $activeRecordFactory, ComboManualNameOnlyDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @inheritDoc */
+    public function getId(): int
+    {
+        return $this->modelDTO->getId();
+    }
+
+    /** @inheritDoc */
+    public function getTitle(): string
+    {
+        return $this->modelDTO->getTitle();
+    }
+
+    /** @inheritDoc */
+    public function getIsReadonly(): bool
+    {
+        return $this->modelDTO->getIsReadonly();
+    }
+
+    /** @inheritDoc */
+    public function getName(): string
+    {
+        return $this->modelDTO->getName();
+    }
+
+    /** @inheritDoc */
+    public function setId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
+    /** @inheritDoc */
+    public function setTitle(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
+    }
+
+    /** @inheritDoc */
+    public function setIsReadonly(bool $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setIsReadonly($value));
+    }
+
+    /** @inheritDoc */
+    public function setName(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setName($value));
+    }
+
+    /** @return AbstractComboManualItem[] */
+    abstract public function getComboManualItems(): array;
 }
