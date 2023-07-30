@@ -7,40 +7,240 @@ namespace VetmanagerApiGateway\DTO\Good;
 use DateTime;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
 use VetmanagerApiGateway\Hydrator\ApiFloat;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 class GoodOnlyDto extends AbstractDTO
 {
-    /** @var positive-int */
-    public int $id;
-    /** @var ?positive-int */
-    public ?int $groupId;
-    public string $title;
-    /** @var ?positive-int */
-    public ?int $unitStorageId;
-    /** Default: 1 */
-    public bool $isWarehouseAccount;
-    /** Default: 1 */
-    public bool $isActive;
-    public string $code;
-    /** Default: 0 */
-    public bool $isCall;
-    /** Default: 1 */
-    public bool $isForSale;
-    public string $barcode;
-    public ?DateTime $createDate;
-    public string $description;
-    /** Default: '0.0000000000' */
-    public float $primeCost;
-    /** @var ?positive-int */
-    public ?int $categoryId;
+    /**
+     * @param string|null $id
+     * @param string|null $group_id
+     * @param string|null $title
+     * @param string|null $unit_storage_id
+     * @param string|null $is_warehouse_account
+     * @param string|null $is_active
+     * @param string|null $code
+     * @param string|null $is_call
+     * @param string|null $is_for_sale
+     * @param string|null $barcode
+     * @param string|null $create_date
+     * @param string|null $description
+     * @param string|null $prime_cost
+     * @param string|null $category_id
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $group_id,
+        protected ?string $title,
+        protected ?string $unit_storage_id,
+        protected ?string $is_warehouse_account,
+        protected ?string $is_active,
+        protected ?string $code,
+        protected ?string $is_call,
+        protected ?string $is_for_sale,
+        protected ?string $barcode,
+        protected ?string $create_date,
+        protected ?string $description,
+        protected ?string $prime_cost,
+        protected ?string $category_id
+    ) {
+    }
 
+    /** @return positive-int
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getId(): int
+    {
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    /** @return ?positive-int
+     * @throws VetmanagerApiGatewayResponseException
+     */
+
+    public function getGroupId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->group_id)->getPositiveIntOrNull();
+
+    }
+
+    public function getTitle(): string
+    {
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+    }
+
+    /** @return ?positive-int
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getUnitStorageId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNull();
+    }
+
+    /** Default: 1
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIsWarehouseAccount(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_warehouse_account)->getBoolOrThrowIfNull();
+    }
+
+    /** Default: 1
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIsActive(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+    }
+
+    public function getCode(): string
+    {
+        return ApiString::fromStringOrNull($this->code)->getStringEvenIfNullGiven();
+    }
+
+    /** Default: 0
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIsCall(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_call)->getBoolOrThrowIfNull();
+    }
+
+    /** Default: 1
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIsForSale(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_for_sale)->getBoolOrThrowIfNull();
+    }
+
+    public function getBarcode(): string
+    {
+        return ApiString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    public function getCreateDate(): ?DateTime
+    {
+        return ApiDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
+    }
+
+    public function getDescription(): string
+    {
+        return ApiString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
+    }
+
+    /** Default: '0.0000000000'
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getPrimeCost(): float
+    {
+        return ApiFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
+    }
+
+    /** @return ?positive-int
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getCategoryId(): ?int
+    {
+        return ApiInt::fromStringOrNull($this->category_id)->getPositiveIntOrNull();
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setGroupId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'group_id', is_null($value) ? null : (string)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setUnitStorageId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'unit_storage_id', is_null($value) ? null : (string)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsWarehouseAccount(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_warehouse_account', is_null($value) ? null : (string)(int)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsActive(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (string)(int)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCode(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'code', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsCall(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_call', is_null($value) ? null : (string)(int)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setIsForSale(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_for_sale', is_null($value) ? null : (string)(int)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setBarcode(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'barcode', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCreateDateFromString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'create_date', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCreateDateFromDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setDescription(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'description', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setPrimeCost(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'prime_cost', is_null($value) ? null : (string)$value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setCategoryId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'category_id', is_null($value) ? null : (string)$value);
+    }
+    
     /** @param array{
      *     id: numeric-string,
      *     group_id: ?numeric-string,
@@ -63,52 +263,4 @@ class GoodOnlyDto extends AbstractDTO
      * @throws VetmanagerApiGatewayException
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->groupId = ApiInt::fromStringOrNull($originalDataArray['group_id'])->getPositiveIntOrNull();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->unitStorageId = ApiInt::fromStringOrNull($originalDataArray['unit_storage_id'])->getPositiveIntOrNull();
-        $instance->isWarehouseAccount = ApiBool::fromStringOrNull($originalDataArray['is_warehouse_account'])->getBoolOrThrowIfNull();
-        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
-        $instance->code = ApiString::fromStringOrNull($originalDataArray['code'])->getStringEvenIfNullGiven();
-        $instance->isCall = ApiBool::fromStringOrNull($originalDataArray['is_call'])->getBoolOrThrowIfNull();
-        $instance->isForSale = ApiBool::fromStringOrNull($originalDataArray['is_for_sale'])->getBoolOrThrowIfNull();
-        $instance->barcode = ApiString::fromStringOrNull($originalDataArray['barcode'])->getStringEvenIfNullGiven();
-        $instance->createDate = ApiDateTime::fromOnlyDateString($originalDataArray['create_date'])->getDateTimeOrThrow();
-        $instance->description = ApiString::fromStringOrNull($originalDataArray['description'])->getStringEvenIfNullGiven();
-        $instance->primeCost = ApiFloat::fromStringOrNull($originalDataArray['prime_cost'])->getNonZeroFloatOrNull();
-        $instance->categoryId = ApiInt::fromStringOrNull($originalDataArray['category_id'])->getPositiveIntOrNull();
-        return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['groupId', 'group_id'],
-            ['title', 'title'],
-            ['unitStorageId', 'unit_storage_id'],
-            ['isWarehouseAccount', 'is_warehouse_account'],
-            ['isActive', 'is_active'],
-            ['code', 'code'],
-            ['isCall', 'is_call'],
-            ['isForSale', 'is_for_sale'],
-            ['barcode', 'barcode'],
-            ['createDate', 'create_date'],
-            ['description', 'description'],
-            ['primeCost', 'prime_cost'],
-            ['categoryId', 'category_id'],
-        ))->toArray();
-    }
 }
