@@ -56,15 +56,15 @@ class ClientTest extends TestCase
 "last_visit_date": "2023-07-06 12:20:19",
 "number_of_journal": "",
 "phone_prefix": "38",
-            "city_data": {
-                "id": "251",
-                "title": "Ваш город",
-                "type_id": "1"
-            },
-            "client_type_data": {
-                "id": "3",
-                "title": "Временный"
-            }
+"city_data": {
+    "id": "251",
+    "title": "Ваш город",
+    "type_id": "1"
+},
+"client_type_data": {
+    "id": "3",
+    "title": "Временный"
+}
 }
 EOF
                 , "getId", 1]
@@ -76,7 +76,7 @@ EOF
     public function testCreationFromModelArray(string $json, string $getMethodName, int|string $expected): void
     {
         $apiService = new ApiService(new \GuzzleHttp\Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
-        $activeRecordFactory = new ActiveRecordFactory($apiService, DtoFactory::withDefaultSerializers());
+        $activeRecordFactory = new ActiveRecordFactory($apiService, DtoFactory::withDefaultSerializer());
         $clientFacade = new Client($activeRecordFactory);
         $modelAsArray = json_decode($json, true);
         $activeRecord = $clientFacade->fromSingleModelAsArray($modelAsArray);

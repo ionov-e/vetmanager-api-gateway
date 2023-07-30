@@ -77,7 +77,7 @@ EOF
         $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
-            DtoFactory::withDefaultSerializers()
+            DtoFactory::withDefaultSerializer()
         );
         $modelDtoAsArray = json_decode($json, true);
         $activeRecord = $activeRecordFactory->getFromSingleModelAsArray(

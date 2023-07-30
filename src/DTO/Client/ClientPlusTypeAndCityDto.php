@@ -9,6 +9,40 @@ use VetmanagerApiGateway\DTO\ClientType\ClientTypeOnlyDto;
 
 class ClientPlusTypeAndCityDto extends ClientOnlyDto
 {
+    /**
+     * @param string|null $id
+     * @param string|null $address
+     * @param string|null $home_phone
+     * @param string|null $work_phone
+     * @param string|null $note
+     * @param string|null $type_id
+     * @param string|null $how_find
+     * @param string|null $balance
+     * @param string|null $email
+     * @param string|null $city
+     * @param string|null $city_id
+     * @param string|null $date_register
+     * @param string|null $cell_phone
+     * @param string|null $zip
+     * @param string|null $registration_index
+     * @param string|null $vip
+     * @param string|null $last_name
+     * @param string|null $first_name
+     * @param string|null $middle_name
+     * @param string|null $status
+     * @param string|null $discount
+     * @param string|null $passport_series
+     * @param string|null $lab_number
+     * @param string|null $street_id
+     * @param string|null $apartment
+     * @param string|null $unsubscribe
+     * @param string|null $in_blacklist
+     * @param string|null $last_visit_date
+     * @param string|null $number_of_journal
+     * @param string|null $phone_prefix
+     * @param CityOnlyDto|null $city_data
+     * @param ClientTypeOnlyDto|null $client_type_data
+     */
     public function __construct(
         protected ?string            $id,
         protected ?string            $address,

@@ -18,10 +18,22 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 {
     /**
+     * @param string|null $id
      * @param string|null $admission_date Пример "2020-12-31 17:51:18". Может быть: "0000-00-00 00:00:00" - перевожу в null
+     * @param string|null $description
+     * @param string|null $client_id
+     * @param string|null $patient_id
+     * @param string|null $user_id
+     * @param string|null $type_id
      * @param string|null $admission_length Примеры: "00:15:00", "00:00:00" (последнее перевожу в null)
+     * @param string|null $status
+     * @param string|null $clinic_id
+     * @param string|null $direct_direction
+     * @param string|null $creator_id
      * @param string|null $create_date Приходит: "2015-07-08 06:43:44", но бывает и "0000-00-00 00:00:00". Последнее переводится в null
      * @param string|null $escorter_id Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать
+     * @param string|null $reception_write_channel
+     * @param string|null $is_auto_create
      * @param string|null $invoices_sum Default: 0.0000000000
      */
     public function __construct(

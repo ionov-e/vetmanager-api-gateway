@@ -13,7 +13,28 @@ use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlusClientAndPetAndInvoicesDto
 {
     /**
+     * @param string|null $id
+     * @param string|null $admission_date
+     * @param string|null $description
+     * @param string|null $client_id
+     * @param string|null $patient_id
+     * @param string|null $user_id
+     * @param string|null $type_id
+     * @param string|null $admission_length
+     * @param string|null $status
+     * @param string|null $clinic_id
+     * @param string|null $direct_direction
+     * @param string|null $creator_id
+     * @param string|null $create_date
+     * @param string|null $escorter_id
+     * @param string|null $reception_write_channel
+     * @param string|null $is_auto_create
+     * @param string|null $invoices_sum
+     * @param ClientOnlyDto|null $client
+     * @param PetOnlyDto|null $pet
      * @param InvoiceOnlyDto[] $invoices
+     * @param UserOnlyDto|null $doctor_data
+     * @param ComboManualItemOnlyDto|null $admission_type_data
      */
     public function __construct(
         protected ?string              $id,

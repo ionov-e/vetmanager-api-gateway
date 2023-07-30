@@ -10,6 +10,12 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 
 class PetTypeOnlyDto extends AbstractDTO implements PetTypeOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $picture
+     * @param string|null $type
+     */
     public function __construct(
         public ?string $id,
         public ?string $title,

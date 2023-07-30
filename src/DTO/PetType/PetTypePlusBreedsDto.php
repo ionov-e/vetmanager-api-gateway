@@ -8,6 +8,13 @@ use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
 
 class PetTypePlusBreedsDto extends PetTypeOnlyDto
 {
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $picture
+     * @param string|null $type
+     * @param BreedOnlyDto[] $breeds
+     */
     public function __construct(
         public ?string $id,
         public ?string $title,
@@ -25,7 +32,7 @@ class PetTypePlusBreedsDto extends PetTypeOnlyDto
     }
 
     /** @return BreedOnlyDto[] */
-    public function getBreedsDtos(): array
+    public function getBreedsAsDtos(): array
     {
         return $this->breeds;
     }

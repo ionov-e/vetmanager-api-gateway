@@ -11,7 +11,14 @@ use VetmanagerApiGateway\Hydrator\ApiInt;
 
 final class ClientTypeOnlyDto extends AbstractDTO
 {
-    public function __construct(protected ?string $id, protected ?string $title)
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $title
+    )
     {
     }
 

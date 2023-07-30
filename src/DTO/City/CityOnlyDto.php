@@ -12,7 +12,11 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
 {
-    /** @param string|null $type_id Default: 1 */
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $type_id Default: 1
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $title,

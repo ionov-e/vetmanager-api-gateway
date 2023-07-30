@@ -5,28 +5,57 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway;
 
 use ReflectionClass;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
 
 /** @template TModelDTO of AbstractDTO */
 class DtoFactory
 {
+    /**
+     * @param Serializer $normalizer Используется при normalize методе
+     * @param Serializer $denormalizer Используется при denormalize методе
+     */
     public function __construct(
-        private readonly Serializer $serializerArrayToObject,
-        private readonly Serializer $serializerJsonToObject
+        private readonly Serializer $normalizer,
+        private readonly Serializer $denormalizer
     )
     {
     }
 
-    public static function withDefaultSerializers(): self
+    public static function withDefaultSerializer(): self
     {
-        return new self (
-            new Serializer([new ObjectNormalizer()]),
-            new Serializer([new ObjectNormalizer()], [new JsonEncoder()])
+        return new self (self::getDefaultSerializerForNormalization(), self::getDefaultSerializerForDenormalization());
+    }
+
+    /** Используется при normalize методе. Может использоваться при сериализации */
+    public static function getDefaultSerializerForNormalization(): Serializer
+    {
+        return new Serializer(
+        [
+            new ArrayDenormalizer(),
+            new PropertyNormalizer(defaultContext: [PropertyNormalizer::NORMALIZE_VISIBILITY]),
+        ],
+        [
+            new JsonEncoder(),
+        ]);
+    }
+
+    /** Используется при denormalize методе. Может использоваться при сериализации */
+    public static function getDefaultSerializerForDenormalization(): Serializer
+    {
+        return new Serializer(
+            [
+                new ArrayDenormalizer(),
+                new ObjectNormalizer(propertyTypeExtractor: new PhpDocExtractor())
+            ],
+            [new JsonEncoder()]
         );
     }
 
@@ -78,7 +107,7 @@ class DtoFactory
             throw new VetmanagerApiGatewayInnerException("$dtoClass is not a subclass of " . AbstractDTO::class);
         }
 
-        $dto = $this->serializerArrayToObject->denormalize($singleDtoAsArray, $dtoClass);
+        $dto = $this->denormalizer->denormalize($singleDtoAsArray, $dtoClass);
 
         if (!is_a($dto, $dtoClass)) {
             throw new VetmanagerApiGatewayInnerException(get_class($this) . " couldn't make DTO: $dtoClass");

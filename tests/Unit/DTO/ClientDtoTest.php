@@ -5,14 +5,13 @@ namespace VetmanagerApiGateway\Unit\DTO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
+use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ObjectNormalizer;
+
 
 #[CoversClass(ClientOnlyDto::class)]
 class ClientDtoTest extends TestCase
@@ -64,8 +63,8 @@ EOF
     #[DataProvider('dataProviderClientJson')]
     public function testStringOrNullMethod(string $json, string $getMethodName, int|string $expected): void
     {
-        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-        $dto = $serializer->deserialize($json, ClientOnlyDto::class, 'json');
+        $denormalizer = DtoFactory::getDefaultSerializerForDenormalization();
+        $dto = $denormalizer->deserialize($json, ClientOnlyDto::class, 'json');
         $this->assertEquals($expected, $dto->$getMethodName());
     }
 
@@ -76,15 +75,16 @@ EOF
     public function testNormalizationWithSpecificAttributeAfterSetters(string $json, string $getMethodName, int|string $expected): void
     {
         $array = json_decode($json, true);
-        $serializer = new Serializer([new ObjectNormalizer()]);
-        $dto = $serializer->denormalize($array, ClientOnlyDto::class);
+        $denormalizer = DtoFactory::getDefaultSerializerForDenormalization();
+        $dto = $denormalizer->denormalize($array, ClientOnlyDto::class);
 
         $this->assertInstanceOf(ClientOnlyDto::class, $dto);
 
         $dto = $dto->setAddress("Address 112");
         $dto = $dto->setCityId(103);
 
-        $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
+        $normalizer = DtoFactory::getDefaultSerializerForNormalization();
+        $data = $normalizer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
 
         $this->assertEquals(["address" => "Address 112", "city_id" => "103"], $data);
     }

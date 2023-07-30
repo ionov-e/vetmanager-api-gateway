@@ -18,15 +18,36 @@ use VetmanagerApiGateway\Hydrator\ApiString;
 class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 {
     /**
+     * @param string|null $id
+     * @param string|null $address
+     * @param string|null $home_phone
+     * @param string|null $work_phone
+     * @param string|null $note
+     * @param string|null $type_id
+     * @param string|null $how_find
+     * @param string|null $balance
      * @param string|null $email Default: ''
+     * @param string|null $city
+     * @param string|null $city_id
      * @param string|null $date_register В БД бывает дефолтное значение: '0000-00-00 00:00:00'
+     * @param string|null $cell_phone
+     * @param string|null $zip
+     * @param string|null $registration_index
+     * @param string|null $vip
+     * @param string|null $last_name
+     * @param string|null $first_name
+     * @param string|null $middle_name
      * @param string|null $status Default: Active
+     * @param string|null $discount
+     * @param string|null $passport_series
+     * @param string|null $lab_number
      * @param string|null $street_id Default: 0
      * @param string|null $apartment Default: ''
      * @param string|null $unsubscribe Default: 0
      * @param string|null $in_blacklist Default: 0
      * @param string|null $last_visit_date В БД бывает дефолтное значение: '0000-00-00 00:00:00'
      * @param string|null $number_of_journal Default: ''
+     * @param string|null $phone_prefix
      */
     public function __construct(
         protected ?string $id,
