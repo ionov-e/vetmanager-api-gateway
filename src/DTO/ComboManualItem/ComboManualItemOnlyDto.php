@@ -5,77 +5,112 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\ComboManualItem;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
 
-/** Обращается в таблицу combo_manual_items */
-class ComboManualItemOnlyDto extends AbstractDTO
+class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyDtoInterface
 {
-    /** @var positive-int ID записи цвета в таблице combo_manual_items */
-    public int $id;
-    /** @var positive-int Тип "подтаблицы". Например, будет всегда одинаковый id для "подтаблицы" с цветами.
-     * В БД Default: 0, но ни в одной таблице такого значения не нашел */
-    public int $comboManualId;
-    /** Default: '' */
-    public string $title;
-    /** Default: '' */
-    public string $value;
-    /** Default: '' */
-    public string $dopParam1;
-    /** Default: '' */
-    public string $dopParam2;
-    /** Default: '' */
-    public string $dopParam3;
-    /** Default: 1 */
-    public bool $isActive;
-
-    /** @param array{
-     *       id: string,
-     *       combo_manual_id: string,
-     *       title: string,
-     *       value: string,
-     *       dop_param1: string,
-     *       dop_param2: string,
-     *       dop_param3: string,
-     *       is_active: string,
-     *       comboManualName?: array
-     *   } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
+    /**
+     * @param string|null $id
+     * @param string|null $combo_manual_id
+     * @param string|null $title
+     * @param string|null $value
+     * @param string|null $dop_param1
+     * @param string|null $dop_param2
+     * @param string|null $dop_param3
+     * @param string|null $is_active
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function __construct(
+        protected ?string $id,
+        protected ?string $combo_manual_id,
+        protected ?string $title,
+        protected ?string $value,
+        protected ?string $dop_param1,
+        protected ?string $dop_param2,
+        protected ?string $dop_param3,
+        protected ?string $is_active
+    )
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->comboManualId = ApiInt::fromStringOrNull($originalDataArray['combo_manual_id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->value = ApiString::fromStringOrNull($originalDataArray['value'])->getStringEvenIfNullGiven();
-        $instance->dopParam1 = ApiString::fromStringOrNull($originalDataArray['dop_param1'])->getStringEvenIfNullGiven();
-        $instance->dopParam2 = ApiString::fromStringOrNull($originalDataArray['dop_param2'])->getStringEvenIfNullGiven();
-        $instance->dopParam3 = ApiString::fromStringOrNull($originalDataArray['dop_param3'])->getStringEvenIfNullGiven();
-        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
-        return $instance;
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
+    public function getId(): int
     {
-        return ['combo_manual_id', 'title', 'value'];
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @inheritdoc */
-    protected function getSetValuesWithoutId(): array
+    public function getComboManualId(): int
     {
-        return array_merge(
-            property_exists($this, 'comboManualId') ? ['combo_manual_id' => $this->comboManualId] : [],
-            property_exists($this, 'title') ? ['title' => $this->title] : [],
-            property_exists($this, 'value') ? ['value' => $this->value] : [],
-            property_exists($this, 'dopParam1') ? ['dop_param1' => $this->dopParam1] : [],
-            property_exists($this, 'dopParam2') ? ['dop_param2' => $this->dopParam2] : [],
-            property_exists($this, 'dopParam3') ? ['dop_param3' => $this->dopParam3] : [],
-            property_exists($this, 'isActive') ? ['is_active' => (int)$this->isActive] : [],
-        );
+        return ApiInt::fromStringOrNull($this->combo_manual_id)->getPositiveInt();
+    }
+
+    public function getTitle(): string
+    {
+        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+    }
+
+    public function getValue(): string
+    {
+        return ApiString::fromStringOrNull($this->value)->getStringEvenIfNullGiven();
+    }
+
+    public function getDopParam1(): string
+    {
+        return ApiString::fromStringOrNull($this->dop_param1)->getStringEvenIfNullGiven();
+    }
+
+    public function getDopParam2(): string
+    {
+        return ApiString::fromStringOrNull($this->dop_param2)->getStringEvenIfNullGiven();
+    }
+
+    public function getDopParam3(): string
+    {
+        return ApiString::fromStringOrNull($this->dop_param3)->getStringEvenIfNullGiven();
+    }
+
+    public function getIsActive(): bool
+    {
+        return ApiBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+    }
+
+    public function setId(int $value): self
+    {
+        return self::setPropertyFluently($this, 'id', $value ? (string)$value : "0");
+    }
+
+    public function setComboManualId(int $value): self
+    {
+        return self::setPropertyFluently($this, 'combo_manual_id', $value ? (string)$value : "0");
+    }
+
+    public function setTitle(?string $value): self
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    public function setValue(?string $value): self
+    {
+        return self::setPropertyFluently($this, 'value', $value);
+    }
+
+    public function setDopParam1(?string $value): self
+    {
+        return self::setPropertyFluently($this, 'dop_param1', $value);
+    }
+
+    public function setDopParam2(?string $value): self
+    {
+        return self::setPropertyFluently($this, 'dop_param2', $value);
+    }
+
+    public function setDopParam3(?string $value): self
+    {
+        return self::setPropertyFluently($this, 'dop_param3', $value);
+    }
+
+    public function setIsActive(bool $value): self
+    {
+        return self::setPropertyFluently($this, 'is_active', (string)(int)$value);
     }
 }
