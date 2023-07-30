@@ -417,19 +417,10 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         return ApiDateTime::fromFullDateTimeString($this->last_visit_date)->getDateTimeOrThrow();
     }
 
-    /** @throws VetmanagerApiGatewayResponseException
-     * @throws VetmanagerApiGatewayException
-     */
+    /** @throws VetmanagerApiGatewayException */
     public function setLastVisitDateFromSting(?string $value): static
     {
-        $value = is_null($value)
-            ? "0000-00-00 00:00:00"
-            : ApiDateTime::fromFullDateTimeString($value)->getAsDataBaseStringOrThrowIfNull();
-        return self::setPropertyFluently(
-            $this,
-            'last_visit_date',
-            $value
-        );
+        return self::setPropertyFluently($this,'last_visit_date', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
