@@ -6,18 +6,31 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\ComboManualName\ListEnum;
 use VetmanagerApiGateway\DTO\ComboManualName\NameEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class ComboManualName extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\ComboManualName\ComboManualNameOnly> */
     public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\ComboManualName\ComboManualNameOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): ActiveRecord\ComboManualName\AbstractComboManualName
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\ComboManualName\AbstractComboManualName[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
     }
 
     /** @throws VetmanagerApiGatewayException */

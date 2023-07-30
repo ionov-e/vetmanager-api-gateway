@@ -11,9 +11,24 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Unit extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\Unit\Unit> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\Unit\Unit::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Unit\Unit
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\Unit\Unit[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /** @throws VetmanagerApiGatewayException */

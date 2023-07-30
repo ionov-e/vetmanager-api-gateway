@@ -11,9 +11,24 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class GoodSaleParam extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\GoodSaleParam\GoodSaleParamOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\GoodSaleParam\GoodSaleParamOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\GoodSaleParam\AbstractGoodSaleParam
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\GoodSaleParam\AbstractGoodSaleParam[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /** @throws VetmanagerApiGatewayException */

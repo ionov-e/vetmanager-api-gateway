@@ -8,11 +8,8 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\ComboManualName\AbstractComboManualName;
 use VetmanagerApiGateway\ActiveRecord\ComboManualName\ComboManualNameOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
-use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDtoInterface;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
  * @property-read ComboManualItemOnlyDto $originalDto

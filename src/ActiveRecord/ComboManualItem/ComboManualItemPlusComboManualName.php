@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\ActiveRecord\ComboManualItem;
 
-use VetmanagerApiGateway\ActiveRecord\ComboManualName\AbstractComboManualName;
 use VetmanagerApiGateway\ActiveRecord\ComboManualName\ComboManualNameOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemPlusComboManualNameDto;
-use VetmanagerApiGateway\Facade\ComboManualName;
 
 /**
  * @property-read ComboManualItemOnlyDto $originalDto
@@ -54,6 +52,6 @@ final class ComboManualItemPlusComboManualName extends AbstractComboManualItem
 
     public function getComboManualName(): ComboManualNameOnly
     {
-        return (new ComboManualName($this->activeRecordFactory))->specificARFromSingleDto($this->modelDTO->getComboManualItemOnlyDto(), self::getDtoClass());
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getComboManualItemOnlyDto(), ComboManualNameOnly::class);
     }
 }

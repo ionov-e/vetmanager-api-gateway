@@ -6,14 +6,30 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\Street\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class PetType extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\PetType\PetTypeOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\PetType\PetTypeOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): ActiveRecord\PetType\AbstractPetType
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\PetType\AbstractPetType[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
     }
 
     /** @throws VetmanagerApiGatewayException */

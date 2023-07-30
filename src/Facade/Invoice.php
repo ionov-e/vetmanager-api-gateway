@@ -11,9 +11,24 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Invoice extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\Invoice\InvoiceOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\Invoice\InvoiceOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Invoice\AbstractInvoice
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\Invoice\AbstractInvoice[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /** @throws VetmanagerApiGatewayException */

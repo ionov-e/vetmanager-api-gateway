@@ -6,15 +6,32 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\User\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class User extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\User\UserOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\User\UserOnly::class;
     }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): ActiveRecord\User\AbstractUser
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\User\AbstractUser[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
+    }
+
 
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\User\UserPlusPositionAndRole

@@ -11,9 +11,24 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class UserPosition extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\UserPosition\UserPosition> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\UserPosition\UserPosition::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\UserPosition\UserPosition
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\UserPosition\UserPosition[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /** @throws VetmanagerApiGatewayException */

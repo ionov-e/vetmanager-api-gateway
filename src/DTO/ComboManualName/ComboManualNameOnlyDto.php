@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\ComboManualName;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;

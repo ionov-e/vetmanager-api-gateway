@@ -7,8 +7,6 @@ namespace VetmanagerApiGateway\DTO\Good;
 use DateTime;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiDateTime;
 use VetmanagerApiGateway\Hydrator\ApiFloat;

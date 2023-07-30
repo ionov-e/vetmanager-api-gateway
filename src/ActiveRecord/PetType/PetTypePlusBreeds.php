@@ -8,7 +8,6 @@ use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\DTO\PetType\PetTypePlusBreedsDto;
-use VetmanagerApiGateway\Facade\Breed;
 
 /**
  * @property-read PetTypeOnlyDto $originalDto
@@ -44,6 +43,6 @@ final class PetTypePlusBreeds extends AbstractPetType
     /** @return BreedOnly[] */
     public function getBreeds(): array
     {
-        return (new Breed($this->activeRecordFactory))->specificARFromMultipleDtos($this->modelDTO->getBreedsAsDtos(), BreedOnly::class); #TODO
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getBreedsAsDtos(), BreedOnly::class);
     }
 }

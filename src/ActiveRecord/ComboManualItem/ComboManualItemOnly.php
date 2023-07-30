@@ -8,7 +8,6 @@ use VetmanagerApiGateway\ActiveRecord\ComboManualName\AbstractComboManualName;
 use VetmanagerApiGateway\ActiveRecord\ComboManualName\ComboManualNameOnly;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Facade\ComboManualName;
 
 /**

@@ -7,7 +7,6 @@ use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecordFactory;
-use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 /** @template TActiveRecord of AbstractActiveRecord */
@@ -22,109 +21,14 @@ abstract class AbstractFacade
      */
     abstract static public function getBasicActiveRecord(): string;
 
-    /**
-     * @return TActiveRecord[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function fromApiResponseWithMultipleModelsAsArray(array $apiResponseAsArray): array
-    {
-        return $this->specificARFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, static::getBasicActiveRecord());
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function specificARFromApiResponseWithMultipleModelsAsArray(array $apiResponseAsArray, string $activeRecordClass): array
-    {
-        return $this->activeRecordFactory->getFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, $activeRecordClass);
-    }
-
     /** @throws VetmanagerApiGatewayException */
-    public function fromApiResponseWithSingleModelAsArray(array $apiResponseAsArray): AbstractActiveRecord
-    {
-        return $this->specificARFromApiResponseWithSingleModelAsArray($apiResponseAsArray, static::getBasicActiveRecord());
-    }
+    abstract public function fromSingleModelAsArray(array $modelAsArray): AbstractActiveRecord;
 
     /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @return AbstractActiveRecord[]
      * @throws VetmanagerApiGatewayException
      */
-    public function specificARFromApiResponseWithSingleModelAsArray(array $apiResponseAsArray, string $activeRecordClass): AbstractActiveRecord
-    {
-        return $this->activeRecordFactory->getFromApiResponseWithSingleModelAsArray($apiResponseAsArray, $activeRecordClass);
-    }
-
-    /**
-     * @return TActiveRecord[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function fromMultipleModelsAsArray(array $modelsAsArray): array
-    {
-        return $this->specificARFromMultipleModelsAsArray($modelsAsArray, static::getBasicActiveRecord());
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function specificARFromMultipleModelsAsArray(array $modelsAsArray, string $activeRecordClass): array
-    {
-        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecordClass);
-    }
-
-    /** @throws VetmanagerApiGatewayException */
-    public function fromSingleModelAsArray(array $modelAsArray): AbstractActiveRecord
-    {
-        return $this->specificARFromSingleModelAsArray($modelAsArray, static::getBasicActiveRecord());
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
-     * @throws VetmanagerApiGatewayException
-     */
-    public function specificARFromSingleModelAsArray(array $modelAsArray, string $activeRecordClass): AbstractActiveRecord
-    {
-        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecordClass);
-    }
-
-    public function fromSingleDto(AbstractDTO $modelDto): AbstractActiveRecord
-    {
-        return $this->specificARFromSingleDto($modelDto, static::getBasicActiveRecord());
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
-     */
-    public function specificARFromSingleDto(AbstractDTO $modelDto, string $activeRecordClass): AbstractActiveRecord
-    {
-        $activeRecordClass = $activeRecordClass ?: static::getBasicActiveRecord();
-        return $this->activeRecordFactory->getFromSingleDto($modelDto, $activeRecordClass);
-    }
-
-    /** @param AbstractDTO[] $modelDtos
-     * @return TActiveRecord[]
-     */
-    public function fromMultipleDtos(array $modelDtos): array
-    {
-        return $this->specificARFromMultipleDtos($modelDtos, static::getBasicActiveRecord());
-    }
-
-    /**
-     * @param AbstractDTO[] $modelDtos
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord[]
-     */
-    public function specificARFromMultipleDtos(array $modelDtos, string $activeRecordClass): array
-    {
-        $activeRecordClass = $activeRecordClass ?: static::getBasicActiveRecord();
-        return $this->activeRecordFactory->getFromMultipleDtos($modelDtos, $activeRecordClass);
-    }
+    abstract public function fromMultipleModelsAsArrays(array $modelsAsArray): array;
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass

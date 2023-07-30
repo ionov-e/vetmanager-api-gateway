@@ -9,7 +9,6 @@ use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
 use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto;
-use VetmanagerApiGateway\Facade;
 
 final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractAdmission
 {
@@ -48,6 +47,6 @@ final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractA
     /** @return InvoiceOnly[] */
     public function getInvoices(): array
     {
-        return (new Facade\Invoice($this->activeRecordFactory))->fromMultipleDtos($this->modelDTO->getInvoiceAsDtos());
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getInvoicesOnlyAsDtos(), InvoiceOnly::class);
     }
 }

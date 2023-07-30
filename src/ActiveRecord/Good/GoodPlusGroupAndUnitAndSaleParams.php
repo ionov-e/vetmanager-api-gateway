@@ -11,7 +11,6 @@ use VetmanagerApiGateway\ActiveRecord\Unit\Unit;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
 use VetmanagerApiGateway\DTO\Good\GoodPlusGroupAndUnitAndSaleParamsDto;
-use VetmanagerApiGateway\Facade;
 
 /**
  * @property-read GoodOnlyDto $originalDto
@@ -97,20 +96,20 @@ final class GoodPlusGroupAndUnitAndSaleParams extends AbstractGood
     public function getGoodGroup(): ?GoodGroup
     {
         return $this->modelDTO->getGoodGroupOnlyDto() ?
-            (new Facade\GoodGroup($this->activeRecordFactory))->fromSingleDto($this->modelDTO->getGoodGroupOnlyDto())
+            $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getGoodGroupOnlyDto(), GoodGroup::class)
             : null;
     }
 
     public function getUnit(): ?Unit
     {
         return $this->modelDTO->getUnitOnlyDto() ?
-            (new Facade\Unit($this->activeRecordFactory))->fromSingleDto($this->modelDTO->getUnitOnlyDto())
+            $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getUnitOnlyDto(), Unit::class)
             : null;
     }
 
     /** @inheritDoc */
     public function getGoodSaleParams(): array
     {
-        return (new Facade\GoodSaleParam($this->activeRecordFactory))->fromMultipleDtos($this->modelDTO->getGoodSaleParamsOnlyDtos());
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getGoodSaleParamsOnlyDtos(), GoodSaleParamOnly::class);
     }
 }

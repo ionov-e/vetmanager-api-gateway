@@ -6,21 +6,32 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\Admission\AbstractAdmission;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoices;
+use VetmanagerApiGateway\ActiveRecord\Admission\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Admission extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\Admission\AdmissionOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\Admission\AdmissionOnly::class;
     }
 
-    /** @throws VetmanagerApiGatewayException */
-    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Admission\AdmissionOnly
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): AbstractAdmission
     {
-        return self::specificARFromSingleModelAsArray($modelAsArray, ActiveRecord\Admission\AdmissionOnly::class);
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return AbstractAdmission[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
     }
 
     /** @throws VetmanagerApiGatewayException */

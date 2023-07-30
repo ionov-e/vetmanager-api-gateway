@@ -51,6 +51,6 @@ final class AdmissionPlusClientAndPetAndInvoices extends AbstractAdmission
     /** @return InvoiceOnly[] */
     public function getInvoices(): array
     {
-        return (new Facade\Invoice($this->activeRecordFactory))->fromMultipleDtos($this->modelDTO->getInvoiceAsDtos());
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getInvoicesOnlyAsDtos(), InvoiceOnly::class);
     }
 }

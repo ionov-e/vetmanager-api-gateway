@@ -2,12 +2,18 @@
 
 namespace VetmanagerApiGateway\Unit\ActiveRecord;
 
+use GuzzleHttp\Client;
+use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
+use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
+use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\DtoFactory;
@@ -106,9 +112,13 @@ EOF
     public function testFromSingleDtoAndGetClientPlusActiveRecord(string $json, string $getMethodName, int|string $expected): void
     {
         $modelAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
         $dto = DtoFactory::withDefaultSerializer()->getFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
-        $activeRecordClient = $apiGateway->getClient()->specificARFromSingleDto($dto, ActiveRecord\Client\ClientPlusTypeAndCity::class);
+        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $activeRecordFactory = new ActiveRecordFactory(
+            $apiService,
+            DtoFactory::withDefaultSerializer()
+        );
+        $activeRecordClient = $activeRecordFactory->getFromSingleDto($dto, ActiveRecord\Client\ClientPlusTypeAndCity::class);
         $this->assertInstanceOf(ActiveRecord\Client\ClientPlusTypeAndCity::class, $activeRecordClient);
         $activeRecordCity = $activeRecordClient->getCity();
         $this->assertInstanceOf(ActiveRecord\City\City::class, $activeRecordCity);

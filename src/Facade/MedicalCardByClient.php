@@ -8,9 +8,24 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class MedicalCardByClient extends AbstractFacade
 {
+    /** @return class-string<ActiveRecord\MedicalCardByClient\MedicalCardByClient> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\MedicalCardByClient\MedicalCardByClient::class;
+    }
+    
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\MedicalCardByClient\MedicalCardByClient
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\MedicalCardByClient\MedicalCardByClient[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /**

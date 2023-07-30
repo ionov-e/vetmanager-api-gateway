@@ -2,9 +2,16 @@
 
 namespace VetmanagerApiGateway\Unit\Facade;
 
+use GuzzleHttp\Client;
+use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
+use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
+use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ApiService;
+use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class CityTypeTest extends TestCase
@@ -42,8 +49,12 @@ EOF
     public function testCreationFromResponseAsArray(string $json): void
     {
         $apiResponseAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecords = $apiGateway->getCityType()->fromApiResponseWithMultipleModelsAsArray($apiResponseAsArray);
+        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $activeRecordFactory = new ActiveRecordFactory(
+            $apiService,
+            DtoFactory::withDefaultSerializer()
+        );
+        $activeRecords = $activeRecordFactory->getFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, \VetmanagerApiGateway\ActiveRecord\CityType\CityType::class);
         $this->assertContainsOnlyInstancesOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $activeRecords);
         $singleAR = $activeRecords[0];
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $singleAR);
@@ -72,7 +83,7 @@ EOF
     public function testCreationFromModelsAsArray(array $modelsAsArray): void
     {
         $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecords = $apiGateway->getCityType()->fromMultipleModelsAsArray($modelsAsArray);
+        $activeRecords = $apiGateway->getCityType()->fromMultipleModelsAsArrays($modelsAsArray);
         $singleAR = $activeRecords[0];
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $singleAR);
         $this->assertEquals("Деревня", $singleAR->getTitle());

@@ -11,9 +11,24 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class MedicalCard extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\MedicalCard\MedicalCardOnly> */
     public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\MedicalCard\MedicalCardOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\MedicalCard\AbstractMedicalCard
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\MedicalCard\AbstractMedicalCard[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
     /** @throws VetmanagerApiGatewayException */

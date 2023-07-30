@@ -77,7 +77,7 @@ class AdmissionPlusClientAndPetAndInvoicesDto extends AdmissionOnlyDto
     }
 
     /** @return InvoiceOnlyDto[] */
-    public function getInvoiceAsDtos(): array
+    public function getInvoicesOnlyAsDtos(): array
     {
         return $this->invoices;
     }

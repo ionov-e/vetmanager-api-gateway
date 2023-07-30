@@ -7,14 +7,31 @@ use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
+use VetmanagerApiGateway\ActiveRecord\Client\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Client extends AbstractFacade implements AllRequestsInterface
 {
+
+    /** @return class-string<ActiveRecord\Client\ClientOnly> */
     public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\Client\ClientOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): ActiveRecord\Client\AbstractClient
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return ActiveRecord\Client\AbstractClient[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
     }
 
     /** @throws VetmanagerApiGatewayException */

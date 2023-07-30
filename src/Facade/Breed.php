@@ -7,15 +7,31 @@ use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoices;
-use VetmanagerApiGateway\ActiveRecord\Client\ActiveRecord\Breed\BreedOnly;
+use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
+use VetmanagerApiGateway\ActiveRecord\Breed\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Breed extends AbstractFacade implements AllRequestsInterface
 {
+    /** @return class-string<ActiveRecord\Breed\BreedOnly> */
     static public function getBasicActiveRecord(): string
     {
         return ActiveRecord\Breed\BreedOnly::class;
+    }
+
+    /** @inheritDoc */
+    public function fromSingleModelAsArray(array $modelAsArray, ListEnum $activeRecord = ListEnum::Basic): AbstractBreed
+    {
+        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecord->value);
+    }
+
+    /** @inheritDoc
+     * @return AbstractBreed[]
+     */
+    public function fromMultipleModelsAsArrays(array $modelsAsArray, ListEnum $activeRecord = ListEnum::Basic): array
+    {
+        return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, $activeRecord->value);
     }
 
     /** @throws VetmanagerApiGatewayException */

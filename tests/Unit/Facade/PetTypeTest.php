@@ -2,11 +2,17 @@
 
 namespace VetmanagerApiGateway\Unit\Facade;
 
+use GuzzleHttp\Client;
+use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
+use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
+use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\PetType\PetTypePlusBreeds;
-use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiService;
+use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class PetTypeTest extends TestCase
@@ -52,11 +58,15 @@ EOF
 
     /** @throws VetmanagerApiGatewayException */
     #[DataProvider('dataProviderJson')]
-    public function testSpecificARFromSingleModelAsArray(string $json)    #TODO return
+    public function testSpecificARFromSingleModelAsArray(string $json)
     {
         $modelAsArray = json_decode($json, true);
-        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-        $activeRecord = $apiGateway->getPetType()->specificARFromSingleModelAsArray($modelAsArray, PetTypePlusBreeds::class);
+        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $activeRecordFactory = new ActiveRecordFactory(
+            $apiService,
+            DtoFactory::withDefaultSerializer()
+        );
+        $activeRecord = $activeRecordFactory->getFromSingleModelAsArray($modelAsArray, PetTypePlusBreeds::class);
         $breedsActiveRecords = $activeRecord->getBreeds();
         $breedActiveRecord = $breedsActiveRecords[0];
         $this->assertInstanceOf(BreedOnly::class, $breedActiveRecord);

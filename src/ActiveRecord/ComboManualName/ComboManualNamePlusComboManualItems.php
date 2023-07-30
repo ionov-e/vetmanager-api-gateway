@@ -8,9 +8,6 @@ use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNamePlusComboManualItemsDto;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Facade\ComboManualItem;
-use VetmanagerApiGateway\Facade\ComboManualName;
 
 /**
  * @property-read ComboManualNameOnlyDto $originalDto
@@ -50,8 +47,9 @@ final class ComboManualNamePlusComboManualItems extends AbstractComboManualName
         $this->modelDTO = $modelDTO;
     }
 
+    /** @return ComboManualItemOnly[] */
     public function getComboManualItems(): array
     {
-        return (new ComboManualName($this->activeRecordFactory))->fromMultipleDtos($this->modelDTO->getComboManualItemsDtos());
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getComboManualItemsDtos(), ComboManualItemOnly::class);
     }
 }
