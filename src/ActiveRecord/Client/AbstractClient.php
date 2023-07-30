@@ -368,7 +368,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getIsUnsubscribed();
     }
 
-    public function setUnsubscribe(?bool $value): static
+    public function setUnsubscribe(bool $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setUnsubscribe($value));
     }
@@ -378,7 +378,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getIsBlacklisted();
     }
 
-    public function setInBlacklist(?bool $value): static
+    public function setInBlacklist(bool $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setInBlacklist($value));
     }

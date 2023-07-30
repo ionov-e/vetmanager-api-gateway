@@ -394,13 +394,9 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setUnsubscribe(?bool $value): static
+    public function setUnsubscribe(bool $value): static
     {
-        return self::setPropertyFluently(
-            $this,
-            'unsubscribe',
-            is_null($value) ? "0" : (string)(int)$value
-        );
+        return self::setPropertyFluently($this, 'unsubscribe', (string)(int)$value);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -410,13 +406,9 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setInBlacklist(?bool $value): static
+    public function setInBlacklist(bool $value): static
     {
-        return self::setPropertyFluently(
-            $this,
-            'in_blacklist',
-            is_null($value) ? "0" : (string)(int)$value #TODO think Harder about null
-        );
+        return self::setPropertyFluently($this, 'in_blacklist', (string)(int)$value);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */

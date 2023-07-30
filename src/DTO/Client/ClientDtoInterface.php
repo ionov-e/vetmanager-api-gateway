@@ -163,13 +163,13 @@ interface ClientDtoInterface
     public function getIsUnsubscribed(): bool;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setUnsubscribe(?bool $value): static;
+    public function setUnsubscribe(bool $value): static;
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsBlacklisted(): bool;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setInBlacklist(?bool $value): static;
+    public function setInBlacklist(bool $value): static;
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getLastVisitDate(): ?DateTime;
