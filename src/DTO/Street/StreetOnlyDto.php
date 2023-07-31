@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Street;
 
+use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 class StreetOnlyDto extends AbstractDTO
 {
@@ -40,9 +40,9 @@ class StreetOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->cityId = ApiInt::fromStringOrNull($originalDataArray['city_id'])->getPositiveInt();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ToString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->cityId = ToInt::fromStringOrNull($originalDataArray['city_id'])->getPositiveInt();
         $instance->type = TypeEnum::from($originalDataArray['type']);
         return $instance;
     }

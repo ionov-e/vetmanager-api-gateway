@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\UserPosition;
 
 use DateInterval;
+use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateInterval;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Hydrator\ApiDateInterval;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 final class UserPositionOnlyDto extends AbstractDTO
 {
@@ -31,9 +31,9 @@ final class UserPositionOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ApiString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->admissionLength = ApiDateInterval::fromStringHMS($originalDataArray['admission_length'])->getDateIntervalOrNull();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->title = ToString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
+        $instance->admissionLength = ToDateInterval::fromStringHMS($originalDataArray['admission_length'])->getDateIntervalOrNull();
         return $instance;
     }
 

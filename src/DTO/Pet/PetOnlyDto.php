@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Pet;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
 class PetOnlyDto extends AbstractDTO
 {
@@ -78,25 +78,25 @@ class PetOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->ownerId = ApiInt::fromStringOrNull($originalDataArray['owner_id'])->getPositiveInt();
-        $instance->typeId = ApiInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveIntOrNull();
-        $instance->alias = ApiString::fromStringOrNull($originalDataArray['alias'])->getStringEvenIfNullGiven();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->ownerId = ToInt::fromStringOrNull($originalDataArray['owner_id'])->getPositiveInt();
+        $instance->typeId = ToInt::fromStringOrNull($originalDataArray['type_id'])->getPositiveIntOrNull();
+        $instance->alias = ToString::fromStringOrNull($originalDataArray['alias'])->getStringEvenIfNullGiven();
         $instance->sex = $originalDataArray['sex'] ? SexEnum::from($originalDataArray['sex']) : SexEnum::Unknown;
-        $instance->dateRegister = ApiDateTime::fromOnlyDateString($originalDataArray['date_register'])->getDateTimeOrThrow();
-        $instance->birthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
-        $instance->note = ApiString::fromStringOrNull($originalDataArray['note'])->getStringEvenIfNullGiven();
-        $instance->breedId = ApiInt::fromStringOrNull($originalDataArray['breed_id'])->getPositiveIntOrNull();
-        $instance->oldId = ApiInt::fromStringOrNull($originalDataArray['old_id'])->getPositiveIntOrNull();
-        $instance->colorId = ApiInt::fromStringOrNull($originalDataArray['color_id'])->getPositiveIntOrNull();
-        $instance->deathNote = ApiString::fromStringOrNull($originalDataArray['deathnote'])->getStringEvenIfNullGiven();
-        $instance->deathDate = ApiString::fromStringOrNull($originalDataArray['deathdate'])->getStringEvenIfNullGiven();
-        $instance->chipNumber = ApiString::fromStringOrNull($originalDataArray['chip_number'])->getStringEvenIfNullGiven();
-        $instance->labNumber = ApiString::fromStringOrNull($originalDataArray['lab_number'])->getStringEvenIfNullGiven();
+        $instance->dateRegister = ToDateTime::fromOnlyDateString($originalDataArray['date_register'])->getDateTimeOrThrow();
+        $instance->birthday = ToDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
+        $instance->note = ToString::fromStringOrNull($originalDataArray['note'])->getStringEvenIfNullGiven();
+        $instance->breedId = ToInt::fromStringOrNull($originalDataArray['breed_id'])->getPositiveIntOrNull();
+        $instance->oldId = ToInt::fromStringOrNull($originalDataArray['old_id'])->getPositiveIntOrNull();
+        $instance->colorId = ToInt::fromStringOrNull($originalDataArray['color_id'])->getPositiveIntOrNull();
+        $instance->deathNote = ToString::fromStringOrNull($originalDataArray['deathnote'])->getStringEvenIfNullGiven();
+        $instance->deathDate = ToString::fromStringOrNull($originalDataArray['deathdate'])->getStringEvenIfNullGiven();
+        $instance->chipNumber = ToString::fromStringOrNull($originalDataArray['chip_number'])->getStringEvenIfNullGiven();
+        $instance->labNumber = ToString::fromStringOrNull($originalDataArray['lab_number'])->getStringEvenIfNullGiven();
         $instance->status = StatusEnum::from($originalDataArray['status']);
-        $instance->picture = ApiString::fromStringOrNull($originalDataArray['picture'])->getStringEvenIfNullGiven();
-        $instance->weight = ApiFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
-        $instance->editDate = ApiDateTime::fromOnlyDateString($originalDataArray['edit_date'])->getDateTimeOrThrow();
+        $instance->picture = ToString::fromStringOrNull($originalDataArray['picture'])->getStringEvenIfNullGiven();
+        $instance->weight = ToFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
+        $instance->editDate = ToDateTime::fromOnlyDateString($originalDataArray['edit_date'])->getDateTimeOrThrow();
         return $instance;
     }
 

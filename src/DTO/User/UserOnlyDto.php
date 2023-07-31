@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\User;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+use VetmanagerApiGateway\ApiDataInterpreter\Enum\DtoPropertyMode;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
-use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
 class UserOnlyDto extends AbstractDTO
 {
@@ -80,26 +80,26 @@ class UserOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->lastName = ApiString::fromStringOrNull($originalDataArray['last_name'])->getStringEvenIfNullGiven();
-        $instance->firstName = ApiString::fromStringOrNull($originalDataArray['first_name'])->getStringEvenIfNullGiven();
-        $instance->middleName = ApiString::fromStringOrNull($originalDataArray['middle_name'])->getStringEvenIfNullGiven();
-        $instance->login = ApiString::fromStringOrNull($originalDataArray['login'])->getStringEvenIfNullGiven();
-        $instance->password = ApiString::fromStringOrNull($originalDataArray['passwd'])->getStringEvenIfNullGiven();
-        $instance->positionId = ApiInt::fromStringOrNull($originalDataArray['position_id'])->getPositiveInt();
-        $instance->email = ApiString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
-        $instance->phone = ApiString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
-        $instance->cellPhone = ApiString::fromStringOrNull($originalDataArray['cell_phone'])->getStringEvenIfNullGiven();
-        $instance->address = ApiString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
-        $instance->roleId = ApiInt::fromStringOrNull($originalDataArray['role_id'])->getPositiveIntOrNull();
-        $instance->isActive = ApiBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
-        $instance->isPercentCalculated = ApiBool::fromStringOrNull($originalDataArray['calc_percents'])->getBoolOrThrowIfNull();
-        $instance->nickname = ApiString::fromStringOrNull($originalDataArray['nickname'])->getStringEvenIfNullGiven();
-        $instance->lastChangePwdDate = ApiDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->getDateTimeOrThrow();
-        $instance->isLimited = ApiBool::fromStringOrNull($originalDataArray['is_limited'])->getBoolOrThrowIfNull();
-        $instance->carrotquestId = ApiString::fromStringOrNull($originalDataArray['carrotquest_id'])->getStringEvenIfNullGiven();
-        $instance->sipNumber = ApiString::fromStringOrNull($originalDataArray['sip_number'])->getStringEvenIfNullGiven();
-        $instance->userInn = ApiString::fromStringOrNull($originalDataArray['user_inn'])->getStringEvenIfNullGiven();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->lastName = ToString::fromStringOrNull($originalDataArray['last_name'])->getStringEvenIfNullGiven();
+        $instance->firstName = ToString::fromStringOrNull($originalDataArray['first_name'])->getStringEvenIfNullGiven();
+        $instance->middleName = ToString::fromStringOrNull($originalDataArray['middle_name'])->getStringEvenIfNullGiven();
+        $instance->login = ToString::fromStringOrNull($originalDataArray['login'])->getStringEvenIfNullGiven();
+        $instance->password = ToString::fromStringOrNull($originalDataArray['passwd'])->getStringEvenIfNullGiven();
+        $instance->positionId = ToInt::fromStringOrNull($originalDataArray['position_id'])->getPositiveInt();
+        $instance->email = ToString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
+        $instance->phone = ToString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
+        $instance->cellPhone = ToString::fromStringOrNull($originalDataArray['cell_phone'])->getStringEvenIfNullGiven();
+        $instance->address = ToString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
+        $instance->roleId = ToInt::fromStringOrNull($originalDataArray['role_id'])->getPositiveIntOrNull();
+        $instance->isActive = ToBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
+        $instance->isPercentCalculated = ToBool::fromStringOrNull($originalDataArray['calc_percents'])->getBoolOrThrowIfNull();
+        $instance->nickname = ToString::fromStringOrNull($originalDataArray['nickname'])->getStringEvenIfNullGiven();
+        $instance->lastChangePwdDate = ToDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->getDateTimeOrThrow();
+        $instance->isLimited = ToBool::fromStringOrNull($originalDataArray['is_limited'])->getBoolOrThrowIfNull();
+        $instance->carrotquestId = ToString::fromStringOrNull($originalDataArray['carrotquest_id'])->getStringEvenIfNullGiven();
+        $instance->sipNumber = ToString::fromStringOrNull($originalDataArray['sip_number'])->getStringEvenIfNullGiven();
+        $instance->userInn = ToString::fromStringOrNull($originalDataArray['user_inn'])->getStringEvenIfNullGiven();
         return $instance;
     }
 

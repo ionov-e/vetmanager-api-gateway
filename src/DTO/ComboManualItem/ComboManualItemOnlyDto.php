@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\ComboManualItem;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyDtoInterface
 {
@@ -36,42 +36,42 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getComboManualId(): int
     {
-        return ApiInt::fromStringOrNull($this->combo_manual_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->combo_manual_id)->getPositiveInt();
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     public function getValue(): string
     {
-        return ApiString::fromStringOrNull($this->value)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->value)->getStringEvenIfNullGiven();
     }
 
     public function getDopParam1(): string
     {
-        return ApiString::fromStringOrNull($this->dop_param1)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->dop_param1)->getStringEvenIfNullGiven();
     }
 
     public function getDopParam2(): string
     {
-        return ApiString::fromStringOrNull($this->dop_param2)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->dop_param2)->getStringEvenIfNullGiven();
     }
 
     public function getDopParam3(): string
     {
-        return ApiString::fromStringOrNull($this->dop_param3)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->dop_param3)->getStringEvenIfNullGiven();
     }
 
     public function getIsActive(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
     public function setId(int $value): static

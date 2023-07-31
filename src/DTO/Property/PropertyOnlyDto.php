@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Property;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 {
@@ -28,27 +28,27 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getName(): ?string
     {
-        return ApiString::fromStringOrNull($this->property_name)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->property_name)->getStringEvenIfNullGiven();
     }
 
     public function getValue(): ?string
     {
-        return ApiString::fromStringOrNull($this->property_value)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->property_value)->getStringEvenIfNullGiven();
     }
 
     public function getTitle(): ?string
     {
-        return ApiString::fromStringOrNull($this->property_title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->property_title)->getStringEvenIfNullGiven();
     }
 
     public function getClinicId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
     }
 
     public function setId(int $value): static

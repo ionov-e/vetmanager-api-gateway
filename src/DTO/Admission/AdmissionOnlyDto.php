@@ -6,14 +6,14 @@ namespace VetmanagerApiGateway\DTO\Admission;
 
 use DateInterval;
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateInterval;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiDateInterval;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 {
@@ -60,42 +60,42 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getAdmissionDate(): DateTime
     {
-        return ApiDateTime::fromFullDateTimeString($this->admission_date)->getDateTimeOrThrow();
+        return ToDateTime::fromFullDateTimeString($this->admission_date)->getDateTimeOrThrow();
     }
 
     public function getDescription(): string
     {
-        return ApiString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
     }
 
     public function getClientId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->client_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrNull();
     }
 
     public function getPetId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->patient_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->patient_id)->getPositiveIntOrNull();
     }
 
     public function getUserId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->user_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->user_id)->getPositiveIntOrNull();
     }
 
     public function getTypeId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
     }
 
     public function getAdmissionLength(): ?DateInterval
     {
-        return ApiDateInterval::fromStringHMS($this->admission_length)->getDateIntervalOrNull();
+        return ToDateInterval::fromStringHMS($this->admission_length)->getDateIntervalOrNull();
     }
 
     public function getStatus(): ?StatusEnum
@@ -105,27 +105,27 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
     }
 
     public function getIsDirectDirection(): bool
     {
-        return ApiBool::fromStringOrNull($this->direct_direction)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->direct_direction)->getBoolOrThrowIfNull();
     }
 
     public function getCreatorId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNull();
     }
 
     public function getCreateDate(): DateTime
     {
-        return ApiDateTime::fromFullDateTimeString($this->create_date)->getDateTimeOrThrow();
+        return ToDateTime::fromFullDateTimeString($this->create_date)->getDateTimeOrThrow();
     }
 
     public function getEscortId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->escorter_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->escorter_id)->getPositiveIntOrNull();
     }
 
     public function getReceptionWriteChannel(): string
@@ -135,12 +135,12 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getIsAutoCreate(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_auto_create)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_auto_create)->getBoolOrThrowIfNull();
     }
 
     public function getInvoicesSum(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->invoices_sum)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->invoices_sum)->getNonZeroFloatOrNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

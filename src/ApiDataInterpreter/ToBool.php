@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Hydrator;
+namespace VetmanagerApiGateway\ApiDataInterpreter;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class ApiBool
+class ToBool
 {
     public function __construct(private readonly ?bool $boolOrNull)
     {

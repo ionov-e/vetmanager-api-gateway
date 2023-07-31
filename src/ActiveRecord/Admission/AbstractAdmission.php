@@ -492,7 +492,7 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
 //            'petBreed' => !empty($this->originalDataArray['pet']['breed_data']) /** @psalm-suppress DocblockTypeContradiction */
 //                ? BreedOnly::fromSingleDtoArrayUsingBasicDto($this->activeRecordFactory, $this->originalDataArray['pet']['breed_data'])
 //                : null,
-//            'waitTime' => ApiString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
+//            'waitTime' => ToString::fromStringOrNull($this->originalDataArray['wait_time'] ?? '')->getStringEvenIfNullGiven(),
 //            'invoices' => Invoice::fromMultipleDtosArrays($this->activeRecordFactory, $this->originalDataArray['invoices'] ?? [], Completeness::OnlyBasicDto),
 //            default => $this->originalDto->$name
 //        };

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\City;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
 {
@@ -30,7 +30,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function setId(int $value): static
@@ -40,7 +40,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -54,7 +54,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getTypeId(): int
     {
-        return ApiInt::fromStringOrNull($this->type_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveInt();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

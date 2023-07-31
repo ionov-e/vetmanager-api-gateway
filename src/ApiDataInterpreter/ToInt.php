@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Hydrator;
+namespace VetmanagerApiGateway\ApiDataInterpreter;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class ApiInt
+class ToInt
 {
     public function __construct(private readonly ?int $intOrNull)
     {

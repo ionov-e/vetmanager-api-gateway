@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\ComboManualName;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyDtoInterface
 {
@@ -28,22 +28,22 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getNonEmptyStringOrThrow();
+        return ToString::fromStringOrNull($this->title)->getNonEmptyStringOrThrow();
     }
 
     public function getIsReadonly(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_readonly)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_readonly)->getBoolOrThrowIfNull();
     }
 
     public function getName(): string
     {
-        return ApiString::fromStringOrNull($this->name)->getNonEmptyStringOrThrow();
+        return ToString::fromStringOrNull($this->name)->getNonEmptyStringOrThrow();
     }
 
     public function setId(int $value): static

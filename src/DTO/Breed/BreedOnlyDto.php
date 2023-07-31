@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Breed;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 {
@@ -24,17 +24,17 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringOrThrowIfNull();
+        return ToString::fromStringOrNull($this->title)->getStringOrThrowIfNull();
     }
 
     public function getPetTypeId(): int
     {
-        return ApiInt::fromStringOrNull($this->pet_type_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->pet_type_id)->getPositiveInt();
     }
 
     public function setId(?int $value): static

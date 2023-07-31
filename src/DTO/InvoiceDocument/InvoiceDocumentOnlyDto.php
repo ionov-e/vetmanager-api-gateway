@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\InvoiceDocument;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class InvoiceDocumentOnlyDto extends AbstractDTO
 {
@@ -85,26 +85,26 @@ class InvoiceDocumentOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->invoiceId = ApiInt::fromStringOrNull($originalDataArray['document_id'])->getPositiveInt();
-        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['good_id'])->getPositiveInt();
-        $instance->quantity = ApiFloat::fromStringOrNull((string)$originalDataArray['quantity'])->getNonZeroFloatOrNull();
-        $instance->price = ApiFloat::fromStringOrNull((string)$originalDataArray['price'])->getNonZeroFloatOrNull();
-        $instance->responsibleUserId = ApiInt::fromStringOrNull($originalDataArray['responsible_user_id'])->getPositiveIntOrNull();
-        $instance->isDefaultResponsible = ApiBool::fromStringOrNull($originalDataArray['is_default_responsible'])->getBoolOrThrowIfNull();
-        $instance->saleParamId = ApiInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
-        $instance->tagId = ApiInt::fromStringOrNull($originalDataArray['tag_id'])->getPositiveIntOrNull();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->invoiceId = ToInt::fromStringOrNull($originalDataArray['document_id'])->getPositiveInt();
+        $instance->goodId = ToInt::fromStringOrNull($originalDataArray['good_id'])->getPositiveInt();
+        $instance->quantity = ToFloat::fromStringOrNull((string)$originalDataArray['quantity'])->getNonZeroFloatOrNull();
+        $instance->price = ToFloat::fromStringOrNull((string)$originalDataArray['price'])->getNonZeroFloatOrNull();
+        $instance->responsibleUserId = ToInt::fromStringOrNull($originalDataArray['responsible_user_id'])->getPositiveIntOrNull();
+        $instance->isDefaultResponsible = ToBool::fromStringOrNull($originalDataArray['is_default_responsible'])->getBoolOrThrowIfNull();
+        $instance->saleParamId = ToInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
+        $instance->tagId = ToInt::fromStringOrNull($originalDataArray['tag_id'])->getPositiveIntOrNull();
         $instance->discountType = $originalDataArray['discount_type'] ? DiscountTypeEnum::from($originalDataArray['discount_type']) : null;
-        $instance->discountDocumentId = ApiInt::fromStringOrNull($originalDataArray['discount_document_id'])->getPositiveIntOrNull();
-        $instance->discountPercent = ApiFloat::fromStringOrNull($originalDataArray['discount_percent'])->getNonZeroFloatOrNull();
-        $instance->defaultPrice = ApiFloat::fromStringOrNull($originalDataArray['default_price'])->getNonZeroFloatOrNull();
-        $instance->createDate = ApiDateTime::fromOnlyDateString($originalDataArray['create_date'])->getDateTimeOrThrow();
-        $instance->discountCause = ApiString::fromStringOrNull($originalDataArray['discount_cause'])->getStringEvenIfNullGiven();
-        $instance->fixedDiscountId = ApiInt::fromStringOrNull($originalDataArray['fixed_discount_id'])->getPositiveIntOrNull();
-        $instance->fixedDiscountPercent = ApiInt::fromStringOrNull($originalDataArray['fixed_discount_percent'])->getPositiveIntOrNull();
-        $instance->fixedIncreaseId = ApiInt::fromStringOrNull($originalDataArray['fixed_increase_id'])->getPositiveIntOrNull();
-        $instance->fixedIncreasePercent = ApiInt::fromStringOrNull($originalDataArray['fixed_increase_percent'])->getPositiveIntOrNull();
-        $instance->primeCost = ApiFloat::fromStringOrNull($originalDataArray['prime_cost'])->getNonZeroFloatOrNull();
+        $instance->discountDocumentId = ToInt::fromStringOrNull($originalDataArray['discount_document_id'])->getPositiveIntOrNull();
+        $instance->discountPercent = ToFloat::fromStringOrNull($originalDataArray['discount_percent'])->getNonZeroFloatOrNull();
+        $instance->defaultPrice = ToFloat::fromStringOrNull($originalDataArray['default_price'])->getNonZeroFloatOrNull();
+        $instance->createDate = ToDateTime::fromOnlyDateString($originalDataArray['create_date'])->getDateTimeOrThrow();
+        $instance->discountCause = ToString::fromStringOrNull($originalDataArray['discount_cause'])->getStringEvenIfNullGiven();
+        $instance->fixedDiscountId = ToInt::fromStringOrNull($originalDataArray['fixed_discount_id'])->getPositiveIntOrNull();
+        $instance->fixedDiscountPercent = ToInt::fromStringOrNull($originalDataArray['fixed_discount_percent'])->getPositiveIntOrNull();
+        $instance->fixedIncreaseId = ToInt::fromStringOrNull($originalDataArray['fixed_increase_id'])->getPositiveIntOrNull();
+        $instance->fixedIncreasePercent = ToInt::fromStringOrNull($originalDataArray['fixed_increase_percent'])->getPositiveIntOrNull();
+        $instance->primeCost = ToFloat::fromStringOrNull($originalDataArray['prime_cost'])->getNonZeroFloatOrNull();
         return $instance;
     }
 

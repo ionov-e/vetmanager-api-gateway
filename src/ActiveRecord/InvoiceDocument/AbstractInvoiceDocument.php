@@ -155,10 +155,10 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord
 //        }
 //
 //        return match ($name) {
-//            'minPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price'])->getNonZeroFloatOrNull(),
-//            'maxPrice' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price'])->getNonZeroFloatOrNull(),
-//            'minPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->getNonZeroFloatOrNull(),
-//            'maxPriceInPercents' => ApiFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->getNonZeroFloatOrNull(),
+//            'minPrice' => ToFloat::fromStringOrNull((string)$this->originalDataArray['min_price'])->getNonZeroFloatOrNull(),
+//            'maxPrice' => ToFloat::fromStringOrNull((string)$this->originalDataArray['max_price'])->getNonZeroFloatOrNull(),
+//            'minPriceInPercents' => ToFloat::fromStringOrNull((string)$this->originalDataArray['min_price_percent'])->getNonZeroFloatOrNull(),
+//            'maxPriceInPercents' => ToFloat::fromStringOrNull((string)$this->originalDataArray['max_price_percent'])->getNonZeroFloatOrNull(),
 //            'partyInfo' => $this->originalDataArray['party_info'],
 //            'good' => ($this->completenessLevel == Completeness::OnlyBasicDto)
 //                ? Good::getById($this->activeRecordFactory, $this->goodId)

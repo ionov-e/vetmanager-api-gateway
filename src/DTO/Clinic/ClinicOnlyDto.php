@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Clinic;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 {
@@ -48,57 +48,57 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     public function getAddress(): string
     {
-        return ApiString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
     }
 
     public function getPhone(): string
     {
-        return ApiString::fromStringOrNull($this->phone)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->phone)->getStringEvenIfNullGiven();
     }
 
     public function getCityId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
     }
 
     public function getStartTime(): string
     {
-        return ApiString::fromStringOrNull($this->start_time)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->start_time)->getStringEvenIfNullGiven();
     }
 
     public function getEndTime(): string
     {
-        return ApiString::fromStringOrNull($this->end_time)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->end_time)->getStringEvenIfNullGiven();
     }
 
     public function getInternetAddress(): string
     {
-        return ApiString::fromStringOrNull($this->internet_address)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->internet_address)->getStringEvenIfNullGiven();
     }
 
     public function getGuestClientId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNull();
     }
 
     public function getTimeZone(): string
     {
-        return ApiString::fromStringOrNull($this->time_zone)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->time_zone)->getStringEvenIfNullGiven();
     }
 
     public function getLogoUrl(): string
     {
-        return ApiString::fromStringOrNull($this->logo_url)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->logo_url)->getStringEvenIfNullGiven();
     }
 
     public function getStatus(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
@@ -108,17 +108,17 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getTelegram(): string
     {
-        return ApiString::fromStringOrNull($this->telegram)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->telegram)->getStringEvenIfNullGiven();
     }
 
     public function getWhatsapp(): string
     {
-        return ApiString::fromStringOrNull($this->whatsapp)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->whatsapp)->getStringEvenIfNullGiven();
     }
 
     public function getEmail(): string
     {
-        return ApiString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
     }
 
     public function setId(int $value): static

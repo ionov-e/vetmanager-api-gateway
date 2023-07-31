@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\GoodSaleParam;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoInterface
 {
@@ -43,42 +43,42 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getGoodId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->good_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrNull();
     }
 
     public function getPrice(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->price)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->price)->getNonZeroFloatOrNull();
     }
 
     public function getCoefficient(): float
     {
-        return ApiFloat::fromStringOrNull($this->coefficient)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->coefficient)->getNonZeroFloatOrNull();
     }
 
     public function getUnitSaleId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->unit_sale_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->unit_sale_id)->getPositiveIntOrNull();
     }
 
     public function getMinPrice(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->min_price)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->min_price)->getNonZeroFloatOrNull();
     }
 
     public function getMaxPrice(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->max_price)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->max_price)->getNonZeroFloatOrNull();
     }
 
     public function getBarcode(): string
     {
-        return ApiString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
     }
 
     public function getStatus(): \VetmanagerApiGateway\DTO\GoodSaleParam\StatusEnum
@@ -88,12 +88,12 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getClinicId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
     }
 
     public function getMarkup(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->markup)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->markup)->getNonZeroFloatOrNull();
     }
 
     public function getPriceFormation(): PriceFormationEnum

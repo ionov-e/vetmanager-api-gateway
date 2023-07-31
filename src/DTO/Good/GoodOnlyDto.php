@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Good;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 {
@@ -51,73 +51,73 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getGroupId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->group_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->group_id)->getPositiveIntOrNull();
 
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     public function getUnitId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNull();
     }
 
     public function getIsWarehouseAccount(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_warehouse_account)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_warehouse_account)->getBoolOrThrowIfNull();
     }
 
     public function getIsActive(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
     public function getCode(): string
     {
-        return ApiString::fromStringOrNull($this->code)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->code)->getStringEvenIfNullGiven();
     }
 
     public function getIsCall(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_call)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_call)->getBoolOrThrowIfNull();
     }
 
     public function getIsForSale(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_for_sale)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_for_sale)->getBoolOrThrowIfNull();
     }
 
     public function getBarcode(): string
     {
-        return ApiString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
     }
 
     public function getCreateDate(): ?DateTime
     {
-        return ApiDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
+        return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }
 
     public function getDescription(): string
     {
-        return ApiString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
     }
 
     public function getPrimeCost(): float
     {
-        return ApiFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
     }
 
     public function getCategoryId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->category_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->category_id)->getPositiveIntOrNull();
     }
 
     public function setId(?int $value): static

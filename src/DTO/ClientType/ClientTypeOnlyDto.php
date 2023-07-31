@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\ClientType;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterface
 {
@@ -23,7 +23,7 @@ class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterfac
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function setId(int $value): static
@@ -33,7 +33,7 @@ class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterfac
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     public function setTitle(string $value): static

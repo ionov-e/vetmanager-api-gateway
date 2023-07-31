@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\GoodGroup;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 {
@@ -32,33 +32,33 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     public function getIsService(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_service)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_service)->getBoolOrThrowIfNull();
     }
 
     public function getMarkup(): ?float
     {
-        return ApiFloat::fromStringOrNull($this->markup)->getNonZeroFloatOrNull();
+        return ToFloat::fromStringOrNull($this->markup)->getNonZeroFloatOrNull();
     }
 
 
     public function getIsShowInVaccines(): bool
     {
-        return ApiBool::fromStringOrNull($this->is_show_in_vaccines)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->is_show_in_vaccines)->getBoolOrThrowIfNull();
     }
 
     public function getPriceId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->price_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->price_id)->getPositiveIntOrNull();
     }
 
     public function setId(?int $value): static

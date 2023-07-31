@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Hydrator;
+namespace VetmanagerApiGateway\ApiDataInterpreter;
 
 use DateTime;
 use Exception;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-final class ApiDateTime
+final class ToDateTime
 {
     public function __construct(private readonly ?DateTime $dateTimeOrNull)
     {

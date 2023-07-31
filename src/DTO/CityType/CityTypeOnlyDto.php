@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\CityType;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
 {
@@ -27,7 +27,7 @@ final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
      */
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -38,7 +38,7 @@ final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
 
     public function getTitle(): string
     {
-        return ApiString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

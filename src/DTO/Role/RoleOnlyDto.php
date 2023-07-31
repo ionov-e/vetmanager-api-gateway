@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Role;
 
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 {
@@ -25,17 +25,17 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     public function getName(): string
     {
-        return ApiString::fromStringOrNull($this->name)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->name)->getStringEvenIfNullGiven();
     }
 
     public function getIsSuper(): bool
     {
-        return ApiBool::fromStringOrNull($this->super)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->super)->getBoolOrThrowIfNull();
     }
 
     public function setId(int $value): static

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\MedicalCardAsVaccination;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+use VetmanagerApiGateway\ApiDataInterpreter\Enum\DtoPropertyMode;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
-use VetmanagerApiGateway\Hydrator\Enum\DtoPropertyMode;
 
 final class MedicalCardAsVaccinationDto extends AbstractDTO
 {
@@ -80,23 +80,23 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->getStringEvenIfNullGiven();
-        $instance->petId = ApiInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveInt();
-        $instance->date = ApiDateTime::fromFullDateTimeString($originalDataArray['date'])->getDateTimeOrThrow();
-        $dateTimeServiceForNextDate = ApiDateTime::fromOnlyDateString($originalDataArray['date_nexttime']);
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
+        $instance->name = ToString::fromStringOrNull($originalDataArray['name'])->getStringEvenIfNullGiven();
+        $instance->petId = ToInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveInt();
+        $instance->date = ToDateTime::fromFullDateTimeString($originalDataArray['date'])->getDateTimeOrThrow();
+        $dateTimeServiceForNextDate = ToDateTime::fromOnlyDateString($originalDataArray['date_nexttime']);
         $instance->nextDateTime = $dateTimeServiceForNextDate->getDateTimeOrThrow();
         $instance->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
-        $instance->goodId = ApiInt::fromStringOrNull($originalDataArray['vaccine_id'])->getPositiveInt();
-        $instance->medicalCardId = ApiInt::fromStringOrNull($originalDataArray['medcard_id'])->getPositiveInt();
-        $instance->doseTypeId = ApiInt::fromStringOrNull($originalDataArray['doza_type_id'])->getPositiveInt();
-        $instance->doseValue = ApiFloat::fromStringOrNull($originalDataArray['doza_value'])->getNonZeroFloatOrNull();
-        $instance->saleParamId = ApiInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
-        $instance->vaccineType = ApiInt::fromStringOrNull($originalDataArray['vaccine_type'])->getPositiveIntOrNull();
-        $instance->vaccineDescription = ApiString::fromStringOrNull($originalDataArray['vaccine_description'])->getStringEvenIfNullGiven();
-        $instance->vaccineTypeTitle = ApiString::fromStringOrNull($originalDataArray['vaccine_type_title'])->getStringEvenIfNullGiven();
-        $instance->nextAdmissionId = ApiInt::fromStringOrNull($originalDataArray['next_admission_id'])->getPositiveIntOrNull();
-        $instance->petBirthday = ApiDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
+        $instance->goodId = ToInt::fromStringOrNull($originalDataArray['vaccine_id'])->getPositiveInt();
+        $instance->medicalCardId = ToInt::fromStringOrNull($originalDataArray['medcard_id'])->getPositiveInt();
+        $instance->doseTypeId = ToInt::fromStringOrNull($originalDataArray['doza_type_id'])->getPositiveInt();
+        $instance->doseValue = ToFloat::fromStringOrNull($originalDataArray['doza_value'])->getNonZeroFloatOrNull();
+        $instance->saleParamId = ToInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
+        $instance->vaccineType = ToInt::fromStringOrNull($originalDataArray['vaccine_type'])->getPositiveIntOrNull();
+        $instance->vaccineDescription = ToString::fromStringOrNull($originalDataArray['vaccine_description'])->getStringEvenIfNullGiven();
+        $instance->vaccineTypeTitle = ToString::fromStringOrNull($originalDataArray['vaccine_type_title'])->getStringEvenIfNullGiven();
+        $instance->nextAdmissionId = ToInt::fromStringOrNull($originalDataArray['next_admission_id'])->getPositiveIntOrNull();
+        $instance->petBirthday = ToDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
         return $instance;

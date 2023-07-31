@@ -150,7 +150,7 @@ $comboManualItemTitle = $comboManualItems[0]->title;
 #### Альтернативные способы получения для конкретных DAO <a id="get_by_custom" />
 
 ```php
-use VetmanagerApiGateway\Hydrator\Enum\ComboManualName\Name;
+use VetmanagerApiGateway\ApiDataInterpreter\Enum\ComboManualName\Name;
 use VetmanagerApiGateway\DTO\DAO\Admission;
 use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
 use VetmanagerApiGateway\DTO\DAO\MedicalCardAsVaccination;

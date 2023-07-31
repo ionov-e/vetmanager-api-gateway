@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Client;
 
 use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
-use VetmanagerApiGateway\Hydrator\ApiBool;
-use VetmanagerApiGateway\Hydrator\ApiDateTime;
-use VetmanagerApiGateway\Hydrator\ApiFloat;
-use VetmanagerApiGateway\Hydrator\ApiInt;
-use VetmanagerApiGateway\Hydrator\ApiString;
 
 class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 {
@@ -89,7 +89,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getId(): int
     {
-        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -100,7 +100,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getAddress(): string
     {
-        return ApiString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -111,7 +111,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getHomePhone(): string
     {
-        return ApiString::fromStringOrNull($this->home_phone)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->home_phone)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -122,7 +122,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getWorkPhone(): string
     {
-        return ApiString::fromStringOrNull($this->work_phone)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->work_phone)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -133,7 +133,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getNote(): string
     {
-        return ApiString::fromStringOrNull($this->note)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->note)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -147,7 +147,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getTypeId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -161,7 +161,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getHowFind(): ?int
     {
-        return ApiInt::fromStringOrNull($this->how_find)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->how_find)->getPositiveIntOrNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -173,7 +173,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getBalance(): float
     {
-        return ApiFloat::fromStringOrNull($this->balance)->getFloatOrThrow();
+        return ToFloat::fromStringOrNull($this->balance)->getFloatOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -184,7 +184,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getEmail(): string
     {
-        return ApiString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -195,7 +195,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getCityTitle(): string
     {
-        return ApiString::fromStringOrNull($this->city)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->city)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -209,7 +209,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getCityId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -223,7 +223,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getDateRegister(): ?DateTime
     {
-        return ApiDateTime::fromFullDateTimeString($this->date_register)->getDateTimeOrThrow();
+        return ToDateTime::fromFullDateTimeString($this->date_register)->getDateTimeOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -234,7 +234,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getCellPhone(): string
     {
-        return ApiString::fromStringOrNull($this->cell_phone)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->cell_phone)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -245,7 +245,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getZip(): string
     {
-        return ApiString::fromStringOrNull($this->zip)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->zip)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -256,7 +256,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getRegistrationIndex(): string
     {
-        return ApiString::fromStringOrNull($this->registration_index)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->registration_index)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -270,7 +270,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getIsVip(): bool
     {
-        return ApiBool::fromStringOrNull($this->vip)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->vip)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -281,7 +281,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getLastName(): string
     {
-        return ApiString::fromStringOrNull($this->last_name)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->last_name)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -292,7 +292,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getFirstName(): string
     {
-        return ApiString::fromStringOrNull($this->first_name)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->first_name)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -303,7 +303,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getMiddleName(): string
     {
-        return ApiString::fromStringOrNull($this->middle_name)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->middle_name)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -326,7 +326,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getDiscount(): int
     {
-        return ApiInt::fromStringOrNull($this->discount)->getIntEvenIfNullGiven();
+        return ToInt::fromStringOrNull($this->discount)->getIntEvenIfNullGiven();
     }
 
 
@@ -338,7 +338,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getPassportSeries(): string
     {
-        return ApiString::fromStringOrNull($this->passport_series)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->passport_series)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -349,7 +349,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getLabNumber(): string
     {
-        return ApiString::fromStringOrNull($this->lab_number)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->lab_number)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -363,7 +363,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getStreetId(): ?int
     {
-        return ApiInt::fromStringOrNull($this->street_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->street_id)->getPositiveIntOrNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -378,7 +378,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getApartment(): string
     {
-        return ApiString::fromStringOrNull($this->apartment)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->apartment)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -390,7 +390,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsUnsubscribed(): bool
     {
-        return ApiBool::fromStringOrNull($this->unsubscribe)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->unsubscribe)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -402,7 +402,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsBlacklisted(): bool
     {
-        return ApiBool::fromStringOrNull($this->in_blacklist)->getBoolOrThrowIfNull();
+        return ToBool::fromStringOrNull($this->in_blacklist)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -414,7 +414,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getLastVisitDate(): ?DateTime
     {
-        return ApiDateTime::fromFullDateTimeString($this->last_visit_date)->getDateTimeOrThrow();
+        return ToDateTime::fromFullDateTimeString($this->last_visit_date)->getDateTimeOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayException */
@@ -431,7 +431,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getNumberOfJournal(): string
     {
-        return ApiString::fromStringOrNull($this->number_of_journal)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->number_of_journal)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -442,7 +442,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getPhonePrefix(): string
     {
-        return ApiString::fromStringOrNull($this->phone_prefix)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->phone_prefix)->getStringEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

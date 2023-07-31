@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace VetmanagerApiGateway\Hydrator;
+namespace VetmanagerApiGateway\ApiDataInterpreter;
 
 use DateInterval;
 use Throwable;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-final class ApiDateInterval
+final class ToDateInterval
 {
     public function __construct(private readonly ?DateInterval $dateIntervalOrNull)
     {
