@@ -4,53 +4,63 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Unit;
 
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-final class UnitOnlyDto extends AbstractDTO
+class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
 {
-
-    public int $id;
-    public string $title;
-    /** Default: 'active' */
-    public StatusEnum $status;
-
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "status": string,
-     * } $originalDataArray
-     * @psalm-suppress MoreSpecificImplementedParamType
-     * @throws VetmanagerApiGatewayResponseException
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $status Default: 'active'
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ToString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->status = StatusEnum::from($originalDataArray['status']);
-        return $instance;
+    public function __construct(
+        protected ?string $id,
+        protected ?string $title,
+        protected ?string $status
+    ) {
     }
 
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO check
+    public function getId(): int
     {
-        return ['title', 'status'];
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
+    public function getTitle(): ?string
     {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['status', 'status'],
-        ))->toArray();
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
+
+    public function getStatus(): StatusEnum
+    {
+        return StatusEnum::from($this->status);
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    public function setStatusAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value);
+    }
+
+    public function setStatusAsEnum(StatusEnum $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value->value);
+    }
+
+//    /** @param array{
+//     *     "id": string,
+//     *     "title": string,
+//     *     "status": string,
+//     * }
+//     */
 }
