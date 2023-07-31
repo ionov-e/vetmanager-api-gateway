@@ -5,53 +5,58 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Role;
 
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Hydrator\ApiBool;
 use VetmanagerApiGateway\Hydrator\ApiInt;
 use VetmanagerApiGateway\Hydrator\ApiString;
-use VetmanagerApiGateway\Hydrator\DtoPropertyList;
 
-final class RoleOnlyDto extends AbstractDTO
+final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    public string $name;
-    /** Default: '0' */
-    public bool $isSuper;
+    /**
+     * @param string|null $id
+     * @param string|null $name
+     * @param string|null $super
+     */
+    public function __construct(
+        protected ?string $id,
+        protected ?string $name,
+        protected ?string $super
+    ) {
+    }
+
+    public function getId(): int
+    {
+        return ApiInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getName(): string
+    {
+        return ApiString::fromStringOrNull($this->name)->getStringEvenIfNullGiven();
+    }
+
+    public function getIsSuper(): bool
+    {
+        return ApiBool::fromStringOrNull($this->super)->getBoolOrThrowIfNull();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setName(string $value): static
+    {
+        return self::setPropertyFluently($this, 'name', $value);
+    }
+
+    public function setIsSuper(bool $value): static
+    {
+        return self::setPropertyFluently($this, 'super', is_null($value) ? null : (string)(int)$value);
+    }
 
     /** @param array{
      *     "id": numeric-string,
      *     "name": string,
      *     "super": string,
      * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ApiInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->name = ApiString::fromStringOrNull($originalDataArray['name'])->getStringEvenIfNullGiven();
-        $instance->isSuper = ApiBool::fromStringOrNull($originalDataArray['super'])->getBoolOrThrowIfNull();
-        return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['name', 'name'],
-            ['isSuper', 'super'],
-        ))->toArray();
-    }
 }
