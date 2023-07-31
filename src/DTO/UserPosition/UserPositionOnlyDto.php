@@ -9,29 +9,60 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToDateInterval;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-final class UserPositionOnlyDto extends AbstractDTO
+class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInterface
 {
-    public int $id;
-    public string $title;
-    /** Default: '00:30:00'. TypeEnum in DB: 'time'. Null if '00:00:00' */
-    public ?DateInterval $admissionLength;
-
-    /** @param array{
-     *     id: string,
-     *     title: string,
-     *     admission_length: string
-     * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    public static function fromApiResponseArray(array $originalDataArray): self
-    {
-        $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->title = ToString::fromStringOrNull($originalDataArray['title'])->getStringEvenIfNullGiven();
-        $instance->admissionLength = ToDateInterval::fromStringHMS($originalDataArray['admission_length'])->getDateIntervalOrNull();
-        return $instance;
+    public function __construct(
+        protected ?string $id,
+        protected ?string $title,
+        protected ?string $admission_length
+    ) {
     }
+
+    public function getId(): int
+    {
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getTitle(): ?string
+    {
+        return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
+    }
+
+    public function getAdmissionLengthAsString(): ?string
+    {
+        return $this->admission_length;
+    }
+
+    public function getAdmissionLengthAsDateInterval(): ?DateInterval
+    {
+        return ToDateInterval::fromStringHMS($this->admission_length)->getDateIntervalOrNull();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'title', $value);
+    }
+
+    public function setAdmissionLengthAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'admission_length', $value);
+    }
+
+    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    {
+        return self::setPropertyFluently($this, 'admission_length', $value->format('H:i:s'));
+    }
+
+//    /** @param array{
+//     *     id: string,
+//     *     title: string,
+//     *     admission_length: string
+//     * } $originalDataArray
+//     */
 }

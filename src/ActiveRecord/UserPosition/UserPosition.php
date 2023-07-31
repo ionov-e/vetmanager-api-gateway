@@ -6,7 +6,9 @@ namespace VetmanagerApiGateway\ActiveRecord\UserPosition;
 
 use DateInterval;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDto;
+use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDtoInterface;
 
 /**
  * @property-read UserPositionOnlyDto $originalDto
@@ -19,7 +21,7 @@ use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDto;
  *     admission_length: string
  * } $originalDataArray
  */
-final class UserPosition extends AbstractActiveRecord
+final class UserPosition extends AbstractActiveRecord implements UserPositionOnlyDtoInterface
 {
     public static function getRouteKey(): string
     {
@@ -29,5 +31,58 @@ final class UserPosition extends AbstractActiveRecord
     public static function getDtoClass(): string
     {
         return UserPositionOnlyDto::class;
+    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, UserPositionOnlyDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @inheritDoc */
+    public function getId(): int
+    {
+        return $this->modelDTO->getId();
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->modelDTO->getTitle();
+    }
+
+    /** @inheritDoc */
+    public function getAdmissionLengthAsString(): ?string
+    {
+        return $this->modelDTO->getAdmissionLengthAsString();
+    }
+
+    /** @inheritDoc */
+    public function getAdmissionLengthAsDateInterval(): ?DateInterval
+    {
+        return $this->modelDTO->getAdmissionLengthAsDateInterval();
+    }
+
+    /** @inheritDoc */
+    public function setId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
+    /** @inheritDoc */
+    public function setTitle(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
+    }
+
+    /** @inheritDoc */
+    public function setAdmissionLengthAsString(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsString($value));
+    }
+
+    /** @inheritDoc */
+    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsDateInterval($value));
     }
 }
