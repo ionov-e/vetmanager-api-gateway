@@ -6,42 +6,102 @@ namespace VetmanagerApiGateway\ActiveRecord\Street;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\City\City;
+use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Street\StreetOnlyDto;
+use VetmanagerApiGateway\DTO\Street\StreetOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\Street\TypeEnum;
 
-/**
- * @property-read StreetOnlyDto $originalDto
- * @property positive-int $id
- * @property string $title Default: ''
- * @property TypeEnum $type Default: 'street'
- * @property positive-int $cityId
- * @property-read array{
- *     id: string,
- *     title: string,
- *     city_id: string,
- *     type: string,
- *     city?: array{
- *              id: string,
- *              title: ?string,
- *              type_id: ?string
- *     }
- * } $originalDataArray
- * @property-read ?City $city
- */
-abstract class AbstractStreet extends AbstractActiveRecord
+///**
+// * @property-read StreetOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $title Default: ''
+// * @property TypeEnum $type Default: 'street'
+// * @property positive-int $cityId
+// * @property-read array{
+// *     id: string,
+// *     title: string,
+// *     city_id: string,
+// *     type: string,
+// *     city?: array{
+// *              id: string,
+// *              title: ?string,
+// *              type_id: ?string
+// *     }
+// * } $originalDataArray
+// * @property-read ?City $city
+// */
+abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnlyDtoInterface
 {
     public static function getRouteKey(): string
     {
         return 'street';
     }
-//    /** @throws VetmanagerApiGatewayException */
-//    public function __get(string $name): mixed
-//    {
-//        return match ($name) {
-//            'city' => !empty($this->originalDataArray['city'])
-//                ? City::fromSingleDtoArrayAsFromGetById($this->activeRecordFactory, $this->originalDataArray['city'])
-//                : null,
-//            default => $this->originalDto->$name,
-//        };
-//    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, StreetOnlyDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
+        $this->modelDTO = $modelDTO;
+    }
+
+    /** @inheritDoc */
+    public function getId(): int
+    {
+        return $this->modelDTO->getId();
+    }
+
+    /** @inheritDoc */
+    public function getTitle(): ?string
+    {
+        return $this->modelDTO->getTitle();
+    }
+
+    /** @inheritDoc */
+    public function getCityId(): int
+    {
+        return $this->modelDTO->getCityId();
+    }
+
+    /** @inheritDoc */
+    public function getTypeAsString(): ?string
+    {
+        return $this->modelDTO->getTypeAsString();
+    }
+
+    /** @inheritDoc */
+    public function getTypeAsEnum(): TypeEnum
+    {
+        return $this->modelDTO->getTypeAsEnum();
+    }
+
+    /** @inheritDoc */
+    public function setId(int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
+    }
+
+    /** @inheritDoc */
+    public function setTitle(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));
+    }
+
+    /** @inheritDoc */
+    public function setCityId(?int $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCityId($value));
+    }
+
+    /** @inheritDoc */
+    public function setTypeAsString(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeAsString($value));
+    }
+
+    /** @inheritDoc */
+    public function setTypeAsEnum(TypeEnum $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeAsEnum($value));
+    }
+
+    abstract public function getCity(): City;
 }
