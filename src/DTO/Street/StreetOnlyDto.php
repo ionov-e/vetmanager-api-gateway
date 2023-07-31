@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Street;
 
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
+
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 class StreetOnlyDto extends AbstractDTO
 {
@@ -45,18 +44,5 @@ class StreetOnlyDto extends AbstractDTO
         $instance->cityId = ToInt::fromStringOrNull($originalDataArray['city_id'])->getPositiveInt();
         $instance->type = TypeEnum::from($originalDataArray['type']);
         return $instance;
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['title', 'title'],
-            ['cityId', 'city_id'],
-            ['type', 'type'],
-        ))->toArray();
     }
 }

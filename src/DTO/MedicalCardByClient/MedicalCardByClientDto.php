@@ -6,7 +6,6 @@ namespace VetmanagerApiGateway\DTO\MedicalCardByClient;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\AbstractMedicalCard;
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
 use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
@@ -17,7 +16,6 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\DTO\MedicalCard\StatusEnum;
 use VetmanagerApiGateway\DTO\Pet\SexEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 final class MedicalCardByClientDto extends AbstractDTO
 {
@@ -138,45 +136,5 @@ final class MedicalCardByClientDto extends AbstractDTO
         $instance->meetResultTitle = ToString::fromStringOrNull($originalDataArray['meet_result_title'])->getStringEvenIfNullGiven();
         $instance->admissionTypeTitle = ToString::fromStringOrNull($originalDataArray['admission_type_title'])->getStringEvenIfNullGiven();
         return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['dateEdit', 'date_edit'],
-            ['diagnose', 'diagnos'],
-            ['userId', 'doctor_id'],
-            ['status', 'medical_card_status'],
-            ['description', 'healing_process'],
-            ['recommendation', 'recomendation'],
-            ['weight', 'weight'],
-            ['temperature', 'temperature'],
-            ['meetResultId', 'meet_result_id'],
-            ['admissionTypeId', 'admission_type'],
-            ['petId', 'pet_id'],
-            ['petAlias', 'alias'],
-            ['petBirthday', 'birthday'],
-            ['petSex', 'sex'],
-            ['petNote', 'note'],
-            ['petTypeTitle', 'pet_type'],
-            ['petBreedTitle', 'breed'],
-            ['clientId', 'client_id'],
-            ['ownerPhone', 'phone'],
-            ['userLogin', 'doctor_nickname'],
-            ['userFullName', 'doctor_middle_name'],
-            ['isEditable', 'editable'],
-            ['meetResultTitle', 'meet_result_title'],
-            ['admissionTypeTitle', 'admission_type_title'],
-        ))->toArray();
     }
 }

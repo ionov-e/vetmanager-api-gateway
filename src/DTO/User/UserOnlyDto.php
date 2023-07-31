@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\User;
 
 use DateTime;
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
-use VetmanagerApiGateway\ApiDataInterpreter\Enum\DtoPropertyMode;
 use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 class UserOnlyDto extends AbstractDTO
 {
@@ -101,40 +98,5 @@ class UserOnlyDto extends AbstractDTO
         $instance->sipNumber = ToString::fromStringOrNull($originalDataArray['sip_number'])->getStringEvenIfNullGiven();
         $instance->userInn = ToString::fromStringOrNull($originalDataArray['user_inn'])->getStringEvenIfNullGiven();
         return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['lastName', 'last_name'],
-            ['firstName', 'first_name'],
-            ['middleName', 'middle_name'],
-            ['login', 'login'],
-            ['password', 'passwd'],
-            ['positionId', 'position_id'],
-            ['email', 'email'],
-            ['phone', 'phone'],
-            ['cellPhone', 'cell_phone'],
-            ['address', 'address'],
-            ['roleId', 'role_id'],
-            ['isActive', 'is_active'],
-            ['isPercentCalculated', 'calc_percents'],
-            ['nickname', 'nickname'],
-            ['lastChangePwdDate', 'last_change_pwd_date', DtoPropertyMode::DateTimeOnlyDate],
-            ['isLimited', 'is_limited'],
-            ['carrotquestId', 'carrotquest_id'],
-            ['sipNumber', 'sip_number'],
-            ['userInn', 'user_inn'],
-        ))->toArray();
     }
 }

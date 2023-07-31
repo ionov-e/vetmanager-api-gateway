@@ -68,22 +68,4 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
 //     *     "type_id": string,
 //     * } $originalDataArray
 //     */
-//
-//    /** @inheritdoc */
-//    public function getRequiredKeysForPostArray(): array #TODO check
-//    {
-//        return ['title', 'type_id'];
-//    }
-//
-//    /** @inheritdoc
-//     * @throws VetmanagerApiGatewayRequestException
-//     */
-//    protected function getSetValuesWithoutId(): array
-//    {
-//        return (new DtoPropertyList(
-//            $this,
-//            ['title', 'title'],
-//            ['typeId', 'type_id'],
-//        ))->toArray();
-//    }
 }

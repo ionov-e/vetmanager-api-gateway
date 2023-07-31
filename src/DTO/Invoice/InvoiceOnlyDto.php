@@ -106,30 +106,4 @@ class InvoiceOnlyDto extends AbstractDTO
         $instance->fiscalSectionId = ToInt::fromStringOrNull($originalDataArray['fiscal_section_id'])->getPositiveIntOrNull();
         return $instance;
     }
-
-    /** @inheritdoc */
-    protected function getSetValuesWithoutId(): array
-    {
-        return array_merge(
-            property_exists($this, 'doctorId') ? ['doctor_id' => $this->doctorId] : [],
-            property_exists($this, 'clientId') ? ['client_id' => $this->clientId] : [],
-            property_exists($this, 'petId') ? ['pet_id' => $this->petId] : [],
-            property_exists($this, 'description') ? ['description' => $this->description] : [],
-            property_exists($this, 'percent') ? ['percent' => $this->percent] : [],
-            property_exists($this, 'amount') ? ['amount' => $this->amount] : [],
-            property_exists($this, 'status') ? ['status' => $this->status] : [],
-            property_exists($this, 'invoiceDate') ? ['invoice_date' => $this->invoiceDate->format('Y-m-d H:i:s')] : [],
-            property_exists($this, 'oldId') ? ['old_id' => $this->oldId] : [],
-            property_exists($this, 'night') ? ['night' => $this->night] : [],
-            property_exists($this, 'increase') ? ['increase' => $this->increase] : [],
-            property_exists($this, 'discount') ? ['discount' => $this->discount] : [],
-            property_exists($this, 'call') ? ['call' => $this->call] : [],
-            property_exists($this, 'paidAmount') ? ['paid_amount' => $this->paidAmount] : [],
-            property_exists($this, 'createDate') ? ['create_date' => $this->createDate->format('Y-m-d H:i:s')] : [],
-            property_exists($this, 'paymentStatus') ? ['payment_status' => $this->paymentStatus] : [],
-            property_exists($this, 'clinicId') ? ['clinic_id' => $this->clinicId] : [],
-            property_exists($this, 'creatorId') ? ['creator_id' => $this->creatorId] : [],
-            property_exists($this, 'fiscalSectionId') ? ['fiscal_section_id' => $this->fiscalSectionId] : [],
-        );
-    }
 }

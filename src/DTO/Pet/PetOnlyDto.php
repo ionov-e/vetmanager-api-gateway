@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Pet;
 
 use DateTime;
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 class PetOnlyDto extends AbstractDTO
 {
@@ -98,33 +96,5 @@ class PetOnlyDto extends AbstractDTO
         $instance->weight = ToFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
         $instance->editDate = ToDateTime::fromOnlyDateString($originalDataArray['edit_date'])->getDateTimeOrThrow();
         return $instance;
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['ownerId', 'owner_id'],
-            ['typeId', 'type_id'],
-            ['alias', 'alias'],
-            ['sex', 'sex'],
-            ['dateRegister', 'date_register'],
-            ['birthday', 'birthday'],
-            ['note', 'note'],
-            ['breedId', 'breed_id'],
-            ['oldId', 'old_id'],
-            ['colorId', 'color_id'],
-            ['deathNote', 'deathnote'],
-            ['deathDate', 'deathdate'],
-            ['chipNumber', 'chip_number'],
-            ['labNumber', 'lab_number'],
-            ['status', 'status'],
-            ['picture', 'picture'],
-            ['weight', 'weight'],
-            ['editDate', 'edit_date'],
-        ))->toArray();
     }
 }

@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\MedicalCardAsVaccination;
 
 use DateTime;
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
-use VetmanagerApiGateway\ApiDataInterpreter\Enum\DtoPropertyMode;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 final class MedicalCardAsVaccinationDto extends AbstractDTO
 {
@@ -100,35 +97,5 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO
         // "birthday_at_time" игнорируем. Бред присылается
         // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
         return $instance;
-    }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['name', 'name'],
-            ['petId', 'pet_id'],
-            ['date', 'date'],
-            ['nextDateTime', 'date_nexttime', DtoPropertyMode::DateTimeOnlyDate],
-            ['goodId', 'vaccine_id'],
-            ['medicalCardId', 'medcard_id'],
-            ['doseTypeId', 'doza_type_id'],
-            ['doseValue', 'doza_value'],
-            ['saleParamId', 'sale_param_id'],
-            ['vaccineType', 'vaccine_type'],
-            ['vaccineDescription', 'vaccine_description'],
-            ['vaccineTypeTitle', 'vaccine_type_title'],
-            ['nextAdmissionId', 'next_admission_id'],
-            ['petBirthday', 'birthday'],
-        ))->toArray();
     }
 }

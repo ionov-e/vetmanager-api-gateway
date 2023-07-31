@@ -51,10 +51,4 @@ final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
 //     *     "title": string,
 //     * }
 //     */
-
-//    /** @inheritdoc */
-//    public function getRequiredKeysForPostArray(): array
-//    {
-//        return ['title'];
-//    }
 }

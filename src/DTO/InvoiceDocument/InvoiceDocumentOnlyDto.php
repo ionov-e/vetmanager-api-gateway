@@ -107,36 +107,4 @@ class InvoiceDocumentOnlyDto extends AbstractDTO
         $instance->primeCost = ToFloat::fromStringOrNull($originalDataArray['prime_cost'])->getNonZeroFloatOrNull();
         return $instance;
     }
-
-    /** @inheritdoc */
-    public function getRequiredKeysForPostArray(): array #TODO No Idea
-    {
-        return [];
-    }
-
-    /** @inheritdoc */
-    protected function getSetValuesWithoutId(): array
-    {
-        return array_merge(
-            property_exists($this, 'invoiceId') ? ['document_id' => $this->invoiceId] : [],
-            property_exists($this, 'goodId') ? ['good_id' => $this->goodId] : [],
-            property_exists($this, 'quantity') ? ['quantity' => $this->quantity] : [],
-            property_exists($this, 'price') ? ['price' => $this->price] : [],
-            property_exists($this, 'responsibleUserId') ? ['responsible_user_id' => $this->responsibleUserId] : [],
-            property_exists($this, 'isDefaultResponsible') ? ['is_default_responsible' => (int)$this->isDefaultResponsible] : [],
-            property_exists($this, 'saleParamId') ? ['sale_param_id' => $this->saleParamId] : [],
-            property_exists($this, 'tagId') ? ['tag_id' => $this->tagId] : [],
-            property_exists($this, 'discountType') ? ['discount_type' => $this->discountType] : [],
-            property_exists($this, 'discountDocumentId') ? ['discount_document_id' => $this->discountDocumentId] : [],
-            property_exists($this, 'discountPercent') ? ['discount_percent' => $this->discountPercent] : [],
-            property_exists($this, 'defaultPrice') ? ['default_price' => $this->defaultPrice] : [],
-            property_exists($this, 'createDate') ? ['create_date' => $this->createDate->format('Y-m-d H:i:s')] : [],
-            property_exists($this, 'discountCause') ? ['discount_cause' => $this->discountCause] : [],
-            property_exists($this, 'fixedDiscountId') ? ['fixed_discount_id' => $this->fixedDiscountId] : [],
-            property_exists($this, 'fixedDiscountPercent') ? ['fixed_discount_percent' => $this->fixedDiscountPercent] : [],
-            property_exists($this, 'fixedIncreaseId') ? ['fixed_increase_id' => $this->fixedIncreaseId] : [],
-            property_exists($this, 'fixedIncreasePercent') ? ['fixed_increase_percent' => $this->fixedIncreasePercent] : [],
-            property_exists($this, 'primeCost') ? ['prime_cost' => $this->primeCost] : [],
-        );
-    }
 }

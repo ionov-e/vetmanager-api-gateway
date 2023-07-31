@@ -6,14 +6,12 @@ namespace VetmanagerApiGateway\DTO\MedicalCard;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\AbstractMedicalCard;
-use VetmanagerApiGateway\ApiDataInterpreter\DtoPropertyList;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 class MedicalCardOnlyDto extends AbstractDTO
 {
@@ -114,34 +112,5 @@ class MedicalCardOnlyDto extends AbstractDTO
         $instance->diagnoseTypeText = ToString::fromStringOrNull($originalDataArray['diagnos_type_text'])->getStringEvenIfNullGiven();
         $instance->clinicId = ToInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
         return $instance;
-    }
-
-    /** @inheritdoc
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    protected function getSetValuesWithoutId(): array
-    {
-        return (new DtoPropertyList(
-            $this,
-            ['dateCreate', 'date_create'],
-            ['dateEdit', 'date_edit'],
-            ['diagnose', 'diagnos'],
-            ['recommendation', 'recomendation'],
-            ['invoiceId', 'invoice'],
-            ['admissionTypeId', 'admission_type'],
-            ['weight', 'weight'],
-            ['temperature', 'temperature'],
-            ['meetResultId', 'meet_result_id'],
-            ['description', 'description'],
-            ['nextMeetId', 'next_meet_id'],
-            ['userId', 'doctor_id'],
-            ['creatorId', 'creator_id'],
-            ['status', 'status'],
-            ['callingId', 'calling_id'],
-            ['admissionId', 'admission_id'],
-            ['diagnoseText', 'diagnos_text'],
-            ['diagnoseTypeText', 'diagnos_type_text'],
-            ['clinicId', 'clinic_id'],
-        ))->toArray();
     }
 }
