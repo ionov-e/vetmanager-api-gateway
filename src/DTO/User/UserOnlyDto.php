@@ -10,93 +10,313 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class UserOnlyDto extends AbstractDTO
+class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    public string $lastName;
-    public string $firstName;
-    public string $middleName;
-    public string $login;
-    public string $password;
-    /** @var positive-int */
-    public int $positionId;
-    public string $email;
-    /** Default: '' */
-    public string $phone;
-    /** Default: '' */
-    public string $cellPhone;
-    public string $address;
-    /** @var ?positive-int */
-    public ?int $roleId;
-    /** Default: 0 */
-    public bool $isActive;
-    /** Вообще не понимаю что означает. Default: 1 */
-    public bool $isPercentCalculated;
-    public string $nickname;
-    /** Дата без времени */
-    public ?DateTime $lastChangePwdDate;
-    /** Default: 0 */
-    public bool $isLimited;
-    /** Разного вида строк приходят */
-    public string $carrotquestId;
-    /** Default: ''. Самые разные строки могут быть */
-    public string $sipNumber;
-    /** Default: '' */
-    public string $userInn;
-
-    /** @param array{
-     *     "id": string,
-     *     "last_name": string,
-     *     "first_name": string,
-     *     "middle_name": string,
-     *     "login": string,
-     *     "passwd": string,
-     *     "position_id": string,
-     *     "email": string,
-     *     "phone": string,
-     *     "cell_phone": string,
-     *     "address": string,
-     *     "role_id": ?string,
-     *     "is_active": string,
-     *     "calc_percents": string,
-     *     "nickname": ?string,
-     *     "last_change_pwd_date": string,
-     *     "is_limited": string,
-     *     "carrotquest_id": ?string,
-     *     "sip_number": ?string,
-     *     "user_inn": string,
-     *     "position"?: array,
-     *     "role"?: array
-     * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
+    /**
+     * @param string|null $id
+     * @param string|null $last_name
+     * @param string|null $first_name
+     * @param string|null $middle_name
+     * @param string|null $login
+     * @param string|null $passwd
+     * @param string|null $position_id
+     * @param string|null $email
+     * @param string|null $phone Default: ''
+     * @param string|null $cell_phone Default: ''
+     * @param string|null $address
+     * @param string|null $role_id
+     * @param string|null $is_active Default: 0
+     * @param string|null $calc_percents Default:
+     * @param string|null $nickname
+     * @param string|null $youtrack_login Не должен существовать, но на тестовом есть
+     * @param string|null $youtrack_password Не должен существовать, но на тестовом есть
+     * @param string|null $last_change_pwd_date
+     * @param string|null $is_limited Default: 0
+     * @param string|null $carrotquest_id
+     * @param string|null $sip_number
+     * @param string|null $user_inn
      */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function __construct(
+        protected ?string $id,
+        protected ?string $last_name,
+        protected ?string $first_name,
+        protected ?string $middle_name,
+        protected ?string $login,
+        protected ?string $passwd,
+        protected ?string $position_id,
+        protected ?string $email,
+        protected ?string $phone,
+        protected ?string $cell_phone,
+        protected ?string $address,
+        protected ?string $role_id,
+        protected ?string $is_active,
+        protected ?string $calc_percents,
+        protected ?string $nickname,
+        protected ?string $youtrack_login = null,
+        protected ?string $youtrack_password = null,
+        protected ?string $last_change_pwd_date,
+        protected ?string $is_limited,
+        protected ?string $carrotquest_id,
+        protected ?string $sip_number,
+        protected ?string $user_inn
+    )
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->lastName = ToString::fromStringOrNull($originalDataArray['last_name'])->getStringEvenIfNullGiven();
-        $instance->firstName = ToString::fromStringOrNull($originalDataArray['first_name'])->getStringEvenIfNullGiven();
-        $instance->middleName = ToString::fromStringOrNull($originalDataArray['middle_name'])->getStringEvenIfNullGiven();
-        $instance->login = ToString::fromStringOrNull($originalDataArray['login'])->getStringEvenIfNullGiven();
-        $instance->password = ToString::fromStringOrNull($originalDataArray['passwd'])->getStringEvenIfNullGiven();
-        $instance->positionId = ToInt::fromStringOrNull($originalDataArray['position_id'])->getPositiveInt();
-        $instance->email = ToString::fromStringOrNull($originalDataArray['email'])->getStringEvenIfNullGiven();
-        $instance->phone = ToString::fromStringOrNull($originalDataArray['phone'])->getStringEvenIfNullGiven();
-        $instance->cellPhone = ToString::fromStringOrNull($originalDataArray['cell_phone'])->getStringEvenIfNullGiven();
-        $instance->address = ToString::fromStringOrNull($originalDataArray['address'])->getStringEvenIfNullGiven();
-        $instance->roleId = ToInt::fromStringOrNull($originalDataArray['role_id'])->getPositiveIntOrNull();
-        $instance->isActive = ToBool::fromStringOrNull($originalDataArray['is_active'])->getBoolOrThrowIfNull();
-        $instance->isPercentCalculated = ToBool::fromStringOrNull($originalDataArray['calc_percents'])->getBoolOrThrowIfNull();
-        $instance->nickname = ToString::fromStringOrNull($originalDataArray['nickname'])->getStringEvenIfNullGiven();
-        $instance->lastChangePwdDate = ToDateTime::fromOnlyDateString($originalDataArray['last_change_pwd_date'])->getDateTimeOrThrow();
-        $instance->isLimited = ToBool::fromStringOrNull($originalDataArray['is_limited'])->getBoolOrThrowIfNull();
-        $instance->carrotquestId = ToString::fromStringOrNull($originalDataArray['carrotquest_id'])->getStringEvenIfNullGiven();
-        $instance->sipNumber = ToString::fromStringOrNull($originalDataArray['sip_number'])->getStringEvenIfNullGiven();
-        $instance->userInn = ToString::fromStringOrNull($originalDataArray['user_inn'])->getStringEvenIfNullGiven();
-        return $instance;
     }
+
+    public function getId(): int
+    {
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getLastName(): string
+    {
+        return ToString::fromStringOrNull($this->last_name)->getStringEvenIfNullGiven();
+    }
+
+    public function getFirstName(): string
+    {
+        return ToString::fromStringOrNull($this->first_name)->getStringEvenIfNullGiven();
+    }
+
+    public function getMiddleName(): string
+    {
+        return ToString::fromStringOrNull($this->middle_name)->getStringEvenIfNullGiven();
+    }
+
+    public function getLogin(): string
+    {
+        return ToString::fromStringOrNull($this->login)->getStringEvenIfNullGiven();
+    }
+
+    public function getPassword(): string
+    {
+        return ToString::fromStringOrNull($this->passwd)->getStringEvenIfNullGiven();
+    }
+
+    public function getPositionId(): int
+    {
+        return ToInt::fromStringOrNull($this->position_id)->getPositiveInt();
+    }
+
+    public function getEmail(): string
+    {
+        return ToString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
+    }
+
+    public function getPhone(): string
+    {
+        return ToString::fromStringOrNull($this->phone)->getStringEvenIfNullGiven();
+    }
+
+    public function getCellPhone(): string
+    {
+        return ToString::fromStringOrNull($this->cell_phone)->getStringEvenIfNullGiven();
+    }
+
+    public function getAddress(): string
+    {
+        return ToString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();
+    }
+
+    public function getRoleId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->role_id)->getPositiveIntOrNull();
+    }
+
+    public function getIsActive(): bool
+    {
+        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+    }
+
+    public function getIsPercentCalculated(): bool
+    {
+        return ToBool::fromStringOrNull($this->calc_percents)->getBoolOrThrowIfNull();
+    }
+
+    public function getNickname(): string
+    {
+        return ToString::fromStringOrNull($this->nickname)->getStringEvenIfNullGiven();
+    }
+
+    public function getYoutrackLogin(): string
+    {
+        return ToString::fromStringOrNull($this->youtrack_login)->getStringEvenIfNullGiven();
+    }
+
+    public function getYoutrackPassword(): string
+    {
+        return ToString::fromStringOrNull($this->youtrack_password)->getStringEvenIfNullGiven();
+    }
+
+    public function getLastChangePwdDateAsString(): ?string
+    {
+        return $this->last_change_pwd_date;
+    }
+
+    public function getLastChangePwdDateAsDateTime(): ?DateTime
+    {
+        return ToDateTime::fromOnlyDateString($this->last_change_pwd_date)->getDateTimeOrThrow();
+    }
+
+    public function getIsLimited(): bool
+    {
+        return ToBool::fromStringOrNull($this->is_limited)->getBoolOrThrowIfNull();
+    }
+
+    public function getCarrotquestId(): string
+    {
+        return ToString::fromStringOrNull($this->carrotquest_id)->getStringEvenIfNullGiven();
+    }
+
+    public function getSipNumber(): string
+    {
+        return ToString::fromStringOrNull($this->sip_number)->getStringEvenIfNullGiven();
+    }
+
+    public function getUserInn(): string
+    {
+        return ToString::fromStringOrNull($this->user_inn)->getStringEvenIfNullGiven();
+    }
+
+    public function setId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', (string)$value);
+    }
+
+    public function setLastName(string $value): static
+    {
+        return self::setPropertyFluently($this, 'last_name', $value);
+    }
+
+    public function setFirstName(string $value): static
+    {
+        return self::setPropertyFluently($this, 'first_name', $value);
+    }
+
+    public function setMiddleName(string $value): static
+    {
+        return self::setPropertyFluently($this, 'middle_name', $value);
+    }
+
+    public function setLogin(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'login', $value);
+    }
+
+    public function setPasswd(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'passwd', $value);
+    }
+
+    public function setPositionId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'position_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setEmail(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'email', $value);
+    }
+
+    public function setPhone(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'phone', $value);
+    }
+
+    public function setCellPhone(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'cell_phone', $value);
+    }
+
+    public function setAddress(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'address', $value);
+    }
+
+    public function setRoleId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'role_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setIsActive(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (string)(int)$value);
+    }
+
+    public function setCalcPercents(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'calc_percents', is_null($value) ? null : (string)$value);
+    }
+
+    public function setNickname(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'nickname', $value);
+    }
+
+    public function setYoutrackLogin(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'youtrack_login', $value);
+    }
+
+    public function setYoutrackPassword(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'youtrack_password', $value);
+    }
+
+    public function setLastChangePwdDateAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'last_change_pwd_date', $value);
+    }
+
+    public function setLastChangePwdDateAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'last_change_pwd_date', $value->format('Y-m-d H:i:s'));
+    }
+
+    public function setIsLimited(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_limited', is_null($value) ? null : (string)(int)$value);
+    }
+
+    public function setCarrotquestId(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'carrotquest_id', $value);
+    }
+
+    public function setSipNumber(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'sip_number', $value);
+    }
+
+    public function setUserInn(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'user_inn', $value);
+    }
+
+//    /** @param array{
+//     *     "id": string,
+//     *     "last_name": string,
+//     *     "first_name": string,
+//     *     "middle_name": string,
+//     *     "login": string,
+//     *     "passwd": string,
+//     *     "position_id": string,
+//     *     "email": string,
+//     *     "phone": string,
+//     *     "cell_phone": string,
+//     *     "address": string,
+//     *     "role_id": ?string,
+//     *     "is_active": string,
+//     *     "calc_percents": string,
+//     *     "nickname": ?string,
+//     *     "last_change_pwd_date": string,
+//     *     "is_limited": string,
+//     *     "carrotquest_id": ?string,
+//     *     "sip_number": ?string,
+//     *     "user_inn": string,
+//     *     "position"?: array,
+//     *     "role"?: array
+//     * } $originalDataArray
+//     */
 }
