@@ -48,8 +48,8 @@ final class MedicalCardAsVaccination extends AbstractDTO
     public ?DateTime $nextDateTime;
     /** Указывает есть ли время в {@see $nextDateTime} */
     public bool $isTimePresentInNextDateTime;
-    /** @var positive-int Default: "0". Но не видел нигде 0 - не предусматриваю */
-    public int $goodId;
+    /** @var ?positive-int Default: "0". Встречается null */
+    public ?int $goodId;
     /** Дата без времени. Пример: "2012-09-02 00:00:00". Может быть и null */
     public ?DateTime $petBirthday;
     /** @var positive-int Default: "0". Но не видел нигде 0 - не предусматриваю */
@@ -102,7 +102,7 @@ final class MedicalCardAsVaccination extends AbstractDTO
         $dateTimeServiceForNextDate = DateTimeContainer::fromOnlyDateString($originalData['date_nexttime']);
         $this->nextDateTime = $dateTimeServiceForNextDate->dateTimeOrNull;
         $this->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
-        $this->goodId = IntContainer::fromStringOrNull($originalData['vaccine_id'])->positiveInt;
+        $this->goodId = IntContainer::fromStringOrNull($originalData['vaccine_id'])->positiveIntOrNull;
         $this->medcardId = IntContainer::fromStringOrNull($originalData['medcard_id'])->positiveInt;
         $this->doseTypeId = IntContainer::fromStringOrNull($originalData['doza_type_id'])->positiveInt;
         $this->doseValue = FloatContainer::fromStringOrNull($originalData['doza_value'])->float;
