@@ -59,6 +59,16 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
      * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
      * @throws VetmanagerApiGatewayException
      */
+    public static function getValueByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): ?string
+    {
+        $propertyOrNull = self::getByClinicIdAndPropertyName($api, $clinicId, $propertyName);
+        return is_null($propertyOrNull) ? null : $propertyOrNull->value;
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayResponseEmptyException Если нет такого в БД
+     * @throws VetmanagerApiGatewayException
+     */
     public static function getByClinicIdAndPropertyName(ApiGateway $api, int $clinicId, string $propertyName): ?self
     {
         $filteredProperties = self::getByQueryBuilder(
@@ -69,7 +79,7 @@ final class Property extends AbstractDTO implements AllGetRequestsInterface
             1
         );
 
-        return $filteredProperties[0] ?? null;
+        return !empty($filteredProperties) ? $filteredProperties[0] : null;
     }
 
     /** @return ApiRoute::Property */
