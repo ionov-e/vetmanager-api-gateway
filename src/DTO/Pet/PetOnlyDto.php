@@ -10,10 +10,8 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class PetOnlyDto extends AbstractDTO
+class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 {
     public function __construct(
         protected ?string $id,
@@ -35,29 +33,21 @@ class PetOnlyDto extends AbstractDTO
         protected ?string $picture,
         protected ?string $weight,
         protected ?string $edit_date
-    ) {
+    )
+    {
     }
 
-    /** @return positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getId(): int
     {
         return ToInt::fromStringOrNull($this->id)->getPositiveInt();
     }
 
-    /** @return positive-int Ни в одной БД не нашел "null" или "0"
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getOwnerId(): int
     {
         return ToInt::fromStringOrNull($this->owner_id)->getPositiveInt();
     }
 
-    /** @return ?positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    public function getTypeId(): ?int
+    public function getPetTypeId(): ?int
     {
         return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
     }
@@ -82,21 +72,16 @@ class PetOnlyDto extends AbstractDTO
         return $this->date_register;
     }
 
-    /**
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getDateRegisterAsDateTime(): DateTime
     {
         return ToDateTime::fromOnlyDateString($this->date_register)->getDateTimeOrThrow();
     }
 
-    /** Дата без времени */
     public function getBirthdayAsString(): ?string
     {
         return $this->birthday;
     }
 
-    /** Дата без времени */
     public function getBirthdayAsDateTime(): ?DateTime
     {
         return ToDateTime::fromOnlyDateString($this->birthday)->getDateTimeOrThrow();
@@ -107,25 +92,16 @@ class PetOnlyDto extends AbstractDTO
         return ToString::fromStringOrNull($this->note)->getStringEvenIfNullGiven();
     }
 
-    /** @return ?positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getBreedId(): ?int
     {
         return ToInt::fromStringOrNull($this->breed_id)->getPositiveIntOrNull();
     }
 
-    /** @return ?positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getOldId(): ?int
     {
         return ToInt::fromStringOrNull($this->old_id)->getPositiveIntOrNull();
     }
 
-    /** @return ?positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getColorId(): ?int
     {
         return ToInt::fromStringOrNull($this->color_id)->getPositiveIntOrNull();
@@ -141,13 +117,11 @@ class PetOnlyDto extends AbstractDTO
         return ToString::fromStringOrNull($this->deathdate)->getStringEvenIfNullGiven();
     }
 
-    /** Default: ''. Самые разные строки прилетают */
     public function getChipNumber(): string
     {
         return ToString::fromStringOrNull($this->chip_number)->getStringEvenIfNullGiven();
     }
 
-    /** Default: ''. Самые разные строки прилетают */
     public function getLabNumber(): string
     {
         return ToString::fromStringOrNull($this->lab_number)->getStringEvenIfNullGiven();
@@ -163,13 +137,11 @@ class PetOnlyDto extends AbstractDTO
         return StatusEnum::from($this->status);
     }
 
-    /** Datatype: longblob */
     public function getPicture(): string
     {
         return ToString::fromStringOrNull($this->picture)->getStringEvenIfNullGiven();
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
     public function getWeight(): ?float
     {
         return ToFloat::fromStringOrNull($this->weight)->getNonZeroFloatOrNull();
@@ -180,124 +152,124 @@ class PetOnlyDto extends AbstractDTO
         return $this->edit_date;
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
     public function getEditDateAsDateTime(): DateTime
     {
         return ToDateTime::fromOnlyDateString($this->edit_date)->getDateTimeOrThrow();
     }
 
-    /** * @throws VetmanagerApiGatewayInnerException */
     public function setId(int $value): static
     {
         return self::setPropertyFluently($this, 'id', (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setOwnerId(?int $value): static
     {
         return self::setPropertyFluently($this, 'owner_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setTypeId(?int $value): static
     {
         return self::setPropertyFluently($this, 'type_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setAlias(?string $value): static
     {
         return self::setPropertyFluently($this, 'alias', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setSex(?string $value): static
     {
         return self::setPropertyFluently($this, 'sex', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateRegister(?string $value): static
+    public function setDateRegisterAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date_register', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setBirthday(?string $value): static
+    public function setDateRegisterAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'date_register', $value->format('Y-m-d H:i:s'));
+    }
+
+    public function setBirthdayAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    public function setBirthdayAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'birthday', $value->format('Y-m-d H:i:s'));
+    }
+
     public function setNote(?string $value): static
     {
         return self::setPropertyFluently($this, 'note', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setBreedId(?string $value): static
+    public function setBreedId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'breed_id', $value);
+        return self::setPropertyFluently($this, 'breed_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setOldId(?string $value): static
+    public function setOldId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'old_id', $value);
+        return self::setPropertyFluently($this, 'old_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setColorId(?string $value): static
+    public function setColorId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'color_id', $value);
+        return self::setPropertyFluently($this, 'color_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setDeathnote(?string $value): static
+    public function setDeathNote(?string $value): static
     {
         return self::setPropertyFluently($this, 'deathnote', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setDeathdate(?string $value): static
+    public function setDeathDateAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'deathdate', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setChipNumber(?string $value): static
     {
         return self::setPropertyFluently($this, 'chip_number', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setLabNumber(?string $value): static
     {
         return self::setPropertyFluently($this, 'lab_number', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatus(?string $value): static
+    public function setStatusAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value->value);
+    }
+
     public function setPicture(?string $value): static
     {
         return self::setPropertyFluently($this, 'picture', $value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setWeight(?string $value): static
+    public function setWeight(?float $value): static
     {
-        return self::setPropertyFluently($this, 'weight', $value);
+        return self::setPropertyFluently($this, 'weight', is_null($value) ? null : (string)$value);
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setEditDate(?string $value): static
+    public function setEditDateAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'edit_date', $value);
+    }
+
+    public function setEditDateAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'edit_date', $value->format('Y-m-d H:i:s'));
     }
 
 //    /**
