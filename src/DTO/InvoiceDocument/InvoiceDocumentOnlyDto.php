@@ -11,100 +11,279 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-class InvoiceDocumentOnlyDto extends AbstractDTO
+class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyDtoInterface
 {
-    /** @var positive-int */
-    public int $id;
-    /** @var positive-int */
-    public int $invoiceId;
-    /** @var positive-int */
-    public int $goodId;
-    public ?float $quantity;
-    public float $price;
-    /** @var ?positive-int Default: '0' */
-    public ?int $responsibleUserId;
-    public bool $isDefaultResponsible;
-    /** @var positive-int Default in BD: '0'. Но не видел 0 */
-    public int $saleParamId;
-    /** @var ?positive-int Default: '0' */
-    public ?int $tagId;
-    public ?DiscountTypeEnum $discountType;
-    /** @var ?positive-int */
-    public ?int $discountDocumentId;
-    public ?float $discountPercent;
-    /** Default: 0.00000000 */
-    public float $defaultPrice;
-    public DateTime $createDate;
-    public string $discountCause;
-    /** @var ?positive-int Default: '0' */
-    public ?int $fixedDiscountId;
-    /** @var ?positive-int Default: '0' */
-    public ?int $fixedDiscountPercent;
-    /** @var ?positive-int Default: '0' */
-    public ?int $fixedIncreaseId;
-    /** @var ?positive-int Default: '0' */
-    public ?int $fixedIncreasePercent;
-    /** Default: "0.0000000000" */
-    public float $primeCost;
-
-    /** @param array{
-     *     id: numeric-string,
-     *     document_id: string,
-     *     good_id: string,
-     *     quantity: ?int|numeric-string,
-     *     price: numeric|numeric-string,
-     *     responsible_user_id: string,
-     *     is_default_responsible: string,
-     *     sale_param_id: string,
-     *     tag_id: string,
-     *     discount_type: ?string,
-     *     discount_document_id: ?string,
-     *     discount_percent: ?string,
-     *     default_price: ?string,
-     *     create_date: string,
-     *     discount_cause: ?string,
-     *     fixed_discount_id: string,
-     *     fixed_discount_percent: string,
-     *     fixed_increase_id: string,
-     *     fixed_increase_percent: string,
-     *     prime_cost: string,
-     *     goodSaleParam?: array,
-     *     document?: array,
-     *     good?: array,
-     *     party_info?: array,
-     *     min_price?: float,
-     *     max_price?: float,
-     *     min_price_percent?: float,
-     *     max_price_percent?: float
-     * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function __construct(
+        protected ?string $id,
+        protected ?string $document_id,
+        protected ?string $good_id,
+        protected ?string $quantity,
+        protected ?string $price,
+        protected ?string $responsible_user_id,
+        protected ?string $is_default_responsible,
+        protected ?string $sale_param_id,
+        protected ?string $tag_id,
+        protected ?string $discount_type,
+        protected ?string $discount_document_id,
+        protected ?string $discount_percent,
+        protected ?string $default_price,
+        protected ?string $create_date,
+        protected ?string $discount_cause,
+        protected ?string $fixed_discount_id,
+        protected ?string $fixed_discount_percent,
+        protected ?string $fixed_increase_id,
+        protected ?string $fixed_increase_percent,
+        protected ?string $prime_cost
+    )
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->invoiceId = ToInt::fromStringOrNull($originalDataArray['document_id'])->getPositiveInt();
-        $instance->goodId = ToInt::fromStringOrNull($originalDataArray['good_id'])->getPositiveInt();
-        $instance->quantity = ToFloat::fromStringOrNull((string)$originalDataArray['quantity'])->getNonZeroFloatOrNull();
-        $instance->price = ToFloat::fromStringOrNull((string)$originalDataArray['price'])->getNonZeroFloatOrNull();
-        $instance->responsibleUserId = ToInt::fromStringOrNull($originalDataArray['responsible_user_id'])->getPositiveIntOrNull();
-        $instance->isDefaultResponsible = ToBool::fromStringOrNull($originalDataArray['is_default_responsible'])->getBoolOrThrowIfNull();
-        $instance->saleParamId = ToInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
-        $instance->tagId = ToInt::fromStringOrNull($originalDataArray['tag_id'])->getPositiveIntOrNull();
-        $instance->discountType = $originalDataArray['discount_type'] ? DiscountTypeEnum::from($originalDataArray['discount_type']) : null;
-        $instance->discountDocumentId = ToInt::fromStringOrNull($originalDataArray['discount_document_id'])->getPositiveIntOrNull();
-        $instance->discountPercent = ToFloat::fromStringOrNull($originalDataArray['discount_percent'])->getNonZeroFloatOrNull();
-        $instance->defaultPrice = ToFloat::fromStringOrNull($originalDataArray['default_price'])->getNonZeroFloatOrNull();
-        $instance->createDate = ToDateTime::fromOnlyDateString($originalDataArray['create_date'])->getDateTimeOrThrow();
-        $instance->discountCause = ToString::fromStringOrNull($originalDataArray['discount_cause'])->getStringEvenIfNullGiven();
-        $instance->fixedDiscountId = ToInt::fromStringOrNull($originalDataArray['fixed_discount_id'])->getPositiveIntOrNull();
-        $instance->fixedDiscountPercent = ToInt::fromStringOrNull($originalDataArray['fixed_discount_percent'])->getPositiveIntOrNull();
-        $instance->fixedIncreaseId = ToInt::fromStringOrNull($originalDataArray['fixed_increase_id'])->getPositiveIntOrNull();
-        $instance->fixedIncreasePercent = ToInt::fromStringOrNull($originalDataArray['fixed_increase_percent'])->getPositiveIntOrNull();
-        $instance->primeCost = ToFloat::fromStringOrNull($originalDataArray['prime_cost'])->getNonZeroFloatOrNull();
-        return $instance;
     }
+
+    public function getId(): int
+    {
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getInvoiceId(): int
+    {
+        return ToInt::fromStringOrNull($this->document_id)->getPositiveInt();
+    }
+
+    public function getGoodId(): int
+    {
+        return ToInt::fromStringOrNull($this->good_id)->getPositiveInt();
+    }
+
+    public function getQuantity(): ?float
+    {
+        return ToFloat::fromStringOrNull((string)$this->quantity)->getNonZeroFloatOrNull();
+    }
+
+    public function getPrice(): float
+    {
+        return ToFloat::fromStringOrNull((string)$this->price)->getNonZeroFloatOrNull();
+    }
+
+    public function getResponsibleUserId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->responsible_user_id)->getPositiveIntOrNull();
+    }
+
+    public function getIsDefaultResponsible(): bool
+    {
+        return ToBool::fromStringOrNull($this->is_default_responsible)->getBoolOrThrowIfNull();
+    }
+
+    public function getSaleParamId(): int
+    {
+        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveInt();
+    }
+
+    public function getTagId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->tag_id)->getPositiveIntOrNull();
+    }
+
+    public function getDiscountTypeAsString(): ?string
+    {
+        return $this->discount_type;
+    }
+
+    public function getDiscountTypeAsEnum(): ?DiscountTypeEnum
+    {
+        return $this->discount_type ? DiscountTypeEnum::from($this->discount_type) : null;
+    }
+
+    public function getDiscountDocumentId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->discount_document_id)->getPositiveIntOrNull();
+    }
+
+    public function getDiscountPercent(): ?float
+    {
+        return ToFloat::fromStringOrNull($this->discount_percent)->getNonZeroFloatOrNull();
+    }
+
+    public function getDefaultPrice(): ?float
+    {
+        return ToFloat::fromStringOrNull($this->default_price)->getNonZeroFloatOrNull();
+    }
+
+    public function getCreateDateAsString(): string
+    {
+        return ToString::fromStringOrNull($this->create_date)->getStringOrThrowIfNull();
+    }
+
+    public function getCreateDateAsDateTime(): DateTime
+    {
+        return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
+    }
+
+    public function getDiscountCause(): string
+    {
+        return ToString::fromStringOrNull($this->discount_cause)->getStringEvenIfNullGiven();
+    }
+
+    public function getFixedDiscountId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->fixed_discount_id)->getPositiveIntOrNull();
+    }
+
+    public function getFixedDiscountPercent(): ?int
+    {
+        return ToInt::fromStringOrNull($this->fixed_discount_percent)->getPositiveIntOrNull();
+    }
+
+    public function getFixedIncreaseId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->fixed_increase_id)->getPositiveIntOrNull();
+    }
+
+    public function getFixedIncreasePercent(): ?int
+    {
+        return ToInt::fromStringOrNull($this->fixed_increase_percent)->getPositiveIntOrNull();
+    }
+
+    public function getPrimeCost(): float
+    {
+        return ToFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
+    }
+
+    public function setId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setInvoiceId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'document_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setGoodId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'good_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setQuantity(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'quantity', is_null($value) ? null : (string)$value);
+    }
+
+    public function setPrice(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'price', is_null($value) ? null : (string)$value);
+    }
+
+    public function setResponsibleUserId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'responsible_user_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setIsDefaultResponsible(?bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_default_responsible', is_null($value) ? null : (string)(int)$value);
+    }
+
+    public function setSaleParamId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'sale_param_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setTagId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'tag_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDiscountType(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'discount_type', $value);
+    }
+
+    public function setDiscountDocumentId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'discount_document_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDiscountPercent(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'discount_percent', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDefaultPrice(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'default_price', $value);
+    }
+
+    public function setCreateDateAsString(string $value): static
+    {
+        return self::setPropertyFluently($this, 'create_date', $value);
+    }
+
+    public function setCreateDateAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
+    }
+
+    public function setDiscountCause(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'discount_cause', $value);
+    }
+
+    public function setFixedDiscountId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'fixed_discount_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setFixedDiscountPercent(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'fixed_discount_percent', is_null($value) ? null : (string)$value);
+    }
+
+    public function setFixedIncreaseId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'fixed_increase_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setFixedIncreasePercent(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'fixed_increase_percent', is_null($value) ? null : (string)$value);
+    }
+
+    public function setPrimeCost(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'prime_cost', is_null($value) ? null : (string)$value);
+    }
+
+//    /** @param array{
+//     *     id: numeric-string,
+//     *     document_id: string,
+//     *     good_id: string,
+//     *     quantity: ?int|numeric-string,
+//     *     price: numeric|numeric-string,
+//     *     responsible_user_id: string,
+//     *     is_default_responsible: string,
+//     *     sale_param_id: string,
+//     *     tag_id: string,
+//     *     discount_type: ?string,
+//     *     discount_document_id: ?string,
+//     *     discount_percent: ?string,
+//     *     default_price: ?string,
+//     *     create_date: string,
+//     *     discount_cause: ?string,
+//     *     fixed_discount_id: string,
+//     *     fixed_discount_percent: string,
+//     *     fixed_increase_id: string,
+//     *     fixed_increase_percent: string,
+//     *     prime_cost: string,
+//     *     goodSaleParam?: array,
+//     *     document?: array,
+//     *     good?: array,
+//     *     party_info?: array,
+//     *     min_price?: float,
+//     *     max_price?: float,
+//     *     min_price_percent?: float,
+//     *     max_price_percent?: float
+//     * } $originalDataArray
+//     */
+
 }
