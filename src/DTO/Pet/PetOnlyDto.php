@@ -72,9 +72,9 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return $this->date_register;
     }
 
-    public function getDateRegisterAsDateTime(): DateTime
+    public function getDateRegisterAsDateTime(): ?DateTime
     {
-        return ToDateTime::fromOnlyDateString($this->date_register)->getDateTimeOrThrow();
+        return ToDateTime::fromFullDateTimeString($this->date_register)->getDateTimeOrNull();
     }
 
     public function getBirthdayAsString(): ?string

@@ -34,7 +34,7 @@ interface PetOnlyDtoInterface
     /**
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getDateRegisterAsDateTime(): DateTime;
+    public function getDateRegisterAsDateTime(): ?DateTime;
 
     /** Дата без времени */
     public function getBirthdayAsString(): ?string;

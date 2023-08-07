@@ -178,7 +178,7 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function getDateRegisterAsDateTime(): DateTime
+    public function getDateRegisterAsDateTime(): ?DateTime
     {
         return $this->modelDTO->getDateRegisterAsDateTime();
     }
