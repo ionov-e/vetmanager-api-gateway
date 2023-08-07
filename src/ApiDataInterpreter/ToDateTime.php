@@ -53,6 +53,11 @@ final class ToDateTime
         }
     }
 
+    public function getDateTimeOrNull(): ?DateTime
+    {
+        return $this->dateTimeOrNull;
+    }
+
     /** Для тех случаев, когда уверены, что null и пустых значений не будет
      * @throws VetmanagerApiGatewayResponseException
      */
