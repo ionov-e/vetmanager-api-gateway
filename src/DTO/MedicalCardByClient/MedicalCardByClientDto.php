@@ -212,12 +212,12 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getMeetResultTitle(): string
     {
-        return $this->meet_result_title;
+        return ToString::fromStringOrNull($this->meet_result_title)->getStringEvenIfNullGiven();
     }
 
     public function getAdmissionTypeTitle(): string
     {
-        return $this->admission_type_title;
+        return ToString::fromStringOrNull($this->admission_type_title)->getStringEvenIfNullGiven();
     }
 
     public function setId(int $value): static

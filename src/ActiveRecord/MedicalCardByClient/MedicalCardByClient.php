@@ -11,6 +11,7 @@ use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
 use VetmanagerApiGateway\ActiveRecord\User\UserPlusPositionAndRole;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\MedicalCardByClient\MedicalCardByClientDto;
 use VetmanagerApiGateway\DTO\MedicalCardByClient\MedicalCardByClientDtoInterface;
 use VetmanagerApiGateway\DTO\Pet\SexEnum;
@@ -498,6 +499,16 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
     public function setAdmissionTypeTitle(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionTypeTitle($value));
+    }
+
+    public function getOwnerFullName(): FullName
+    {
+        return new FullName($this->getFirstName(), $this->getMiddleName(), $this->getLastName());
+    }
+
+    public function getUserFullName(): FullName
+    {
+        return new FullName($this->getUserFirstName(), $this->getUserMiddleName(), $this->getUserLastName());
     }
 
     /** @throws VetmanagerApiGatewayException */
