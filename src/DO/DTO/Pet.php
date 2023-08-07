@@ -36,7 +36,7 @@ class Pet extends AbstractDTO
     public ?int $typeId;
     public string $alias;
     public Sex $sex;
-    public DateTime $dateRegister;
+    public ?DateTime $dateRegister;
     /** Дата без времени */
     public ?DateTime $birthday;
     public string $note;
@@ -95,7 +95,7 @@ class Pet extends AbstractDTO
         $this->typeId = IntContainer::fromStringOrNull($originalData['type_id'])->positiveIntOrNull;
         $this->alias = StringContainer::fromStringOrNull($originalData['alias'])->string;
         $this->sex = $originalData['sex'] ? Sex::from($originalData['sex']) : Sex::Unknown;
-        $this->dateRegister = DateTimeContainer::fromOnlyDateString($originalData['date_register'])->dateTime;
+        $this->dateRegister = DateTimeContainer::fromOnlyDateString($originalData['date_register'])->dateTimeOrNull;
         $this->birthday = DateTimeContainer::fromOnlyDateString($originalData['birthday'])->dateTimeOrNull;
         $this->note = StringContainer::fromStringOrNull($originalData['note'])->string;
         $this->breedId = IntContainer::fromStringOrNull($originalData['breed_id'])->positiveIntOrNull;
