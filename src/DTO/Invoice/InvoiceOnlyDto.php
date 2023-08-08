@@ -84,26 +84,26 @@ class InvoiceOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->doctorId = ToInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNull();
-        $instance->clientId = ToInt::fromStringOrNull($originalDataArray['client_id'])->getPositiveInt();
-        $instance->petId = ToInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveInt();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveIntOrThrow();
+        $instance->doctorId = ToInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->clientId = ToInt::fromStringOrNull($originalDataArray['client_id'])->getPositiveIntOrThrow();
+        $instance->petId = ToInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveIntOrThrow();
         $instance->description = ToString::fromStringOrNull($originalDataArray['description'])->getStringEvenIfNullGiven();
         $instance->percent = ToFloat::fromStringOrNull($originalDataArray['percent'])->getNonZeroFloatOrNull();
         $instance->amount = ToFloat::fromStringOrNull($originalDataArray['amount'])->getNonZeroFloatOrNull();
         $instance->status = StatusEnum::from($originalDataArray['status']);
         $instance->invoiceDate = ToDateTime::fromOnlyDateString($originalDataArray['invoice_date'])->getDateTimeOrThrow();
-        $instance->oldId = ToInt::fromStringOrNull($originalDataArray['old_id'])->getPositiveIntOrNull();
-        $instance->night = ToInt::fromStringOrNull($originalDataArray['night'])->getPositiveIntOrNull();
+        $instance->oldId = ToInt::fromStringOrNull($originalDataArray['old_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->night = ToInt::fromStringOrNull($originalDataArray['night'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->increase = ToFloat::fromStringOrNull($originalDataArray['increase'])->getNonZeroFloatOrNull();
         $instance->discount = ToFloat::fromStringOrNull($originalDataArray['discount'])->getNonZeroFloatOrNull();
-        $instance->call = ToInt::fromStringOrNull($originalDataArray['call'])->getPositiveIntOrNull();
+        $instance->call = ToInt::fromStringOrNull($originalDataArray['call'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->paidAmount = ToFloat::fromStringOrNull($originalDataArray['paid_amount'])->getNonZeroFloatOrNull();
         $instance->createDate = ToDateTime::fromOnlyDateString($originalDataArray['create_date'])->getDateTimeOrThrow();
         $instance->paymentStatus = PaymentStatusEnum::from($originalDataArray['payment_status']);
-        $instance->clinicId = ToInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
-        $instance->creatorId = ToInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNull();
-        $instance->fiscalSectionId = ToInt::fromStringOrNull($originalDataArray['fiscal_section_id'])->getPositiveIntOrNull();
+        $instance->clinicId = ToInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->creatorId = ToInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->fiscalSectionId = ToInt::fromStringOrNull($originalDataArray['fiscal_section_id'])->getPositiveIntOrNullOrThrowIfNegative();
         return $instance;
     }
 }

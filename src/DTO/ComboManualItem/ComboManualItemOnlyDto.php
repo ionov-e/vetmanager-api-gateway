@@ -36,12 +36,12 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getComboManualId(): int
     {
-        return ToInt::fromStringOrNull($this->combo_manual_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->combo_manual_id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

@@ -25,7 +25,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     /** Default: '' */
@@ -39,7 +39,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getCityId(): int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrThrow();
     }
 
     /** Default: 'street'*/

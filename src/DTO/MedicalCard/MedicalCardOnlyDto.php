@@ -89,28 +89,28 @@ class MedicalCardOnlyDto extends AbstractDTO
     public static function fromApiResponseArray(array $originalDataArray): self
     {
         $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->petId = ToInt::fromStringOrNull($originalDataArray['patient_id'])->getPositiveInt();
+        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveIntOrThrow();
+        $instance->petId = ToInt::fromStringOrNull($originalDataArray['patient_id'])->getPositiveIntOrThrow();
         $instance->dateCreate = ToDateTime::fromOnlyDateString($originalDataArray['date_create'])->getDateTimeOrThrow();
         $instance->dateEdit = ToDateTime::fromOnlyDateString($originalDataArray['date_edit'])->getDateTimeOrThrow();
         $diagnose = ($originalDataArray['diagnos'] !== '0') ? $originalDataArray['diagnos'] : '';
         $instance->diagnose = ToString::fromStringOrNull($diagnose)->getStringEvenIfNullGiven();
         $instance->recommendation = ToString::fromStringOrNull($originalDataArray['recomendation'])->getStringEvenIfNullGiven();
-        $instance->invoiceId = ToInt::fromStringOrNull($originalDataArray['invoice'])->getPositiveIntOrNull();
-        $instance->admissionTypeId = ToInt::fromStringOrNull($originalDataArray['admission_type'])->getPositiveIntOrNull();
+        $instance->invoiceId = ToInt::fromStringOrNull($originalDataArray['invoice'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->admissionTypeId = ToInt::fromStringOrNull($originalDataArray['admission_type'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->weight = ToFloat::fromStringOrNull($originalDataArray['weight'])->getNonZeroFloatOrNull();
         $instance->temperature = ToFloat::fromStringOrNull($originalDataArray['temperature'])->getNonZeroFloatOrNull();
-        $instance->meetResultId = ToInt::fromStringOrNull($originalDataArray['meet_result_id'])->getPositiveIntOrNull();
+        $instance->meetResultId = ToInt::fromStringOrNull($originalDataArray['meet_result_id'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->description = ToString::fromStringOrNull($originalDataArray['description'])->getStringEvenIfNullGiven();
-        $instance->nextMeetId = ToInt::fromStringOrNull($originalDataArray['next_meet_id'])->getPositiveIntOrNull();
-        $instance->userId = ToInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNull();
-        $instance->creatorId = ToInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNull();
+        $instance->nextMeetId = ToInt::fromStringOrNull($originalDataArray['next_meet_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->userId = ToInt::fromStringOrNull($originalDataArray['doctor_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->creatorId = ToInt::fromStringOrNull($originalDataArray['creator_id'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->status = StatusEnum::from($originalDataArray['status']);
-        $instance->callingId = ToInt::fromStringOrNull($originalDataArray['calling_id'])->getPositiveIntOrNull();
-        $instance->admissionId = ToInt::fromStringOrNull($originalDataArray['admission_id'])->getPositiveIntOrNull();
+        $instance->callingId = ToInt::fromStringOrNull($originalDataArray['calling_id'])->getPositiveIntOrNullOrThrowIfNegative();
+        $instance->admissionId = ToInt::fromStringOrNull($originalDataArray['admission_id'])->getPositiveIntOrNullOrThrowIfNegative();
         $instance->diagnoseText = ToString::fromStringOrNull($originalDataArray['diagnos_text'])->getStringEvenIfNullGiven();
         $instance->diagnoseTypeText = ToString::fromStringOrNull($originalDataArray['diagnos_type_text'])->getStringEvenIfNullGiven();
-        $instance->clinicId = ToInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNull();
+        $instance->clinicId = ToInt::fromStringOrNull($originalDataArray['clinic_id'])->getPositiveIntOrNullOrThrowIfNegative();
         return $instance;
     }
 }

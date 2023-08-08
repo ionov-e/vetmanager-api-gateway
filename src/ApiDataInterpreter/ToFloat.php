@@ -39,7 +39,7 @@ class ToFloat
     /** Для тех случаев, когда уверены, что null и пустых значений не будет
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getFloatOrThrow(): float
+    public function getFloatOrThrowIfNull(): float
     {
         if (is_null($this->floatOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");

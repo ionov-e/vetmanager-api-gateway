@@ -60,7 +60,7 @@ class ToInt
      * @return positive-int
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getPositiveInt(): int
+    public function getPositiveIntOrThrow(): int
     {
         if (is_null($this->intOrNull)) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
@@ -76,7 +76,7 @@ class ToInt
     /** @return ?positive-int Вместо 0 - вернет null
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getPositiveIntOrNull(): ?int
+    public function getPositiveIntOrNullOrThrowIfNegative(): ?int
     {
         if (!is_null($this->intOrNull) && $this->intOrNull < 0) {
             throw new VetmanagerApiGatewayResponseException("Не ожидали не positive-int");

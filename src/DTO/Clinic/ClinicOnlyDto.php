@@ -48,7 +48,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -68,7 +68,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getCityId(): ?int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStartTime(): string
@@ -88,7 +88,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getGuestClientId(): ?int
     {
-        return ToInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getTimeZone(): string

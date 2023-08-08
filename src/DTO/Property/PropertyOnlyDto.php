@@ -28,7 +28,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getName(): ?string
@@ -48,7 +48,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setId(int $value): static

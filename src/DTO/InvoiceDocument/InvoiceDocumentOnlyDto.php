@@ -41,17 +41,17 @@ class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyD
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getInvoiceId(): int
     {
-        return ToInt::fromStringOrNull($this->document_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->document_id)->getPositiveIntOrThrow();
     }
 
     public function getGoodId(): int
     {
-        return ToInt::fromStringOrNull($this->good_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrThrow();
     }
 
     public function getQuantity(): ?float
@@ -66,7 +66,7 @@ class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyD
 
     public function getResponsibleUserId(): ?int
     {
-        return ToInt::fromStringOrNull($this->responsible_user_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->responsible_user_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsDefaultResponsible(): bool
@@ -76,12 +76,12 @@ class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyD
 
     public function getSaleParamId(): int
     {
-        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveIntOrThrow();
     }
 
     public function getTagId(): ?int
     {
-        return ToInt::fromStringOrNull($this->tag_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->tag_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDiscountTypeAsString(): ?string
@@ -96,7 +96,7 @@ class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyD
 
     public function getDiscountDocumentId(): ?int
     {
-        return ToInt::fromStringOrNull($this->discount_document_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->discount_document_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDiscountPercent(): ?float
@@ -126,22 +126,22 @@ class InvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyD
 
     public function getFixedDiscountId(): ?int
     {
-        return ToInt::fromStringOrNull($this->fixed_discount_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->fixed_discount_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedDiscountPercent(): ?int
     {
-        return ToInt::fromStringOrNull($this->fixed_discount_percent)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->fixed_discount_percent)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedIncreaseId(): ?int
     {
-        return ToInt::fromStringOrNull($this->fixed_increase_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->fixed_increase_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedIncreasePercent(): ?int
     {
-        return ToInt::fromStringOrNull($this->fixed_increase_percent)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->fixed_increase_percent)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPrimeCost(): float

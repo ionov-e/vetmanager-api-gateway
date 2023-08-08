@@ -24,7 +24,7 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -34,7 +34,7 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 
     public function getPetTypeId(): int
     {
-        return ToInt::fromStringOrNull($this->pet_type_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->pet_type_id)->getPositiveIntOrThrow();
     }
 
     public function setId(?int $value): static

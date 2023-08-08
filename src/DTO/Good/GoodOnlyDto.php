@@ -51,12 +51,12 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getGroupId(): ?int
     {
-        return ToInt::fromStringOrNull($this->group_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->group_id)->getPositiveIntOrNullOrThrowIfNegative();
 
     }
 
@@ -67,7 +67,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getUnitId(): ?int
     {
-        return ToInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsWarehouseAccount(): bool
@@ -117,7 +117,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getCategoryId(): ?int
     {
-        return ToInt::fromStringOrNull($this->category_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->category_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setId(?int $value): static

@@ -24,7 +24,7 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): ?string

@@ -89,7 +89,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -147,7 +147,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -161,7 +161,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getHowFind(): ?int
     {
-        return ToInt::fromStringOrNull($this->how_find)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->how_find)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -173,7 +173,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getBalance(): float
     {
-        return ToFloat::fromStringOrNull($this->balance)->getFloatOrThrow();
+        return ToFloat::fromStringOrNull($this->balance)->getFloatOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -209,7 +209,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getCityId(): ?int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -363,7 +363,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getStreetId(): ?int
     {
-        return ToInt::fromStringOrNull($this->street_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->street_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

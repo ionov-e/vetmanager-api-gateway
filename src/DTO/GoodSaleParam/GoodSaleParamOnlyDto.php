@@ -43,12 +43,12 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getGoodId(): ?int
     {
-        return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPrice(): ?float
@@ -63,7 +63,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getUnitSaleId(): ?int
     {
-        return ToInt::fromStringOrNull($this->unit_sale_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->unit_sale_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMinPrice(): ?float
@@ -88,7 +88,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMarkup(): ?float

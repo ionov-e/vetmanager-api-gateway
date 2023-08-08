@@ -32,7 +32,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -58,7 +58,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getPriceId(): ?int
     {
-        return ToInt::fromStringOrNull($this->price_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->price_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setId(?int $value): static

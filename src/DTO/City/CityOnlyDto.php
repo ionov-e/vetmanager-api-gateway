@@ -30,7 +30,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function setId(int $value): static
@@ -54,7 +54,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getTypeId(): int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

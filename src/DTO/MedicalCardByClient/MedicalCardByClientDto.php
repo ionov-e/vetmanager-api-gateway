@@ -51,7 +51,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->medical_card_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->medical_card_id)->getPositiveIntOrThrow();
     }
 
     public function getDateEditAsString(): ?string
@@ -72,7 +72,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getUserId(): ?int
     {
-        return ToInt::fromStringOrNull($this->doctor_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->doctor_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStatusAsString(): string
@@ -107,17 +107,17 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getMeetResultId(): ?int
     {
-        return ToInt::fromStringOrNull($this->meet_result_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->meet_result_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAdmissionTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->admission_type)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->admission_type)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPetId(): int
     {
-        return ToInt::fromStringOrNull($this->pet_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->pet_id)->getPositiveIntOrThrow();
     }
 
     public function getPetAlias(): string
@@ -162,7 +162,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getClientId(): ?int
     {
-        return ToInt::fromStringOrNull($this->client_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrThrow();
     }
 
     public function getFirstName(): string

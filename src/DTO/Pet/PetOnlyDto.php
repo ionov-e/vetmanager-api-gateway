@@ -39,17 +39,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getOwnerId(): int
     {
-        return ToInt::fromStringOrNull($this->owner_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->owner_id)->getPositiveIntOrThrow();
     }
 
     public function getPetTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAlias(): string
@@ -94,17 +94,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getBreedId(): ?int
     {
-        return ToInt::fromStringOrNull($this->breed_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->breed_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getOldId(): ?int
     {
-        return ToInt::fromStringOrNull($this->old_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->old_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getColorId(): ?int
     {
-        return ToInt::fromStringOrNull($this->color_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->color_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDeathNote(): string

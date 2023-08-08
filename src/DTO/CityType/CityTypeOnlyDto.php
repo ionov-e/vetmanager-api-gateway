@@ -27,7 +27,7 @@ final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

@@ -66,7 +66,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getLastName(): string
@@ -96,7 +96,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getPositionId(): int
     {
-        return ToInt::fromStringOrNull($this->position_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->position_id)->getPositiveIntOrThrow();
     }
 
     public function getEmail(): string
@@ -121,7 +121,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getRoleId(): ?int
     {
-        return ToInt::fromStringOrNull($this->role_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->role_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsActive(): bool

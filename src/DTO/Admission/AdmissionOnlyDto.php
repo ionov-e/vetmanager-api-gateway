@@ -60,7 +60,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getAdmissionDate(): DateTime
@@ -75,22 +75,22 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getClientId(): ?int
     {
-        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPetId(): ?int
     {
-        return ToInt::fromStringOrNull($this->patient_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->patient_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getUserId(): ?int
     {
-        return ToInt::fromStringOrNull($this->user_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->user_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAdmissionLength(): ?DateInterval
@@ -105,7 +105,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsDirectDirection(): bool
@@ -115,7 +115,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getCreatorId(): ?int
     {
-        return ToInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getCreateDate(): DateTime
@@ -125,7 +125,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getEscortId(): ?int
     {
-        return ToInt::fromStringOrNull($this->escorter_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->escorter_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getReceptionWriteChannel(): string

@@ -39,7 +39,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getName(): string
@@ -49,7 +49,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getPetId(): int
     {
-        return ToInt::fromStringOrNull($this->pet_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->pet_id)->getPositiveIntOrThrow();
     }
 
     public function getDateAsString(): ?string
@@ -74,7 +74,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getGoodId(): int
     {
-        return ToInt::fromStringOrNull($this->vaccine_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->vaccine_id)->getPositiveIntOrThrow();
     }
 
     public function getBirthdayAsString(): ?string
@@ -94,12 +94,12 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getMedicalCardId(): int
     {
-        return ToInt::fromStringOrNull($this->medcard_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->medcard_id)->getPositiveIntOrThrow();
     }
 
     public function getDoseTypeId(): int
     {
-        return ToInt::fromStringOrNull($this->doza_type_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->doza_type_id)->getPositiveIntOrThrow();
     }
 
     public function getDoseValue(): ?string
@@ -109,12 +109,12 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getSaleParamId(): int
     {
-        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveIntOrThrow();
     }
 
     public function getVaccineTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->vaccine_type)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->vaccine_type)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getVaccineDescription(): ?string
@@ -129,7 +129,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getNextAdmissionId(): ?int
     {
-        return ToInt::fromStringOrNull($this->next_admission_id)->getPositiveIntOrNull();
+        return ToInt::fromStringOrNull($this->next_admission_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getNextVisitTimeAsString(): ?string

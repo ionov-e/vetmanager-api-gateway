@@ -28,7 +28,7 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
