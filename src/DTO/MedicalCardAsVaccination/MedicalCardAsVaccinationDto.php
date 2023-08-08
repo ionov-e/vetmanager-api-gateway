@@ -10,92 +10,247 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-final class MedicalCardAsVaccinationDto extends AbstractDTO
+final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCardAsVaccinationDtoInterface
 {
-    /** @var positive-int id из таблицы vaccine_pets */
-    public int $id;
-    /** title из таблицы vaccine_pets */
-    public string $name;
-    /** @var positive-int */
-    public int $petId;
-    /** Дата без времени. Пример: "2012-09-02 00:00:00", а может прийти, если ничего: "0000-00-00". Из таблицы vaccine_pets*/
-    public ?DateTime $date;
-    /** Может содержать в себе:
-     * 1) Лишь дату. Тогда в {@see $isTimePresentInNextDateTime} будет false
-     * 2) Дату со временем. Тогда в {@see $isTimePresentInNextDateTime} будет true
-     * 3) Null
-     * Значение берется из admission_date из таблицы admission ON admission.id = vaccine_pets.next_admission_id. */
-    public ?DateTime $nextDateTime;
-    /** Указывает есть ли время в {@see $nextDateTime} */
-    public bool $isTimePresentInNextDateTime;
-    /** @var positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю */
-    public int $goodId;
-    /** Дата без времени. Пример: "2012-09-02 00:00:00". Может быть и null */
-    public ?DateTime $petBirthday;
-    /** @var positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю */
-    public int $medicalCardId;
-    /** @var positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю */
-    public int $doseTypeId;
-    /** Default: "1.0000000000". Из таблицы vaccine_pets*/
-    public float $doseValue;
-    /** @var positive-int Из таблицы vaccine_pets. Но не видел нигде 0 - не предусматриваю */
-    public int $saleParamId;
-    /** @var ?positive-int Default: "0" - перевожу в null */
-    public ?int $vaccineType;
-    /** Default: "". Из таблицы vaccine_pets */
-    public string $vaccineDescription;
-    /** Default: "". Title из таблицы combo_manual_items (строка, где: value = {@see $vaccineType} & combo_manual_id = $comboManualIdOfVaccinationType*/
-    public string $vaccineTypeTitle;
-    /** @var ?positive-int Default in DB: "0". Перевожу в null. Из таблицы vaccine_pets */
-    public ?int $nextAdmissionId;
 
-    /** @param array{
-     *     id: numeric-string,
-     *     name: string,
-     *     pet_id: numeric-string,
-     *     date: string,
-     *     date_nexttime: string,
-     *     vaccine_id: numeric-string,
-     *     birthday: ?string,
-     *     birthday_at_time: string,
-     *     medcard_id: numeric-string,
-     *     doza_type_id: numeric-string,
-     *     doza_value: string,
-     *     sale_param_id: numeric-string,
-     *     vaccine_type: string,
-     *     vaccine_description: string,
-     *     vaccine_type_title: string,
-     *     next_admission_id: numeric-string,
-     *     next_visit_time: string,
-     *     pet_age_at_time_vaccination: string
-     * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    public static function fromApiResponseArray(array $originalDataArray): self
+    public function __construct(
+        protected ?string $id,
+        protected ?string $name,
+        protected ?string $pet_id,
+        protected ?string $date,
+        protected ?string $date_nexttime,
+        protected ?string $vaccine_id,
+        protected ?string $birthday,
+        protected ?string $birthday_at_time,
+        protected ?string $medcard_id,
+        protected ?string $doza_type_id,
+        protected ?string $doza_value,
+        protected ?string $sale_param_id,
+        protected ?string $vaccine_type,
+        protected ?string $vaccine_description,
+        protected ?string $vaccine_type_title,
+        protected ?string $next_admission_id,
+        protected ?string $next_visit_time,
+        protected ?string $pet_age_at_time_vaccination
+    )
     {
-        $instance = new self($originalDataArray);
-        $instance->id = ToInt::fromStringOrNull($originalDataArray['id'])->getPositiveInt();
-        $instance->name = ToString::fromStringOrNull($originalDataArray['name'])->getStringEvenIfNullGiven();
-        $instance->petId = ToInt::fromStringOrNull($originalDataArray['pet_id'])->getPositiveInt();
-        $instance->date = ToDateTime::fromFullDateTimeString($originalDataArray['date'])->getDateTimeOrThrow();
-        $dateTimeServiceForNextDate = ToDateTime::fromOnlyDateString($originalDataArray['date_nexttime']);
-        $instance->nextDateTime = $dateTimeServiceForNextDate->getDateTimeOrThrow();
-        $instance->isTimePresentInNextDateTime = $dateTimeServiceForNextDate->isTimePresent();
-        $instance->goodId = ToInt::fromStringOrNull($originalDataArray['vaccine_id'])->getPositiveInt();
-        $instance->medicalCardId = ToInt::fromStringOrNull($originalDataArray['medcard_id'])->getPositiveInt();
-        $instance->doseTypeId = ToInt::fromStringOrNull($originalDataArray['doza_type_id'])->getPositiveInt();
-        $instance->doseValue = ToFloat::fromStringOrNull($originalDataArray['doza_value'])->getNonZeroFloatOrNull();
-        $instance->saleParamId = ToInt::fromStringOrNull($originalDataArray['sale_param_id'])->getPositiveInt();
-        $instance->vaccineType = ToInt::fromStringOrNull($originalDataArray['vaccine_type'])->getPositiveIntOrNull();
-        $instance->vaccineDescription = ToString::fromStringOrNull($originalDataArray['vaccine_description'])->getStringEvenIfNullGiven();
-        $instance->vaccineTypeTitle = ToString::fromStringOrNull($originalDataArray['vaccine_type_title'])->getStringEvenIfNullGiven();
-        $instance->nextAdmissionId = ToInt::fromStringOrNull($originalDataArray['next_admission_id'])->getPositiveIntOrNull();
-        $instance->petBirthday = ToDateTime::fromOnlyDateString($originalDataArray['birthday'])->getDateTimeOrThrow();
-        // "birthday_at_time" игнорируем. Бред присылается
-        // "pet_age_at_time_vaccination" - Тоже игнорируем, ерунда
-        return $instance;
     }
+
+    public function getId(): int
+    {
+        return ToInt::fromStringOrNull($this->id)->getPositiveInt();
+    }
+
+    public function getName(): string
+    {
+        return ToString::fromStringOrNull($this->name)->getStringEvenIfNullGiven();
+    }
+
+    public function getPetId(): int
+    {
+        return ToInt::fromStringOrNull($this->pet_id)->getPositiveInt();
+    }
+
+    public function getDateAsString(): ?string
+    {
+        return $this->date;
+    }
+
+    public function getDateAsDateTime(): ?DateTime
+    {
+        return ToDateTime::fromFullDateTimeString($this->date)->getDateTimeOrNull();
+    }
+
+    public function getDateNextDateTimeAsString(): ?string
+    {
+        return $this->date_nexttime;
+    }
+
+    public function getDateNextDateTimeAsDateTime(): ?DateTime
+    {
+        return ToDateTime::fromOnlyDateString($this->date_nexttime)->getDateTimeOrNull();
+    }
+
+    public function getGoodId(): int
+    {
+        return ToInt::fromStringOrNull($this->vaccine_id)->getPositiveInt();
+    }
+
+    public function getBirthdayAsString(): ?string
+    {
+        return $this->birthday;
+    }
+
+    public function getBirthdayAsDateTime(): ?DateTime
+    {
+        return ToDateTime::fromOnlyDateString($this->birthday)->getDateTimeOrNull();
+    }
+
+    public function getBirthdayAtTime(): ?string
+    {
+        return $this->birthday_at_time;
+    }
+
+    public function getMedicalCardId(): int
+    {
+        return ToInt::fromStringOrNull($this->medcard_id)->getPositiveInt();
+    }
+
+    public function getDoseTypeId(): int
+    {
+        return ToInt::fromStringOrNull($this->doza_type_id)->getPositiveInt();
+    }
+
+    public function getDoseValue(): ?string
+    {
+        return ToFloat::fromStringOrNull($this->doza_value)->getNonZeroFloatOrNull();
+    }
+
+    public function getSaleParamId(): int
+    {
+        return ToInt::fromStringOrNull($this->sale_param_id)->getPositiveInt();
+    }
+
+    public function getVaccineTypeId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->vaccine_type)->getPositiveIntOrNull();
+    }
+
+    public function getVaccineDescription(): ?string
+    {
+        return ToString::fromStringOrNull($this->vaccine_description)->getStringEvenIfNullGiven();
+    }
+
+    public function getVaccineTypeTitle(): ?string
+    {
+        return ToString::fromStringOrNull($this->vaccine_type_title)->getStringEvenIfNullGiven();
+    }
+
+    public function getNextAdmissionId(): ?int
+    {
+        return ToInt::fromStringOrNull($this->next_admission_id)->getPositiveIntOrNull();
+    }
+
+    public function getNextVisitTimeAsString(): ?string
+    {
+        return $this->next_visit_time;
+    }
+
+    public function getPetAgeAtTimeVaccinationAsString(): ?string
+    {
+        return $this->pet_age_at_time_vaccination;
+    }
+
+    public function setId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setName(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'name', $value);
+    }
+
+    public function setPetId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'pet_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDateAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'date', $value);
+    }
+
+    public function setDateAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'date', $value->format('Y-m-d H:i:s'));
+    }
+
+    public function setDateNextDateTime(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'date_nexttime', $value);
+    }
+
+    public function setGoodId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'vaccine_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setBirthdayAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'birthday', $value);
+    }
+
+    public function setBirthdayAsDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'birthday', $value->format('Y-m-d'));
+    }
+
+    public function setMedicalCardId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'medcard_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDoseTypeId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'doza_type_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setDoseValue(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'doza_value', is_null($value) ? null : (string)$value);
+    }
+
+    public function setSaleParamId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'sale_param_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setVaccineTypeId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'vaccine_type', is_null($value) ? null : (string)$value);
+    }
+
+    public function setVaccineDescription(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'vaccine_description', $value);
+    }
+
+    public function setVaccineTypeTitle(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'vaccine_type_title', $value);
+    }
+
+    public function setNextAdmissionId(?int $value): static
+    {
+        return self::setPropertyFluently($this, 'next_admission_id', is_null($value) ? null : (string)$value);
+    }
+
+    public function setNextVisitTimeAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'next_visit_time', $value);
+    }
+
+//    /** @param array{
+//     *     id: numeric-string,
+//     *     name: string,
+//     *     pet_id: numeric-string,
+//     *     date: string,
+//     *     date_nexttime: string,
+//     *     vaccine_id: numeric-string,
+//     *     birthday: ?string,
+//     *     birthday_at_time: string,
+//     *     medcard_id: numeric-string,
+//     *     doza_type_id: numeric-string,
+//     *     doza_value: string,
+//     *     sale_param_id: numeric-string,
+//     *     vaccine_type: string,
+//     *     vaccine_description: string,
+//     *     vaccine_type_title: string,
+//     *     next_admission_id: numeric-string,
+//     *     next_visit_time: string,
+//     *     pet_age_at_time_vaccination: string
+//     * } $originalDataArray
+//     */
 }
