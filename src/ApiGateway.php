@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use VetmanagerApiGateway\DO\Enum\ApiRoute;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestUrlDomainException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -33,17 +34,19 @@ final class ApiGateway
         public readonly string               $apiUrl,
         protected Client                     $guzzleClient,
         protected WithAuthAndParams|WithAuth $allHeaders
-    ) {
+    )
+    {
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
     public static function fromDomainAndServiceNameAndApiKey(
         string $subDomain,
         string $serviceName,
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self {
+    ): self
+    {
         $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
 
         $guzzleClient = new Client(
@@ -67,13 +70,14 @@ final class ApiGateway
         return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
     public static function fromDomainAndApiKey(
         string $subDomain,
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self {
+    ): self
+    {
         $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
 
         $guzzleClient = new Client(
@@ -93,7 +97,7 @@ final class ApiGateway
         return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
     private static function getApiUrlFromSubdomainForProdOrTest(string $subDomain, bool $isProduction): string
     {
         try {
@@ -101,7 +105,7 @@ final class ApiGateway
                 ? \Otis22\VetmanagerUrl\url($subDomain)->asString()
                 : \Otis22\VetmanagerUrl\url_test_env($subDomain)->asString();
         } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+            throw new VetmanagerApiGatewayRequestUrlDomainException($e->getMessage());
         }
     }
 
