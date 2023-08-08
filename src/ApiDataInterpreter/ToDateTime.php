@@ -70,11 +70,6 @@ final class ToDateTime
         return $this->getDateTimeOrThrow();
     }
 
-    public function isTimePresent(): bool
-    {
-        return ($this->dateTimeOrNull && $this->dateTimeOrNull->format('H:i:s') !== '00:00:00');
-    }
-
     /** @throws VetmanagerApiGatewayException */
     public function getAsDataBaseStringOrThrowIfNull(): string
     {
@@ -83,5 +78,10 @@ final class ToDateTime
         }
 
         return $this->dateTimeOrNull->format('Y-m-d H:i:s');
+    }
+
+    public static function isTimePresent(?DateTime $dateTimeNullable): bool
+    {
+        return ($dateTimeNullable && $dateTimeNullable->format('H:i:s') !== '00:00:00');
     }
 }

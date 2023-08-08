@@ -8,11 +8,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 interface MedicalCardAsVaccinationDtoInterface
 {
-    /** @return positive-int
+    /** @return positive-int id из таблицы vaccine_pets
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getId(): int;
 
+    /** title из таблицы vaccine_pets */
     public function getName(): string;
 
     /** @return positive-int
@@ -20,57 +21,73 @@ interface MedicalCardAsVaccinationDtoInterface
      */
     public function getPetId(): int;
 
+    /** Дата без времени. Пример: "2012-09-02 00:00:00", а может прийти, если ничего: "0000-00-00". Из таблицы vaccine_pets*/
     public function getDateAsString(): ?string;
 
-    /** @throws VetmanagerApiGatewayResponseException */
+    /** Дата без времени. Пример: "2012-09-02 00:00:00", а может прийти, если ничего: "0000-00-00". Из таблицы vaccine_pets
+     * @throws VetmanagerApiGatewayResponseException
+     */
     public function getDateAsDateTime(): ?DateTime;
 
     public function getDateNextDateTimeAsString(): ?string;
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function getDateNextDateTimeAsDateTime(): ?DateTime;
-
-    /** @return positive-int
+    /** Может содержать в себе:
+     * 1) Лишь дату
+     * 2) Дату со временем
+     * 3) Null
+     * Значение берется из admission_date из таблицы admission ON admission.id = vaccine_pets.next_admission_id.
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getGoodId(): int;
+    public function getDateNextDateTimeAsDateTime(): ?DateTime;
 
+    /** @return ?positive-int Точно редко бывает null
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getGoodId(): ?int;
+
+    /** Дата без времени. Пример: "2012-09-02 00:00:00". Может быть и null */
     public function getBirthdayAsString(): ?string;
 
-    /** @throws VetmanagerApiGatewayResponseException */
+    /** Дата без времени
+     * @throws VetmanagerApiGatewayResponseException
+     */
     public function getBirthdayAsDateTime(): ?DateTime;
 
     /** Игнорируем. Бред присылается */
     public function getBirthdayAtTime(): ?string;
 
-    /** @return positive-int
+    /** @return positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getMedicalCardId(): int;
 
-    /** @return positive-int
+    /** @return positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getDoseTypeId(): int;
 
-    /** @throws VetmanagerApiGatewayResponseException */
-    public function getDoseValue(): ?string;
+    /** Default: "1.0000000000". Из таблицы vaccine_pets
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getDoseValue(): ?float;
 
-    /** @return positive-int
+    /** @return positive-int Из таблицы vaccine_pets. Но не видел нигде 0 - не предусматриваю
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getSaleParamId(): int;
 
-    /** @return ?positive-int
+    /** @return ?positive-int Default: "0" - перевожу в null
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getVaccineTypeId(): ?int;
 
+    /** Default: "". Из таблицы vaccine_pets */
     public function getVaccineDescription(): ?string;
 
-    public function getVaccineTypeTitle(): ?string;
+    /** Default: "". Title из таблицы combo_manual_items (строка, где: value = {@see $vaccineType} & combo_manual_id = $comboManualIdOfVaccinationType*/
+    public function getVaccineTypeTitle(): string;
 
-    /** @return ?positive-int
+    /** @return ?positive-int Default in DB: "0". Перевожу в null. Из таблицы vaccine_pets
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getNextAdmissionId(): ?int;

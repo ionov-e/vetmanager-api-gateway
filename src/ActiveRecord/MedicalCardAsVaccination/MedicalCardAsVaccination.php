@@ -10,6 +10,7 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\MedicalCardPlusPet;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\DTO\MedicalCardAsVaccination\MedicalCardAsVaccinationDto;
 use VetmanagerApiGateway\DTO\MedicalCardAsVaccination\MedicalCardAsVaccinationDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -115,14 +116,16 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
         return $this->modelDTO->getDateNextDateTimeAsString();
     }
 
-    /** @inheritDoc */
+    /** @inheritDoc
+     * Можно проверить в {@see self::getIsTimePresentInNextDateTime()} присутствует ли время
+     */
     public function getDateNextDateTimeAsDateTime(): ?DateTime
     {
         return $this->modelDTO->getDateNextDateTimeAsDateTime();
     }
 
     /** @inheritDoc */
-    public function getGoodId(): int
+    public function getGoodId(): ?int
     {
         return $this->modelDTO->getGoodId();
     }
@@ -157,7 +160,7 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     }
 
     /** @inheritDoc */
-    public function getDoseValue(): ?string
+    public function getDoseValue(): ?float
     {
         return $this->modelDTO->getDoseValue();
     }
@@ -179,7 +182,7 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
         return $this->modelDTO->getVaccineDescription();
     }
 
-    public function getVaccineTypeTitle(): ?string
+    public function getVaccineTypeTitle(): string
     {
         return $this->modelDTO->getVaccineTypeTitle();
     }
@@ -338,5 +341,13 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     public function getCurrentPetAgeIfStillAlive(): ?DateInterval
     {
         return $this->getBirthdayAsDateTime() ? date_diff(new DateTime(), $this->getBirthdayAsDateTime()) : null;
+    }
+
+    /** Можно проверить в {@see self::getDateNextDateTimeAsDateTime()} присутствует ли время
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getIsTimePresentInNextDateTime(): bool
+    {
+        return ToDateTime::isTimePresent($this->getDateNextDateTimeAsDateTime());
     }
 }

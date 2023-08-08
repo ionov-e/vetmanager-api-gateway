@@ -72,9 +72,9 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return ToDateTime::fromOnlyDateString($this->date_nexttime)->getDateTimeOrNull();
     }
 
-    public function getGoodId(): int
+    public function getGoodId(): ?int
     {
-        return ToInt::fromStringOrNull($this->vaccine_id)->getPositiveIntOrThrow();
+        return ToInt::fromStringOrNull($this->vaccine_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getBirthdayAsString(): ?string
@@ -102,7 +102,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return ToInt::fromStringOrNull($this->doza_type_id)->getPositiveIntOrThrow();
     }
 
-    public function getDoseValue(): ?string
+    public function getDoseValue(): ?float
     {
         return ToFloat::fromStringOrNull($this->doza_value)->getNonZeroFloatOrNull();
     }
@@ -122,7 +122,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return ToString::fromStringOrNull($this->vaccine_description)->getStringEvenIfNullGiven();
     }
 
-    public function getVaccineTypeTitle(): ?string
+    public function getVaccineTypeTitle(): string
     {
         return ToString::fromStringOrNull($this->vaccine_type_title)->getStringEvenIfNullGiven();
     }
