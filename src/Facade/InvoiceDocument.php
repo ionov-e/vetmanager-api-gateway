@@ -32,41 +32,41 @@ class InvoiceDocument extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctorAndDocuments
+    public function getById(int $id): ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodWithPartyInfoAndMinMax
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
 
     /**
-     * @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor[]
+     * @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood::class, $maxLimitOfReturnedModels);
     }
 
     /**
-     * @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor[]
+     * @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor[]
+    /** @return ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function getByParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusClientAndPetAndDoctor::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood::class, $getParameters);
     }
 
     /** @throws VetmanagerApiGatewayException */

@@ -5,17 +5,27 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\InvoiceDocument;
 
 use VetmanagerApiGateway\ActiveRecord\Good\AbstractGood;
+use VetmanagerApiGateway\ActiveRecord\Good\GoodOnly;
 use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\AbstractGoodSaleParam;
+use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\GoodSaleParamOnly;
 use VetmanagerApiGateway\ActiveRecord\Invoice\AbstractInvoice;
-use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDto;
+use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
+use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
 
-final class InvoiceDocumentOnly extends AbstractInvoiceDocument
+/** @property InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodDto $modelDTO*/
+final class InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGood extends AbstractInvoiceDocument
 {
     public static function getDtoClass(): string
     {
-        return InvoiceDocumentOnlyDto::class;
+        return InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodDto::class;
+    }
+
+    public function __construct(ActiveRecordFactory $activeRecordFactory, InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodDto $modelDTO)
+    {
+        parent::__construct($activeRecordFactory, $modelDTO);
     }
 
     /** Получить себя по ID, чтобы сразу получить за один запрос данные:
@@ -67,21 +77,18 @@ final class InvoiceDocumentOnly extends AbstractInvoiceDocument
         return $this->getFullSelf()->getPartyInfo();
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function getGood(): AbstractGood
     {
-        return (new Facade\Good($this->activeRecordFactory))->getById($this->getGoodId());
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getGoodOnlyDto(), GoodOnly::class);
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function getGoodSaleParam(): AbstractGoodSaleParam
     {
-        return (new Facade\GoodSaleParam($this->activeRecordFactory))->getById($this->getSaleParamId());
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getGoodSaleParamOnlyDto(), GoodSaleParamOnly::class);
     }
 
-    /** @throws VetmanagerApiGatewayException */
     public function getInvoice(): AbstractInvoice
     {
-        return (new Facade\Invoice($this->activeRecordFactory))->getById($this->getInvoiceId());
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getInvoiceOnlyDto(), InvoiceOnly::class);
     }
 }

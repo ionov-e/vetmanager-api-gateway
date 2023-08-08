@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\InvoiceDocument;
 
-use DateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
-use VetmanagerApiGateway\DTO\GoodSaleParam\GoodSaleParamOnlyDto;
-use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
 
-class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends AbstractDTO implements InvoiceDocumentOnlyDtoInterface
+/** В 2 дочерних классах отличаются типы данных для Quantity & Price. В остальном основа одинаковая. */
+abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyDtoInterface
 {
     public function __construct(
         protected ?string               $id,
         protected ?string               $document_id,
         protected ?string               $good_id,
-        protected ?int                  $quantity,
-        protected ?int                  $price,
         protected ?string               $responsible_user_id,
         protected ?string               $is_default_responsible,
         protected ?string               $sale_param_id,
@@ -37,10 +32,7 @@ class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends Abst
         protected ?string               $fixed_discount_percent,
         protected ?string               $fixed_increase_id,
         protected ?string               $fixed_increase_percent,
-        protected ?string               $prime_cost,
-        protected ?InvoiceOnlyDto       $document,
-        protected ?GoodOnlyDto          $good,
-        protected ?GoodSaleParamOnlyDto $goodSaleParam
+        protected ?string               $prime_cost
     )
     {
     }
@@ -60,15 +52,6 @@ class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends Abst
         return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrThrow();
     }
 
-    public function getQuantity(): ?float
-    {
-        return ToFloat::fromStringOrNull((string)$this->quantity)->getNonZeroFloatOrNull();
-    }
-
-    public function getPrice(): float
-    {
-        return ToFloat::fromStringOrNull((string)$this->price)->getNonZeroFloatOrNull();
-    }
 
     public function getResponsibleUserId(): ?int
     {
@@ -120,7 +103,7 @@ class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends Abst
         return ToString::fromStringOrNull($this->create_date)->getStringOrThrowIfNull();
     }
 
-    public function getCreateDateAsDateTime(): DateTime
+    public function getCreateDateAsDateTime(): \DateTime
     {
         return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }
@@ -170,15 +153,6 @@ class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends Abst
         return self::setPropertyFluently($this, 'good_id', is_null($value) ? null : (string)$value);
     }
 
-    public function setQuantity(?float $value): static
-    {
-        return self::setPropertyFluently($this, 'quantity', is_null($value) ? null : (string)$value);
-    }
-
-    public function setPrice(?float $value): static
-    {
-        return self::setPropertyFluently($this, 'price', is_null($value) ? null : (string)$value);
-    }
 
     public function setResponsibleUserId(?int $value): static
     {
@@ -225,7 +199,7 @@ class InvoiceDocumentPlusGoodSaleParamWithUnitAndDocumentAndGoodDto extends Abst
         return self::setPropertyFluently($this, 'create_date', $value);
     }
 
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateAsDateTime(\DateTime $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
     }
