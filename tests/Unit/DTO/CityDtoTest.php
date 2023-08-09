@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use VetmanagerApiGateway\DTO\City\CityOnlyDto;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -55,7 +56,7 @@ EOF
     public function testNormalizationWithSpecificAttribute(string $json, string $getMethodName, int|string $expected): void
     {
         $array = json_decode($json, true);
-        $serializer = DtoFactory::getDefaultSerializerForNormalization();
+        $serializer = DtoNormalizer::getDefaultSerializerForNormalization();
 //        $serializer = new Serializer([new ObjectNormalizer()]);
         $dto = $serializer->denormalize($array, CityOnlyDto::class);
         $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => ['id']]);
@@ -142,7 +143,7 @@ EOF
 
 //        $data = $serializer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
 
-        $normalizer = DtoFactory::getDefaultSerializerForNormalization();
+        $normalizer = DtoNormalizer::getDefaultSerializerForNormalization();
 
         $data = $normalizer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
 

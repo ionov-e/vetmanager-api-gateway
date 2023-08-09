@@ -30,9 +30,4 @@ abstract class AbstractDTO
         $clone->propertiesSet[] = $propertyName;
         return $clone;
     }
-
-//    public function getAsArrayForPostOrPutRequest(): array
-//    {
-//        return #TODO
-//    }
 }

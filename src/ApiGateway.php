@@ -137,7 +137,7 @@ final class ApiGateway
     private function getActiveRecordFactory(): ActiveRecordFactory
     {
         if (!isset ($this->activeRecordFactory)) {
-            $this->activeRecordFactory = new ActiveRecordFactory($this->apiService, DtoFactory::withDefaultSerializer());
+            $this->activeRecordFactory = new ActiveRecordFactory($this->apiService, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         }
 
         return $this->activeRecordFactory;

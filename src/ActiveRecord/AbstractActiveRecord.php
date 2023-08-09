@@ -82,4 +82,16 @@ abstract class AbstractActiveRecord
         $clone->modelDTO = $newModelDto;
         return $clone;
     }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function getAsArray(): array
+    {
+        return $this->activeRecordFactory->dtoNormalizer->getAsArray($this->modelDTO);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function getAsArrayWithSetPropertiesOnly(): array
+    {
+        return $this->activeRecordFactory->dtoNormalizer->getAsArrayWithSetPropertiesOnly($this->modelDTO);
+    }
 }

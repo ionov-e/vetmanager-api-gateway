@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
@@ -13,12 +14,13 @@ use VetmanagerApiGateway\ActiveRecord\PetType\PetTypePlusBreeds;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\PetType;
 
+#[CoversClass(PetType::class)]
 class PetTypeTest extends TestCase
 {
-
-
     public static function dataProviderJson(): array
     {
         return [[
@@ -64,7 +66,8 @@ EOF
         $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
-            DtoFactory::withDefaultSerializer()
+            DtoFactory::withDefaultSerializer(),
+            DtoNormalizer::withDefaultSerializer()
         );
         $activeRecord = $activeRecordFactory->getFromSingleModelAsArray($modelAsArray, PetTypePlusBreeds::class);
         $breedsActiveRecords = $activeRecord->getBreeds();

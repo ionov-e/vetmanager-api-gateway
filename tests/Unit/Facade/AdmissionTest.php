@@ -3,7 +3,13 @@
 namespace VetmanagerApiGateway\Unit\Facade;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use VetmanagerApiGateway\ActiveRecord\Admission\ListEnum;
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
+use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
+use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Admission;
 
 #[CoversClass(Admission::class)]
@@ -163,14 +169,23 @@ EOF
         ]];
     }
 
-//    /** @throws VetmanagerApiGatewayException */
-//    #[DataProvider('dataProviderJson')]
-//    public function testSpecificARFromSingleModelAsArray(string $json)    #TODO return
-//    {
-//        $modelAsArray = json_decode($json, true);
-//        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
-//        $activeRecord = $apiGateway->getAdmission()->specificARFromSingleModelAsArray($modelAsArray, \VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser::class);
-//        $invoiceActiveRecord = $activeRecord->getInvoices()[0];
-//        $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly::class, $invoiceActiveRecord);
-//    }
+    /** @throws VetmanagerApiGatewayException */
+    #[DataProvider('dataProviderJson')]
+    public function testSpecificARFromSingleModelAsArray(string $json)
+    {
+        $modelAsArray = json_decode($json, true);
+        $apiGateway = ApiGateway::fromFullUrlAndApiKey("testing", "testing.xxx", "xxx");
+        $activeRecord = $apiGateway->getAdmission()->fromSingleModelAsArray($modelAsArray, ListEnum::PlusClientAndPetAndInvoicesAndTypeAndUser);
+        $invoiceActiveRecord = $activeRecord->getInvoices()[0];
+        $this->assertInstanceOf(InvoiceOnly::class, $invoiceActiveRecord);
+        $activeRecordPetBreed = $activeRecord->getPetBreed();
+        $this->assertInstanceOf(BreedOnly::class, $activeRecordPetBreed);
+        $this->assertEquals(["id" => "771", "title" => "порода2", "pet_type_id" => "12"], $activeRecordPetBreed->getAsArray());
+        $newActiveRecordPetBreed = $activeRecordPetBreed->setPetTypeId(13);
+        $this->assertEquals(["pet_type_id" => "13"], $newActiveRecordPetBreed->getAsArrayWithSetPropertiesOnly());
+        $this->assertEquals(["id" => "771", "title" => "порода2", "pet_type_id" => "13"], $newActiveRecordPetBreed->getAsArray());
+        // Previous model hasn't changed:
+        $this->assertEquals(["id" => "771", "title" => "порода2", "pet_type_id" => "12"], $activeRecordPetBreed->getAsArray());
+        $this->assertEquals([], $activeRecordPetBreed->getAsArrayWithSetPropertiesOnly());
+    }
 }

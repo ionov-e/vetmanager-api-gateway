@@ -16,14 +16,15 @@ class ActiveRecordFactory
 {
     public function __construct(
         public readonly ApiService $apiService,
-        public readonly DtoFactory $dtoFactory
+        public readonly DtoFactory    $dtoFactory,
+        public readonly DtoNormalizer $dtoNormalizer
     )
     {
     }
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public function getFromApiResponseWithSingleModelAsArray(array $apiResponseAsArray, string $activeRecordClass): AbstractActiveRecord
@@ -70,7 +71,7 @@ class ActiveRecordFactory
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public function getFromSingleModelAsArray(array $modelAsArray, string $activeRecordClass): AbstractActiveRecord
@@ -82,7 +83,7 @@ class ActiveRecordFactory
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
      * @param class-string<TModelDTO> $dtoClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public function getFromSingleModelAsArrayAndDtoClass(
@@ -108,7 +109,7 @@ class ActiveRecordFactory
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      */
     public function getFromSingleDto(AbstractDTO $modelDTO, string $activeRecordClass): AbstractActiveRecord
     {
@@ -117,7 +118,7 @@ class ActiveRecordFactory
 
     /** Создание чистого нового Active Record для дальнейшей отправки на сервер
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayInnerException
      */
     public function getEmpty(string $activeRecordClass): AbstractActiveRecord

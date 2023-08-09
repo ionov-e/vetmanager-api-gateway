@@ -17,6 +17,7 @@ use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
 
@@ -116,7 +117,8 @@ EOF
         $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
-            DtoFactory::withDefaultSerializer()
+            DtoFactory::withDefaultSerializer(),
+            DtoNormalizer::withDefaultSerializer()
         );
         $activeRecordClient = $activeRecordFactory->getFromSingleDto($dto, ActiveRecord\Client\ClientPlusTypeAndCity::class);
         $this->assertInstanceOf(ActiveRecord\Client\ClientPlusTypeAndCity::class, $activeRecordClient);

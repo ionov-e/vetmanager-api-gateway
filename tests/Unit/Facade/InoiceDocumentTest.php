@@ -16,9 +16,10 @@ use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Client;
+use VetmanagerApiGateway\Facade\InvoiceDocument;
 
-#[CoversClass(Client::class)]
-class ClientTest extends TestCase
+#[CoversClass(InvoiceDocument::class)]
+class InoiceDocumentTest extends TestCase
 {
     public static function dataProviderClientJson(): array
     {

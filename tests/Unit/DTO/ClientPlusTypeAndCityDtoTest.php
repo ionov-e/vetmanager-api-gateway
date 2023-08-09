@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -79,9 +80,7 @@ EOF
         $this->assertEquals("Временный", $dto->getClientTypeDto()->getTitle());
     }
 
-    /** @throws VetmanagerApiGatewayInnerException
-     * @throws ExceptionInterface
-     */
+    /** @throws VetmanagerApiGatewayInnerException|ExceptionInterface */
     #[DataProvider('dataProviderClientJson')]
     public function testNormalizationWithSpecificAttributeAfterSetters(string $json, string $getMethodName, int|string $expected): void
     {
@@ -94,7 +93,7 @@ EOF
         $dto = $dto->setAddress("Address 112");
         $dto = $dto->setCityId(103);
 
-        $normalizer = DtoFactory::getDefaultSerializerForNormalization();
+        $normalizer = DtoNormalizer::getDefaultSerializerForNormalization();
         $data = $normalizer->normalize($dto, null, [AbstractNormalizer::ATTRIBUTES => $dto->getPropertiesSet()]);
 
         $this->assertEquals(["address" => "Address 112", "city_id" => "103"], $data);

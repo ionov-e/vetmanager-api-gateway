@@ -13,6 +13,7 @@ use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 #[CoversClass(ActiveRecordFactory::class)]
@@ -77,7 +78,8 @@ EOF
         $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
-            DtoFactory::withDefaultSerializer()
+            DtoFactory::withDefaultSerializer(),
+            DtoNormalizer::withDefaultSerializer()
         );
         $modelDtoAsArray = json_decode($json, true);
         $activeRecord = $activeRecordFactory->getFromSingleModelAsArray(

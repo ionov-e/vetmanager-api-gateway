@@ -6,14 +6,18 @@ use GuzzleHttp\Client;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
+use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade\CityType;
 
+#[CoversClass(CityType::class)]
 class CityTypeTest extends TestCase
 {
 
@@ -52,7 +56,8 @@ EOF
         $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
-            DtoFactory::withDefaultSerializer()
+            DtoFactory::withDefaultSerializer(),
+            DtoNormalizer::withDefaultSerializer()
         );
         $activeRecords = $activeRecordFactory->getFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, \VetmanagerApiGateway\ActiveRecord\CityType\CityType::class);
         $this->assertContainsOnlyInstancesOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $activeRecords);
