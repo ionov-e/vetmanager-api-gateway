@@ -6,19 +6,19 @@ namespace VetmanagerApiGateway\ActiveRecord\Invoice;
 
 
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\Client\AbstractClient;
+use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\Pet\AbstractPet;
+use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
 use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\AbstractUser;
+use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
-use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
-use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Invoice\InvoicePlusClientAndPetAndDoctorDto;
-use VetmanagerApiGateway\DTO\Pet\PetOnlyDto;
-use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
-use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
+use VetmanagerApiGateway\Facade\PetType;
 
 final class InvoicePlusClientAndPetAndDoctor extends AbstractInvoice
 {
@@ -43,29 +43,29 @@ final class InvoicePlusClientAndPetAndDoctor extends AbstractInvoice
 
     public function getClient(): AbstractClient
     {
-        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getClientOnlyDto(), ClientOnlyDto::class);
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getClientOnlyDto(), ClientOnly::class);
     }
 
     public function getPet(): AbstractPet
     {
-        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getPetAdditionalPlusTypeAndBreedDto(), PetOnlyDto::class);
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getPetAdditionalPlusTypeAndBreedDto(), PetOnly::class);
     }
 
     public function getPetBreed(): ?AbstractBreed
     {
         $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
-        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnlyDto::class) : null;
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnly::class) : null;
     }
 
     public function getPetType(): ?AbstractPetType
     {
         $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
-        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetTypeOnlyDto::class) : null;
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetType::class) : null;
     }
 
     public function getUser(): AbstractUser
     {
-        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getUserOnlyDto(), UserOnlyDto::class);
+        return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getUserOnlyDto(), UserOnly::class);
     }
 
     /** @inheritDoc

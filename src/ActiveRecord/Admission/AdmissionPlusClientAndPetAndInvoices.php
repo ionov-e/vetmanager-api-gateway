@@ -3,6 +3,7 @@
 namespace VetmanagerApiGateway\ActiveRecord\Admission;
 
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
+use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName;
 use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
@@ -11,10 +12,9 @@ use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\UserPlusPositionAndRole;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionPlusClientAndPetAndInvoicesDto;
-use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
-use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
+use VetmanagerApiGateway\Facade\PetType;
 
 final class AdmissionPlusClientAndPetAndInvoices extends AbstractAdmission
 {
@@ -57,13 +57,13 @@ final class AdmissionPlusClientAndPetAndInvoices extends AbstractAdmission
     public function getPetBreed(): ?AbstractBreed
     {
         $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
-        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnlyDto::class) : null;
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnly::class) : null;
     }
 
     public function getPetType(): ?AbstractPetType
     {
         $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
-        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetTypeOnlyDto::class) : null;
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetType::class) : null;
     }
 
     /** @return InvoiceOnly[] */
