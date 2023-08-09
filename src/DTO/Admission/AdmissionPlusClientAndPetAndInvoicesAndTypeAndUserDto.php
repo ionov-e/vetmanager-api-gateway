@@ -7,6 +7,7 @@ namespace VetmanagerApiGateway\DTO\Admission;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
+use VetmanagerApiGateway\DTO\Pet\PetAdditionalPlusTypeAndBreedDto;
 use VetmanagerApiGateway\DTO\Pet\PetOnlyDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 
@@ -31,34 +32,34 @@ class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlu
      * @param string|null $is_auto_create
      * @param string|null $invoices_sum
      * @param ClientOnlyDto|null $client
-     * @param PetOnlyDto|null $pet
+     * @param PetAdditionalPlusTypeAndBreedDto|null $pet
      * @param InvoiceOnlyDto[] $invoices
      * @param UserOnlyDto|null $doctor_data
      * @param ComboManualItemOnlyDto|null $admission_type_data
      */
     public function __construct(
-        protected ?string              $id,
-        protected ?string              $admission_date,
-        protected ?string              $description,
-        protected ?string              $client_id,
-        protected ?string              $patient_id,
-        protected ?string              $user_id,
-        protected ?string              $type_id,
-        protected ?string              $admission_length,
-        protected ?string              $status,
-        protected ?string              $clinic_id,
-        protected ?string              $direct_direction,
-        protected ?string              $creator_id,
-        protected ?string              $create_date,
-        protected ?string              $escorter_id,
-        protected ?string              $reception_write_channel,
-        protected ?string              $is_auto_create,
-        protected ?string              $invoices_sum,
-        protected ?ClientOnlyDto       $client = null,
-        protected ?PetOnlyDto          $pet = null,
-        protected array                $invoices = [],
-        public ?UserOnlyDto            $doctor_data = null,
-        public ?ComboManualItemOnlyDto $admission_type_data = null
+        protected ?string                           $id,
+        protected ?string                           $admission_date,
+        protected ?string                           $description,
+        protected ?string                           $client_id,
+        protected ?string                           $patient_id,
+        protected ?string                           $user_id,
+        protected ?string                           $type_id,
+        protected ?string                           $admission_length,
+        protected ?string                           $status,
+        protected ?string                           $clinic_id,
+        protected ?string                           $direct_direction,
+        protected ?string                           $creator_id,
+        protected ?string                           $create_date,
+        protected ?string                           $escorter_id,
+        protected ?string                           $reception_write_channel,
+        protected ?string                           $is_auto_create,
+        protected ?string                           $invoices_sum,
+        protected ?ClientOnlyDto                    $client = null,
+        protected ?PetAdditionalPlusTypeAndBreedDto $pet = null,
+        protected array                             $invoices = [],
+        public ?UserOnlyDto                         $doctor_data = null,
+        public ?ComboManualItemOnlyDto              $admission_type_data = null
     )
     {
         parent::__construct(

@@ -2,13 +2,17 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Admission;
 
+use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
+use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto;
+use VetmanagerApiGateway\DTO\Breed\BreedOnlyDto;
+use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 
 final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractAdmission
 {
@@ -36,17 +40,31 @@ final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractA
 
     public function getClient(): ?ClientOnly
     {
-        return $this->modelDTO->getClientDto() ? new ClientOnly($this->activeRecordFactory, $this->modelDTO->getClientDto()) : null;
+        return $this->modelDTO->getClientOnlyDto() ? new ClientOnly($this->activeRecordFactory, $this->modelDTO->getClientOnlyDto()) : null;
     }
 
     public function getPet(): ?PetOnly
     {
-        return $this->modelDTO->getPetDto() ? new PetOnly($this->activeRecordFactory, $this->modelDTO->getPetDto()) : null;
+        return $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()
+            ? new PetOnly($this->activeRecordFactory, $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto())
+            : null;
+    }
+
+    public function getPetBreed(): ?AbstractBreed
+    {
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeDto();
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnlyDto::class) : null;
+    }
+
+    public function getPetType(): ?AbstractPetType
+    {
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeDto();
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetTypeOnlyDto::class) : null;
     }
 
     /** @return InvoiceOnly[] */
     public function getInvoices(): array
     {
-        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getInvoicesOnlyAsDtos(), InvoiceOnly::class);
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getInvoicesOnlyDtos(), InvoiceOnly::class);
     }
 }

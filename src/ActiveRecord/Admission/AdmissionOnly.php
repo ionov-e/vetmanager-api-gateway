@@ -2,10 +2,12 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Admission;
 
+use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName;
 use VetmanagerApiGateway\ActiveRecord\Invoice\InvoiceOnly;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
+use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\UserPlusPositionAndRole;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionOnlyDto;
@@ -48,6 +50,18 @@ final class AdmissionOnly extends AbstractAdmission
     public function getPet(): ?PetPlusOwnerAndTypeAndBreedAndColor
     {
         return $this->getPetId() ? (new Facade\Pet($this->activeRecordFactory))->getById($this->getPetId()) : null;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getPetBreed(): ?AbstractBreed
+    {
+        return (new Facade\Pet($this->activeRecordFactory))->getById($this->getPetId())->getBreed();
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getPetType(): ?AbstractPetType
+    {
+        return (new Facade\Pet($this->activeRecordFactory))->getById($this->getPetId())->getPetType();
     }
 
     /** @return InvoiceOnly[]

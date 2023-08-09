@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\DTO\Admission;
 
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
+use VetmanagerApiGateway\DTO\Pet\PetAdditionalPlusTypeAndBreedDto;
 use VetmanagerApiGateway\DTO\Pet\PetOnlyDto;
 
 class AdmissionPlusClientAndPetAndInvoicesDto extends AdmissionOnlyDto
@@ -51,7 +52,7 @@ class AdmissionPlusClientAndPetAndInvoicesDto extends AdmissionOnlyDto
         protected ?string        $is_auto_create,
         protected ?string        $invoices_sum,
         protected ?ClientOnlyDto $client = null,
-        protected ?PetOnlyDto    $pet = null,
+        protected ?PetAdditionalPlusTypeAndBreedDto    $pet = null,
         protected array          $invoices = []
     )
     {
@@ -77,17 +78,17 @@ class AdmissionPlusClientAndPetAndInvoicesDto extends AdmissionOnlyDto
     }
 
     /** @return InvoiceOnlyDto[] */
-    public function getInvoicesOnlyAsDtos(): array
+    public function getInvoicesOnlyDtos(): array
     {
         return $this->invoices;
     }
 
-    public function getClientDto(): ?ClientOnlyDto
+    public function getClientOnlyDto(): ?ClientOnlyDto
     {
         return $this->client;
     }
 
-    public function getPetDto(): ?PetOnlyDto
+    public function getPetAdditionalPlusTypeAndBreedDto(): ?PetAdditionalPlusTypeAndBreedDto
     {
         return $this->pet;
     }
