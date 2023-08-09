@@ -46,11 +46,6 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
         return ToString::fromStringOrNull($this->name)->getNonEmptyStringOrThrow();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', $value ? (string)$value : "0");
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

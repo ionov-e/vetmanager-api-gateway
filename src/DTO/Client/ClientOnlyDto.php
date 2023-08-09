@@ -92,12 +92,6 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function getAddress(): string
     {
         return ToString::fromStringOrNull($this->address)->getStringEvenIfNullGiven();

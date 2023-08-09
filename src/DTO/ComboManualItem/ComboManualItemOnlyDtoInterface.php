@@ -41,9 +41,6 @@ interface ComboManualItemOnlyDtoInterface
     public function getIsActive(): bool;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setComboManualId(int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

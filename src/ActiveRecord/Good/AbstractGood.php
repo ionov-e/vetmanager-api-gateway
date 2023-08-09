@@ -175,12 +175,6 @@ abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function setId(?int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setGroupId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setGroupId($value));

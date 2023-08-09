@@ -252,11 +252,6 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return ToString::fromStringOrNull($this->admission_type_title)->getStringEvenIfNullGiven();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'medical_card_id', (string)$value);
-    }
-
     public function setDateEditFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date_edit', $value);

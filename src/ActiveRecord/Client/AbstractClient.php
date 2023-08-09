@@ -115,11 +115,6 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getId();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
     public function getAddress(): string
     {
         return $this->modelDTO->getAddress();

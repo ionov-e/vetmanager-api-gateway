@@ -33,11 +33,6 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
         return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function getTitle(): string
     {
         return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();

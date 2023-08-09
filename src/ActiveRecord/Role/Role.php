@@ -52,12 +52,6 @@ final class Role extends AbstractActiveRecord implements RoleOnlyDtoInterface
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setName(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setName($value));

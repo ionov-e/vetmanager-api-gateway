@@ -24,9 +24,6 @@ interface UserPositionOnlyDtoInterface
     public function getAdmissionLengthAsDateInterval(): ?DateInterval;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

@@ -52,11 +52,6 @@ final class City extends AbstractActiveRecord implements CityDtoInterface
         return $this->modelDTO->getId();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
     public function getTitle(): string
     {
         return $this->modelDTO->getTitle();

@@ -178,11 +178,6 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return ToDateTime::fromOnlyDateString($this->edit_date)->getDateTimeOrThrow();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setOwnerId(?int $value): static
     {
         return self::setPropertyFluently($this, 'owner_id', is_null($value) ? null : (string)$value);

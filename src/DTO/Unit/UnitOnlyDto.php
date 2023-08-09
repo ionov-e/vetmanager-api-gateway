@@ -37,11 +37,6 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
         return StatusEnum::from($this->status);
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

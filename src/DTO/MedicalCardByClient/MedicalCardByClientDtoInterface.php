@@ -123,9 +123,6 @@ interface MedicalCardByClientDtoInterface
     public function getAdmissionTypeTitle(): string;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setDateEditFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

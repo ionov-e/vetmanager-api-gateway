@@ -79,8 +79,6 @@ interface AdmissionOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getInvoicesSum(): ?float;
 
-    public function setId(int $value): static;
-
     public function setAdmissionDateFromString(string $value): static;
 
     public function setAdmissionDateFromDateTime(DateTime $value): static;

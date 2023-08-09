@@ -74,11 +74,6 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
         return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', $value ? (string)$value : "0");
-    }
-
     public function setComboManualId(int $value): static
     {
         return self::setPropertyFluently($this, 'combo_manual_id', $value ? (string)$value : "0");

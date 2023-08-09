@@ -87,9 +87,6 @@ interface PetOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getEditDateAsDateTime(): DateTime;
 
-    /** * @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
     /** @throws VetmanagerApiGatewayInnerException */
     public function setOwnerId(?int $value): static;
 

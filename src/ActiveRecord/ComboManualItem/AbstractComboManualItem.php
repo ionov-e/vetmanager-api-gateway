@@ -100,12 +100,6 @@ abstract class AbstractComboManualItem extends AbstractActiveRecord implements C
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setComboManualId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setComboManualId($value));

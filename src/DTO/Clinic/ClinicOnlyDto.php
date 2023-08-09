@@ -121,11 +121,6 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
         return ToString::fromStringOrNull($this->email)->getStringEvenIfNullGiven();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

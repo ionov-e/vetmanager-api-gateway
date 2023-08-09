@@ -306,12 +306,6 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setAdmissionDateFromString(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateFromString($value));

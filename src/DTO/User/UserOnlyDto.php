@@ -179,11 +179,6 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return ToString::fromStringOrNull($this->user_inn)->getStringEvenIfNullGiven();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setLastName(string $value): static
     {
         return self::setPropertyFluently($this, 'last_name', $value);

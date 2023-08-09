@@ -161,11 +161,6 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return $this->pet_age_at_time_vaccination;
     }
 
-    public function setId(?int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
-    }
-
     public function setName(?string $value): static
     {
         return self::setPropertyFluently($this, 'name', $value);

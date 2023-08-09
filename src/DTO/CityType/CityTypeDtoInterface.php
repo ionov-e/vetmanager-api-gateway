@@ -14,9 +14,6 @@ interface CityTypeDtoInterface
      */
     public function getId(): int;
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
     public function getTitle(): string;
 
     /** @throws VetmanagerApiGatewayInnerException */

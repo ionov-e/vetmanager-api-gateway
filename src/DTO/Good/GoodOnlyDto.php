@@ -119,11 +119,6 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
         return ToInt::fromStringOrNull($this->category_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function setId(?int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
-    }
-
     public function setGroupId(?int $value): static
     {
         return self::setPropertyFluently($this, 'group_id', is_null($value) ? null : (string)$value);

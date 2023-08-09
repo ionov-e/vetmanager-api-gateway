@@ -26,11 +26,6 @@ class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterfac
         return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function getTitle(): string
     {
         return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();

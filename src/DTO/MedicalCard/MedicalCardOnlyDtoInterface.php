@@ -110,9 +110,6 @@ interface MedicalCardOnlyDtoInterface
     public function getClinicId(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setPetId(int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

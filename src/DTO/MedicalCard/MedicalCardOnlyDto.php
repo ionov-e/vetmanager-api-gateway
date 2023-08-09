@@ -184,11 +184,6 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
         return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setPetId(int $value): static
     {
         return self::setPropertyFluently($this, 'patient_id', (string)$value);

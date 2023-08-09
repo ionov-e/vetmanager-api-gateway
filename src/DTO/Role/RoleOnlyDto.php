@@ -38,11 +38,6 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
         return ToBool::fromStringOrNull($this->super)->getBoolOrThrowIfNull();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setName(string $value): static
     {
         return self::setPropertyFluently($this, 'name', $value);

@@ -79,12 +79,6 @@ class GoodGroup extends AbstractActiveRecord implements GoodGroupOnlyDtoInterfac
     }
 
     /** @inheritDoc */
-    public function setId(?int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setTitle(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));

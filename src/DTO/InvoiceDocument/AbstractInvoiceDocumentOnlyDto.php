@@ -159,11 +159,6 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
         return ToFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
     }
 
-    public function setId(?int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', is_null($value) ? null : (string)$value);
-    }
-
     public function setInvoiceId(?int $value): static
     {
         return self::setPropertyFluently($this, 'document_id', is_null($value) ? null : (string)$value);

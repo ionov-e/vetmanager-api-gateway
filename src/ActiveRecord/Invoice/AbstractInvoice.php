@@ -174,12 +174,6 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setUserId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setUserId($value));

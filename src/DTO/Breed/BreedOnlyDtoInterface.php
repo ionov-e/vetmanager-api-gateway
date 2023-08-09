@@ -23,9 +23,6 @@ interface BreedOnlyDtoInterface
     public function getPetTypeId(): int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

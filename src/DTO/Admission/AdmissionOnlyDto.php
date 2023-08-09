@@ -144,12 +144,6 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setAdmissionDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'admission_date', $value);

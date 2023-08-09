@@ -254,12 +254,6 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setPetId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setPetId($value));

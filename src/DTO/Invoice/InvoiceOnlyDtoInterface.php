@@ -115,9 +115,6 @@ interface InvoiceOnlyDtoInterface
     public function getFiscalSectionId(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setUserId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

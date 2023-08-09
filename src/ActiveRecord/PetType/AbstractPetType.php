@@ -61,11 +61,6 @@ abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOn
         return $this->modelDTO->getType();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
     public function setTitle(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));

@@ -65,9 +65,6 @@ interface GoodOnlyDtoInterface
     public function getCategoryId(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(?int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setGroupId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

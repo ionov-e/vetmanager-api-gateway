@@ -16,9 +16,6 @@ interface ClientDtoInterface
      */
     public function getId(): int;
 
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value);
-
     public function getAddress(): string;
 
     /** @throws VetmanagerApiGatewayInnerException */

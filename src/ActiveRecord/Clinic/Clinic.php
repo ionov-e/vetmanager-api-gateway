@@ -142,11 +142,6 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
         return $this->modelDTO->getEmail();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTitle($value));

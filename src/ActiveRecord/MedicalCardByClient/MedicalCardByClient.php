@@ -299,12 +299,6 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setDateEditFromString(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setDateEditFromString($value));

@@ -150,12 +150,6 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setGoodId(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setGoodId($value));

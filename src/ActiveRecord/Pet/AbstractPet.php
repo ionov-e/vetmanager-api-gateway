@@ -274,12 +274,6 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setOwnerId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setOwnerId($value));

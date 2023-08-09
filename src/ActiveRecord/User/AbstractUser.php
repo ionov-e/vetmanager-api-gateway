@@ -212,12 +212,6 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function setId(int $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setId($value));
-    }
-
-    /** @inheritDoc */
     public function setLastName(string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setLastName($value));

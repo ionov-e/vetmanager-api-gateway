@@ -101,11 +101,6 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return PriceFormationEnum::from((string)$this->price_formation);
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setGoodId(?string $value): static
     {
         return self::setPropertyFluently($this, 'good_id', $value);

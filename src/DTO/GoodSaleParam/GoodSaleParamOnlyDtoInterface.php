@@ -54,9 +54,6 @@ interface GoodSaleParamOnlyDtoInterface
     public function getPriceFormation(): PriceFormationEnum;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setGoodId(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

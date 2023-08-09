@@ -51,11 +51,6 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
         return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setName(?string $value): static
     {
         return self::setPropertyFluently($this, 'property_name', $value);

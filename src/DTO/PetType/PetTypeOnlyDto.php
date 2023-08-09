@@ -44,11 +44,6 @@ class PetTypeOnlyDto extends AbstractDTO implements PetTypeOnlyDtoInterface
         return ToString::fromStringOrNull($this->type)->getStringEvenIfNullGiven();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setTitle(string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

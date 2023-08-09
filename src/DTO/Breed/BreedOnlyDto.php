@@ -37,11 +37,6 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
         return ToInt::fromStringOrNull($this->pet_type_id)->getPositiveIntOrThrow();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

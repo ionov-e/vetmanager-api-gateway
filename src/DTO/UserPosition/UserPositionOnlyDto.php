@@ -44,11 +44,6 @@ class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInte
         return ToDateInterval::fromStringHMS($this->admission_length)->getDateIntervalOrNull();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);

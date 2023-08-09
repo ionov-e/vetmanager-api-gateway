@@ -63,70 +63,43 @@ interface UserOnlyDtoInterface
     public function getUserInn(): string;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
     public function setLastName(string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setFirstName(string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setMiddleName(string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setLogin(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setPasswd(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setPositionId(?int $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setEmail(?string $value): static;
 
     public function setPhone(?string $value): static;
 
     public function setCellPhone(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setAddress(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setRoleId(?int $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setIsActive(?bool $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCalcPercents(?float $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setNickname(?string $value): static;
 
     /** Не уверен, что существует поле на продакшене
@@ -139,33 +112,21 @@ interface UserOnlyDtoInterface
      */
     public function setYoutrackPassword(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setLastChangePwdDateFromString(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setLastChangePwdDateFromDateTime(DateTime $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setIsLimited(?bool $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCarrotQuestId(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setSipNumber(?string $value): static;
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setUserInn(?string $value): static;
 }

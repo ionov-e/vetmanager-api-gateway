@@ -16,9 +16,6 @@ interface RoleOnlyDtoInterface
     public function getIsSuper(): bool;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setName(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

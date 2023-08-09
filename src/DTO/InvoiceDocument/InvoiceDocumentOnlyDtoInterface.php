@@ -98,9 +98,6 @@ interface InvoiceDocumentOnlyDtoInterface
     public function getPrimeCost(): float;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(?int $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setInvoiceId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

@@ -180,11 +180,6 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return ToInt::fromStringOrNull($this->fiscal_section_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
     public function setUserId(?int $value): static
     {
         return self::setPropertyFluently($this, 'doctor_id', is_null($value) ? null : (string)$value);

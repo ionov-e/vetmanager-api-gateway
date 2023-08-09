@@ -61,12 +61,6 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setId(int $value): static
-    {
-        return self::setPropertyFluently($this, 'id', (string)$value);
-    }
-
-    /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(?string $value): static
     {
         return self::setPropertyFluently($this, 'title', $value);
