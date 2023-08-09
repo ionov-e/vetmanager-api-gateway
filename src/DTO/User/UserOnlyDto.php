@@ -164,7 +164,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return ToBool::fromStringOrNull($this->is_limited)->getBoolOrThrowIfNull();
     }
 
-    public function getCarrotquestId(): string
+    public function getCarrotQuestId(): string
     {
         return ToString::fromStringOrNull($this->carrotquest_id)->getStringEvenIfNullGiven();
     }
@@ -279,7 +279,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return self::setPropertyFluently($this, 'is_limited', is_null($value) ? null : (string)(int)$value);
     }
 
-    public function setCarrotquestId(?string $value): static
+    public function setCarrotQuestId(?string $value): static
     {
         return self::setPropertyFluently($this, 'carrotquest_id', $value);
     }

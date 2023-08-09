@@ -194,9 +194,9 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function getCarrotquestId(): string
+    public function getCarrotQuestId(): string
     {
-        return $this->modelDTO->getCarrotquestId();
+        return $this->modelDTO->getCarrotQuestId();
     }
 
     /** @inheritDoc */
@@ -330,9 +330,9 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function setCarrotquestId(?string $value): static
+    public function setCarrotQuestId(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCarrotquestId($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCarrotQuestId($value));
     }
 
     /** @inheritDoc */

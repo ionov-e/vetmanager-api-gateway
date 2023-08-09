@@ -55,7 +55,8 @@ interface UserOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsLimited(): bool;
 
-    public function getCarrotquestId(): string;
+    /** Идентифицирующий ключ пользователя (прежде всего в Dashly используется) */
+    public function getCarrotQuestId(): string;
 
     public function getSipNumber(): string;
 
@@ -156,7 +157,7 @@ interface UserOnlyDtoInterface
     /**
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setCarrotquestId(?string $value): static;
+    public function setCarrotQuestId(?string $value): static;
 
     /**
      * @throws VetmanagerApiGatewayInnerException
