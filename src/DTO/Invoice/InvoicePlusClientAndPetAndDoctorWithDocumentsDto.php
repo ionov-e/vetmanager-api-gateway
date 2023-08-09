@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\DTO\Invoice;
 
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
+use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDto;
 use VetmanagerApiGateway\DTO\Pet\PetAdditionalPlusTypeAndBreedDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 
-class InvoicePlusClientAndPetAndDoctorDto extends InvoiceOnlyDto
+class InvoicePlusClientAndPetAndDoctorWithDocumentsDto extends InvoicePlusClientAndPetAndDoctorDto
 {
     /**
      * @param string|null $id
@@ -34,6 +35,7 @@ class InvoicePlusClientAndPetAndDoctorDto extends InvoiceOnlyDto
      * @param ClientOnlyDto $client
      * @param PetAdditionalPlusTypeAndBreedDto $pet
      * @param UserOnlyDto $doctor
+     * @param InvoiceDocumentOnlyDto[] $invoiceDocuments
      */
     public function __construct(
         protected ?string                          $id,
@@ -58,7 +60,8 @@ class InvoicePlusClientAndPetAndDoctorDto extends InvoiceOnlyDto
         protected ?string                          $fiscal_section_id,
         protected ClientOnlyDto                    $client,
         protected PetAdditionalPlusTypeAndBreedDto $pet,
-        protected UserOnlyDto                      $doctor
+        protected UserOnlyDto                      $doctor,
+        protected array                            $invoiceDocuments
     )
     {
         parent::__construct(
@@ -81,22 +84,16 @@ class InvoicePlusClientAndPetAndDoctorDto extends InvoiceOnlyDto
             $payment_status,
             $clinic_id,
             $creator_id,
-            $fiscal_section_id
+            $fiscal_section_id,
+            $client,
+            $pet,
+            $doctor
         );
     }
 
-    public function getClientOnlyDto(): ClientOnlyDto
+    /** @return InvoiceDocumentOnlyDto[] */
+    public function getInvoiceDocumentsOnlyDtos(): array
     {
-        return $this->client;
-    }
-
-    public function getPetAdditionalPlusTypeAndBreedDto(): PetAdditionalPlusTypeAndBreedDto
-    {
-        return $this->pet;
-    }
-
-    public function getUserOnlyDto(): UserOnlyDto
-    {
-        return $this->doctor;
+        return $this->invoiceDocuments;
     }
 }
