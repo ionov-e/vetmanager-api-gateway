@@ -24,8 +24,8 @@ interface UnitOnlyDtoInterface
     public function setTitle(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 }

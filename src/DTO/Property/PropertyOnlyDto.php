@@ -76,12 +76,12 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
         return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @param array{
-     *     "id": string,
-     *     "property_name": string,
-     *     "property_value": string,
-     *     "property_title": ?string,
-     *     "clinic_id": string
-     * } $originalDataArray
-     */
+//    /** @param array{
+//     *     "id": string,
+//     *     "property_name": string,
+//     *     "property_value": string,
+//     *     "property_title": ?string,
+//     *     "clinic_id": string
+//     * } $originalDataArray
+//     */
 }

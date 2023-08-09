@@ -81,6 +81,7 @@ interface PetOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getWeight(): ?float;
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function getEditDateAsString(): string;
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -102,16 +103,16 @@ interface PetOnlyDtoInterface
     public function setSex(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateRegisterAsString(?string $value): static;
+    public function setDateRegisterFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateRegisterAsDateTime(DateTime $value): static;
+    public function setDateRegisterFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setBirthdayAsString(?string $value): static;
+    public function setBirthdayFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setBirthdayAsDateTime(DateTime $value): static;
+    public function setBirthdayFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setNote(?string $value): static;
@@ -129,7 +130,7 @@ interface PetOnlyDtoInterface
     public function setDeathNote(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDeathDateAsString(?string $value): static;
+    public function setDeathDateFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setChipNumber(?string $value): static;
@@ -138,10 +139,10 @@ interface PetOnlyDtoInterface
     public function setLabNumber(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static;
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setPicture(?string $value): static;
@@ -150,8 +151,8 @@ interface PetOnlyDtoInterface
     public function setWeight(?float $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setEditDateAsString(?string $value): static;
+    public function setEditDateFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setEditDateAsDateTime(DateTime $value): static;
+    public function setEditDateFromDateTime(DateTime $value): static;
 }

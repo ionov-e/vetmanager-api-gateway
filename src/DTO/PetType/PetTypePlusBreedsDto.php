@@ -32,7 +32,7 @@ class PetTypePlusBreedsDto extends PetTypeOnlyDto
     }
 
     /** @return BreedOnlyDto[] */
-    public function getBreedsAsDtos(): array
+    public function getBreedsOnlyDtos(): array
     {
         return $this->breeds;
     }

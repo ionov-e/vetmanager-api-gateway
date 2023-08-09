@@ -136,15 +136,15 @@ interface InvoiceOnlyDtoInterface
     public function setAmount(?float $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static;
-
-    /** @throws VetmanagerApiGatewayInnerException */
-    public function setInvoiceDateAsString(?string $value): static;
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setInvoiceDateAsDateTime(DateTime $value): static;
+    public function setInvoiceDateFromString(?string $value): static;
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setInvoiceDateFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setOldId(?int $value): static;
@@ -165,16 +165,16 @@ interface InvoiceOnlyDtoInterface
     public function setPaidAmount(?float $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsString(string $value): static;
+    public function setCreateDateFromString(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsDateTime(DateTime $value): static;
+    public function setCreateDateFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setPaymentStatusAsString(string $value): static;
+    public function setPaymentStatusFromString(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setPaymentStatusAsEnum(PaymentStatusEnum $value): static;
+    public function setPaymentStatusFromEnum(PaymentStatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setClinicId(?int $value): static;

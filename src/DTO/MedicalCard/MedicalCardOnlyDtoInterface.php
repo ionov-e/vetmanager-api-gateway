@@ -116,16 +116,16 @@ interface MedicalCardOnlyDtoInterface
     public function setPetId(int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateCreateAsString(string $value): static;
+    public function setDateCreateFromString(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateCreateAsDateTime(DateTime $value): static;
+    public function setDateCreateFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateEditAsString(string $value): static;
+    public function setDateEditFromString(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateEditAsDateTime(DateTime $value): static;
+    public function setDateEditFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDiagnose(?string $value): static;
@@ -161,10 +161,10 @@ interface MedicalCardOnlyDtoInterface
     public function setCreatorId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setCallingId(?int $value): static;

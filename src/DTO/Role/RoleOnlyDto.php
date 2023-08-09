@@ -50,13 +50,13 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 
     public function setIsSuper(bool $value): static
     {
-        return self::setPropertyFluently($this, 'super', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'super', (string)(int)$value);
     }
 
-    /** @param array{
-     *     "id": numeric-string,
-     *     "name": string,
-     *     "super": string,
-     * } $originalDataArray
-     */
+//    /** @param array{
+//     *     "id": numeric-string,
+//     *     "name": string,
+//     *     "super": string,
+//     * } $originalDataArray
+//     */
 }

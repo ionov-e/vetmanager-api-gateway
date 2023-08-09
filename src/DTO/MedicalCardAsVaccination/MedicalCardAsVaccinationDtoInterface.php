@@ -54,7 +54,7 @@ interface MedicalCardAsVaccinationDtoInterface
     public function getBirthdayAsDateTime(): ?DateTime;
 
     /** Игнорируем. Бред присылается */
-    public function getBirthdayAtTime(): ?string;
+    public function getBirthdayAtTimeAsString(): ?string;
 
     /** @return positive-int Default in DB: "0". Но не видел нигде 0 - не предусматриваю
      * @throws VetmanagerApiGatewayResponseException
@@ -108,13 +108,13 @@ interface MedicalCardAsVaccinationDtoInterface
     public function setPetId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateAsString(?string $value): static;
+    public function setDateFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateAsDateTime(DateTime $value): static;
+    public function setDateFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateNextDateTime(?string $value): static;
+    public function setDateNextDateTimeFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setGoodId(?int $value): static;
@@ -122,12 +122,12 @@ interface MedicalCardAsVaccinationDtoInterface
     /** Без времени. Пример: '2020-10-10'
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setBirthdayAsString(?string $value): static;
+    public function setBirthdayFromString(?string $value): static;
 
     /** Без времени
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setBirthdayAsDateTime(DateTime $value): static;
+    public function setBirthdayFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setMedicalCardId(?int $value): static;
@@ -154,5 +154,5 @@ interface MedicalCardAsVaccinationDtoInterface
     public function setNextAdmissionId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setNextVisitTimeAsString(?string $value): static;
+    public function setNextVisitTimeFromString(?string $value): static;
 }

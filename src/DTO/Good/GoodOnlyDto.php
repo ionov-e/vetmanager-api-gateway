@@ -11,7 +11,6 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
 class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 {
@@ -194,27 +193,25 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
     {
         return self::setPropertyFluently($this, 'category_id', is_null($value) ? null : (string)$value);
     }
-    
-    /** @param array{
-     *     id: numeric-string,
-     *     group_id: ?numeric-string,
-     *     title: string,
-     *     unit_storage_id: ?numeric-string,
-     *     is_warehouse_account: string,
-     *     is_active: string,
-     *     code: ?string,
-     *     is_call: string,
-     *     is_for_sale: string,
-     *     barcode: ?string,
-     *     create_date: string,
-     *     description: string,
-     *     prime_cost: string,
-     *     category_id: ?numeric-string,
-     *     group?: array,
-     *     unitStorage?: array,
-     *     goodSaleParams?: array
-     * } $originalDataArray
-     * @throws VetmanagerApiGatewayException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
+
+//    /** @param array{
+//     *     id: numeric-string,
+//     *     group_id: ?numeric-string,
+//     *     title: string,
+//     *     unit_storage_id: ?numeric-string,
+//     *     is_warehouse_account: string,
+//     *     is_active: string,
+//     *     code: ?string,
+//     *     is_call: string,
+//     *     is_for_sale: string,
+//     *     barcode: ?string,
+//     *     create_date: string,
+//     *     description: string,
+//     *     prime_cost: string,
+//     *     category_id: ?numeric-string,
+//     *     group?: array,
+//     *     unitStorage?: array,
+//     *     goodSaleParams?: array
+//     * } $originalDataArray
+//     */
 }

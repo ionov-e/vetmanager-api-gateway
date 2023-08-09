@@ -81,8 +81,9 @@ interface AdmissionOnlyDtoInterface
 
     public function setId(int $value): static;
 
-    public function setAdmissionDateAsString(string $value): static;
-    public function setAdmissionDateAsDateTime(DateTime $value): static;
+    public function setAdmissionDateFromString(string $value): static;
+
+    public function setAdmissionDateFromDateTime(DateTime $value): static;
 
     public function setDescription(string $value): static;
 
@@ -94,13 +95,13 @@ interface AdmissionOnlyDtoInterface
 
     public function setTypeId(int $value): static;
 
-    public function setAdmissionLengthAsString(string $value): static;
+    public function setAdmissionLengthFromString(string $value): static;
 
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static;
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static;
 
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
-    public function setStatusAsEnum(StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     public function setClinicId(int $value): static;
 
@@ -108,9 +109,9 @@ interface AdmissionOnlyDtoInterface
 
     public function setCreatorId(int $value): static;
 
-    public function setCreateDateAsString(string $value): static;
+    public function setCreateDateFromString(string $value): static;
 
-    public function setCreateDateAsDateTime(DateTime $value): static;
+    public function setCreateDateFromDateTime(DateTime $value): static;
 
     public function setEscortId(int $value): static;
 

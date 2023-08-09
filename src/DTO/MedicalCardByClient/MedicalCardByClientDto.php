@@ -15,6 +15,38 @@ use VetmanagerApiGateway\DTO\Pet\SexEnum;
 
 final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByClientDtoInterface
 {
+    /**
+     * @param string|null $medical_card_id
+     * @param string|null $date_edit
+     * @param string|null $diagnos
+     * @param string|null $doctor_id
+     * @param string|null $medical_card_status
+     * @param string|null $healing_process
+     * @param string|null $recomendation
+     * @param string|null $weight
+     * @param string|null $temperature
+     * @param string|null $meet_result_id
+     * @param string|null $admission_type
+     * @param string|null $pet_id
+     * @param string|null $alias
+     * @param string|null $birthday
+     * @param string|null $sex
+     * @param string|null $note
+     * @param string|null $pet_type
+     * @param string|null $breed
+     * @param string|null $client_id
+     * @param string|null $first_name
+     * @param string|null $last_name
+     * @param string|null $middle_name
+     * @param string|null $phone
+     * @param string|null $doctor_nickname
+     * @param string|null $doctor_first_name
+     * @param string|null $doctor_last_name
+     * @param string|null $doctor_middle_name
+     * @param string|null $editable
+     * @param string|null $meet_result_title
+     * @param string|null $admission_type_title
+     */
     public function __construct(
         protected ?string $medical_card_id,
         protected ?string $date_edit,
@@ -225,12 +257,12 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return self::setPropertyFluently($this, 'medical_card_id', (string)$value);
     }
 
-    public function setDateEditAsString(?string $value): static
+    public function setDateEditFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date_edit', $value);
     }
 
-    public function setDateEditAsDateTime(DateTime $value): static
+    public function setDateEditFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'date_edit', $value->format('Y-m-d H:i:s'));
     }
@@ -245,12 +277,12 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return self::setPropertyFluently($this, 'doctor_id', (string)$value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'medical_card_status', $value);
     }
 
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'medical_card_status', $value->value);
     }
@@ -295,22 +327,22 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return self::setPropertyFluently($this, 'alias', $value);
     }
 
-    public function setBirthdayAsString(?string $value): static
+    public function setBirthdayFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value);
     }
 
-    public function setBirthdayAsDateTime(DateTime $value): static
+    public function setBirthdayFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value->format('H:i:s'));
     }
 
-    public function setSexAsString(?string $value): static
+    public function setSexFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'sex', $value);
     }
 
-    public function setSexAsEnum(SexEnum $value): static
+    public function setSexFromEnum(SexEnum $value): static
     {
         return self::setPropertyFluently($this, 'sex', $value->value);
     }

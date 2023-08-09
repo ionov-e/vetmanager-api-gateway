@@ -312,15 +312,15 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function setLastChangePwdDateAsString(?string $value): static
+    public function setLastChangePwdDateFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setLastChangePwdDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setLastChangePwdDateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setLastChangePwdDateAsDateTime(DateTime $value): static
+    public function setLastChangePwdDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setLastChangePwdDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setLastChangePwdDateFromDateTime($value));
     }
 
     /** @inheritDoc */

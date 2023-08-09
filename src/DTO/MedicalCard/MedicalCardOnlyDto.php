@@ -14,6 +14,29 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $patient_id
+     * @param string|null $date_create
+     * @param string|null $date_edit
+     * @param string|null $diagnos
+     * @param string|null $recomendation
+     * @param string|null $invoice
+     * @param string|null $admission_type
+     * @param string|null $weight
+     * @param string|null $temperature
+     * @param string|null $meet_result_id
+     * @param string|null $description
+     * @param string|null $next_meet_id
+     * @param string|null $doctor_id
+     * @param string|null $creator_id
+     * @param string|null $status
+     * @param string|null $calling_id
+     * @param string|null $admission_id
+     * @param string|null $diagnos_text
+     * @param string|null $diagnos_type_text
+     * @param string|null $clinic_id
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $patient_id,
@@ -171,22 +194,22 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
         return self::setPropertyFluently($this, 'patient_id', (string)$value);
     }
 
-    public function setDateCreateAsString(string $value): static
+    public function setDateCreateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'date_create', $value);
     }
 
-    public function setDateCreateAsDateTime(DateTime $value): static
+    public function setDateCreateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'date_create', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setDateEditAsString(string $value): static
+    public function setDateEditFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'date_edit', $value);
     }
 
-    public function setDateEditAsDateTime(DateTime $value): static
+    public function setDateEditFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'date_edit', $value->format('Y-m-d H:i:s'));
     }
@@ -246,12 +269,12 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
         return self::setPropertyFluently($this, 'creator_id', is_null($value) ? null : (string)$value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }

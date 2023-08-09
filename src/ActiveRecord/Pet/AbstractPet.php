@@ -304,27 +304,27 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function setDateRegisterAsString(?string $value): static
+    public function setDateRegisterFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromString($value));
     }
 
     /** @inheritDoc */
-    public function setDateRegisterAsDateTime(DateTime $value): static
+    public function setDateRegisterFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromDateTime($value));
     }
 
     /** @inheritDoc */
-    public function setBirthdayAsString(?string $value): static
+    public function setBirthdayFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayFromString($value));
     }
 
     /** @inheritDoc */
-    public function setBirthdayAsDateTime(DateTime $value): static
+    public function setBirthdayFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayFromDateTime($value));
     }
 
     /** @inheritDoc */
@@ -358,9 +358,9 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function setDeathDateAsString(?string $value): static
+    public function setDeathDateFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDeathDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDeathDateFromString($value));
     }
 
     /** @inheritDoc */
@@ -376,15 +376,15 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
     /** @inheritDoc */
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 
     /** @inheritDoc */
@@ -400,15 +400,15 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     }
 
     /** @inheritDoc */
-    public function setEditDateAsString(?string $value): static
+    public function setEditDateFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setEditDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setEditDateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setEditDateAsDateTime(DateTime $value): static
+    public function setEditDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setEditDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setEditDateFromDateTime($value));
     }
 
     abstract public function getOwner(): AbstractClient;

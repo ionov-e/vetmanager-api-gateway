@@ -220,14 +220,20 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setCityId($value));
     }
 
-    public function getDateRegister(): ?DateTime
+    public function getDateRegisterAsDateTime(): ?DateTime
     {
-        return $this->modelDTO->getDateRegister();
+        return $this->modelDTO->getDateRegisterAsDateTime();
     }
 
-    public function setDateRegister(string $value): static
+    public function setDateRegisterFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegister($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromString($value));
+    }
+
+
+    public function setDateRegisterFromDateTime(DateTime $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromDateTime($value));
     }
 
     public function getCellPhone(): string

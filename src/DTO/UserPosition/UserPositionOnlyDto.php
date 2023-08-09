@@ -12,6 +12,11 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 
 class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $admission_length
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $title,
@@ -49,12 +54,12 @@ class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInte
         return self::setPropertyFluently($this, 'title', $value);
     }
 
-    public function setAdmissionLengthAsString(?string $value): static
+    public function setAdmissionLengthFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'admission_length', $value);
     }
 
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static
     {
         return self::setPropertyFluently($this, 'admission_length', $value->format('H:i:s'));
     }

@@ -312,15 +312,15 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateAsString(string $value): static
+    public function setAdmissionDateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateFromString($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateAsDateTime(DateTime $value): static
+    public function setAdmissionDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateFromDateTime($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -354,26 +354,26 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsString(string $value): static
+    public function setAdmissionLengthFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthFromString($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsDateInterval($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthFromDateInterval($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -395,15 +395,15 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromString($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromDateTime($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

@@ -142,12 +142,12 @@ interface UserOnlyDtoInterface
     /**
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setLastChangePwdDateAsString(?string $value): static;
+    public function setLastChangePwdDateFromString(?string $value): static;
 
     /**
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setLastChangePwdDateAsDateTime(DateTime $value): static;
+    public function setLastChangePwdDateFromDateTime(DateTime $value): static;
 
     /**
      * @throws VetmanagerApiGatewayInnerException

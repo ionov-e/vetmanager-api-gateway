@@ -264,12 +264,12 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return self::setPropertyFluently($this, 'youtrack_password', $value);
     }
 
-    public function setLastChangePwdDateAsString(?string $value): static
+    public function setLastChangePwdDateFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'last_change_pwd_date', $value);
     }
 
-    public function setLastChangePwdDateAsDateTime(DateTime $value): static
+    public function setLastChangePwdDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'last_change_pwd_date', $value->format('Y-m-d H:i:s'));
     }

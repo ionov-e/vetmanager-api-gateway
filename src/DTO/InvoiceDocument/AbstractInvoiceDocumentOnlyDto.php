@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\InvoiceDocument;
 
+use DateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
@@ -14,25 +15,45 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 /** В 2 дочерних классах отличаются типы данных для Quantity & Price. В остальном основа одинаковая. */
 abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $document_id
+     * @param string|null $good_id
+     * @param string|null $responsible_user_id
+     * @param string|null $is_default_responsible
+     * @param string|null $sale_param_id
+     * @param string|null $tag_id
+     * @param string|null $discount_type
+     * @param string|null $discount_document_id
+     * @param string|null $discount_percent
+     * @param string|null $default_price
+     * @param string|null $create_date
+     * @param string|null $discount_cause
+     * @param string|null $fixed_discount_id
+     * @param string|null $fixed_discount_percent
+     * @param string|null $fixed_increase_id
+     * @param string|null $fixed_increase_percent
+     * @param string|null $prime_cost
+     */
     public function __construct(
-        protected ?string               $id,
-        protected ?string               $document_id,
-        protected ?string               $good_id,
-        protected ?string               $responsible_user_id,
-        protected ?string               $is_default_responsible,
-        protected ?string               $sale_param_id,
-        protected ?string               $tag_id,
-        protected ?string               $discount_type,
-        protected ?string               $discount_document_id,
-        protected ?string               $discount_percent,
-        protected ?string               $default_price,
-        protected ?string               $create_date,
-        protected ?string               $discount_cause,
-        protected ?string               $fixed_discount_id,
-        protected ?string               $fixed_discount_percent,
-        protected ?string               $fixed_increase_id,
-        protected ?string               $fixed_increase_percent,
-        protected ?string               $prime_cost
+        protected ?string $id,
+        protected ?string $document_id,
+        protected ?string $good_id,
+        protected ?string $responsible_user_id,
+        protected ?string $is_default_responsible,
+        protected ?string $sale_param_id,
+        protected ?string $tag_id,
+        protected ?string $discount_type,
+        protected ?string $discount_document_id,
+        protected ?string $discount_percent,
+        protected ?string $default_price,
+        protected ?string $create_date,
+        protected ?string $discount_cause,
+        protected ?string $fixed_discount_id,
+        protected ?string $fixed_discount_percent,
+        protected ?string $fixed_increase_id,
+        protected ?string $fixed_increase_percent,
+        protected ?string $prime_cost
     )
     {
     }
@@ -103,7 +124,7 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
         return ToString::fromStringOrNull($this->create_date)->getStringOrThrowIfNull();
     }
 
-    public function getCreateDateAsDateTime(): \DateTime
+    public function getCreateDateAsDateTime(): DateTime
     {
         return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }
@@ -194,12 +215,12 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
         return self::setPropertyFluently($this, 'default_price', $value);
     }
 
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value);
     }
 
-    public function setCreateDateAsDateTime(\DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
     }

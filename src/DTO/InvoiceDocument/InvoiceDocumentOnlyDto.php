@@ -8,6 +8,28 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 
 class InvoiceDocumentOnlyDto extends AbstractInvoiceDocumentOnlyDto
 {
+    /**
+     * @param string|null $id
+     * @param string|null $document_id
+     * @param string|null $good_id
+     * @param string|null $quantity
+     * @param string|null $price
+     * @param string|null $responsible_user_id
+     * @param string|null $is_default_responsible
+     * @param string|null $sale_param_id
+     * @param string|null $tag_id
+     * @param string|null $discount_type
+     * @param string|null $discount_document_id
+     * @param string|null $discount_percent
+     * @param string|null $default_price
+     * @param string|null $create_date
+     * @param string|null $discount_cause
+     * @param string|null $fixed_discount_id
+     * @param string|null $fixed_discount_percent
+     * @param string|null $fixed_increase_id
+     * @param string|null $fixed_increase_percent
+     * @param string|null $prime_cost
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $document_id,

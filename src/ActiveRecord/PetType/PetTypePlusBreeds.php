@@ -24,6 +24,6 @@ final class PetTypePlusBreeds extends AbstractPetType
     /** @return BreedOnly[] */
     public function getBreeds(): array
     {
-        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getBreedsAsDtos(), BreedOnly::class);
+        return $this->activeRecordFactory->getFromMultipleDtos($this->modelDTO->getBreedsOnlyDtos(), BreedOnly::class);
     }
 }

@@ -75,14 +75,14 @@ final class UserPosition extends AbstractActiveRecord implements UserPositionOnl
     }
 
     /** @inheritDoc */
-    public function setAdmissionLengthAsString(?string $value): static
+    public function setAdmissionLengthFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthFromString($value));
     }
 
     /** @inheritDoc */
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthAsDateInterval($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionLengthFromDateInterval($value));
     }
 }

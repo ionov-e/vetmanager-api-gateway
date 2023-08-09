@@ -30,8 +30,8 @@ interface UserPositionOnlyDtoInterface
     public function setTitle(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsString(?string $value): static;
+    public function setAdmissionLengthFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static;
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static;
 }

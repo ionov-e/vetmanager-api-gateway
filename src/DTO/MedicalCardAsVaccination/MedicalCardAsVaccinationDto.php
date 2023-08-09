@@ -13,7 +13,26 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 
 final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCardAsVaccinationDtoInterface
 {
-
+    /**
+     * @param string|null $id
+     * @param string|null $name
+     * @param string|null $pet_id
+     * @param string|null $date
+     * @param string|null $date_nexttime
+     * @param string|null $vaccine_id
+     * @param string|null $birthday
+     * @param string|null $birthday_at_time
+     * @param string|null $medcard_id
+     * @param string|null $doza_type_id
+     * @param string|null $doza_value
+     * @param string|null $sale_param_id
+     * @param string|null $vaccine_type
+     * @param string|null $vaccine_description
+     * @param string|null $vaccine_type_title
+     * @param string|null $next_admission_id
+     * @param string|null $next_visit_time
+     * @param string|null $pet_age_at_time_vaccination
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $name,
@@ -87,7 +106,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return ToDateTime::fromOnlyDateString($this->birthday)->getDateTimeOrNull();
     }
 
-    public function getBirthdayAtTime(): ?string
+    public function getBirthdayAtTimeAsString(): ?string
     {
         return $this->birthday_at_time;
     }
@@ -157,17 +176,17 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return self::setPropertyFluently($this, 'pet_id', is_null($value) ? null : (string)$value);
     }
 
-    public function setDateAsString(?string $value): static
+    public function setDateFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date', $value);
     }
 
-    public function setDateAsDateTime(DateTime $value): static
+    public function setDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'date', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setDateNextDateTime(?string $value): static
+    public function setDateNextDateTimeFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date_nexttime', $value);
     }
@@ -177,12 +196,12 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return self::setPropertyFluently($this, 'vaccine_id', is_null($value) ? null : (string)$value);
     }
 
-    public function setBirthdayAsString(?string $value): static
+    public function setBirthdayFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value);
     }
 
-    public function setBirthdayAsDateTime(DateTime $value): static
+    public function setBirthdayFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value->format('Y-m-d'));
     }
@@ -227,7 +246,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return self::setPropertyFluently($this, 'next_admission_id', is_null($value) ? null : (string)$value);
     }
 
-    public function setNextVisitTimeAsString(?string $value): static
+    public function setNextVisitTimeFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'next_visit_time', $value);
     }

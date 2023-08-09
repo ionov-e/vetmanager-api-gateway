@@ -91,13 +91,13 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
         return self::setPropertyFluently($this, 'price_id', is_null($value) ? null : (string)$value);
     }
 
-    /** @param array{
-     *     "id": string,
-     *     "title": string,
-     *     "is_service": string,
-     *     "markup": ?string,
-     *     "is_show_in_vaccines": string,
-     *     "price_id": ?string
-     * } $originalDataArray
-     */
+//    /** @param array{
+//     *     "id": string,
+//     *     "title": string,
+//     *     "is_service": string,
+//     *     "markup": ?string,
+//     *     "is_show_in_vaccines": string,
+//     *     "price_id": ?string
+//     * } $originalDataArray
+//     */
 }

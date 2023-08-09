@@ -126,10 +126,10 @@ interface MedicalCardByClientDtoInterface
     public function setId(int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateEditAsString(?string $value): static;
+    public function setDateEditFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateEditAsDateTime(DateTime $value): static;
+    public function setDateEditFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDiagnose(?string $value): static;
@@ -138,10 +138,10 @@ interface MedicalCardByClientDtoInterface
     public function setUserId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static;
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDescription(?string $value): static;
@@ -170,18 +170,18 @@ interface MedicalCardByClientDtoInterface
     /** Только дата без времени
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setBirthdayAsString(?string $value): static;
+    public function setBirthdayFromString(?string $value): static;
 
     /** Только дата без времени
      * @throws VetmanagerApiGatewayInnerException
      */
-    public function setBirthdayAsDateTime(DateTime $value): static;
+    public function setBirthdayFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setSexAsString(?string $value): static;
+    public function setSexFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setSexAsEnum(SexEnum $value): static;
+    public function setSexFromEnum(SexEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setPetNote(?string $value): static;

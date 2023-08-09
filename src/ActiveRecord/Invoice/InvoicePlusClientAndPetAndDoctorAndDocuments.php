@@ -44,13 +44,13 @@ final class InvoicePlusClientAndPetAndDoctorAndDocuments extends AbstractInvoice
 
     public function getPetBreed(): ?AbstractBreed
     {
-        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeDto();
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
         return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnlyDto::class) : null;
     }
 
     public function getPetType(): ?AbstractPetType
     {
-        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeDto();
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
         return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetTypeOnlyDto::class) : null;
     }
 

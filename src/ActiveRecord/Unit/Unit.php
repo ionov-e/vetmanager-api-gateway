@@ -69,14 +69,14 @@ final class Unit extends AbstractActiveRecord implements UnitOnlyDtoInterface
     }
 
     /** @inheritDoc */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
     /** @inheritDoc */
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 }

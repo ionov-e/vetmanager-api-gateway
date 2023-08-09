@@ -13,6 +13,27 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 
 class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $owner_id
+     * @param string|null $type_id
+     * @param string|null $alias
+     * @param string|null $sex
+     * @param string|null $date_register
+     * @param string|null $birthday
+     * @param string|null $note
+     * @param string|null $breed_id
+     * @param string|null $old_id
+     * @param string|null $color_id
+     * @param string|null $deathnote
+     * @param string|null $deathdate
+     * @param string|null $chip_number
+     * @param string|null $lab_number
+     * @param string|null $status
+     * @param string|null $picture
+     * @param string|null $weight
+     * @param string|null $edit_date
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $owner_id,
@@ -149,7 +170,7 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getEditDateAsString(): string
     {
-        return $this->edit_date;
+        return ToString::fromStringOrNull($this->edit_date)->getNonEmptyStringOrThrow();
     }
 
     public function getEditDateAsDateTime(): DateTime
@@ -182,22 +203,22 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'sex', $value);
     }
 
-    public function setDateRegisterAsString(?string $value): static
+    public function setDateRegisterFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'date_register', $value);
     }
 
-    public function setDateRegisterAsDateTime(DateTime $value): static
+    public function setDateRegisterFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'date_register', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setBirthdayAsString(?string $value): static
+    public function setBirthdayFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value);
     }
 
-    public function setBirthdayAsDateTime(DateTime $value): static
+    public function setBirthdayFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'birthday', $value->format('Y-m-d H:i:s'));
     }
@@ -227,7 +248,7 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'deathnote', $value);
     }
 
-    public function setDeathDateAsString(?string $value): static
+    public function setDeathDateFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'deathdate', $value);
     }
@@ -242,12 +263,12 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'lab_number', $value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }
@@ -262,12 +283,12 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'weight', is_null($value) ? null : (string)$value);
     }
 
-    public function setEditDateAsString(?string $value): static
+    public function setEditDateFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'edit_date', $value);
     }
 
-    public function setEditDateAsDateTime(DateTime $value): static
+    public function setEditDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'edit_date', $value->format('Y-m-d H:i:s'));
     }

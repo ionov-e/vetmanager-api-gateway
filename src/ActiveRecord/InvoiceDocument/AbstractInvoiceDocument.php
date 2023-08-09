@@ -359,15 +359,15 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements I
     }
 
     /** @inheritDoc */
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromDateTime($value));
     }
 
     /** @inheritDoc */

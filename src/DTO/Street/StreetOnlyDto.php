@@ -12,6 +12,12 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
 {
+    /**
+     * @param string|null $id
+     * @param string|null $title
+     * @param string|null $city_id
+     * @param string|null $type
+     */
     public function __construct(
         protected ?string $id,
         protected ?string $title,
@@ -69,17 +75,17 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setCityId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'city_id', (string)$value);
+        return self::setPropertyFluently($this, 'city_id', is_null($value) ? null : (string)$value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeAsString(?string $value): static
+    public function setTypeFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'type', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeAsEnum(TypeEnum $value): static
+    public function setTypeFromEnum(TypeEnum $value): static
     {
         return self::setPropertyFluently($this, 'type', $value->value);
     }

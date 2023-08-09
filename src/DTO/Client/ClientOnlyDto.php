@@ -221,15 +221,21 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** Пустые значения переводятся в null
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getDateRegister(): ?DateTime
+    public function getDateRegisterAsDateTime(): ?DateTime
     {
         return ToDateTime::fromFullDateTimeString($this->date_register)->getDateTimeOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateRegister(string $value): static
+    public function setDateRegisterFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'date_register', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setDateRegisterFromDateTime(DateTime $value): static
+    {
+        return self::setPropertyFluently($this, 'date_register', $value->format('Y-m-d H:i:s'));
     }
 
     public function getCellPhone(): string

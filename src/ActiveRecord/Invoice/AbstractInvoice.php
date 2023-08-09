@@ -216,26 +216,26 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     }
 
     /** @inheritDoc */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
-    }
-
-    /** @inheritDoc */
-    public function setInvoiceDateAsString(?string $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setInvoiceDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 
     /** @inheritDoc */
-    public function setInvoiceDateAsDateTime(DateTime $value): static
+    public function setInvoiceDateFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setInvoiceDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setInvoiceDateFromString($value));
+    }
+
+    /** @inheritDoc */
+    public function setInvoiceDateFromDateTime(DateTime $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setInvoiceDateFromDateTime($value));
     }
 
     /** @inheritDoc */
@@ -275,27 +275,27 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     }
 
     /** @inheritDoc */
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setCreateDateFromDateTime($value));
     }
 
     /** @inheritDoc */
-    public function setPaymentStatusAsString(string $value): static
+    public function setPaymentStatusFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setPaymentStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPaymentStatusFromString($value));
     }
 
     /** @inheritDoc */
-    public function setPaymentStatusAsEnum(PaymentStatusEnum $value): static
+    public function setPaymentStatusFromEnum(PaymentStatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setPaymentStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPaymentStatusFromEnum($value));
     }
 
     /** @inheritDoc */

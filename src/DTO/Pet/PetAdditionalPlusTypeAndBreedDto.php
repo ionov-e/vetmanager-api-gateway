@@ -33,27 +33,27 @@ class PetAdditionalPlusTypeAndBreedDto extends PetOnlyDto
      * @param BreedOnlyDto|null $breed_data
      */
     public function __construct(
-        protected ?string                 $id,
-        protected ?string                 $owner_id,
-        protected ?string                 $type_id,
-        protected ?string                 $alias,
-        protected ?string                 $sex,
-        protected ?string                 $date_register,
-        protected ?string                 $birthday,
-        protected ?string                 $note,
-        protected ?string                 $breed_id,
-        protected ?string                 $old_id,
-        protected ?string                 $color_id,
-        protected ?string                 $deathnote,
-        protected ?string                 $deathdate,
-        protected ?string                 $chip_number,
-        protected ?string                 $lab_number,
-        protected ?string                 $status,
-        protected ?string                 $picture,
-        protected ?string                 $weight,
-        protected ?string                 $edit_date,
-        protected ?PetTypeOnlyDto         $pet_type_data = null,
-        protected ?BreedOnlyDto           $breed_data = null
+        protected ?string         $id,
+        protected ?string         $owner_id,
+        protected ?string         $type_id,
+        protected ?string         $alias,
+        protected ?string         $sex,
+        protected ?string         $date_register,
+        protected ?string         $birthday,
+        protected ?string         $note,
+        protected ?string         $breed_id,
+        protected ?string         $old_id,
+        protected ?string         $color_id,
+        protected ?string         $deathnote,
+        protected ?string         $deathdate,
+        protected ?string         $chip_number,
+        protected ?string         $lab_number,
+        protected ?string         $status,
+        protected ?string         $picture,
+        protected ?string         $weight,
+        protected ?string         $edit_date,
+        protected ?PetTypeOnlyDto $pet_type_data = null,
+        protected ?BreedOnlyDto   $breed_data = null
     )
     {
         parent::__construct(
@@ -79,12 +79,12 @@ class PetAdditionalPlusTypeAndBreedDto extends PetOnlyDto
         );
     }
 
-    public function getPetTypeDto(): ?PetTypeOnlyDto
+    public function getPetTypeOnlyDto(): ?PetTypeOnlyDto
     {
         return $this->pet_type_data;
     }
 
-    public function getBreedDto(): ?BreedOnlyDto
+    public function getBreedOnlyDto(): ?BreedOnlyDto
     {
         return $this->breed_data;
     }

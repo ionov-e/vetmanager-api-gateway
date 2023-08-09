@@ -201,22 +201,22 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
         return self::setPropertyFluently($this, 'email', $value);
     }
 
-    /** @param array{
-     *     "id": string,
-     *     "title": ?string,
-     *     "address": ?string,
-     *     "phone": ?string,
-     *     "city_id": ?string,
-     *     "start_time": ?string,
-     *     "end_time": ?string,
-     *     "internet_address": ?string,
-     *     "guest_client_id": ?string,
-     *     "time_zone": ?string,
-     *     "logo_url": string,
-     *     "status": string,
-     *     "telegram": string,
-     *     "whatsapp": string,
-     *     "email": string
-     * } $originalDataArray
-     */
+//    /** @param array{
+//     *     "id": string,
+//     *     "title": ?string,
+//     *     "address": ?string,
+//     *     "phone": ?string,
+//     *     "city_id": ?string,
+//     *     "start_time": ?string,
+//     *     "end_time": ?string,
+//     *     "internet_address": ?string,
+//     *     "guest_client_id": ?string,
+//     *     "time_zone": ?string,
+//     *     "logo_url": string,
+//     *     "status": string,
+//     *     "telegram": string,
+//     *     "whatsapp": string,
+//     *     "email": string
+//     * } $originalDataArray
+//     */
 }

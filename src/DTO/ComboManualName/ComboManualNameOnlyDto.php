@@ -66,12 +66,12 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
         return self::setPropertyFluently($this, 'name', $value);
     }
 
-    /** @param array{
-     *       id: string,
-     *       title: string,
-     *       is_readonly: string,
-     *       name: string,
-     *       comboManualItems?: array
-     *   } $originalDataArray 'comboManualItems' не используем
-     */
+//    /** @param array{
+//     *       id: string,
+//     *       title: string,
+//     *       is_readonly: string,
+//     *       name: string,
+//     *       comboManualItems?: array
+//     *   } $originalDataArray 'comboManualItems' не используем
+//     */
 }

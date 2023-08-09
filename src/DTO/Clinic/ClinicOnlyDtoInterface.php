@@ -68,10 +68,14 @@ interface ClinicOnlyDtoInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setCityId(int $value): static;
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    /** Время вида: "00:00" или пустая строка
+     * @throws VetmanagerApiGatewayInnerException
+     */
     public function setStartTime(?string $value): static;
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    /** Время вида: "00:00" или пустая строка
+     * @throws VetmanagerApiGatewayInnerException
+     */
     public function setEndTime(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */

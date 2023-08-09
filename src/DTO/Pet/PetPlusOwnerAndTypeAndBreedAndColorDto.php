@@ -11,6 +11,31 @@ use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 
 class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
 {
+    /**
+     * @param string|null $id
+     * @param string|null $owner_id
+     * @param string|null $type_id
+     * @param string|null $alias
+     * @param string|null $sex
+     * @param string|null $date_register
+     * @param string|null $birthday
+     * @param string|null $note
+     * @param string|null $breed_id
+     * @param string|null $old_id
+     * @param string|null $color_id
+     * @param string|null $deathnote
+     * @param string|null $deathdate
+     * @param string|null $chip_number
+     * @param string|null $lab_number
+     * @param string|null $status
+     * @param string|null $picture
+     * @param string|null $weight
+     * @param string|null $edit_date
+     * @param ClientOnlyDto $owner
+     * @param PetTypeOnlyDto|null $type
+     * @param BreedOnlyDto|null $breed
+     * @param ComboManualItemOnlyDto|null $color
+     */
     public function __construct(
         protected ?string                 $id,
         protected ?string                 $owner_id,

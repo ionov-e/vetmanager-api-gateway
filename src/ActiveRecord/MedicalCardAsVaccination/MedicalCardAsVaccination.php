@@ -142,9 +142,9 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     }
 
     /** @inheritDoc */
-    public function getBirthdayAtTime(): ?string
+    public function getBirthdayAtTimeAsString(): ?string
     {
-        return $this->modelDTO->getBirthdayAtTime();
+        return $this->modelDTO->getBirthdayAtTimeAsString();
     }
 
     /** @inheritDoc */
@@ -224,21 +224,21 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     }
 
     /** @inheritDoc */
-    public function setDateAsString(?string $value): static
+    public function setDateFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setDateAsDateTime(DateTime $value): static
+    public function setDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateFromDateTime($value));
     }
 
     /** @inheritDoc */
-    public function setDateNextDateTime(?string $value): static
+    public function setDateNextDateTimeFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateNextDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateNextDateTimeFromString($value));
     }
 
     /** @inheritDoc */
@@ -248,15 +248,15 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     }
 
     /** @inheritDoc */
-    public function setBirthdayAsString(?string $value): static
+    public function setBirthdayFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayFromString($value));
     }
 
     /** @inheritDoc */
-    public function setBirthdayAsDateTime(DateTime $value): static
+    public function setBirthdayFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setBirthdayFromDateTime($value));
     }
 
     /** @inheritDoc */
@@ -308,9 +308,9 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     }
 
     /** @inheritDoc */
-    public function setNextVisitTimeAsString(?string $value): static
+    public function setNextVisitTimeFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setNextVisitTimeAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setNextVisitTimeFromString($value));
     }
 
     /** @throws VetmanagerApiGatewayException */

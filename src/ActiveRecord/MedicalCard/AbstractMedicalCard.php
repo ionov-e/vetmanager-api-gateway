@@ -266,27 +266,27 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     }
 
     /** @inheritDoc */
-    public function setDateCreateAsString(string $value): static
+    public function setDateCreateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateCreateAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateCreateFromString($value));
     }
 
     /** @inheritDoc */
-    public function setDateCreateAsDateTime(DateTime $value): static
+    public function setDateCreateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateCreateAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateCreateFromDateTime($value));
     }
 
     /** @inheritDoc */
-    public function setDateEditAsString(string $value): static
+    public function setDateEditFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateEditAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateEditFromString($value));
     }
 
     /** @inheritDoc */
-    public function setDateEditAsDateTime(DateTime $value): static
+    public function setDateEditFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateEditAsDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateEditFromDateTime($value));
     }
 
     /** @inheritDoc */
@@ -356,15 +356,15 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     }
 
     /** @inheritDoc */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
     /** @inheritDoc */
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 
     /** @inheritDoc */

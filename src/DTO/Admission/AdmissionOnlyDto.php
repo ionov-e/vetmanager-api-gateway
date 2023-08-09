@@ -130,7 +130,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getReceptionWriteChannel(): string
     {
-        return $this->reception_write_channel;
+        return ToString::fromStringOrNull($this->reception_write_channel)->getStringOrThrowIfNull();
     }
 
     public function getIsAutoCreate(): bool
@@ -150,13 +150,13 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateAsString(string $value): static
+    public function setAdmissionDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'admission_date', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateAsDateTime(DateTime $value): static
+    public function setAdmissionDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'admission_date', $value->format('Y-m-d H:i:s'));
     }
@@ -192,25 +192,25 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsString(string $value): static
+    public function setAdmissionLengthFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'admission_length', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionLengthAsDateInterval(DateInterval $value): static
+    public function setAdmissionLengthFromDateInterval(DateInterval $value): static
     {
         return self::setPropertyFluently($this, 'admission_length', $value->format('H:i:s'));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }
@@ -234,13 +234,13 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
     }

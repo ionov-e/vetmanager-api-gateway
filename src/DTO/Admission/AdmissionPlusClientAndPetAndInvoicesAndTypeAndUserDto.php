@@ -8,7 +8,6 @@ use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
 use VetmanagerApiGateway\DTO\Pet\PetAdditionalPlusTypeAndBreedDto;
-use VetmanagerApiGateway\DTO\Pet\PetOnlyDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 
 class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlusClientAndPetAndInvoicesDto

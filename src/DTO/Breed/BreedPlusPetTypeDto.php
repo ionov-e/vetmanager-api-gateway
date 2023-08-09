@@ -15,9 +15,9 @@ final class BreedPlusPetTypeDto extends BreedOnlyDto
      * @param PetTypeOnlyDto $petType
      */
     public function __construct(
-        public ?string         $id,
-        public ?string         $title,
-        public ?string         $pet_type_id,
+        public ?string $id,
+        public ?string $title,
+        public ?string $pet_type_id,
         public PetTypeOnlyDto $petType
     )
     {

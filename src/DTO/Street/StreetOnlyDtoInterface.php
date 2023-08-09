@@ -36,8 +36,8 @@ interface StreetOnlyDtoInterface
     public function setCityId(?int $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeAsString(?string $value): static;
+    public function setTypeFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeAsEnum(TypeEnum $value): static;
+    public function setTypeFromEnum(TypeEnum $value): static;
 }

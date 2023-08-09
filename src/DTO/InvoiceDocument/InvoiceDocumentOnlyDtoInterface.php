@@ -137,10 +137,10 @@ interface InvoiceDocumentOnlyDtoInterface
     public function setDefaultPrice(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsString(string $value): static;
+    public function setCreateDateFromString(string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCreateDateAsDateTime(DateTime $value): static;
+    public function setCreateDateFromDateTime(DateTime $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDiscountCause(?string $value): static;

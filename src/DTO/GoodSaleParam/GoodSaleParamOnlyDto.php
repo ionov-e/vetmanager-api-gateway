@@ -141,12 +141,12 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return self::setPropertyFluently($this, 'barcode', $value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value); 
     }
@@ -161,31 +161,31 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return self::setPropertyFluently($this, 'markup', is_null($value) ? null : (string)$value);
     }
 
-    public function setPriceFormationAsString(?string $value): static
+    public function setPriceFormationFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'price_formation', $value);
     }
 
-    public function setPriceFormationAsEnum(PriceFormationEnum $value): static
+    public function setPriceFormationFromEnum(PriceFormationEnum $value): static
     {
         return self::setPropertyFluently($this, 'price_formation', $value->value);
     }
 
-    /** @param array{
-     *     id: numeric-string,
-     *     good_id: numeric-string,
-     *     price: ?string,
-     *     coefficient: string,
-     *     unit_sale_id: numeric-string,
-     *     min_price: ?string,
-     *     max_price: ?string,
-     *     barcode: ?string,
-     *     status: string,
-     *     clinic_id: numeric-string,
-     *     markup: string,
-     *     price_formation: ?string,
-     *     unitSale?: array,
-     *     good?: array
-     * } $originalDataArray
-     */
+//    /** @param array{
+//     *     id: numeric-string,
+//     *     good_id: numeric-string,
+//     *     price: ?string,
+//     *     coefficient: string,
+//     *     unit_sale_id: numeric-string,
+//     *     min_price: ?string,
+//     *     max_price: ?string,
+//     *     barcode: ?string,
+//     *     status: string,
+//     *     clinic_id: numeric-string,
+//     *     markup: string,
+//     *     price_formation: ?string,
+//     *     unitSale?: array,
+//     *     good?: array
+//     * } $originalDataArray
+//     */
 }

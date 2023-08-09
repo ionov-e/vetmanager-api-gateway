@@ -78,10 +78,10 @@ interface GoodSaleParamOnlyDtoInterface
     public function setBarcode(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsString(?string $value): static;
+    public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusAsEnum(StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setClinicId(?string $value): static;
@@ -90,8 +90,8 @@ interface GoodSaleParamOnlyDtoInterface
     public function setMarkup(?float $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setPriceFormationAsString(?string $value): static;
+    public function setPriceFormationFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setPriceFormationAsEnum(PriceFormationEnum $value): static;
+    public function setPriceFormationFromEnum(PriceFormationEnum $value): static;
 }

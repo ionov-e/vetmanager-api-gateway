@@ -92,15 +92,15 @@ abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnly
     }
 
     /** @inheritDoc */
-    public function setTypeAsString(?string $value): static
+    public function setTypeFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeFromString($value));
     }
 
     /** @inheritDoc */
-    public function setTypeAsEnum(TypeEnum $value): static
+    public function setTypeFromEnum(TypeEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeFromEnum($value));
     }
 
     abstract public function getCity(): City;

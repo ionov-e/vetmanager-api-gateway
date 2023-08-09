@@ -198,15 +198,15 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     }
 
     /** @inheritDoc */
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
     /** @inheritDoc */
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));
     }
 
     /** @inheritDoc */
@@ -222,15 +222,15 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     }
 
     /** @inheritDoc */
-    public function setPriceFormationAsString(?string $value): static
+    public function setPriceFormationFromString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setPriceFormationAsString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPriceFormationFromString($value));
     }
 
     /** @inheritDoc */
-    public function setPriceFormationAsEnum(PriceFormationEnum $value): static
+    public function setPriceFormationFromEnum(PriceFormationEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setPriceFormationAsEnum($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setPriceFormationFromEnum($value));
     }
 
     abstract public function getGood(): AbstractGood;

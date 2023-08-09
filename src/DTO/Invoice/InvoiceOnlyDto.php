@@ -100,7 +100,6 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return ToString::fromStringOrNull($this->status)->getStringOrThrowIfNull();
     }
 
-
     public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Invoice\StatusEnum
     {
         return \VetmanagerApiGateway\DTO\Invoice\StatusEnum::from($this->status);
@@ -216,22 +215,22 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return self::setPropertyFluently($this, 'amount', is_null($value) ? null : (string)$value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static
+    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }
 
-    public function setInvoiceDateAsString(?string $value): static
+    public function setInvoiceDateFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'invoice_date', $value);
     }
 
-    public function setInvoiceDateAsDateTime(DateTime $value): static
+    public function setInvoiceDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'invoice_date', $value->format('Y-m-d H:i:s'));
     }
@@ -266,22 +265,22 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return self::setPropertyFluently($this, 'paid_amount', is_null($value) ? null : (string)$value);
     }
 
-    public function setCreateDateAsString(string $value): static
+    public function setCreateDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value);
     }
 
-    public function setCreateDateAsDateTime(DateTime $value): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setPaymentStatusAsString(string $value): static
+    public function setPaymentStatusFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'payment_status', $value);
     }
 
-    public function setPaymentStatusAsEnum(PaymentStatusEnum $value): static
+    public function setPaymentStatusFromEnum(PaymentStatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'payment_status', $value->value);
     }

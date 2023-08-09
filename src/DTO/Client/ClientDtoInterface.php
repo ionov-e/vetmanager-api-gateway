@@ -82,10 +82,12 @@ interface ClientDtoInterface
     /** Пустые значения переводятся в null
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getDateRegister(): ?DateTime;
+    public function getDateRegisterAsDateTime(): ?DateTime;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setDateRegister(string $value): static;
+    public function setDateRegisterFromString(string $value): static;
+
+    public function setDateRegisterFromDateTime(DateTime $value): static;
 
     public function getCellPhone(): string;
 

@@ -47,12 +47,12 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
         return self::setPropertyFluently($this, 'title', $value);
     }
 
-    public function setStatusAsString(?string $value): static
+    public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusAsEnum(StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }
