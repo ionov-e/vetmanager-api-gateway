@@ -63,7 +63,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
-    public function getAdmissionDate(): DateTime
+    public function getAdmissionDateAsDateTime(): DateTime
     {
         return ToDateTime::fromFullDateTimeString($this->admission_date)->getDateTimeOrThrow();
     }
@@ -93,12 +93,12 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getAdmissionLength(): ?DateInterval
+    public function getAdmissionLengthAsDateInterval(): ?DateInterval
     {
         return ToDateInterval::fromStringHMS($this->admission_length)->getDateIntervalOrNull();
     }
 
-    public function getStatus(): ?StatusEnum
+    public function getStatusAsEnum(): ?StatusEnum
     {
         return $this->status ? StatusEnum::from($this->status) : null;
     }
@@ -118,7 +118,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return ToInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getCreateDate(): DateTime
+    public function getCreateDateAsDateTime(): DateTime
     {
         return ToDateTime::fromFullDateTimeString($this->create_date)->getDateTimeOrThrow();
     }
@@ -204,9 +204,15 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatus(string $value): static
+    public function setStatusAsString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setStatusAsEnum(StatusEnum $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value->value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -263,30 +269,30 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return self::setPropertyFluently($this, 'invoices_sum', is_null($value) ? null : (string)$value);
     }
 
-    /** @param array{
-     *          id: numeric-string,
-     *          admission_date: string,
-     *          description: string,
-     *          client_id: numeric-string,
-     *          patient_id: numeric-string,
-     *          user_id: numeric-string,
-     *          type_id: numeric-string,
-     *          admission_length: string,
-     *          status: ?string,
-     *          clinic_id: numeric-string,
-     *          direct_direction: string,
-     *          creator_id: numeric-string,
-     *          create_date: string,
-     *          escorter_id: ?numeric-string,
-     *          reception_write_channel: ?string,
-     *          is_auto_create: string,
-     *          invoices_sum: string,
-     *          client: array,
-     *          pet?: array,
-     *          wait_time?: string,
-     *          invoices?: array,
-     *          doctor_data?: array,
-     *          admission_type_data?: array
-     *     } $originalDataArray
-     */
+//    /** @param array{
+//     *          id: numeric-string,
+//     *          admission_date: string,
+//     *          description: string,
+//     *          client_id: numeric-string,
+//     *          patient_id: numeric-string,
+//     *          user_id: numeric-string,
+//     *          type_id: numeric-string,
+//     *          admission_length: string,
+//     *          status: ?string,
+//     *          clinic_id: numeric-string,
+//     *          direct_direction: string,
+//     *          creator_id: numeric-string,
+//     *          create_date: string,
+//     *          escorter_id: ?numeric-string,
+//     *          reception_write_channel: ?string,
+//     *          is_auto_create: string,
+//     *          invoices_sum: string,
+//     *          client: array,
+//     *          pet?: array,
+//     *          wait_time?: string,
+//     *          invoices?: array,
+//     *          doctor_data?: array,
+//     *          admission_type_data?: array
+//     *     } $originalDataArray
+//     */
 }

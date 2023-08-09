@@ -14,7 +14,7 @@ interface AdmissionOnlyDtoInterface
     public function getId(): int;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getAdmissionDate(): DateTime;
+    public function getAdmissionDateAsDateTime(): DateTime;
 
     /** Примеры: "На основании медкарты", "Запись из модуля, к свободному доктору, по услуге Ампутация пальцев" */
     public function getDescription(): string;
@@ -42,9 +42,9 @@ interface AdmissionOnlyDtoInterface
     /**
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getAdmissionLength(): ?DateInterval;
+    public function getAdmissionLengthAsDateInterval(): ?DateInterval;
 
-    public function getStatus(): ?StatusEnum;
+    public function getStatusAsEnum(): ?StatusEnum;
 
     /** @return ?positive-int В БД встречается "0" - переводим в null
      * @throws VetmanagerApiGatewayResponseException
@@ -62,7 +62,7 @@ interface AdmissionOnlyDtoInterface
     public function getCreatorId(): ?int;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getCreateDate(): DateTime;
+    public function getCreateDateAsDateTime(): DateTime;
 
     /** Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see UserOnly}. Какой-то врач-помощник что ли
      * @return ?positive-int
@@ -98,7 +98,9 @@ interface AdmissionOnlyDtoInterface
 
     public function setAdmissionLengthAsDateInterval(DateInterval $value): static;
 
-    public function setStatus(string $value): static;
+    public function setStatusAsString(?string $value): static;
+
+    public function setStatusAsEnum(StatusEnum $value): static;
 
     public function setClinicId(int $value): static;
 

@@ -211,9 +211,9 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @inheritDoc */
-    public function getAdmissionDate(): DateTime
+    public function getAdmissionDateAsDateTime(): DateTime
     {
-        return $this->modelDTO->getAdmissionDate();
+        return $this->modelDTO->getAdmissionDateAsDateTime();
     }
 
     /** @inheritDoc */
@@ -247,14 +247,14 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @inheritDoc */
-    public function getAdmissionLength(): ?DateInterval
+    public function getAdmissionLengthAsDateInterval(): ?DateInterval
     {
-        return $this->modelDTO->getAdmissionLength();
+        return $this->modelDTO->getAdmissionLengthAsDateInterval();
     }
 
-    public function getStatus(): ?StatusEnum
+    public function getStatusAsEnum(): ?StatusEnum
     {
-        return $this->modelDTO->getStatus();
+        return $this->modelDTO->getStatusAsEnum();
     }
 
     /** @inheritDoc */
@@ -276,9 +276,9 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @inheritDoc */
-    public function getCreateDate(): DateTime
+    public function getCreateDateAsDateTime(): DateTime
     {
-        return $this->modelDTO->getCreateDate();
+        return $this->modelDTO->getCreateDateAsDateTime();
     }
 
     /** @inheritDoc */
@@ -366,9 +366,14 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatus(string $value): static
+    public function setStatusAsString(?string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatus($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
+    }
+
+    public function setStatusAsEnum(StatusEnum $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
