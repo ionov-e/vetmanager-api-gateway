@@ -323,8 +323,8 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     public function getNextAdmission(): ?AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser
     {
         return $this->getNextAdmissionId()
-                ? (new Facade\Admission($this->activeRecordFactory))->getById($this->getNextAdmissionId())
-                : null;
+            ? (new Facade\Admission($this->activeRecordFactory))->getById($this->getNextAdmissionId())
+            : null;
     }
 
     /** @throws VetmanagerApiGatewayResponseException */

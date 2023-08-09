@@ -10,15 +10,15 @@ use VetmanagerApiGateway\DTO\CityType\CityTypeDtoInterface;
 use VetmanagerApiGateway\DTO\CityType\CityTypeOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * @property-read CityTypeOnlyDto $originalDto
- * @property positive-int $id
- * @property string $title
- * @property-read array{
- *     id: string,
- *     title: string
- * } $originalDataArray
- */
+///**
+// * @property-read CityTypeOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $title
+// * @property-read array{
+// *     id: string,
+// *     title: string
+// * } $originalDataArray
+// */
 final class CityType extends AbstractActiveRecord implements CityTypeDtoInterface
 {
     public function __construct(ActiveRecordFactory $activeRecordFactory, CityTypeOnlyDto $modelDTO)

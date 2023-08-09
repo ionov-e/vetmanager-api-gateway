@@ -18,7 +18,6 @@ use VetmanagerApiGateway\DTO\Pet\PetOnlyDto;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 
-
 final class InvoicePlusClientAndPetAndDoctorAndDocuments extends AbstractInvoice
 
 {

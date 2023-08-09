@@ -9,7 +9,7 @@ use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Role\RoleOnlyDto;
 use VetmanagerApiGateway\DTO\Role\RoleOnlyDtoInterface;
 
-///**   #TODO
+///**
 // * @property-read array{
 // *     id: numeric-string,
 // *     name: string,

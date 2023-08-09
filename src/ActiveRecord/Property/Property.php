@@ -11,23 +11,23 @@ use VetmanagerApiGateway\DTO\Property\PropertyOnlyDto;
 use VetmanagerApiGateway\DTO\Property\PropertyOnlyDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/**
- * @property-read PropertyOnlyDto $originalDto
- * @property positive-int $id
- * @property string $name Default: ''
- * @property string $value
- * @property ?string $title
- * @property ?positive-int $clinicId
- * @property-read array{
- *     id: string,
- *     property_name: string,
- *     property_value: string,
- *     property_title: ?string,
- *     clinic_id: string
- * } $originalDataArray
- * @property-read ?Clinic $clinic
- * @property-read ?bool $isOnlineSigningUpAvailableForClinic null возвращается, если вдруг clinic_id = null
- */
+///**
+// * @property-read PropertyOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $name Default: ''
+// * @property string $value
+// * @property ?string $title
+// * @property ?positive-int $clinicId
+// * @property-read array{
+// *     id: string,
+// *     property_name: string,
+// *     property_value: string,
+// *     property_title: ?string,
+// *     clinic_id: string
+// * } $originalDataArray
+// * @property-read ?Clinic $clinic
+// * @property-read ?bool $isOnlineSigningUpAvailableForClinic null возвращается, если вдруг clinic_id = null
+// */
 final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInterface
 {
     public static function getRouteKey(): string

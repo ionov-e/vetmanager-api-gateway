@@ -14,18 +14,18 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Facade;
 
-/**
- * @property CityOnlyDto $originalDto
- * @property positive-int $id
- * @property string $title
- * @property positive-int $typeId Default: 1
- * @property-read CityType $type
- * @property-read array{
- *     id: string,
- *     title: string,
- *     type_id: string
- * } $originalDataArray
- */
+///**
+// * @property CityOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $title
+// * @property positive-int $typeId Default: 1
+// * @property-read CityType $type
+// * @property-read array{
+// *     id: string,
+// *     title: string,
+// *     type_id: string
+// * } $originalDataArray
+// */
 final class City extends AbstractActiveRecord implements CityDtoInterface
 {
     public function __construct(ActiveRecordFactory $activeRecordFactory, CityOnlyDto $modelDTO)

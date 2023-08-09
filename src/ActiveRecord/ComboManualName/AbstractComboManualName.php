@@ -6,36 +6,35 @@ namespace VetmanagerApiGateway\ActiveRecord\ComboManualName;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
-use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ComboManualItemOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDtoInterface;
 
-/**
- * @property-read ComboManualNameOnlyDto $originalDto
- * @property positive-int $id
- * @property non-empty-string $title
- * @property bool $isReadonly
- * @property non-empty-string $name
- * @property-read array{
- *       id: string,
- *       title: string,
- *       is_readonly: string,
- *       name: string,
- *       comboManualItems: list<array{
- *                                    id: string,
- *                                    combo_manual_id: string,
- *                                    title: string,
- *                                    value: string,
- *                                    dop_param1: string,
- *                                    dop_param2: string,
- *                                    dop_param3: string,
- *                                    is_active: string
- *                                   }
- *                             >
- *   } $originalDataArray 'comboManualItems' массив только при GetById
- * @property-read ComboManualItemOnly[] comboManualItems
- */
+///**
+// * @property-read ComboManualNameOnlyDto $originalDto
+// * @property positive-int $id
+// * @property non-empty-string $title
+// * @property bool $isReadonly
+// * @property non-empty-string $name
+// * @property-read array{
+// *       id: string,
+// *       title: string,
+// *       is_readonly: string,
+// *       name: string,
+// *       comboManualItems: list<array{
+// *                                    id: string,
+// *                                    combo_manual_id: string,
+// *                                    title: string,
+// *                                    value: string,
+// *                                    dop_param1: string,
+// *                                    dop_param2: string,
+// *                                    dop_param3: string,
+// *                                    is_active: string
+// *                                   }
+// *                             >
+// *   } $originalDataArray 'comboManualItems' массив только при GetById
+// * @property-read ComboManualItemOnly[] comboManualItems
+// */
 abstract class AbstractComboManualName extends AbstractActiveRecord implements ComboManualNameOnlyDtoInterface
 {
     public static function getRouteKey(): string

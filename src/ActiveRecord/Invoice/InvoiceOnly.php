@@ -13,7 +13,6 @@ use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade;
 
-
 class InvoiceOnly extends AbstractInvoice
 {
     public static function getDtoClass(): string

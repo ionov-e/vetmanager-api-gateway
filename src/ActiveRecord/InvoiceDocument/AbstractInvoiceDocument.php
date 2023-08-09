@@ -137,6 +137,7 @@ use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDtoInterface;
 // *                           price: ?string
 // *           }> $partyInfo Не нашел примеров. Только пустой массив мне всегда приходил. Судя по всему будет такой ответ #TODO find out expected response
 // */
+
 /** @property AbstractInvoiceDocumentOnlyDto $modelDTO Без этой строки PhpStorm 2023.2 почему-то не смотрел в конструктор */
 abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements InvoiceDocumentOnlyDtoInterface
 {
@@ -406,11 +407,18 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements I
     }
 
     abstract public function getMinPrice(): float;
+
     abstract public function getMaxPrice(): float;
+
     abstract public function getMinPriceInPercents(): float;
+
     abstract public function getMaxPriceInPercents(): float;
+
     abstract public function getPartyInfo(): array;
+
     abstract public function getGood(): AbstractGood;
+
     abstract public function getGoodSaleParam(): AbstractGoodSaleParam;
+
     abstract public function getInvoice(): AbstractInvoice;
 }

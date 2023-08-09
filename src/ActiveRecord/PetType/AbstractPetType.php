@@ -10,24 +10,24 @@ use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDtoInterface;
 
-/**
- * @property-read PetTypeOnlyDto $originalDto
- * @property positive-int id
- * @property string title
- * @property string picture
- * @property string type
- * @property-read array{
- *     id: string,
- *     title: string,
- *     picture: string,
- *     type: ?string,
- *     breeds: list<array{
- *              id: string,
- *              title: string,
- *              pet_type_id: string
- *          }>
- * } $originalDataArray 'breeds' массив только при GetById
- */
+///**
+// * @property-read PetTypeOnlyDto $originalDto
+// * @property positive-int id
+// * @property string title
+// * @property string picture
+// * @property string type
+// * @property-read array{
+// *     id: string,
+// *     title: string,
+// *     picture: string,
+// *     type: ?string,
+// *     breeds: list<array{
+// *              id: string,
+// *              title: string,
+// *              pet_type_id: string
+// *          }>
+// * } $originalDataArray 'breeds' массив только при GetById
+// */
 abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOnlyDtoInterface
 {
     public static function getRouteKey(): string

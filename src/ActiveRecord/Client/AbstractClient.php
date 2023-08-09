@@ -6,12 +6,9 @@ namespace VetmanagerApiGateway\ActiveRecord\Client;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionOnly;
 use VetmanagerApiGateway\ActiveRecord\City\City;
 use VetmanagerApiGateway\ActiveRecord\MedicalCardByClient\MedicalCardByClient;
-use VetmanagerApiGateway\ActiveRecord\Pet\PetOnly;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
-use VetmanagerApiGateway\ActiveRecord\Street\StreetOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\Client\ClientDtoInterface;
@@ -19,87 +16,87 @@ use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 
-/**
- * @property-read ClientOnlyDto $originalDto
- * @property positive-int $id
- * @property string $address
- * @property string $homePhone
- * @property string $workPhone
- * @property string $note
- * @property ?positive-int $typeId
- * @property ?positive-int $howFind
- * @property float $balance Default: '0.0000000000'
- * @property string $email Default: ''
- * @property string $cityTitle
- * @property ?positive-int $cityId
- * @property ?DateTime $dateRegister
- * @property string $cellPhone
- * @property string $zip
- * @property string $registrationIndex
- * @property bool $isVip Default: False
- * @property string $lastName
- * @property string $firstName
- * @property string $middleName
- * @property \VetmanagerApiGateway\DTO\Client\StatusEnum $status Default: Active
- * @property int $discount Default: 0
- * @property string $passportSeries
- * @property string $labNumber
- * @property ?int $streetId
- * @property string $apartment Default: ''
- * @property bool $isUnsubscribed Default: False
- * @property bool $isBlacklisted Default: False
- * @property ?DateTime $lastVisitDate В БД бывает дефолтное значение: '0000-00-00 00:00:00' - переводится в null
- * @property string $numberOfJournal Default: ''
- * @property string $phonePrefix
- * @property-read  array{
- *   id: string,
- *   address: string,
- *   home_phone: string,
- *   work_phone: string,
- *   note: string,
- *   type_id: ?string,
- *   how_find: ?string,
- *   balance: string,
- *   email: string,
- *   city: string,
- *   city_id: ?string,
- *   date_register: string,
- *   cell_phone: string,
- *   zip: string,
- *   registration_index: ?string,
- *   vip: string,
- *   last_name: string,
- *   first_name: string,
- *   middle_name: string,
- *   status: string,
- *   discount: string,
- *   passport_series: string,
- *   lab_number: string,
- *   street_id: string,
- *   apartment: string,
- *   unsubscribe: string,
- *   in_blacklist: string,
- *   last_visit_date: string,
- *   number_of_journal: string,
- *   phone_prefix: ?string,
- *   city_data?: array {
- *      id: string,
- *      title: string,
- *      type_id: string
- *      },
- *   client_type_data?: array {
- *      id: string,
- *      title: string
- *      }
- * } $originalDataArray
- * @property-read ?City $city
- * @property-read string $typeTitle
- * @property-read AdmissionOnly[] $admissions
- * @property-read MedicalCardByClient[] $medicalCards
- * @property-read PetOnly[] $petsAlive
- * @property-read ?StreetOnly $street
- * @property-read FullName $fullName
- * */
+///**
+// * @property-read ClientOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $address
+// * @property string $homePhone
+// * @property string $workPhone
+// * @property string $note
+// * @property ?positive-int $typeId
+// * @property ?positive-int $howFind
+// * @property float $balance Default: '0.0000000000'
+// * @property string $email Default: ''
+// * @property string $cityTitle
+// * @property ?positive-int $cityId
+// * @property ?DateTime $dateRegister
+// * @property string $cellPhone
+// * @property string $zip
+// * @property string $registrationIndex
+// * @property bool $isVip Default: False
+// * @property string $lastName
+// * @property string $firstName
+// * @property string $middleName
+// * @property \VetmanagerApiGateway\DTO\Client\StatusEnum $status Default: Active
+// * @property int $discount Default: 0
+// * @property string $passportSeries
+// * @property string $labNumber
+// * @property ?int $streetId
+// * @property string $apartment Default: ''
+// * @property bool $isUnsubscribed Default: False
+// * @property bool $isBlacklisted Default: False
+// * @property ?DateTime $lastVisitDate В БД бывает дефолтное значение: '0000-00-00 00:00:00' - переводится в null
+// * @property string $numberOfJournal Default: ''
+// * @property string $phonePrefix
+// * @property-read  array{
+// *   id: string,
+// *   address: string,
+// *   home_phone: string,
+// *   work_phone: string,
+// *   note: string,
+// *   type_id: ?string,
+// *   how_find: ?string,
+// *   balance: string,
+// *   email: string,
+// *   city: string,
+// *   city_id: ?string,
+// *   date_register: string,
+// *   cell_phone: string,
+// *   zip: string,
+// *   registration_index: ?string,
+// *   vip: string,
+// *   last_name: string,
+// *   first_name: string,
+// *   middle_name: string,
+// *   status: string,
+// *   discount: string,
+// *   passport_series: string,
+// *   lab_number: string,
+// *   street_id: string,
+// *   apartment: string,
+// *   unsubscribe: string,
+// *   in_blacklist: string,
+// *   last_visit_date: string,
+// *   number_of_journal: string,
+// *   phone_prefix: ?string,
+// *   city_data?: array {
+// *      id: string,
+// *      title: string,
+// *      type_id: string
+// *      },
+// *   client_type_data?: array {
+// *      id: string,
+// *      title: string
+// *      }
+// * } $originalDataArray
+// * @property-read ?City $city
+// * @property-read string $typeTitle
+// * @property-read AdmissionOnly[] $admissions
+// * @property-read MedicalCardByClient[] $medicalCards
+// * @property-read PetOnly[] $petsAlive
+// * @property-read ?StreetOnly $street
+// * @property-read FullName $fullName
+// * */
 abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface
 {
     public function __construct(ActiveRecordFactory $activeRecordFactory, ClientOnlyDto $modelDTO)

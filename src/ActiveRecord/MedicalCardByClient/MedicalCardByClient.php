@@ -12,6 +12,7 @@ use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
 use VetmanagerApiGateway\ActiveRecord\User\UserPlusPositionAndRole;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullName;
+use VetmanagerApiGateway\DTO\MedicalCard\StatusEnum;
 use VetmanagerApiGateway\DTO\MedicalCardByClient\MedicalCardByClientDto;
 use VetmanagerApiGateway\DTO\MedicalCardByClient\MedicalCardByClientDtoInterface;
 use VetmanagerApiGateway\DTO\Pet\SexEnum;
@@ -144,7 +145,7 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
     }
 
     /** @inheritDoc */
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\MedicalCard\StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
         return $this->modelDTO->getStatusAsEnum();
     }
@@ -334,7 +335,7 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
     }
 
     /** @inheritDoc */
-    public function setStatusAsEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static
+    public function setStatusAsEnum(StatusEnum $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
     }

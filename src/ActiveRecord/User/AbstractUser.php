@@ -13,63 +13,63 @@ use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDtoInterface;
 
-/**
- * @property-read UserOnlyDto $originalDto
- * @property positive-int $id
- * @property string $lastName
- * @property string $firstName
- * @property string $middleName
- * @property string $login
- * @property string $password
- * @property positive-int $positionId
- * @property string $email
- * @property string $phone Default: ''
- * @property string $cellPhone Default: ''
- * @property string $address
- * @property ?positive-int $roleId
- * @property bool $isActive
- * @property bool $isPercentCalculated Вообще не понимаю что означает. Default: True
- * @property string $nickname
- * @property ?DateTime $lastChangePwdDate Дата без времени
- * @property bool $isLimited Default: 0
- * @property string $carrotquestId Разного вида строк приходят
- * @property string $sipNumber Default: ''. Самые разные строки могут быть
- * @property string $userInn Default: ''
- * @property-read array{
- *     id: string,
- *     last_name: string,
- *     first_name: string,
- *     middle_name: string,
- *     login: string,
- *     passwd: string,
- *     position_id: string,
- *     email: string,
- *     phone: string,
- *     cell_phone: string,
- *     address: string,
- *     role_id: ?string,
- *     is_active: string,
- *     calc_percents: string,
- *     nickname: ?string,
- *     last_change_pwd_date: string,
- *     is_limited: string,
- *     carrotquest_id: ?string,
- *     sip_number: ?string,
- *     user_inn: string,
- *     position?: array{
- *           id: string,
- *           title: string,
- *           admission_length: string
- *     },
- *     role?: array{
- *           id: string,
- *           name: string,
- *           super: string
- *     }
- * } $originalDataArray
- * @property-read ?Role $role
- * @property-read ?UserPosition $position
- */
+///**
+// * @property-read UserOnlyDto $originalDto
+// * @property positive-int $id
+// * @property string $lastName
+// * @property string $firstName
+// * @property string $middleName
+// * @property string $login
+// * @property string $password
+// * @property positive-int $positionId
+// * @property string $email
+// * @property string $phone Default: ''
+// * @property string $cellPhone Default: ''
+// * @property string $address
+// * @property ?positive-int $roleId
+// * @property bool $isActive
+// * @property bool $isPercentCalculated Вообще не понимаю что означает. Default: True
+// * @property string $nickname
+// * @property ?DateTime $lastChangePwdDate Дата без времени
+// * @property bool $isLimited Default: 0
+// * @property string $carrotquestId Разного вида строк приходят
+// * @property string $sipNumber Default: ''. Самые разные строки могут быть
+// * @property string $userInn Default: ''
+// * @property-read array{
+// *     id: string,
+// *     last_name: string,
+// *     first_name: string,
+// *     middle_name: string,
+// *     login: string,
+// *     passwd: string,
+// *     position_id: string,
+// *     email: string,
+// *     phone: string,
+// *     cell_phone: string,
+// *     address: string,
+// *     role_id: ?string,
+// *     is_active: string,
+// *     calc_percents: string,
+// *     nickname: ?string,
+// *     last_change_pwd_date: string,
+// *     is_limited: string,
+// *     carrotquest_id: ?string,
+// *     sip_number: ?string,
+// *     user_inn: string,
+// *     position?: array{
+// *           id: string,
+// *           title: string,
+// *           admission_length: string
+// *     },
+// *     role?: array{
+// *           id: string,
+// *           name: string,
+// *           super: string
+// *     }
+// * } $originalDataArray
+// * @property-read ?Role $role
+// * @property-read ?UserPosition $position
+// */
 abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoInterface
 {
     public static function getRouteKey(): string
