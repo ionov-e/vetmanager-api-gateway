@@ -64,7 +64,7 @@ class Property extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Property\Property[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Property\Property::class, $getParameters);
     }

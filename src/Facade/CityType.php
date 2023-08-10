@@ -64,7 +64,7 @@ class CityType extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\CityType\CityType[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\CityType\CityType::class, $getParameters);
     }

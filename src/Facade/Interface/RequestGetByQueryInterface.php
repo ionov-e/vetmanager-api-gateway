@@ -29,5 +29,5 @@ interface RequestGetByQueryInterface
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
      * @return AbstractActiveRecord[]
      */
-    public function getByParametersAsString(string $getParameters): array;
+    public function getByGetParametersAsString(string $getParameters): array;
 }

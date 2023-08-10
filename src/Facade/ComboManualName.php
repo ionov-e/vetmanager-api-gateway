@@ -66,7 +66,7 @@ class ComboManualName extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\ComboManualName\ComboManualNamePlusComboManualItems[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\ComboManualName\ComboManualNamePlusComboManualItems::class, $getParameters);
     }

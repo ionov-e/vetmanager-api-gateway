@@ -65,7 +65,7 @@ class Good extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Good\GoodPlusGroupAndUnitAndSaleParams::class, $getParameters);
     }

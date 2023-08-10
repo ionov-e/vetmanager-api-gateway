@@ -64,7 +64,7 @@ class MedicalCardAsVaccination extends AbstractFacade implements AllRequestsInte
     /** @return ActiveRecord\MedicalCardAsVaccination\MedicalCardAsVaccination[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\MedicalCardAsVaccination\MedicalCardAsVaccination::class, $getParameters);
     }
@@ -95,6 +95,6 @@ class MedicalCardAsVaccination extends AbstractFacade implements AllRequestsInte
     public function getByPetId(int $petId, string $additionalGetParameters = ''): array
     {
         $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-        return $this->getByParametersAsString("pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}");
+        return $this->getByGetParametersAsString("pet_id={$petId}{$additionalGetParametersWithAmpersandOrNothing}");
     }
 }

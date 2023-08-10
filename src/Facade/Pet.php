@@ -64,7 +64,7 @@ class Pet extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor::class, $getParameters);
     }

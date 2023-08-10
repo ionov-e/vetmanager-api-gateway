@@ -67,7 +67,7 @@ class Breed extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Breed\BreedPlusPetType[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Breed\BreedPlusPetType::class, $getParameters);
     }

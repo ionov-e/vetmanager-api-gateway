@@ -64,7 +64,7 @@ class UserPosition extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\UserPosition\UserPosition[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\UserPosition\UserPosition::class, $getParameters);
     }

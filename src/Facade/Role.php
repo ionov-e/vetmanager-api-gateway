@@ -64,7 +64,7 @@ class Role extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Role\Role[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Role\Role::class, $getParameters);
     }

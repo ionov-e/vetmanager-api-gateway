@@ -63,7 +63,7 @@ class Clinic extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Clinic\Clinic[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Clinic\Clinic::class, $getParameters);
     }

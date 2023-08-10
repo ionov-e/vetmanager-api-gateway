@@ -64,7 +64,7 @@ class MedicalCard extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\MedicalCard\MedicalCardPlusPet[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\MedicalCard\MedicalCardPlusPet::class, $getParameters);
     }

@@ -64,7 +64,7 @@ class Unit extends AbstractFacade implements AllRequestsInterface
     /** @return ActiveRecord\Unit\Unit[]
      * @throws VetmanagerApiGatewayException
      */
-    public function getByParametersAsString(string $getParameters): array
+    public function getByGetParametersAsString(string $getParameters): array
     {
         return $this->protectedGetByGetParametersAsString(ActiveRecord\Unit\Unit::class, $getParameters);
     }
