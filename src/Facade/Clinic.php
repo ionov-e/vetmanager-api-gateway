@@ -85,4 +85,10 @@ class Clinic extends AbstractFacade implements AllRequestsInterface
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getIsOnlineSigningUpAvailable(int $clinicId): bool
+    {
+        return (new Property($this->activeRecordFactory))->getIsOnlineSigningUpAvailableForClinic($clinicId);
+    }
 }

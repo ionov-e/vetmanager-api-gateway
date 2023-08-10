@@ -246,8 +246,8 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function isOnlineSigningUpAvailable(): bool
+    public function getIsOnlineSigningUpAvailable(): bool
     {
-        return (new Facade\Property($this->activeRecordFactory))->isOnlineSigningUpAvailableForClinic($this->getId());
+        return (new Facade\Property($this->activeRecordFactory))->getIsOnlineSigningUpAvailableForClinic($this->getId());
     }
 }

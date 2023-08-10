@@ -128,6 +128,6 @@ final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInte
     /** @throws VetmanagerApiGatewayException */
     public function isOnlineSigningUpAvailableForClinic(): bool
     {
-        return (new \VetmanagerApiGateway\Facade\Property($this->activeRecordFactory))->isOnlineSigningUpAvailableForClinic($this->getClinicId());
+        return (new \VetmanagerApiGateway\Facade\Property($this->activeRecordFactory))->getIsOnlineSigningUpAvailableForClinic($this->getClinicId());
     }
 }

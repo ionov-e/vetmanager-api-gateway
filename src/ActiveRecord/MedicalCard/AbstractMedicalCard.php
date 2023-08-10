@@ -425,7 +425,7 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     public function isOnlineSigningUpAvailableForClinic(): ?bool
     {
         return $this->getClinicId()
-            ? (new Facade\Property($this->activeRecordFactory))->isOnlineSigningUpAvailableForClinic($this->getClinicId())
+            ? (new Facade\Property($this->activeRecordFactory))->getIsOnlineSigningUpAvailableForClinic($this->getClinicId())
             : null;
     }
 

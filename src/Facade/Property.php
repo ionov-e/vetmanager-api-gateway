@@ -103,13 +103,13 @@ class Property extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getValueByClinicIdAndPropertyName(int $clinicId, string $propertyName): ?string
     {
-        return $this->getByClinicIdAndPropertyName($clinicId, $propertyName)?->getValue();  #TODO check if method is present
+        return $this->getByClinicIdAndPropertyName($clinicId, $propertyName)?->getValue();
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function isOnlineSigningUpAvailableForClinic(int $clinicId): bool
+    public function getIsOnlineSigningUpAvailableForClinic(int $clinicId): bool
     {
         $property = $this->getByClinicIdAndPropertyName($clinicId, 'service.appointmentWidget');
-        return filter_var($property?->value, FILTER_VALIDATE_BOOL);
+        return filter_var($property?->getValue(), FILTER_VALIDATE_BOOL);
     }
 }
