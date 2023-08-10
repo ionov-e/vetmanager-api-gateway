@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\GoodGroup;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\GoodGroup\GoodGroupOnlyDto;
 use VetmanagerApiGateway\DTO\GoodGroup\GoodGroupOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read GoodGroupOnlyDto $originalDto
@@ -25,7 +29,7 @@ use VetmanagerApiGateway\DTO\GoodGroup\GoodGroupOnlyDtoInterface;
 // *     price_id: ?string
 // * } $originalDataArray
 // */
-class GoodGroup extends AbstractActiveRecord implements GoodGroupOnlyDtoInterface
+class GoodGroup extends AbstractActiveRecord implements GoodGroupOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -41,6 +45,24 @@ class GoodGroup extends AbstractActiveRecord implements GoodGroupOnlyDtoInterfac
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\GoodGroup($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\GoodGroup($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\GoodGroup($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

@@ -8,6 +8,8 @@ use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
 use VetmanagerApiGateway\ActiveRecord\Client\AbstractClient;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\InvoiceDocument\AbstractInvoiceDocument;
 use VetmanagerApiGateway\ActiveRecord\Pet\AbstractPet;
 use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
@@ -17,8 +19,10 @@ use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDto;
 use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\Invoice\PaymentStatusEnum;
 use VetmanagerApiGateway\DTO\Invoice\StatusEnum;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
-abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOnlyDtoInterface
+abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -29,6 +33,24 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Invoice($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Invoice($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Invoice($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

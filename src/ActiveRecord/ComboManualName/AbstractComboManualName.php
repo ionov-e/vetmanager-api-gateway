@@ -6,9 +6,13 @@ namespace VetmanagerApiGateway\ActiveRecord\ComboManualName;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDto;
 use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read ComboManualNameOnlyDto $originalDto
@@ -35,7 +39,7 @@ use VetmanagerApiGateway\DTO\ComboManualName\ComboManualNameOnlyDtoInterface;
 // *   } $originalDataArray 'comboManualItems' массив только при GetById
 // * @property-read ComboManualItemOnly[] comboManualItems
 // */
-abstract class AbstractComboManualName extends AbstractActiveRecord implements ComboManualNameOnlyDtoInterface
+abstract class AbstractComboManualName extends AbstractActiveRecord implements ComboManualNameOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -46,6 +50,24 @@ abstract class AbstractComboManualName extends AbstractActiveRecord implements C
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\ComboManualName($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\ComboManualName($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\ComboManualName($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

@@ -9,6 +9,8 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AbstractAdmission;
 use VetmanagerApiGateway\ActiveRecord\Clinic\Clinic;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\Invoice\AbstractInvoice;
 use VetmanagerApiGateway\ActiveRecord\Pet\AbstractPet;
 use VetmanagerApiGateway\ActiveRecord\User\AbstractUser;
@@ -96,7 +98,7 @@ use VetmanagerApiGateway\Facade;
 // * @property-read ?InvoiceOnly $invoice
 // * @property-read ?UserOnly $user
 // */
-abstract class AbstractMedicalCard extends AbstractActiveRecord implements MedicalCardOnlyDtoInterface
+abstract class AbstractMedicalCard extends AbstractActiveRecord implements MedicalCardOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -107,6 +109,24 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\MedicalCard($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\MedicalCard($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\MedicalCard($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

@@ -8,6 +8,9 @@ use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /** @template TActiveRecord of AbstractActiveRecord */
 abstract class AbstractFacade
@@ -32,7 +35,7 @@ abstract class AbstractFacade
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     protected function protectedGetById(string $activeRecordClass, int $id): AbstractActiveRecord
@@ -106,7 +109,7 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
 
-    /** @return TActiveRecord
+    /** @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public function protectedGetNewEmpty(): AbstractActiveRecord
@@ -115,7 +118,7 @@ abstract class AbstractFacade
     }
 
     /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     protected function protectedCreateNewUsingArray(array $modelAsArray): AbstractActiveRecord
@@ -131,7 +134,7 @@ abstract class AbstractFacade
     }
 
     /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
-     * @return TActiveRecord
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     protected function protectedUpdateUsingIdAndArray(int $id, array $modelAsArray): AbstractActiveRecord
@@ -145,5 +148,20 @@ abstract class AbstractFacade
             $modelAsArray
         );
         return $this->activeRecordFactory->getFromSingleModelAsArray($createdModelAsArray, $activeRecordClass);
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayResponseException
+     * @throws VetmanagerApiGatewayInnerException
+     */
+    public function delete(int $id): void
+    {
+        /** @var class-string<AbstractActiveRecord> $activeRecordClass */
+        $activeRecordClass = static::getBasicActiveRecord();
+        $this->activeRecordFactory->apiService->delete(
+            $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
+            $id
+        );
     }
 }

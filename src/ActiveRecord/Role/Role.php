@@ -8,6 +8,8 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Role\RoleOnlyDto;
 use VetmanagerApiGateway\DTO\Role\RoleOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read array{
@@ -32,6 +34,24 @@ final class Role extends AbstractActiveRecord implements RoleOnlyDtoInterface
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Role($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Role($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Role($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

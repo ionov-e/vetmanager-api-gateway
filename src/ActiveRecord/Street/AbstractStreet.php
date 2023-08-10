@@ -6,10 +6,14 @@ namespace VetmanagerApiGateway\ActiveRecord\Street;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\City\City;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Street\StreetOnlyDto;
 use VetmanagerApiGateway\DTO\Street\StreetOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\Street\TypeEnum;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read StreetOnlyDto $originalDto
@@ -30,7 +34,7 @@ use VetmanagerApiGateway\DTO\Street\TypeEnum;
 // * } $originalDataArray
 // * @property-read ?City $city
 // */
-abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnlyDtoInterface
+abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -41,6 +45,24 @@ abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnly
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Street($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Street($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Street($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

@@ -6,6 +6,8 @@ namespace VetmanagerApiGateway\ActiveRecord\InvoiceDocument;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\Good\AbstractGood;
 use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\AbstractGoodSaleParam;
 use VetmanagerApiGateway\ActiveRecord\Invoice\AbstractInvoice;
@@ -13,6 +15,8 @@ use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\InvoiceDocument\AbstractInvoiceDocumentOnlyDto;
 use VetmanagerApiGateway\DTO\InvoiceDocument\DiscountTypeEnum;
 use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read InvoiceDocumentOnlyDto $originalDto
@@ -139,7 +143,7 @@ use VetmanagerApiGateway\DTO\InvoiceDocument\InvoiceDocumentOnlyDtoInterface;
 // */
 
 /** @property AbstractInvoiceDocumentOnlyDto $modelDTO Без этой строки PhpStorm 2023.2 почему-то не смотрел в конструктор */
-abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements InvoiceDocumentOnlyDtoInterface
+abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements InvoiceDocumentOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -149,6 +153,24 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements I
     public function __construct(ActiveRecordFactory $activeRecordFactory, AbstractInvoiceDocumentOnlyDto $modelDTO)
     {
         parent::__construct($activeRecordFactory, $modelDTO);
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\InvoiceDocument($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\InvoiceDocument($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\InvoiceDocument($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

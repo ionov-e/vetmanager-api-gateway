@@ -6,10 +6,13 @@ namespace VetmanagerApiGateway\ActiveRecord\Property;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Clinic\Clinic;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Property\PropertyOnlyDto;
 use VetmanagerApiGateway\DTO\Property\PropertyOnlyDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read PropertyOnlyDto $originalDto
@@ -28,7 +31,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 // * @property-read ?Clinic $clinic
 // * @property-read ?bool $isOnlineSigningUpAvailableForClinic null возвращается, если вдруг clinic_id = null
 // */
-final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInterface
+final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -38,6 +41,24 @@ final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInte
     public static function getDtoClass(): string
     {
         return PropertyOnlyDto::class;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Property($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Property($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Property($this->activeRecordFactory))->delete($this->getId());
     }
 
     public function __construct(ActiveRecordFactory $activeRecordFactory, PropertyOnlyDto $modelDTO)

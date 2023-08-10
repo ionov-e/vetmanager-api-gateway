@@ -6,12 +6,16 @@ namespace VetmanagerApiGateway\ActiveRecord\User;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\Role\Role;
 use VetmanagerApiGateway\ActiveRecord\UserPosition\UserPosition;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullName;
 use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 use VetmanagerApiGateway\DTO\User\UserOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read UserOnlyDto $originalDto
@@ -70,7 +74,7 @@ use VetmanagerApiGateway\DTO\User\UserOnlyDtoInterface;
 // * @property-read ?Role $role
 // * @property-read ?UserPosition $position
 // */
-abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoInterface
+abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -81,6 +85,24 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\User($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\User($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\User($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

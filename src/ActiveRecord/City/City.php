@@ -6,6 +6,8 @@ namespace VetmanagerApiGateway\ActiveRecord\City;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\CityType\CityType;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\City\CityDtoInterface;
 use VetmanagerApiGateway\DTO\City\CityOnlyDto;
@@ -26,7 +28,7 @@ use VetmanagerApiGateway\Facade;
 // *     type_id: string
 // * } $originalDataArray
 // */
-final class City extends AbstractActiveRecord implements CityDtoInterface
+final class City extends AbstractActiveRecord implements CityDtoInterface, CreatableInterface, DeletableInterface
 {
     public function __construct(ActiveRecordFactory $activeRecordFactory, CityOnlyDto $modelDTO)
     {
@@ -42,6 +44,24 @@ final class City extends AbstractActiveRecord implements CityDtoInterface
     public static function getRouteKey(): string
     {
         return 'city';
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\City($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\City($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\City($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @return positive-int

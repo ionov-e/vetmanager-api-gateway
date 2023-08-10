@@ -6,9 +6,13 @@ namespace VetmanagerApiGateway\ActiveRecord\PetType;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read PetTypeOnlyDto $originalDto
@@ -28,7 +32,7 @@ use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDtoInterface;
 // *          }>
 // * } $originalDataArray 'breeds' массив только при GetById
 // */
-abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOnlyDtoInterface
+abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -39,6 +43,24 @@ abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOn
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\PetType($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\PetType($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\PetType($this->activeRecordFactory))->delete($this->getId());
     }
 
     public function getId(): int

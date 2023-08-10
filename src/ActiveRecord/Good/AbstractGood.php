@@ -6,12 +6,16 @@ namespace VetmanagerApiGateway\ActiveRecord\Good;
 
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\GoodGroup\GoodGroup;
 use VetmanagerApiGateway\ActiveRecord\GoodSaleParam\AbstractGoodSaleParam;
 use VetmanagerApiGateway\ActiveRecord\Unit\Unit;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Good\GoodOnlyDto;
 use VetmanagerApiGateway\DTO\Good\GoodOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read GoodOnlyDto $originalDto
@@ -81,7 +85,7 @@ use VetmanagerApiGateway\DTO\Good\GoodOnlyDtoInterface;
 // * @property-read ?Unit $unit
 // * @property-read GoodSaleParamOnly[] $goodSaleParams
 // */
-abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoInterface
+abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -92,6 +96,24 @@ abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoI
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Good($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Good($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Good($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

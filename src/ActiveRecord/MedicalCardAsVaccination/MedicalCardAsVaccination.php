@@ -8,6 +8,8 @@ use DateInterval;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\MedicalCardPlusPet;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
@@ -60,7 +62,7 @@ use VetmanagerApiGateway\Facade;
 // * @property-read ?DateInterval petAgeAtVaccinationMoment
 // * @property-read ?DateInterval currentPetAgeIfStillAlive
 // */
-final class MedicalCardAsVaccination extends AbstractActiveRecord implements MedicalCardAsVaccinationDtoInterface
+final class MedicalCardAsVaccination extends AbstractActiveRecord implements MedicalCardAsVaccinationDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getDtoClass(): string
     {
@@ -81,6 +83,24 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\MedicalCardAsVaccination($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\MedicalCardAsVaccination($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\MedicalCardAsVaccination($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

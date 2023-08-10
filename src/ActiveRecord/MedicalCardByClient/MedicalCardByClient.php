@@ -102,7 +102,6 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
         return 'medicalCards/MedicalcardsDataByClient';
     }
 
-
     public function __construct(ActiveRecordFactory $activeRecordFactory, MedicalCardByClientDto $modelDTO)
     {
         parent::__construct($activeRecordFactory, $modelDTO);

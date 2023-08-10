@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\Clinic;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullPhone;
 use VetmanagerApiGateway\DTO\Clinic\ClinicOnlyDto;
 use VetmanagerApiGateway\DTO\Clinic\ClinicOnlyDtoInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Facade\Property;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read ClinicOnlyDto $originalDto
@@ -49,7 +51,7 @@ use VetmanagerApiGateway\Facade\Property;
 // * @property-read FullPhone $fullPhone
 // * @property-read bool $isOnlineSigningUpAvailable
 // */
-final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterface
+final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getDtoClass(): string
     {
@@ -65,6 +67,24 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Clinic($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Clinic($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Clinic($this->activeRecordFactory))->delete($this->getId());
     }
 
     public function getId(): int
@@ -220,14 +240,14 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
     /** @throws VetmanagerApiGatewayException */
     public function getFullPhone(): FullPhone
     {
-        $phonePrefix = (new Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->getId(), "unisender_phone_pristavka");
-        $phoneMask = (new Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->getId(), "phone_mask");
+        $phonePrefix = (new Facade\Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->getId(), "unisender_phone_pristavka");
+        $phoneMask = (new Facade\Property($this->activeRecordFactory))->getValueByClinicIdAndPropertyName($this->getId(), "phone_mask");
         return (new FullPhone($phonePrefix ?? '', $this->getPhone(), $phoneMask ?? ''));
     }
 
     /** @throws VetmanagerApiGatewayException */
     public function isOnlineSigningUpAvailable(): bool
     {
-        return (new Property($this->activeRecordFactory))->isOnlineSigningUpAvailableForClinic($this->getId());
+        return (new Facade\Property($this->activeRecordFactory))->isOnlineSigningUpAvailableForClinic($this->getId());
     }
 }

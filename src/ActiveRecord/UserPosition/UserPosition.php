@@ -6,9 +6,13 @@ namespace VetmanagerApiGateway\ActiveRecord\UserPosition;
 
 use DateInterval;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDto;
 use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDtoInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read UserPositionOnlyDto $originalDto
@@ -21,7 +25,7 @@ use VetmanagerApiGateway\DTO\UserPosition\UserPositionOnlyDtoInterface;
 // *     admission_length: string
 // * } $originalDataArray
 // */
-final class UserPosition extends AbstractActiveRecord implements UserPositionOnlyDtoInterface
+final class UserPosition extends AbstractActiveRecord implements UserPositionOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -37,6 +41,24 @@ final class UserPosition extends AbstractActiveRecord implements UserPositionOnl
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\UserPosition($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\UserPosition($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\UserPosition($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

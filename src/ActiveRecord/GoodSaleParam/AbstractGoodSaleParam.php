@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway\ActiveRecord\GoodSaleParam;
 
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\Good\AbstractGood;
 use VetmanagerApiGateway\ActiveRecord\Unit\Unit;
 use VetmanagerApiGateway\ActiveRecordFactory;
@@ -12,6 +14,8 @@ use VetmanagerApiGateway\DTO\GoodSaleParam\GoodSaleParamOnlyDto;
 use VetmanagerApiGateway\DTO\GoodSaleParam\GoodSaleParamOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\GoodSaleParam\PriceFormationEnum;
 use VetmanagerApiGateway\DTO\GoodSaleParam\StatusEnum;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read GoodSaleParamOnlyDto $originalDto
@@ -65,7 +69,7 @@ use VetmanagerApiGateway\DTO\GoodSaleParam\StatusEnum;
 // * @property-read ?Unit $unit
 // * @property-read GoodOnly $good
 // */
-abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements GoodSaleParamOnlyDtoInterface
+abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements GoodSaleParamOnlyDtoInterface, CreatableInterface, DeletableInterface
 {
     public static function getRouteKey(): string
     {
@@ -76,6 +80,24 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     {
         parent::__construct($activeRecordFactory, $modelDTO);
         $this->modelDTO = $modelDTO;
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\GoodSaleParam($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\GoodSaleParam($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\GoodSaleParam($this->activeRecordFactory))->delete($this->getId());
     }
 
     /** @inheritDoc */

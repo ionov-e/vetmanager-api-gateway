@@ -7,6 +7,8 @@ namespace VetmanagerApiGateway\ActiveRecord\Client;
 use DateTime;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\City\City;
+use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
+use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\MedicalCardByClient\MedicalCardByClient;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
 use VetmanagerApiGateway\ActiveRecordFactory;
@@ -15,6 +17,7 @@ use VetmanagerApiGateway\DTO\Client\ClientDtoInterface;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Facade;
 
 ///**
 // * @property-read ClientOnlyDto $originalDto
@@ -97,7 +100,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 // * @property-read ?StreetOnly $street
 // * @property-read FullName $fullName
 // * */
-abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface
+abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoInterface, CreatableInterface, DeletableInterface
 {
     public function __construct(ActiveRecordFactory $activeRecordFactory, ClientOnlyDto $modelDTO)
     {
@@ -108,6 +111,25 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
     public static function getRouteKey(): string
     {
         return 'client';
+    }
+
+
+    /** @throws VetmanagerApiGatewayException */
+    public function create(): self
+    {
+        return (new Facade\Client($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function update(): self
+    {
+        return (new Facade\Client($this->activeRecordFactory))->updateUsingIdAndArray($this->getId(), $this->getAsArrayWithSetPropertiesOnly());
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function delete(): void
+    {
+        (new Facade\Client($this->activeRecordFactory))->delete($this->getId());
     }
 
     public function getId(): int
