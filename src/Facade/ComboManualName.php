@@ -90,10 +90,16 @@ class ComboManualName extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getByName(string $comboManualName): ActiveRecord\ComboManualName\ComboManualNamePlusComboManualItems
+    public function getByNameAsString(string $comboManualName): ActiveRecord\ComboManualName\ComboManualNamePlusComboManualItems
     {
         $comboManualNames = $this->getByQueryBuilder((new Builder())->where("name", $comboManualName), 1);
         return $comboManualNames[0];
+    }
+
+    /** @throws VetmanagerApiGatewayException */
+    public function getByNameAsEnum(NameEnum $comboManualName): ActiveRecord\ComboManualName\ComboManualNamePlusComboManualItems
+    {
+        return $this->getByNameAsString($comboManualName->value);
     }
 
     /**
@@ -102,7 +108,7 @@ class ComboManualName extends AbstractFacade implements AllRequestsInterface
      */
     public function getIdByNameAsString(string $comboManualName): int
     {
-        return $this->getByName($comboManualName)->getId();
+        return $this->getByNameAsString($comboManualName)->getId();
     }
 
     /**
