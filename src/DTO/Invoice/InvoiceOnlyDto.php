@@ -80,7 +80,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return ToInt::fromStringOrNull($this->pet_id)->getPositiveIntOrThrow();
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return ToString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
     }

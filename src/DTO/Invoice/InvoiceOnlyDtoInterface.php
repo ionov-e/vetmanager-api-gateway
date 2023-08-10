@@ -28,7 +28,7 @@ interface InvoiceOnlyDtoInterface
      */
     public function getPetId(): int;
 
-    public function getDescription(): ?string;
+    public function getDescription(): string;
 
     /** Округляется до целых. Примеры: "0.0000000000", "-3.0000000000"
      * @throws VetmanagerApiGatewayResponseException

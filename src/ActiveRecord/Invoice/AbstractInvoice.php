@@ -77,7 +77,7 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
         return $this->modelDTO->getPetId();
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->modelDTO->getDescription();
     }
