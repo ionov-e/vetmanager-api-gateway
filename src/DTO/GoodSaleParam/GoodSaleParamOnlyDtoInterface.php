@@ -51,7 +51,7 @@ interface GoodSaleParamOnlyDtoInterface
     public function getMarkup(): ?float;
 
     /** Default: 'fixed' */
-    public function getPriceFormation(): PriceFormationEnum;
+    public function getPriceFormationAsEnum(): PriceFormationEnum;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setGoodId(?string $value): static;

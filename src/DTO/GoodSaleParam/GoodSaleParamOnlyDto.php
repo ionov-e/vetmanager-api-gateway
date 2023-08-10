@@ -96,7 +96,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return ToFloat::fromStringOrNull($this->markup)->getNonZeroFloatOrNull();
     }
 
-    public function getPriceFormation(): PriceFormationEnum
+    public function getPriceFormationAsEnum(): PriceFormationEnum
     {
         return PriceFormationEnum::from((string)$this->price_formation);
     }

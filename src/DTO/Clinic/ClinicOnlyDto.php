@@ -101,7 +101,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
         return ToString::fromStringOrNull($this->logo_url)->getStringEvenIfNullGiven();
     }
 
-    public function getStatus(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
+    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
     {
         return \VetmanagerApiGateway\DTO\Clinic\StatusEnum::from($this->status);
     }

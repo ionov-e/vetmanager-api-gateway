@@ -312,13 +312,24 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         return self::setPropertyFluently($this, 'middle_name', $value);
     }
 
-    public function getStatus(): StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
         return StatusEnum::from($this->status);
     }
 
+    public function getStatusAsString(): ?string
+    {
+        return $this->status;
+    }
+
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatus(StatusEnum $value): static
+    public function setStatusAsString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'status', $value);
+    }
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setStatusAsEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }
@@ -328,7 +339,6 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     {
         return ToInt::fromStringOrNull($this->discount)->getIntEvenIfNullGiven();
     }
-
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDiscount(int $value): static
@@ -412,7 +422,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getLastVisitDate(): ?DateTime
+    public function getLastVisitDateAsDateTime(): ?DateTime
     {
         return ToDateTime::fromFullDateTimeString($this->last_visit_date)->getDateTimeOrThrow();
     }

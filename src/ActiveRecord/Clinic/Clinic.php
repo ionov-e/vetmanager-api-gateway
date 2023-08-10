@@ -142,9 +142,9 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
         return $this->modelDTO->getLogoUrl();
     }
 
-    public function getStatus(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
+    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
     {
-        return $this->modelDTO->getStatus();
+        return $this->modelDTO->getStatusAsEnum();
     }
 
     public function getTelegram(): string

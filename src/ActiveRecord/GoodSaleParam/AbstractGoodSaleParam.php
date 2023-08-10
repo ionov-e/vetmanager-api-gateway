@@ -166,9 +166,9 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     }
 
     /** @inheritDoc */
-    public function getPriceFormation(): PriceFormationEnum
+    public function getPriceFormationAsEnum(): PriceFormationEnum
     {
-        return $this->modelDTO->getPriceFormation();
+        return $this->modelDTO->getPriceFormationAsEnum();
     }
 
     /** @inheritDoc */

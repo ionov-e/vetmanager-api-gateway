@@ -174,9 +174,9 @@ abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function getCreateDate(): ?DateTime
+    public function getCreateDateAsDateTime(): ?DateTime
     {
-        return $this->modelDTO->getCreateDate();
+        return $this->modelDTO->getCreateDateAsDateTime();
     }
 
     public function getDescription(): string

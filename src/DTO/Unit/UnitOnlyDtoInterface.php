@@ -15,7 +15,12 @@ interface UnitOnlyDtoInterface
     public function getTitle(): ?string;
 
     /** Default: 'active' */
-    public function getStatus(): StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
+
+    /** Default: 'active'
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getStatusAsString(): string;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setTitle(?string $value): static;

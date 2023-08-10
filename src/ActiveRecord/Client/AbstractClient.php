@@ -323,14 +323,24 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setMiddleName($value));
     }
 
-    public function getStatus(): StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
-        return $this->modelDTO->getStatus();
+        return $this->modelDTO->getStatusAsEnum();
     }
 
-    public function setStatus(StatusEnum $value): static
+    public function setStatusAsEnum(StatusEnum $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatus($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsEnum($value));
+    }
+
+    public function getStatusAsString(): ?string
+    {
+        return $this->modelDTO->getStatusAsString();
+    }
+
+    public function setStatusAsString(?string $value): static
+    {
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusAsString($value));
     }
 
     public function getDiscount(): int
@@ -403,9 +413,9 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setInBlacklist($value));
     }
 
-    public function getLastVisitDate(): ?DateTime
+    public function getLastVisitDateAsDateTime(): ?DateTime
     {
-        return $this->modelDTO->getLastVisitDate();
+        return $this->modelDTO->getLastVisitDateAsDateTime();
     }
 
     public function setLastVisitDateFromSting(?string $value): static

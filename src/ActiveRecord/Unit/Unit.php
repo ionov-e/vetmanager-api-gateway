@@ -73,9 +73,15 @@ final class Unit extends AbstractActiveRecord implements UnitOnlyDtoInterface, C
     }
 
     /** @inheritDoc */
-    public function getStatus(): StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
-        return $this->modelDTO->getStatus();
+        return $this->modelDTO->getStatusAsEnum();
+    }
+
+    /** @inheritDoc */
+    public function getStatusAsString(): string
+    {
+        return $this->modelDTO->getStatusAsString();
     }
 
     /** @inheritDoc */

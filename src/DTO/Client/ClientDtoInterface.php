@@ -124,10 +124,15 @@ interface ClientDtoInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setMiddleName(string $value): static;
 
-    public function getStatus(): StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatus(StatusEnum $value): static;
+    public function setStatusAsEnum(StatusEnum $value): static;
+
+    public function getStatusAsString(): ?string;
+
+    /** @throws VetmanagerApiGatewayInnerException */
+    public function setStatusAsString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getDiscount(): int;
@@ -171,7 +176,7 @@ interface ClientDtoInterface
     public function setInBlacklist(bool $value): static;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getLastVisitDate(): ?DateTime;
+    public function getLastVisitDateAsDateTime(): ?DateTime;
 
     /** @throws VetmanagerApiGatewayResponseException
      * @throws VetmanagerApiGatewayException

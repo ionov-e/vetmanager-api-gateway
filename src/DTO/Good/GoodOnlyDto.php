@@ -99,7 +99,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
         return ToString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
     }
 
-    public function getCreateDate(): ?DateTime
+    public function getCreateDateAsDateTime(): ?DateTime
     {
         return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }

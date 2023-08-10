@@ -50,7 +50,7 @@ interface GoodOnlyDtoInterface
     public function getBarcode(): string;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getCreateDate(): ?DateTime;
+    public function getCreateDateAsDateTime(): ?DateTime;
 
     public function getDescription(): string;
 

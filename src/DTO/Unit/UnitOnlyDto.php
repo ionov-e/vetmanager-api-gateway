@@ -32,9 +32,14 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
         return ToString::fromStringOrNull($this->title)->getStringEvenIfNullGiven();
     }
 
-    public function getStatus(): StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
         return StatusEnum::from($this->status);
+    }
+
+    public function getStatusAsString(): string
+    {
+        return ToString::fromStringOrNull($this->title)->getStringOrThrowIfNull();
     }
 
     public function setTitle(?string $value): static
