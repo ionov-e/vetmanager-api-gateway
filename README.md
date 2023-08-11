@@ -1,5 +1,7 @@
 # Vetmanager Api Gateway
 
+![Vetmanager Logo](https://vetmanager.ru/wp-content/themes/vetmanager/images/headerLogo.svg)
+
 Помощник для работы с АПИ Ветменеджера.
 
 [Используется в основе библиотека](https://github.com/otis22/vetmanager-rest-api) -
@@ -19,18 +21,18 @@
 
 ```php
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\DTO\DAO\Client;
-
-$apiGateway = ApiGateway::fromDomainAndApiKey('subDomain', 'apiKey', true):
-$client = Client::getById($apiGateway, 33);
-$clientEmail = $client->email;
-$clientCityId = $client->cityId; 
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$invoice = $apiGateway->getInvoice()->getById(7);    // Получение модели Счета по ID 7
+$invoiceDiscount = $invoice->getDiscount();          // Получение скидки из Счета
+$petBreedTitle = $invoice->getPetBreed()->getTitle();// Получение названия типа питомца из счета
+$pet = $invoice->getPet();                           // Получение модели Питомца из Счета
+$petAlias = $pet->getAlias();                        // Получение клички Питомца из Счета
 ```
 
 ## Установка
 
 ```bash
-composer require ionov-e/vetmanager-api-gateway
+composer require ioncurly/vetmanager-api-gateway
 ```
 
 ## Короткое оглавление
@@ -38,15 +40,16 @@ composer require ionov-e/vetmanager-api-gateway
 * [Начало работы/Конфигурация подключения](#header_connection)
 * [Первоначальное получение объектов](#header_get)
     1. [По ID](#get_by_id)
-    2. [По Query](#get_by_query)
-    3. [Другими способами](#get_by_custom)
+    2. [Всех](#get_all)
+    3. [По Query](#get_by_query)
+    4. [Другими способами](#get_by_custom)
 * [Пример представления данных](#header_dtos)
 * [Связанные запросы](#header_interconnections)
 * [Работа как с первоначальными массивами, кэширование](#header_decoded_json)
 * [Дополнительные особенности](#header_additional)
     1. [Объект FullName](#additional_full_name)
     2. [Объект FullPhone](#additional_full_phone)
-    3. [Возможность онлайн записи](#additional_online_sign_up)
+  3. [Возможность онлайн записи в клинике](#additional_online_sign_up)
 
 ## Подробное использование:
 
@@ -57,11 +60,12 @@ composer require ionov-e/vetmanager-api-gateway
 #### С помощью домена и АПИ ключа
 
 ```php
+use VetmanagerApiGateway\ApiGateway;
 $subDomain = 'kras-best';   // субдомен клиники в ветменеджер
 $apiKey = 'xXdfxfsfsdffsf'; // АПИ ключ к домену в ветменеджер
 $isProduction = true;       // рабочий или тестовый сервер будет использоваться
 
-$apiGateway = ApiGateway::fromDomainAndApiKey($subDomain, $apiKey, $isProduction):
+$apiGateway = ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduction);
 ```
 
 #### С помощью домена, имени АПИ-сервиса и АПИ ключа
@@ -69,7 +73,8 @@ $apiGateway = ApiGateway::fromDomainAndApiKey($subDomain, $apiKey, $isProduction
 Для специальных внутренних сервисов
 
 ```php
-$apiGateway = ApiGateway::fromDomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true):
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true);
 ```
 
 ### Первоначальное получение объектов <a id="header_get" />
@@ -89,101 +94,119 @@ AdmissionFromGetById можно получить лишь по ID. А у Medical
 #### Получение объекта по ID <a id="get_by_id" />
 
 ```php
-$client = Client::getById($apiGateway, 33);
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$client = $apiGateway->getClient()->getById(33); 
+```
+
+#### Получение всех объектов <a id="get_all" />
+
+Всегда возвращает массив моделей. Даже когда 1 объект получаем - обращаемся к нему через массив.
+
+```php
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$invoices = $apiGateway->getInvoice()->getAll(maxLimitOfReturnedModels: 20); // В параметре можем дописать лимит возвращаемых моделей (иначе 100 по умолчанию)
+if (!empty($invoices)) {
+    $invoiceDescription = $invoices[0]->getDescription();
+}
 ```
 
 #### Получение объекта по Query запросу <a id="get_by_query" />
 
-По скольку все Query запросы всегда возвращают массив объектов: даже когда 1 объект получаем - обращаемся к нему через
-массив.
-
-```php
-$comboManualItemTitle = $comboManualItems[0]->title;
-```
+Точно так же как и получение всех моделей, Query запросы всегда возвращают массив объектов. То есть даже когда 1 объект
+возвращается - обращаемся к нему через массив.
 
 Ниже перечислены 3 варианта одного и того же запроса
 
 1) Query Builder
 
-   [Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
-    ```php
-    use Otis22\VetmanagerRestApi\Query\Builder;
-    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
-    
-    $comboManualItems = ComboManualItem::getByQueryBuilder(
-            $apiGateway,
-            (new Builder())
-                ->where('value', '7')
-                ->where('combo_manual_id', '1'),
-            1
-    );
-    ```
+[Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
+
+```php
+use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ApiGateway;
+
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$comboManualItems = $apiGateway->getComboManualItem()->getByQueryBuilder(
+        (new Builder())
+            ->where('value', '7')
+            ->where('combo_manual_id', '1'),
+        1 // Опциональный параметр - лимит возвращаемых моделей
+);
+```
 2) PagedQuery
 
-   [Ссылка на используемую библиотеку с большим количество примеров использования PagedQuery](https://github.com/otis22/vetmanager-rest-api)
+[Ссылка на используемую библиотеку с большим количество примеров использования PagedQuery](https://github.com/otis22/vetmanager-rest-api)
 
-   С помощью этого объекта удобнее работать с пагинацией.
-    ```php
-    use Otis22\VetmanagerRestApi\Query\Builder;
-    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
-    
-    $comboManualItems = ComboManualItem::getByPagedQuery(
-            $apiGateway,
-            (new Builder())
-                ->where('value', '7')
-                ->where('combo_manual_id', '1')
-                ->top(1)
-    );
-    ```
-3) Get Parameters As String
-   Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
-   и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
-    ```php
-    use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
-    
-    $comboManualItems = ComboManualItem::getByParametersAsString(
-            $apiGateway,
-            "filter=[{'property':'combo_manual_id', 'value':'1'},{'property':'value', 'value':'7'}]&limit=1"
-    );
-    ```
-
-#### Альтернативные способы получения для конкретных DAO <a id="get_by_custom" />
+С помощью этого объекта удобнее работать с пагинацией.
 
 ```php
-use VetmanagerApiGateway\ApiDataInterpreter\Enum\ComboManualName\Name;
-use VetmanagerApiGateway\DTO\DAO\Admission;
-use VetmanagerApiGateway\DTO\DAO\ComboManualItem;
-use VetmanagerApiGateway\DTO\DAO\MedicalCardAsVaccination;
-use VetmanagerApiGateway\DTO\DAO\MedicalCardsByClient;
-use VetmanagerApiGateway\DTO\DAO\Property;
+use Otis22\VetmanagerRestApi\Query\Builder;
+use VetmanagerApiGateway\ApiGateway;
 
-$clinicLanguage = Property::getByClinicIdAndPropertyName($apiGateway, $clinicId = 13, 'lang')->title;
-$clientMedicalCards = MedicalCardsByClient::getByClientId($apiGateway, $clientId = 77);
-$petVaccinations = MedicalCardAsVaccination::getByPetId($apiGateway, $petId = 11);
-ComboManualItem::getByAdmissionTypeId($apiGateway, $id = 11);
-ComboManualItem::getByAdmissionResultId($apiGateway, $id = 11);
-ComboManualItem::getByPetColorId($apiGateway, $id = 11);
-ComboManualItem::getByVaccineTypeId($apiGateway, $id = 11);
-ComboManualItem::getOneByValueAndComboManualName($apiGateway, $id, Name::AdmissionResult);
-$admissionResult = ComboManualItem::getByName($apiGateway, 'admission_result');
-$admissionResultId = ComboManualItem::getIdByNameAsString($apiGateway, 'admission_result'); // int
-$admissionResultId = ComboManualItem::getIdByNameAsEnum($apiGateway, Name::AdmissionResult);
-$clientAdmissions = Admission::getByClientId($this->apiGateway, $ownerId = 40);
-$petAdmissions = Admission::getByPetId($this->apiGateway, $petId = 88);
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$comboManualItems = $apiGateway->getComboManualItem()->getByPagedQuery(
+        (new Builder())
+            ->where('value', '7')
+            ->where('combo_manual_id', '1')
+            ->top(1) // Лимит возвращаемых моделей
+);
 ```
 
-### Пример представления данных DAO/DTO <a id="header_dtos" />
+3) Get Parameters As String
 
-Каждое свойство подсвечивается. Видно, что может вернуться
+Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
+и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
 
 ```php
-use VetmanagerApiGateway\DTO\DAO\Client;
+use VetmanagerApiGateway\ApiGateway;
 
-$clientEmail = $client->email; // Объявлено, что только строка, возможно пустая
-$clientCityId = $client->cityId; // Объявлено, что только int или null может прийти
-$clientDateRegister = $client?->dateRegister->format('Y-m-d H:i:s'); //dateRegister содержит DateTime (или null, если отсутствует дата)
-$clientName = $client->fullName->fullStartingWithFirst; // fullName - вспомогательный объект для удобного форматирования имени
-$clientStatus = $client->status; // Возвращается одно из возможных значений соответствующего Enum
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$comboManualItems = $apiGateway->getComboManualItem()->getByGetParametersAsString(
+        "filter=[{'property':'combo_manual_id', 'value':'1'},{'property':'value', 'value':'7'}]&limit=1"
+);
+```
+
+#### Альтернативные способы получения для конкретных моделей <a id="get_by_custom" />
+
+```php
+use VetmanagerApiGateway\ApiGateway;
+use VetmanagerApiGateway\DTO\ComboManualName\NameEnum;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+
+$clinicLanguage = $apiGateway->getProperty()->getByClinicIdAndPropertyName($clinicId = 13, $property = 'lang')->getTitle();
+$clientMedicalCards = $apiGateway->getMedicalCardByClient()->getByClientId(77);
+$petVaccinations = $apiGateway->getMedicalCardAsVaccination()->getByPetId(11);
+$admissionType = $apiGateway->getComboManualItem()->getByAdmissionTypeId(11);
+$admissionTypeTitle = $admissionType->getTitle(); // Пример использования содержимого модели
+$result = $apiGateway->getComboManualItem()->getByAdmissionResultId(11);
+$petColor = $apiGateway->getComboManualItem()->getByPetColorId(11);
+$vaccineType = $apiGateway->getComboManualItem()->getByVaccineTypeId(11);
+$admissionResult13 = $apiGateway->getComboManualItem()->getOneByValueAndComboManualName(13, NameEnum::AdmissionResult);
+$admissionResultManual = $apiGateway->getComboManualName()->getByNameAsString('admission_result');
+$admissionResultManualId = $apiGateway->getComboManualName()->getIdByNameAsString('admission_result');
+$admissionResultManual = $apiGateway->getComboManualName()->getByNameAsEnum(Name::AdmissionResult);
+$admissionResultManualId = $apiGateway->getComboManualName()->getIdByNameAsEnum(Name::AdmissionResult);
+$clientAdmissions = $apiGateway->getAdmission()->getByClientId(40);
+$petAdmissions = $apiGateway->getAdmission()->getByPetId(88);
+```
+
+### Пример представления данных модели <a id="header_dtos" />
+
+Получать каждое свойство через гет-метод. Тип возвращаемых данных показывает
+
+```php
+use VetmanagerApiGateway\ApiGateway;
+
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$client = $apiGateway->getClient()->getById(13);
+
+$clientEmail = $client->getEmail(); // Объявлено, что только строка, возможно пустая
+$clientCityId = $client->getCityId(); // Объявлено, что только int или null может прийти
+$clientDateRegister = $client->getDateRegisterAsDateTime()?->format('Y-m-d H:i:s'); //dateRegister содержит DateTime (или null, если отсутствует дата)
+$clientName = $client->getFullName()->getInitials(); // FullName - вспомогательный объект для удобного форматирования имени
+$clientStatus = $client->getStatusAsEnum(); // Возвращается одно из возможных значений соответствующего Enum
 ```
 
 ### Пример связанных запросов <a id="header_interconnections" />
@@ -191,97 +214,131 @@ $clientStatus = $client->status; // Возвращается одно из во�
 Есть свойства объекта, которые вместо скалярных данных, возвращают другие объекты или массив объектов.
 
 ```php
-$clientStreet = $client->street; // В переменной будет null или DTO (объект данных со свойствами)
-$streetName = !is_null($clientStreet) ? $clientStreet->title : ''; // Название улицы или пустая строка
+use VetmanagerApiGateway\ApiGateway;
 
-$clientPets = $client->petsAlive; // Массив с DTO питомцев 
-$firstPet = (!empty($client->petsAlive)) ? $clientPets[0] : null; // Будет DTO PetOnly или null
-$firstPetName = !is_null($firstPet) ? $firstPet->color->title : ''; // Получение названия цвета питомца
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$client = $apiGateway->getClient()->getById(13);
+
+$clientStreet = $client->getStreet(); // В переменной будет null или Модель Улицы
+$streetName = $clientStreet?->getTitle() ?? ''; // Название улицы или пустая строка
+
+$clientPets = $client->getPetsAlive(); // Массив с Моделями Питомцев 
+$firstPet = (!empty($client->petsAlive)) ? $clientPets[0] : null; // Будет Питомец или null
+$firstPetName = $firstPet?->getColor()?->getTitle() : ''; // Получение названия цвета питомца или пустая строка, если нет
 ```
 
-Рассмотрим пример сложного обращения:
-
-1) Вначале получаем все медкарты клиента (1-ый дополнительный АПИ-запрос)
-2) В первой медкарте получаем объект доктора (происходит 2-ой АПИ-запрос - получение объекта по ID)
-3) В объекте доктора уже берем имя (нет запроса)
+#### Пример обращения посложнее:
 
 ```php
-$firstPetsDoctorsFirstName = $client?->medcards[0]->user->firstName;
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(13)->getMedicalCards();
+$firstMedicalCardOfClient = !empty($clientMedicalCards) ? $clientMedicalCards[0] : null;
+$middleNameOfFirstMedicalCardDoctor = $firstMedicalCardOfClient?->getUser()?->getMiddleName();
 ```
 
-### Работа как с массивами <a id="header_decoded_json" />
+Та же запись, но с дополнительными переменными для понимания:
 
-С помощью этих методов несложно реализовать кеширование DAO/DTO.
+```php
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true); // Получение объекта ApiGateway
+$clientFacade = $apiGateway->getClient(); // Получение фасада для моделей Клиента с разными методами для работы с ними
+$client = $clientFacade->getById(13); // Получение через АПИ-запрос используя ID модель Клиента (1ый АПИ запрос)
+$clientMedicalCards = $client->getMedicalCards(); // Получение всех карт Клиента (2ой АПИ запрос)
+$firstMedicalCardOfClient = !empty($clientMedicalCards) ? $clientMedicalCards[0] : null; // Получим первую карту Клиента или null, если нет карт
+$firstMedicalCardDoctor = $firstMedicalCardOfClient?->getUser(); // Получение модели Доктора из медицинской карты (3ий запрос)
+$middleNameOfFirstMedicalCardDoctor = $firstMedicalCardDoctor?->getMiddleName(); // Получение отчества доктора из первой Карты Клиента
+
+```
+
+### Нормализация объектов (приведение в массив) <a id="header_decoded_json" />
+
+С помощью этих методов несложно реализовать **кеширование** модели.
 
 Каждый раз, когда нужно сделать повторяющийся одинаковый запрос:
 
-1. Попытаться получить уже закешированный объект в виде массива.
-    * Если нашелся кеш - создать объект из этого кеша.
-    * Если нет - сделать АПИ запрос на получение объекта, и в кеш записать раздекодированный JSON для следующей PHP
-      сессии
+1 - Попытаться получить уже закешированный объект в виде массива.
 
-#### Получение изначальных данных присланных по АПИ в виде раздекодированного JSON
+* Если нашелся кеш:
 
-Метод работает у всех DTO/DAO.
+2 - создать объект из этого кеша.
 
-Возвращение данных в том же виде, в котором и были получены. Без валидатиции и т.д.
+* Если не нашелся кеш:
+
+2 - сделать АПИ запрос на получение объекта
+
+3 - в кеш закинуть модель в виде массива для следующей PHP сессии
+
+#### Получение модели в виде массива
+
+Возвращаются данные в том же виде, в котором и были получены по АПИ
 
 ```php
-$clientDataAsArray = $client->getOriginalObjectData();
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
+// Получим массив модели вида: ["id" => "1", "address" => "", "home_phone" => "3322122", ... ]
 ```
 
-#### Создание объекта из данных в виде первоначального раздекодированного JSON
+#### Создание объекта из данных в виде массива
 
 Методы работают у всех DTO/DAO.
 
-1. Получение одного объекта из раздекодированного JSON (в виде ['id' => '12', '...' => ...]).
-   ```php
-   $client = Client::fromSingleObjectContents($apiGateway, $clientDataAsArray);
-   ```
-2. Получение массива объектов из раздекодированных JSON
-   ```php
-   $clients = Client::fromMultipleObjectsContents($apiGateway, $decodedObjects);
-   ```
+1. Получение одного объекта из закешированного массива модели (в виде ['id' => '12', '...' => ...]).
+    ```php
+    use VetmanagerApiGateway\ApiGateway;
+    $apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $client = $apiGateway->getClient()->fromSingleModelAsArray($cachedClientAsArray);
+    ```
+2. Получение массива объектов из массива таких массивов с моделямм
+    ```php
+    use VetmanagerApiGateway\ApiGateway;
+    $apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $clients = $apiGateway->getClient()->fromMultipleModelsAsArrays($cachedClientAsArray);
+    // Дальше продолжаем использовать будто получили массив моделей как обычно
+    $firstClientId = $clients[0]->getId();
+    ```
 
 ### Дополнительные особенности <a id="header_additional" />
 
 #### Вспомогательный объект FullName <a id="additional_full_name" />
 
-Например, у DAO и DTO User, Client есть свойство FullName. У объекта FullName есть свойства возвращающие полное имя в
+Например, у моделей User и Client есть геттер для FullName. У объекта FullName есть методы возвращающие полное имя в
 разном формате:
 
-   ```php
-   $client = VetmanagerApiGateway\DTO\DAO\Client::getById($apiGateway, 9);
-   echo $client->fullName->fullStartingWithFirst; // Возвращает: "Имя Отчество Фамилия"
-   echo $client->fullName->fullStartingWithLast;  // Возвращает: "Фамилия Имя Отчество"
-   echo $client->fullName->initials;              // Возвращает: "Фамилия И. О."
-   echo $client->fullName->lastPlusInitials;      // Возвращает: "Ф. И. О."
-   ```
+```php
+use VetmanagerApiGateway\ApiGateway;
+$clientFullName = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(9)->getFullName();
+echo $clientFullName->getFullStartingWithFirst();// Возвращает: "Имя Отчество Фамилия"
+echo $clientFullName->getFullStartingWithLast(); // Возвращает: "Фамилия Имя Отчество"
+echo $clientFullName->getInitials();             // Возвращает: "Фамилия И. О."
+echo $clientFullName->getLastPlusInitials();     // Возвращает: "Ф. И. О."
+```
 
 Если, предположим, отчества не будет, то каждый из методов просто пропустит слово без создания лишних пробелов, точек и
 т.д.
 
 #### Вспомогательный объект FullPhone <a id="additional_full_phone" />
 
-Например, у DAO и DTO Clinic есть свойство fullPhone. Он возвращает Объект FullPhone, у которого есть метод __toString -
-возвращает телефон с кодом страны и выбранной маской номера +7(918)-277-21-21
+Например, у модели Клиники есть метод возвращающий FullPhone. У FullPhone есть метод возвращающий телефон с
+кодом страны и выбранной маской номера, например в виде: +7(918)-277-21-21
 
-   ```php
-   $clinic = VetmanagerApiGateway\DTO\DAO\Clinic::getById($apiGateway, 33);
-   echo $clinic->fullPhone; // Выведет телефона в виде +7(918)-277-21-21
-   echo $clinic->fullPhone->mask; // Подобные маски могут вернуться: '(___)-__-__-__', '(__)___-____' или '____-____'
-   echo $clinic->fullPhone->countryCode; // +7 или +38 и т.д.
-   ```
+```php
+use VetmanagerApiGateway\ApiGateway;
+$clinicFullPhone = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClinic()->getById(9)->getFullPhone();
+echo $clinicFullPhone->getAsMaskedWithCountryCode(); // Выведет телефона в виде +7(918)-277-21-21
+echo $clinicFullPhone; // То же самое, что и прошлая строка - _toString() вызывает тот же метод
+echo $clinicFullPhone->mask; // Подобные маски могут вернуться: '(___)-__-__-__', '(__)___-____' или '____-____'
+echo $clinicFullPhone->countryCode; // +7 или +38 и т.д.
+```
 
-#### Узнать возможность онлайн записи клиники <a id="additional_online_sign_up" />
+#### Узнать возможность онлайн записи в клинике <a id="additional_online_sign_up" />
 
 Несколько вариантов. Возвращается bool:
 
 ```php
-Property::isOnlineSigningUpAvailableForClinic($this->apiGateway, $clinicId = 13);
+use VetmanagerApiGateway\ApiGateway;
+$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)
+$bool1 = $apiGateway->getProperty()->getIsOnlineSigningUpAvailableForClinic(13); // Один АПИ-запрос
+$bool2 = $apiGateway->getClinic()->getIsOnlineSigningUpAvailable(13);            // Один АПИ-запрос
+$bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable(); // Два АПИ-запроса
 ```
-
-```php
-Clinic::getById($apiGateway, 13)->isOnlineSigningUpAvailable;
-```
-
