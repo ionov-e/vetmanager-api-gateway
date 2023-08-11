@@ -34,19 +34,9 @@ class ApiService
 
     /** В зависимости от отправленной строки в пути - вернет либо одна модель в виде массива либо массив с такими моделями
      * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException
      */
     public function getModelsWithGetParametersAsString(string $modelKeyInResponse, string $modelRouteKey, string $getParameters): array
-    {
-        $apiDataContents = $this->getResponseWithGetParametersAsString($modelRouteKey, $getParameters);
-        return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
-    }
-
-    /** Вернет весь ответ в виде массива {success: true, message: ..., data: {...}}
-     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getResponseWithGetParametersAsString(string $modelRouteKey, string $getParameters): array
     {
         try {
             $url = (new RestApiPrefix())->asString() . $modelRouteKey . '?' . $getParameters;
@@ -54,8 +44,9 @@ class ApiService
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
 
-        $response = $this->getResponseAfterApiRequest('GET', $url);
-        return $this->getDataContentsFromResponse($response);
+        $apiRequestAsArray = $this->getApiRequestAsArrayAfterRequestUsingUrl('GET', $url);
+        $dataContentsFromApiResponse = self::getDataContentsFromApiResponseAsArray($apiRequestAsArray);
+        return self::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
     }
 
     /** Вернет массив с моделями в виде массивов
@@ -123,10 +114,10 @@ class ApiService
     private function getDataContentsUsingPagedQueryWithOneRequest(string $modelRouteKey, PagedQuery $pagedQuery): array
     {
         $url = $this->getUrlForGuzzleRequest($modelRouteKey);
-        $response = $this->getResponseAfterApiRequest('GET', $url, pagedQuery: $pagedQuery);
-        return $this->getDataContentsFromResponse($response);
+        $response = $this->getResponseAfterDoingApiRequest('GET', $url, pagedQuery: $pagedQuery);
+        $apiResponseAsArray = $this->getResponseAsArrayFromResponse($response);
+        return self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
     }
-
 
     /** Вернет массив с содержимым модели, либо массив нескольких моделей с такими массивами моделей
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
@@ -157,24 +148,57 @@ class ApiService
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
     public function delete(string $modelRouteKey, int $modelId): void
     {
-        $this->getDataContentsAfterApiRequest('DELETE', $modelRouteKey, $modelId);
+        $this->getApiRequestAsArrayAfterRequestUsingRouteKeyAndId('DELETE', $modelRouteKey, $modelId);
         // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
     }
-
 
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
     private function getModelsAfterApiRequest(string $method, string $modelRouteKey, string $modelKeyInResponse, int $modelId = 0, array $data = []): array
     {
-        $apiDataContents = $this->getDataContentsAfterApiRequest($method, $modelRouteKey, $modelId, $data);
-        return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
+        $apiResponseAsArray = $this->getApiRequestAsArrayAfterRequestUsingRouteKeyAndId($method, $modelRouteKey, $modelId, $data);
+        return self::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
     }
 
-    /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
-    private function getDataContentsAfterApiRequest(string $method, string $modelRouteKey, int $modelId = 0, array $data = []): array
+    /** @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException */
+    private function getApiRequestAsArrayAfterRequestUsingRouteKeyAndId(string $method, string $modelRouteKey, int $modelId = 0, array $data = []): array
     {
         $url = $this->getUrlForGuzzleRequest($modelRouteKey, $modelId);
-        $response = $this->getResponseAfterApiRequest($method, $url, $data);
-        return $this->getDataContentsFromResponse($response);
+        return $this->getApiRequestAsArrayAfterRequestUsingUrl($method, $url, $data);
+    }
+
+    /** @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException */
+    private function getApiRequestAsArrayAfterRequestUsingUrl(string $method, string $url, array $data = []): array
+    {
+        $response = $this->getResponseAfterDoingApiRequest($method, $url, $data);
+        return $this->getResponseAsArrayFromResponse($response);
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    private function getResponseAsArrayFromResponse(ResponseInterface $response): array
+    {
+        $apiResponseAsArray = json_decode($response->getBody()->getContents(), true);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new VetmanagerApiGatewayResponseException(
+                "Получили статус: "
+                . $response->getStatusCode()
+                . ". С сообщением: "
+                . self::getMessageFromApiResponseAsArray($apiResponseAsArray)
+            );
+        }
+
+        if (!filter_var($apiResponseAsArray['success'], FILTER_VALIDATE_BOOLEAN)) {
+            throw new VetmanagerApiGatewayResponseException(
+                "Получили ошибку: с сообщением: " . self::getMessageFromApiResponseAsArray($apiResponseAsArray)
+            );
+        }
+
+        return $apiResponseAsArray;
+    }
+
+    private static function getMessageFromApiResponseAsArray(array $apiResponseAsArray): string
+    {
+        return $apiResponseAsArray['message'] ?? '---Не было сообщения---';
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -193,7 +217,7 @@ class ApiService
      * @param array $data Только для POST/PUT методов
      * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
      */
-    private function getResponseAfterApiRequest(string $method, string $url, array $data = [], ?PagedQuery $pagedQuery = null): ResponseInterface
+    private function getResponseAfterDoingApiRequest(string $method, string $url, array $data = [], ?PagedQuery $pagedQuery = null): ResponseInterface
     {
         $options = $this->getOptionsForGuzzleRequest($data, $pagedQuery);
         try {
@@ -226,15 +250,22 @@ class ApiService
         return $options;
     }
 
-    /**
-     * @return array{data: array, success: bool, message?: string}
-     * @throws VetmanagerApiGatewayResponseException
-     * @psalm-suppress RedundantCastGivenDocblockType
-     */
-    private function getDataContentsFromResponse(ResponseInterface $response): array
+    /** @throws VetmanagerApiGatewayResponseException */
+    public static function getDataContentsFromApiResponseAsArray(array $apiResponseAsArray): array
     {
-        $apiResponseAsArray = json_decode($response->getBody()->getContents(), true);
-        return self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
+        if (!isset($apiResponseAsArray['data'])) {
+            throw new VetmanagerApiGatewayResponseException(
+                "В ответе от АПИ: отсутствует элемент 'data': " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
+            );
+        }
+
+        if (!is_array($apiResponseAsArray['data'])) {
+            throw new VetmanagerApiGatewayResponseException(
+                "В ответе от АПИ: элемент 'data' не является массивом: " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
+            );
+        }
+
+        return $apiResponseAsArray['data'];
     }
 
     /** Вернет либо массив с моделью, либо массив с такими моделями в виде массивов
@@ -242,35 +273,17 @@ class ApiService
      */
     public static function getModelsFromApiResponseAsArray(array $apiResponseAsArray, string $modelKeyInResponse): array
     {
-        $apiDataContents = self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
-        return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
-    }
-
-    /**
-     * @return array{data: array, success: bool, message?: string}
-     * @throws VetmanagerApiGatewayResponseException
-     * @psalm-suppress RedundantCastGivenDocblockType
-     */
-    public static function getDataContentsFromApiResponseAsArray (array $apiResponseAsArray): array
-    {
-        if (empty($apiResponseAsArray) || !isset($apiResponseAsArray['data'])) {
-            throw new VetmanagerApiGatewayResponseException('Пустой ответ апи');
-        }
-
-        if (!filter_var($apiResponseAsArray['success'], FILTER_VALIDATE_BOOLEAN)) {
-            throw new VetmanagerApiGatewayResponseException(
-                $apiResponseAsArray['message'] ? (string)$apiResponseAsArray['message'] : 'Неизвестная ошибка работы с апи'
-            );
-        }
-
-        return (array)$apiResponseAsArray['data'];
+        $dataContentsFromApiResponse = self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
+        return self::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
     public static function getModelsFromApiResponseDataElement(array $apiDataContents, string $modelKeyInResponse): array
     {
         if (!isset($apiDataContents[$modelKeyInResponse])) {
-            throw new VetmanagerApiGatewayResponseException("Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ");
+            throw new VetmanagerApiGatewayResponseException(
+                "Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ: " . json_encode($apiDataContents, JSON_UNESCAPED_UNICODE)
+            );
         }
 
         return $apiDataContents[$modelKeyInResponse];
