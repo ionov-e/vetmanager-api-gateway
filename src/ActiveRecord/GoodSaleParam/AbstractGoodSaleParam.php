@@ -85,7 +85,7 @@ abstract class AbstractGoodSaleParam extends AbstractActiveRecord implements Goo
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\GoodSaleParam($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\GoodSaleParam($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

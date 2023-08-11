@@ -114,7 +114,7 @@ abstract class AbstractMedicalCard extends AbstractActiveRecord implements Medic
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\MedicalCard($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\MedicalCard($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

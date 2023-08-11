@@ -44,7 +44,7 @@ final class CityType extends AbstractActiveRecord implements CityTypeDtoInterfac
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\CityType($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\CityType($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

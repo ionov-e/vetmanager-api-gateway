@@ -144,7 +144,7 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Pet($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Pet($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

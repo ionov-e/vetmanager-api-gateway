@@ -39,7 +39,7 @@ final class Role extends AbstractActiveRecord implements RoleOnlyDtoInterface
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Role($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Role($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

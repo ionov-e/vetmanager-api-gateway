@@ -208,7 +208,7 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     /** @throws VetmanagerApiGatewayException */
     public function create(): AdmissionOnly
     {
-        return (new Facade\Admission($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Admission($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

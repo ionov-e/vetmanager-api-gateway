@@ -46,7 +46,7 @@ final class UserPosition extends AbstractActiveRecord implements UserPositionOnl
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\UserPosition($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\UserPosition($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

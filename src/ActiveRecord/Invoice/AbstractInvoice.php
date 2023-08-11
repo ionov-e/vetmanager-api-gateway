@@ -38,7 +38,7 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Invoice($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Invoice($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

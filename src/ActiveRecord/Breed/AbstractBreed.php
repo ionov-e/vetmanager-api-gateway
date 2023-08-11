@@ -37,7 +37,7 @@ abstract class AbstractBreed extends AbstractActiveRecord implements BreedOnlyDt
     /** @throws VetmanagerApiGatewayException */
     public function create(): BreedOnly
     {
-        return (new Facade\Breed($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Breed($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

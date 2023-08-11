@@ -55,7 +55,7 @@ abstract class AbstractComboManualName extends AbstractActiveRecord implements C
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\ComboManualName($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\ComboManualName($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

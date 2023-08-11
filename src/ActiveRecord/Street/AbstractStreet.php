@@ -50,7 +50,7 @@ abstract class AbstractStreet extends AbstractActiveRecord implements StreetOnly
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Street($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Street($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

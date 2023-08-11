@@ -50,7 +50,7 @@ class GoodGroup extends AbstractActiveRecord implements GoodGroupOnlyDtoInterfac
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\GoodGroup($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\GoodGroup($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

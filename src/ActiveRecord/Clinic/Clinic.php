@@ -72,7 +72,7 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Clinic($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Clinic($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

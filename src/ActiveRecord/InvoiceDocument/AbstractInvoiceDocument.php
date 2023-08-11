@@ -158,7 +158,7 @@ abstract class AbstractInvoiceDocument extends AbstractActiveRecord implements I
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\InvoiceDocument($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\InvoiceDocument($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

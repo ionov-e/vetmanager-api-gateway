@@ -117,7 +117,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Client($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Client($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

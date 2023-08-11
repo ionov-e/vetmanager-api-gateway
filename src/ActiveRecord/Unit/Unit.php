@@ -46,7 +46,7 @@ final class Unit extends AbstractActiveRecord implements UnitOnlyDtoInterface, C
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Unit($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Unit($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

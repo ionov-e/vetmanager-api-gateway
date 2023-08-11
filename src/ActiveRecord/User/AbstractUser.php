@@ -90,7 +90,7 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\User($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\User($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

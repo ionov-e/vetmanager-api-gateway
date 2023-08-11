@@ -46,7 +46,7 @@ final class Property extends AbstractActiveRecord implements PropertyOnlyDtoInte
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Property($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Property($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

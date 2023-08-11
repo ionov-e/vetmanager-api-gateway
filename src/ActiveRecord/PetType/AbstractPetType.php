@@ -48,7 +48,7 @@ abstract class AbstractPetType extends AbstractActiveRecord implements PetTypeOn
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\PetType($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\PetType($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

@@ -88,7 +88,7 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\MedicalCardAsVaccination($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\MedicalCardAsVaccination($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */

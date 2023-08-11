@@ -101,7 +101,7 @@ abstract class AbstractGood extends AbstractActiveRecord implements GoodOnlyDtoI
     /** @throws VetmanagerApiGatewayException */
     public function create(): self
     {
-        return (new Facade\Good($this->activeRecordFactory))->createNewUsingArray($this->getAsArray());
+        return (new Facade\Good($this->activeRecordFactory))->createNewUsingArray($this->getAsArrayWithSetPropertiesOnly());
     }
 
     /** @throws VetmanagerApiGatewayException */
