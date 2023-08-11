@@ -125,11 +125,13 @@ abstract class AbstractFacade
     {
         /** @var class-string<AbstractActiveRecord> $activeRecordClass */
         $activeRecordClass = static::getBasicActiveRecord();
-        $createdModelAsArray = $this->activeRecordFactory->apiService->post(
+        // Возвращается почему-то массив с одним элементом - нашей созданной моделью
+        $createdModelsAsArray = $this->activeRecordFactory->apiService->post(
             $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
             $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
             $modelAsArray
         );
+        $createdModelAsArray = $createdModelsAsArray[0];
         return $this->activeRecordFactory->getFromSingleModelAsArray($createdModelAsArray, $activeRecordClass);
     }
 
