@@ -41,7 +41,7 @@ final class ApiGateway
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    public static function fromDomainAndServiceNameAndApiKey(
+    public static function fromSubdomainAndServiceNameAndApiKey(
         string $subDomain,
         string $serviceName,
         string $apiKey,
@@ -83,7 +83,7 @@ final class ApiGateway
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
-    public static function fromDomainAndApiKey(
+    public static function fromSubdomainAndApiKey(
         string $subDomain,
         string $apiKey,
         bool   $isProduction,
