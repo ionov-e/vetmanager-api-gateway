@@ -69,19 +69,13 @@ class ApiGatewayTest extends TestCase
     /** @throws VetmanagerApiGatewayException */
     public function testCitySetters(ActiveRecord\City\City $newEmptyCity)
     {
-        $cityWithSetValues = $newEmptyCity->setTitle('Test')->setTypeId(1);
-        $this->assertEquals(["title" => "Test", "type_id" => "1"], $cityWithSetValues->getAsArrayWithSetPropertiesOnly());
-        $this->assertEquals(["id" => null, "title" => "Test", "type_id" => "1"], $cityWithSetValues->getAsArray());
-        return $cityWithSetValues;
-    }
-
-    #[Depends('testCitySetters')]
-    /** @throws VetmanagerApiGatewayException */
-    public function testCityPost(ActiveRecord\City\City $cityWithSetValues)
-    {
+        $randomCityTitle = "Test" . rand(1, PHP_INT_MAX);
+        $cityWithSetValues = $newEmptyCity->setTitle($randomCityTitle)->setTypeId(1);
+        $this->assertEquals(["title" => $randomCityTitle, "type_id" => "1"], $cityWithSetValues->getAsArrayWithSetPropertiesOnly());
+        $this->assertEquals(["id" => null, "title" => $randomCityTitle, "type_id" => "1"], $cityWithSetValues->getAsArray());
         $createdCity = $cityWithSetValues->create();
         $this->assertEmpty($createdCity->getAsArrayWithSetPropertiesOnly());
-        $this->assertEquals("Test", $createdCity->getTitle());
+        $this->assertEquals($randomCityTitle, $createdCity->getTitle());
         $this->assertEquals(1, $createdCity->getTypeId());
         $this->assertIsInt($createdCity->getId());
         return $createdCity;
