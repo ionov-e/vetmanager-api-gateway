@@ -178,7 +178,7 @@ class ApiService
     {
         $apiResponseAsArray = json_decode($response->getBody()->getContents(), true);
 
-        if ($response->getStatusCode() !== 200) {
+        if (!in_array($response->getStatusCode(), [200, 201])) {
             throw new VetmanagerApiGatewayResponseException(
                 "Получили статус: "
                 . $response->getStatusCode()
