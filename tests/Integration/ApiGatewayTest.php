@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\Integration;
 
+use Dotenv\Dotenv;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,9 @@ class ApiGatewayTest extends TestCase
     /** @throws VetmanagerApiGatewayRequestException */
     public function testFromDomainAndApiKey()
     {
-        $apiGateway = ApiGateway::fromSubdomainAndApiKey('three', 'xxx', false);
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
+        $dotenv->load();
+        $apiGateway = ApiGateway::fromSubdomainAndApiKey($_ENV['TEST_SUBDOMAIN_1'], $_ENV['TEST_API_KEY_1'], false);
         $this->assertInstanceOf(ApiGateway::class, $apiGateway);
         return $apiGateway;
     }
