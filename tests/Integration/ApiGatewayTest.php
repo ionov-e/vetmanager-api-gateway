@@ -98,6 +98,15 @@ class ApiGatewayTest extends TestCase
         $newUpdatedCity = $updatedCity->update();
         $this->assertEmpty($newUpdatedCity->getAsArrayWithSetPropertiesOnly());
         $this->assertEquals(["id" => (string)$createdCity->getId(), "title" => $createdCity->getTitle(), "type_id" => "2"], $newUpdatedCity->getAsArray());
-        return $createdCity;
+        return $newUpdatedCity;
+    }
+
+    #[Depends('testCityUpdate')]
+    /** @throws VetmanagerApiGatewayException */
+    public function testCityDelete(ActiveRecord\City\City $newUpdatedCity)
+    {
+        $newUpdatedCity->delete();
+        $this->expectException(VetmanagerApiGatewayResponseException::class);// Второе удаление - исключение (ведь уже удален)
+        $newUpdatedCity->delete();
     }
 }
