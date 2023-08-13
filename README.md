@@ -20,8 +20,7 @@
 Пример кода:
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $invoice = $apiGateway->getInvoice()->getById(7);    // Получение модели Счета по ID 7
 $invoiceDiscount = $invoice->getDiscount();          // Получение скидки из Счета
 $petBreedTitle = $invoice->getPetBreed()->getTitle();// Получение названия типа питомца из счета
@@ -60,12 +59,10 @@ composer require ioncurly/vetmanager-api-gateway
 #### С помощью домена и АПИ ключа
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
 $subDomain = 'kras-best';   // субдомен клиники в ветменеджер
 $apiKey = 'xXdfxfsfsdffsf'; // АПИ ключ к домену в ветменеджер
 $isProduction = true;       // рабочий или тестовый сервер будет использоваться
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduction);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduction);
 ```
 
 #### С помощью домена, имени АПИ-сервиса и АПИ ключа
@@ -73,11 +70,10 @@ $apiGateway = ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduct
 Для специальных внутренних сервисов
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true);
 ```
 
-### Первоначальное получение объектов <a id="header_get" />
+### Первоначальное получение объектов <a id="header_get" /> 
 
 Первоначально по АПИ можно получить лишь обращаясь к **DAO** (Data Access Object), а не к **DTO** (Data Transfer
 Object).
@@ -94,8 +90,7 @@ AdmissionFromGetById можно получить лишь по ID. А у Medical
 #### Получение объекта по ID <a id="get_by_id" />
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $client = $apiGateway->getClient()->getById(33); 
 ```
 
@@ -104,8 +99,7 @@ $client = $apiGateway->getClient()->getById(33);
 Всегда возвращает массив моделей. Даже когда 1 объект получаем - обращаемся к нему через массив.
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $invoices = $apiGateway->getInvoice()->getAll(maxLimitOfReturnedModels: 20); // В параметре можем дописать лимит возвращаемых моделей (иначе 100 по умолчанию)
 if (!empty($invoices)) {
     $invoiceDescription = $invoices[0]->getDescription();
@@ -124,12 +118,9 @@ if (!empty($invoices)) {
 [Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
 
 ```php
-use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ApiGateway;
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $comboManualItems = $apiGateway->getComboManualItem()->getByQueryBuilder(
-        (new Builder())
+        (new Otis22\VetmanagerRestApi\Query\Builder())
             ->where('value', '7')
             ->where('combo_manual_id', '1'),
         1 // Опциональный параметр - лимит возвращаемых моделей
@@ -142,12 +133,9 @@ $comboManualItems = $apiGateway->getComboManualItem()->getByQueryBuilder(
 С помощью этого объекта удобнее работать с пагинацией.
 
 ```php
-use Otis22\VetmanagerRestApi\Query\Builder;
-use VetmanagerApiGateway\ApiGateway;
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $comboManualItems = $apiGateway->getComboManualItem()->getByPagedQuery(
-        (new Builder())
+        (new Otis22\VetmanagerRestApi\Query\Builder())
             ->where('value', '7')
             ->where('combo_manual_id', '1')
             ->top(1) // Лимит возвращаемых моделей
@@ -160,9 +148,7 @@ $comboManualItems = $apiGateway->getComboManualItem()->getByPagedQuery(
 и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $comboManualItems = $apiGateway->getComboManualItem()->getByGetParametersAsString(
         "filter=[{'property':'combo_manual_id', 'value':'1'},{'property':'value', 'value':'7'}]&limit=1"
 );
@@ -171,10 +157,8 @@ $comboManualItems = $apiGateway->getComboManualItem()->getByGetParametersAsStrin
 #### Альтернативные способы получения для конкретных моделей <a id="get_by_custom" />
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
 use VetmanagerApiGateway\DTO\ComboManualName\NameEnum;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $clinicLanguage = $apiGateway->getProperty()->getByClinicIdAndPropertyName($clinicId = 13, $property = 'lang')->getTitle();
 $clientMedicalCards = $apiGateway->getMedicalCardByClient()->getByClientId(77);
 $petVaccinations = $apiGateway->getMedicalCardAsVaccination()->getByPetId(11);
@@ -186,8 +170,8 @@ $vaccineType = $apiGateway->getComboManualItem()->getByVaccineTypeId(11);
 $admissionResult13 = $apiGateway->getComboManualItem()->getOneByValueAndComboManualName(13, NameEnum::AdmissionResult);
 $admissionResultManual = $apiGateway->getComboManualName()->getByNameAsString('admission_result');
 $admissionResultManualId = $apiGateway->getComboManualName()->getIdByNameAsString('admission_result');
-$admissionResultManual = $apiGateway->getComboManualName()->getByNameAsEnum(Name::AdmissionResult);
-$admissionResultManualId = $apiGateway->getComboManualName()->getIdByNameAsEnum(Name::AdmissionResult);
+$admissionResultManual = $apiGateway->getComboManualName()->getByNameAsEnum(NameEnum::AdmissionResult);
+$admissionResultManualId = $apiGateway->getComboManualName()->getIdByNameAsEnum(NameEnum::AdmissionResult);
 $clientAdmissions = $apiGateway->getAdmission()->getByClientId(40);
 $petAdmissions = $apiGateway->getAdmission()->getByPetId(88);
 ```
@@ -197,9 +181,7 @@ $petAdmissions = $apiGateway->getAdmission()->getByPetId(88);
 Получать каждое свойство через гет-метод. Тип возвращаемых данных показывает
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $client = $apiGateway->getClient()->getById(13);
 
 $clientEmail = $client->getEmail(); // Объявлено, что только строка, возможно пустая
@@ -214,9 +196,7 @@ $clientStatus = $client->getStatusAsEnum(); // Возвращается одно
 Есть свойства объекта, которые вместо скалярных данных, возвращают другие объекты или массив объектов.
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $client = $apiGateway->getClient()->getById(13);
 
 $clientStreet = $client->getStreet(); // В переменной будет null или Модель Улицы
@@ -230,8 +210,7 @@ $firstPetName = $firstPet?->getColor()?->getTitle() : ''; // Получение 
 #### Пример обращения посложнее:
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(13)->getMedicalCards();
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(13)->getMedicalCards();
 $firstMedicalCardOfClient = !empty($clientMedicalCards) ? $clientMedicalCards[0] : null;
 $middleNameOfFirstMedicalCardDoctor = $firstMedicalCardOfClient?->getUser()?->getMiddleName();
 ```
@@ -239,8 +218,7 @@ $middleNameOfFirstMedicalCardDoctor = $firstMedicalCardOfClient?->getUser()?->ge
 Та же запись, но с дополнительными переменными для понимания:
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true); // Получение объекта ApiGateway
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true); // Получение объекта ApiGateway
 $clientFacade = $apiGateway->getClient(); // Получение фасада для моделей Клиента с разными методами для работы с ними
 $client = $clientFacade->getById(13); // Получение через АПИ-запрос используя ID модель Клиента (1ый АПИ запрос)
 $clientMedicalCards = $client->getMedicalCards(); // Получение всех карт Клиента (2ой АПИ запрос)
@@ -273,8 +251,7 @@ $middleNameOfFirstMedicalCardDoctor = $firstMedicalCardDoctor?->getMiddleName();
 Возвращаются данные в том же виде, в котором и были получены по АПИ
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
 // Получим массив модели вида: ["id" => "1", "address" => "", "home_phone" => "3322122", ... ]
 ```
@@ -285,14 +262,12 @@ $clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
 
 1. Получение одного объекта из закешированного массива модели (в виде ['id' => '12', '...' => ...]).
     ```php
-    use VetmanagerApiGateway\ApiGateway;
-    $apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
     $client = $apiGateway->getClient()->fromSingleModelAsArray($cachedClientAsArray);
     ```
 2. Получение массива объектов из массива таких массивов с моделямм
     ```php
-    use VetmanagerApiGateway\ApiGateway;
-    $apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
     $clients = $apiGateway->getClient()->fromMultipleModelsAsArrays($cachedClientAsArray);
     // Дальше продолжаем использовать будто получили массив моделей как обычно
     $firstClientId = $clients[0]->getId();
@@ -306,8 +281,7 @@ $clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
 разном формате:
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$clientFullName = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(9)->getFullName();
+$clientFullName = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(9)->getFullName();
 echo $clientFullName->getFullStartingWithFirst();// Возвращает: "Имя Отчество Фамилия"
 echo $clientFullName->getFullStartingWithLast(); // Возвращает: "Фамилия Имя Отчество"
 echo $clientFullName->getInitials();             // Возвращает: "Фамилия И. О."
@@ -323,8 +297,7 @@ echo $clientFullName->getLastPlusInitials();     // Возвращает: "Ф. �
 кодом страны и выбранной маской номера, например в виде: +7(918)-277-21-21
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$clinicFullPhone = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClinic()->getById(9)->getFullPhone();
+$clinicFullPhone = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClinic()->getById(9)->getFullPhone();
 echo $clinicFullPhone->getAsMaskedWithCountryCode(); // Выведет телефона в виде +7(918)-277-21-21
 echo $clinicFullPhone; // То же самое, что и прошлая строка - _toString() вызывает тот же метод
 echo $clinicFullPhone->mask; // Подобные маски могут вернуться: '(___)-__-__-__', '(__)___-____' или '____-____'
@@ -336,8 +309,7 @@ echo $clinicFullPhone->countryCode; // +7 или +38 и т.д.
 Несколько вариантов. Возвращается bool:
 
 ```php
-use VetmanagerApiGateway\ApiGateway;
-$apiGateway = ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)
 $bool1 = $apiGateway->getProperty()->getIsOnlineSigningUpAvailableForClinic(13); // Один АПИ-запрос
 $bool2 = $apiGateway->getClinic()->getIsOnlineSigningUpAvailable(13);            // Один АПИ-запрос
 $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable(); // Два АПИ-запроса
