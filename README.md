@@ -2,30 +2,36 @@
 
 ![Vetmanager Logo](https://vetmanager.ru/wp-content/themes/vetmanager/images/headerLogo.svg)
 
-Помощник для работы с АПИ Ветменеджера.
+Помощник для работы с АПИ Ветменеджера. Берет на себя:
+1) авторизация;
+2) получение данных и представление их в виде объектов и типизированных свойств этих объектов;
+3) удобное получения связанных моделей с помощью методов полученных объектов (моделей);
+4) отправка новых моделей, редактирование, удаление;
+5) удобство для реализации кеширования: возможность предоставление модели в виде массива, и создание модели из массива;
+6) унификация работы с моделями вне зависимости от способа получения.
 
-[Используется в основе библиотека](https://github.com/otis22/vetmanager-rest-api) -
-тут же документация к использованию классов для запросов: Builder и PagedQuery
-
-[Официальный сайт Vetmanager.ru](https://vetmanager.ru/)
+[Используется в основе библиотека для составление Query для АПИ-запросов Vetmanager](https://github.com/otis22/vetmanager-rest-api) -
+тут же документация к использованию классов для сложных АПИ-запросов: Builder и PagedQuery
 
 [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
 
 [Vetmanager REST API Postman Collection](https://www.postman.com/vetmanager/workspace/vetmanager-api/collection/23836400-17133b76-0f52-4bb4-8b38-28a64781074e)
 
+[Официальный сайт Vetmanager.ru](https://vetmanager.ru/)
+
 ## Для чего?
 
-С помощью этой библиотеки удобно получать данные с АПИ Ветменеджера. Данные приходят в виде DTO (Data Transfer Object).
-Каждый DTO связан с одним или с несколькими другими DTO.
+С помощью этой библиотеки удобно получать данные с АПИ Ветменеджера. Данные приходят в виде Active Records.
+Каждый Active Record связан с одним или с несколькими другими Active Records.
 Пример кода:
 
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$invoice = $apiGateway->getInvoice()->getById(7);    // Получение модели Счета по ID 7
-$invoiceDiscount = $invoice->getDiscount();          // Получение скидки из Счета
-$petBreedTitle = $invoice->getPetBreed()->getTitle();// Получение названия типа питомца из счета
-$pet = $invoice->getPet();                           // Получение модели Питомца из Счета
-$petAlias = $pet->getAlias();                        // Получение клички Питомца из Счета
+$invoice = $apiGateway->getInvoice()->getById(7);      // Получение модели Счета по ID 7
+$invoiceDiscount = $invoice->getDiscount();            // Получение скидки из Счета
+$petBreedTitle = $invoice->getPetBreed()->getTitle();  // Получение названия типа питомца из счета
+$pet = $invoice->getPet();                             // Получение модели Питомца из Счета
+$petAlias = $pet->getAlias();                          // Получение клички Питомца из Счета
 ```
 
 ## Установка
@@ -57,7 +63,8 @@ composer require ioncurly/vetmanager-api-gateway
 * [Дополнительные особенности](#header_additional)
     1. [Объект FullName](#additional_full_name)
     2. [Объект FullPhone](#additional_full_phone)
-  3. [Возможность онлайн записи в клинике](#additional_online_sign_up)
+    3. [Возможность онлайн записи в клинике](#additional_online_sign_up)
+* [Немного об устройстве библиотеки](#additional_info)
 
 ## Подробное использование:
 
@@ -84,17 +91,26 @@ $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndServiceNameAndApi
 
 ### Первоначальное получение объектов <a id="header_get" /> 
 
-Первоначально по АПИ можно получить лишь обращаясь к **DAO** (Data Access Object), а не к **DTO** (Data Transfer
-Object).
+Вся логика получения **Active Record** вынесена в соответсвующий **Facade**. Вот пример получения клиента по ID:
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$clientFacade = $apiGateway->getClient(); // Конечно выделения фасада в переменную лишь для наглядности
+$client = $clientFacade->getById(33);
+```
 
-То есть в этой библиотеке **DAO** - условно выделен как подвид **DTO**, у которых в отличие от DTO также есть
-возможность
-получить эти объекты посредством прямого АПИ-запроса (например, получение по ID, или через более сложный запрос -
-например, через фильтры).
+То есть в этой библиотеке для каждого вида **Active Record** существует свой **Facade**. В **Facade** выделена логика
+работы АПИ-запросов и получения из ответов **Active Record**. Например, в **Facade** для **Active Record** Client содержится
+метод получения соответствующего **Active Record** по ID. Так же в **Facade** содержатся и другие методы получения (в том
+числе - через более сложные запросы - например, через фильтры).
 
-В качестве исключения есть DAO, которые могут быть получены лишь с помощью конкретного АПИ-запроса. Например,
-AdmissionFromGetById можно получить лишь по ID. А у MedicalCardsByClient есть лишь один (уникальный) метод получения по
-АПИ. Недоступные методы у DAO получения не высветятся (с помощью твоего IDE), и значит не поддерживаются.
+В есть **Active Records**, которые могут быть получены лишь с помощью конкретного АПИ-запроса. Например,
+MedicalCardByClient можно получить лишь по ID клиента. Недоступные методы получения в **Facade** просто не существует
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$medicalCardsByClientFacade = $apiGateway->getMedicalCardByClient();
+$medicalCards = $clientFacade->getByClientId(33);
+```
 
 #### Получение объекта по ID <a id="get_by_id" />
 
@@ -326,8 +342,6 @@ $clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
 
 #### Создание объекта из данных в виде массива
 
-Методы работают у всех DTO/DAO.
-
 1. Получение одного объекта из закешированного массива модели (в виде ['id' => '12', '...' => ...]).
     ```php
     $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
@@ -381,4 +395,38 @@ $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain
 $bool1 = $apiGateway->getProperty()->getIsOnlineSigningUpAvailableForClinic(13); // Один АПИ-запрос
 $bool2 = $apiGateway->getClinic()->getIsOnlineSigningUpAvailable(13);            // Один АПИ-запрос
 $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable(); // Два АПИ-запроса
+```
+
+### Немного об устройстве библиотеки <a id="additional_info" />
+
+#### Используемые библиотеки
+
+* **Symfony Serializer** - Для создания DTO из массива данных (десериализованный JSON) и обртного процесса (норамализации)
+* **Guzzle HTTP client** - Для всех используемых запросов
+* **vetmanager-rest-api** - Помощник с АПИ Ветменджера
+
+
+  Только при разработке:
+* **PSALM**
+* **PHPUnit**
+* **vlucas/phpdotenv** - файлы окружения для интеграционного теста
+
+#### Внутренние особенности
+
+Для большинства моделей АПИ Ветменджер кроме запрашиваемой модели отдает и содержимое других связанных моделей.
+Это также зависит от вида запроса - например, при запросе по ID обычно приходит наибольшее число связанных моделей.
+Для пользователя этой библиотеки это скрыто - в любом случае вне зависимости от какой вида **Active Record** получен - все
+методы и связи с другими моделями доступны. А как именно при вызове метода будут получаться данные: из уже полученных данных
+или при помощи дополнительного запроса - это тоже берет на себя библиотека.
+
+Вот пример для понимания устройства. Но для использования это вовсе неважно. Для использования каждый из полученных **Active Record**
+идентичен:
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+/** @var VetmanagerApiGateway\Facade\Client $clientFacade Содержит методы связанные с моделью для осуществления АПИ-запросов и созданию Active Records */
+$clientFacade = $apiGateway->getClient();
+/** @var VetmanagerApiGateway\ActiveRecord\Client\ClientOnly[] $clients Содержит в себе DTO Client и связи со связанным Active Records*/
+$clients = $clientFacade->getAll(); 
+/** @var VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity $client Содержит в себе DTO для моделей Client, Client Type, City */
+$client = $clientFacade->getById(33); 
 ```
