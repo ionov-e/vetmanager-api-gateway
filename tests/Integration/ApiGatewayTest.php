@@ -87,4 +87,17 @@ class ApiGatewayTest extends TestCase
         $this->assertIsInt($createdCity->getId());
         return $createdCity;
     }
+
+    #[Depends('testCityCreation')]
+    /** @throws VetmanagerApiGatewayException */
+    public function testCityUpdate(ActiveRecord\City\City $createdCity)
+    {
+        $updatedCity = $createdCity->setTypeId(2);
+        $this->assertEquals(["type_id" => "2"], $updatedCity->getAsArrayWithSetPropertiesOnly());
+        $this->assertEquals(["id" => (string)$createdCity->getId(), "title" => $createdCity->getTitle(), "type_id" => "2"], $updatedCity->getAsArray());
+        $newUpdatedCity = $updatedCity->update();
+        $this->assertEmpty($newUpdatedCity->getAsArrayWithSetPropertiesOnly());
+        $this->assertEquals(["id" => (string)$createdCity->getId(), "title" => $createdCity->getTitle(), "type_id" => "2"], $newUpdatedCity->getAsArray());
+        return $createdCity;
+    }
 }
