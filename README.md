@@ -42,6 +42,15 @@ composer require ioncurly/vetmanager-api-gateway
     2. [Всех](#get_all)
     3. [По Query](#get_by_query)
     4. [Другими способами](#get_by_custom)
+* [Создание новых моделей](#header_post)
+    1. [С помощью фасада и массива](#post_with_facades)
+    2. [С помощью Active Record и сеттеров](#post_with_active_records)
+* [Редактирование моделей](#header_put)
+    1. [С помощью фасада и массива](#put_with_facades)
+    2. [С помощью Active Record и сеттеров](#put_with_active_records)
+* [Удаление моделей](#header_delete)
+    1. [С помощью фасада и массива](#delete_with_facades)
+    2. [С помощью Active Record и сеттеров](#delete_with_active_records)
 * [Пример представления данных](#header_dtos)
 * [Связанные запросы](#header_interconnections)
 * [Работа как с первоначальными массивами, кэширование](#header_decoded_json)
@@ -176,6 +185,68 @@ $clientAdmissions = $apiGateway->getAdmission()->getByClientId(40);
 $petAdmissions = $apiGateway->getAdmission()->getByPetId(88);
 ```
 
+### Создание новых моделей <a id="header_post" />
+
+#### С помощью фасада и массива <a id="post_with_facades" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+
+// Отправляет новый город и возвращает объект (соответствующий Active Record) с созданной моделью от АПИ
+$newCity = $apiGateway->getCity()->createNewUsingArray(["title" => "New City", "type_id" => "1"]);
+echo $newCity->getId(); // Получим новый присвоенный ID. Можно и другие свойства так же получить
+```
+
+#### С помощью Active Record и сеттеров <a id="post_with_active_records" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$newEmptyCity = $apiGateway->getCity()->getNewEmpty();
+$cityWithSetValues = $newEmptyCity->setTitle("New City")->setTypeId(1);
+$newCity = $cityWithSetValues->create();
+echo $newCity->getId(); // Получим новый присвоенный ID. Можно и другие свойства так же получить
+```
+
+### Редактирование моделей <a id="header_put" />
+
+#### С помощью фасада и массива <a id="put_with_facades" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+// Отправляет массив данных для изменения модели и возвращает объект (соответствующий Active Record) с созданной моделью от АПИ
+$updatedCity = $apiGateway->getCity()->updateUsingIdAndArray(13, ["title" => "New City", "type_id" => "1"]);
+// В $updatedCity будет модель полученная из ответа по АПИ
+echo $updatedCity->getTitle(); // Получим "New City". Можно и другие свойства так же получить
+```
+
+#### С помощью Active Record и сеттеров <a id="put_with_active_records" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$city = $apiGateway->getCity()->getById(13);
+$updatedCity = $city->setTitle("New City")->update();
+// Без вызова update - модель не отправится
+// В $updatedCity будет модель полученная из ответа по АПИ
+echo $updatedCity->getTitle(); // Получим "New City". Можно и другие свойства так же получить
+```
+
+### Удаление моделей <a id="header_delete" />
+
+#### С помощью фасада и массива <a id="delete_with_facades" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$apiGateway->getCity()->delete(13);
+```
+
+#### С помощью Active Record и сеттеров <a id="delete_with_active_records" />
+
+```php
+$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+$city = $apiGateway->getCity()->getById(13);
+$city->delete();
+```
+
 ### Пример представления данных модели <a id="header_dtos" />
 
 Получать каждое свойство через гет-метод. Тип возвращаемых данных показывает
@@ -183,7 +254,6 @@ $petAdmissions = $apiGateway->getAdmission()->getByPetId(88);
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $client = $apiGateway->getClient()->getById(13);
-
 $clientEmail = $client->getEmail(); // Объявлено, что только строка, возможно пустая
 $clientCityId = $client->getCityId(); // Объявлено, что только int или null может прийти
 $clientDateRegister = $client->getDateRegisterAsDateTime()?->format('Y-m-d H:i:s'); //dateRegister содержит DateTime (или null, если отсутствует дата)
@@ -198,10 +268,8 @@ $clientStatus = $client->getStatusAsEnum(); // Возвращается одно
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $client = $apiGateway->getClient()->getById(13);
-
 $clientStreet = $client->getStreet(); // В переменной будет null или Модель Улицы
 $streetName = $clientStreet?->getTitle() ?? ''; // Название улицы или пустая строка
-
 $clientPets = $client->getPetsAlive(); // Массив с Моделями Питомцев 
 $firstPet = (!empty($client->petsAlive)) ? $clientPets[0] : null; // Будет Питомец или null
 $firstPetName = $firstPet?->getColor()?->getTitle() : ''; // Получение названия цвета питомца или пустая строка, если нет
