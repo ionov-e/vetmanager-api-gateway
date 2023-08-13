@@ -28,17 +28,6 @@ class MedicalCardByClient extends AbstractFacade
         return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArray, self::getBasicActiveRecord());
     }
 
-    /**
-     * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
-     * @return ActiveRecord\MedicalCardByClient\MedicalCardByClient[]
-     * @throws VetmanagerApiGatewayException Родительское исключение
-     */
-    public function getByClientId(int $clientId, string $additionalGetParameters = ''): array
-    {
-        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
-        return $this->getByParametersAsString("client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}");
-    }
-
     /** @return ActiveRecord\MedicalCardByClient\MedicalCardByClient[]
      * @throws VetmanagerApiGatewayException
      */
@@ -63,5 +52,16 @@ class MedicalCardByClient extends AbstractFacade
     public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\MedicalCardByClient\MedicalCardByClient
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
+    }
+
+    /**
+     * @param string $additionalGetParameters Строку начинать без "?" или "&". Пример: limit=2&offset=1&sort=[{'property':'title','direction':'ASC'}]&filter=[{'property':'title', 'value':'some value'},
+     * @return ActiveRecord\MedicalCardByClient\MedicalCardByClient[]
+     * @throws VetmanagerApiGatewayException Родительское исключение
+     */
+    public function getByClientId(int $clientId, string $additionalGetParameters = ''): array
+    {
+        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
+        return $this->getByParametersAsString("client_id={$clientId}{$additionalGetParametersWithAmpersandOrNothing}");
     }
 }
