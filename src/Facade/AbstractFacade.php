@@ -12,7 +12,10 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/** @template TActiveRecord of AbstractActiveRecord */
+/**
+ * @template TActiveRecord of AbstractActiveRecord
+ * @internal
+ */
 abstract class AbstractFacade
 {
     public function __construct(protected ActiveRecordFactory $activeRecordFactory)
@@ -53,7 +56,7 @@ abstract class AbstractFacade
      */
     protected function protectedGetAll(string $activeRecordClass, int $maxLimitOfReturnedModels = 100): array
     {
-        $modelsAsArray = $this->activeRecordFactory->apiService->getModelsOrModelWithPagedQuery(
+        $modelsAsArray = $this->activeRecordFactory->apiService->getModelsWithPagedQuery(
             $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass),
             $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass),
             (new Builder())->top($maxLimitOfReturnedModels)

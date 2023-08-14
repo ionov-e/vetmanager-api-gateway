@@ -3,9 +3,6 @@
 namespace VetmanagerApiGateway\Unit;
 
 use GuzzleHttp\Client;
-use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
-use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -75,7 +72,7 @@ EOF
     #[DataProvider('dataProviderClientJson')]
     public function testCreationFromModelAsArray(string $json, string $getMethodName, int|string $expected): void
     {
-        $apiService = new ApiConnection(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $apiService = new ApiConnection(new Client(), "test.test");
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
             DtoFactory::withDefaultSerializer(),

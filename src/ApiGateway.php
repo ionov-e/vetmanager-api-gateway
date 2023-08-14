@@ -5,35 +5,39 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway;
 
 use GuzzleHttp\Client;
-use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ServiceName;
-use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 
 final class ApiGateway
 {
     private ActiveRecordFactory $activeRecordFactory;
 
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
     public function __construct(
         public readonly string         $subDomain,
-        public readonly string         $apiUrl,
+        public readonly string         $baseApiUrl,
         private readonly ApiConnection $apiService,
     )
     {
     }
 
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param Client $guzzleClient Должны быть добавлены и хедеры, и базовый юрл
+     */
     public static function fromGuzzle(
-        string  $subDomain,
-        string  $apiUrl,
+        string $subDomain,
+        string $baseApiUrl,
         Client $guzzleClient
     ): self
     {
         return new self(
             $subDomain,
-            $apiUrl,
-            new ApiConnection($guzzleClient)
+            $baseApiUrl,
+            new ApiConnection($guzzleClient, $baseApiUrl)
         );
     }
 
@@ -46,10 +50,14 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
         return self::fromFullUrlAndServiceNameAndApiKey($baseApiUrl, $subDomain, $serviceName, $apiKey, $timezone);
     }
 
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
     public static function fromFullUrlAndServiceNameAndApiKey(
         string $baseApiUrl,
         string $subDomain,
@@ -61,20 +69,14 @@ final class ApiGateway
         return self::fromGuzzle(
             $subDomain,
             $baseApiUrl,
-            self::getGuzzleClientForServiceNameAndApiKey($baseApiUrl, $serviceName, $apiKey, $timezone)
+            ApiConnection::getGuzzleClientForServiceNameAndApiKey($baseApiUrl, $serviceName, $apiKey, $timezone)
         );
     }
 
-    private static function getGuzzleClientForServiceNameAndApiKey(string $baseApiUrl, string $serviceName, string $apiKey, string $timezone): Client
-    {
-        $headers = new WithAuthAndParams(
-            new ByServiceApiKey(new ServiceName($serviceName), new ApiKey($apiKey)),
-            ['X-REST-TIME-ZONE' => $timezone]
-        );
-        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'verify' => false, 'headers' => $headers->asKeyValue()]);
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @throws VetmanagerApiGatewayRequestException
+     */
     public static function fromSubdomainAndApiKey(
         string $subDomain,
         string $apiKey,
@@ -82,10 +84,14 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
         return self::fromFullUrlAndApiKey($subDomain, $baseApiUrl, $apiKey, $timezone);
     }
 
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
     public static function fromFullUrlAndApiKey(
         string $subDomain,
         string $baseApiUrl,
@@ -96,34 +102,8 @@ final class ApiGateway
         return self::fromGuzzle(
             $subDomain,
             $baseApiUrl,
-            self::getGuzzleClientForApiKey($baseApiUrl, $apiKey, $timezone)
+            ApiConnection::getGuzzleClientForApiKey($baseApiUrl, $apiKey, $timezone)
         );
-    }
-
-    private static function getGuzzleClientForApiKey(string $baseApiUrl, string $apiKey, string $timezone): Client
-    {
-        $headers = self::getHeadersForApiKey($apiKey, $timezone);
-        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'headers' => $headers->asKeyValue()]);
-    }
-
-    private static function getHeadersForApiKey(string $apiKey, string $timezone): WithAuthAndParams
-    {
-        return new WithAuthAndParams(
-            new ByApiKey(new ApiKey($apiKey)),
-            ['X-REST-TIME-ZONE' => $timezone]
-        );
-    }
-
-    /** @throws VetmanagerApiGatewayRequestException */
-    private static function getApiUrlFromSubdomainForProdOrTest(string $subDomain, bool $isProduction): string
-    {
-        try {
-            return ($isProduction)
-                ? \Otis22\VetmanagerUrl\url($subDomain)->asString()
-                : \Otis22\VetmanagerUrl\url_test_env($subDomain)->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
     }
 
     private function getActiveRecordFactory(): ActiveRecordFactory
