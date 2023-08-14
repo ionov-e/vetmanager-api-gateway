@@ -11,6 +11,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 /**
  * @template TActiveRecord of AbstractActiveRecord
  * @template TModelDTO of AbstractDTO
+ * @internal
  */
 class ActiveRecordFactory
 {

@@ -17,6 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
+/**
+ * @internal
+ */
 class ApiConnection
 {
     public function __construct(private readonly Client $guzzleClient)

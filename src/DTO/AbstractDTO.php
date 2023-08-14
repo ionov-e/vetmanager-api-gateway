@@ -6,6 +6,9 @@ namespace VetmanagerApiGateway\DTO;
 
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
+/**
+ * @internal
+ */
 abstract class AbstractDTO
 {
     /** @var string[] list of properties provided by client from setters */

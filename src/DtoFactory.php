@@ -14,7 +14,10 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/** @template TModelDTO of AbstractDTO */
+/**
+ * @internal
+ * @template TModelDTO of AbstractDTO
+ */
 class DtoFactory
 {
     public function __construct(private readonly Serializer $serializer)

@@ -11,6 +11,9 @@ use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
+/**
+ * @internal
+ */
 class DtoNormalizer
 {
     public function __construct(private readonly Serializer $serializer)

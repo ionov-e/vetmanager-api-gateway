@@ -8,6 +8,9 @@ use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
+/**
+ * @internal
+ */
 abstract class AbstractActiveRecord
 {
     public function __construct(
