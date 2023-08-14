@@ -10,8 +10,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\Client\ListEnum;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiConnection;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -76,7 +76,7 @@ EOF
     #[DataProvider('dataProviderClientJson')]
     public function testCreationFromModelArray(string $json, string $getMethodName, int|string $expected): void
     {
-        $apiService = new ApiService(new \GuzzleHttp\Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $apiService = new ApiConnection(new \GuzzleHttp\Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory($apiService, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         $clientFacade = new Client($activeRecordFactory);
         $modelAsArray = json_decode($json, true);

@@ -15,7 +15,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 class ActiveRecordFactory
 {
     public function __construct(
-        public readonly ApiService $apiService,
+        public readonly ApiConnection $apiService,
         public readonly DtoFactory    $dtoFactory,
         public readonly DtoNormalizer $dtoNormalizer
     )

@@ -7,7 +7,6 @@ namespace VetmanagerApiGateway;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Otis22\VetmanagerRestApi\Headers;
 use Otis22\VetmanagerRestApi\Model;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
@@ -18,9 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-class ApiService
+class ApiConnection
 {
-    public function __construct(private readonly Client $guzzleClient, private readonly Headers $allHeaders)
+    public function __construct(private readonly Client $guzzleClient)
     {
     }
 
@@ -45,8 +44,8 @@ class ApiService
         }
 
         $apiRequestAsArray = $this->getApiRequestAsArrayAfterRequestUsingUrl('GET', $url);
-        $dataContentsFromApiResponse = self::getDataContentsFromApiResponseAsArray($apiRequestAsArray);
-        return self::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
+        $dataContentsFromApiResponse = ApiRequest::getDataContentsFromApiResponseAsArray($apiRequestAsArray);
+        return ApiRequest::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
     }
 
     /** Вернет массив с моделями в виде массивов
@@ -56,7 +55,7 @@ class ApiService
     public function getModelsWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
         $apiDataContents = $this->getResponseWithQueryBuilder($modelKeyInResponse, $modelRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
+        return ApiRequest::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /** Вернет весь ответ в виде массива {success: true, message: ..., data: {...}}
@@ -82,7 +81,7 @@ class ApiService
     public function getModelsWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
         $apiResponseAsArray = $this->getResponseWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-        return self::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
+        return ApiRequest::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
     }
 
 
@@ -96,7 +95,7 @@ class ApiService
 
         do {
             $apiResponseDataContents = $this->getDataContentsUsingPagedQueryWithOneRequest($modelRouteKey, $pagedQuery);
-            $modelsInResponse = self::getModelsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
+            $modelsInResponse = ApiRequest::getModelsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
             $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelsInResponse);
             $pagedQuery->next();
         } while (
@@ -116,7 +115,7 @@ class ApiService
         $url = $this->getUrlForGuzzleRequest($modelRouteKey);
         $response = $this->getResponseAfterDoingApiRequest('GET', $url, pagedQuery: $pagedQuery);
         $apiResponseAsArray = $this->getResponseAsArrayFromResponse($response);
-        return self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
+        return ApiRequest::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
     }
 
     /** Вернет массив с содержимым модели, либо массив нескольких моделей с такими массивами моделей
@@ -126,7 +125,7 @@ class ApiService
     public function getModelsOrModelWithPagedQuery(string $modelRouteKey, string $modelKeyInResponse, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
         $apiDataContents = $this->getResponseWithPagedQuery($modelKeyInResponse, $modelRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-        return self::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
+        return ApiRequest::getModelsFromApiResponseDataElement($apiDataContents, $modelKeyInResponse);
     }
 
     /** Вернет массив с содержимым отправленной модели
@@ -156,7 +155,7 @@ class ApiService
     private function getModelsAfterApiRequest(string $method, string $modelRouteKey, string $modelKeyInResponse, int $modelId = 0, array $data = []): array
     {
         $apiResponseAsArray = $this->getApiRequestAsArrayAfterRequestUsingRouteKeyAndId($method, $modelRouteKey, $modelId, $data);
-        return self::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
+        return ApiRequest::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
     }
 
     /** @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException */
@@ -228,12 +227,12 @@ class ApiService
     }
 
     /**
-     * @return array{headers: array<string, mixed>, body?: false|string, query?: array<string, mixed>}
+     * @return array{body?: false|string, query?: array<string, mixed>}
      * @throws VetmanagerApiGatewayRequestException
      */
     private function getOptionsForGuzzleRequest(array $data = [], ?PagedQuery $pagedQuery = null): array
     {
-        $options = ['headers' => $this->allHeaders->asKeyValue()];
+        $options = [];
 
         if ($data) {
             $options['body'] = json_encode($data);
@@ -243,49 +242,10 @@ class ApiService
             if ($pagedQuery) {
                 $options['query'] = $pagedQuery->asKeyValue();
             }
+
+            return $options;
         } catch (Exception $e) {
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
-
-        return $options;
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    public static function getDataContentsFromApiResponseAsArray(array $apiResponseAsArray): array
-    {
-        if (!isset($apiResponseAsArray['data'])) {
-            throw new VetmanagerApiGatewayResponseException(
-                "В ответе от АПИ: отсутствует элемент 'data': " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
-            );
-        }
-
-        if (!is_array($apiResponseAsArray['data'])) {
-            throw new VetmanagerApiGatewayResponseException(
-                "В ответе от АПИ: элемент 'data' не является массивом: " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
-            );
-        }
-
-        return $apiResponseAsArray['data'];
-    }
-
-    /** Вернет либо массив с моделью, либо массив с такими моделями в виде массивов
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    public static function getModelsFromApiResponseAsArray(array $apiResponseAsArray, string $modelKeyInResponse): array
-    {
-        $dataContentsFromApiResponse = self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
-        return self::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
-    }
-
-    /** @throws VetmanagerApiGatewayResponseException */
-    public static function getModelsFromApiResponseDataElement(array $apiDataContents, string $modelKeyInResponse): array
-    {
-        if (!isset($apiDataContents[$modelKeyInResponse])) {
-            throw new VetmanagerApiGatewayResponseException(
-                "Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ: " . json_encode($apiDataContents, JSON_UNESCAPED_UNICODE)
-            );
-        }
-
-        return $apiDataContents[$modelKeyInResponse];
     }
 }

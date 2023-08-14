@@ -10,8 +10,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiConnection;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -53,7 +53,7 @@ EOF
     public function testCreationFromResponseAsArray(string $json): void
     {
         $apiResponseAsArray = json_decode($json, true);
-        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $apiService = new ApiConnection(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
             DtoFactory::withDefaultSerializer(),

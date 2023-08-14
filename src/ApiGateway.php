@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway;
 
 use GuzzleHttp\Client;
-use Otis22\VetmanagerRestApi\Headers;
 use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
 use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
@@ -18,25 +17,23 @@ final class ApiGateway
     private ActiveRecordFactory $activeRecordFactory;
 
     public function __construct(
-        public readonly string      $subDomain,
-        public readonly string      $apiUrl,
-        private readonly ApiService $apiService,
+        public readonly string         $subDomain,
+        public readonly string         $apiUrl,
+        private readonly ApiConnection $apiService,
     )
     {
     }
 
-    public static function fromGuzzleWithHeaders(
+    public static function fromGuzzle(
         string  $subDomain,
         string  $apiUrl,
-        Client  $guzzleClient,
-        Headers $allHeaders
+        Client $guzzleClient
     ): self
     {
-        $apiService = new ApiService($guzzleClient, $allHeaders);
         return new self(
             $subDomain,
             $apiUrl,
-            $apiService
+            new ApiConnection($guzzleClient)
         );
     }
 
@@ -61,25 +58,20 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        return self::fromGuzzleWithHeaders(
+        return self::fromGuzzle(
             $subDomain,
             $baseApiUrl,
-            self::getGuzzleClientForServiceNameAndApiKey($baseApiUrl),
-            self::getHeadersForServiceNameAndApiKey($serviceName, $apiKey, $timezone)
+            self::getGuzzleClientForServiceNameAndApiKey($baseApiUrl, $serviceName, $apiKey, $timezone)
         );
     }
 
-    private static function getGuzzleClientForServiceNameAndApiKey(string $baseApiUrl): Client
+    private static function getGuzzleClientForServiceNameAndApiKey(string $baseApiUrl, string $serviceName, string $apiKey, string $timezone): Client
     {
-        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'verify' => false]);
-    }
-
-    private static function getHeadersForServiceNameAndApiKey(string $serviceName, string $apiKey, string $timezone): WithAuthAndParams
-    {
-        return new WithAuthAndParams(
+        $headers = new WithAuthAndParams(
             new ByServiceApiKey(new ServiceName($serviceName), new ApiKey($apiKey)),
             ['X-REST-TIME-ZONE' => $timezone]
         );
+        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'verify' => false, 'headers' => $headers->asKeyValue()]);
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -101,17 +93,17 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        return self::fromGuzzleWithHeaders(
+        return self::fromGuzzle(
             $subDomain,
             $baseApiUrl,
-            self::getGuzzleClientForApiKey($baseApiUrl),
-            self::getHeadersForApiKey($apiKey, $timezone)
+            self::getGuzzleClientForApiKey($baseApiUrl, $apiKey, $timezone)
         );
     }
 
-    private static function getGuzzleClientForApiKey(string $baseApiUrl): Client
+    private static function getGuzzleClientForApiKey(string $baseApiUrl, string $apiKey, string $timezone): Client
     {
-        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false]);
+        $headers = self::getHeadersForApiKey($apiKey, $timezone);
+        return new Client(['base_uri' => $baseApiUrl, 'http_errors' => false, 'headers' => $headers->asKeyValue()]);
     }
 
     private static function getHeadersForApiKey(string $apiKey, string $timezone): WithAuthAndParams

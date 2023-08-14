@@ -12,8 +12,8 @@ use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
+use VetmanagerApiGateway\ApiConnection;
 use VetmanagerApiGateway\ApiGateway;
-use VetmanagerApiGateway\ApiService;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\ClientPlusTypeAndCityDto;
 use VetmanagerApiGateway\DtoFactory;
@@ -114,7 +114,7 @@ EOF
     {
         $modelAsArray = json_decode($json, true);
         $dto = DtoFactory::withDefaultSerializer()->getFromSingleModelAsArray($modelAsArray, ClientPlusTypeAndCityDto::class);
-        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $apiService = new ApiConnection(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
             DtoFactory::withDefaultSerializer(),

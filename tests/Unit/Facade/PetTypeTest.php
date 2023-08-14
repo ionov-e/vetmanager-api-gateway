@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\PetType\PetTypePlusBreeds;
 use VetmanagerApiGateway\ActiveRecordFactory;
-use VetmanagerApiGateway\ApiService;
+use VetmanagerApiGateway\ApiConnection;
 use VetmanagerApiGateway\DtoFactory;
 use VetmanagerApiGateway\DtoNormalizer;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -63,7 +63,7 @@ EOF
     public function testSpecificARFromSingleModelAsArray(string $json)
     {
         $modelAsArray = json_decode($json, true);
-        $apiService = new ApiService(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
+        $apiService = new ApiConnection(new Client(), new WithAuthAndParams(new ByApiKey(new ApiKey("testing")), ['X-REST-TIME-ZONE' => '+03:00']));
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
             DtoFactory::withDefaultSerializer(),

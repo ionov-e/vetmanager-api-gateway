@@ -45,7 +45,7 @@ class DtoFactory
      */
     public function getFromApiResponseWithSingleModelAsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractDTO
     {
-        $modelAsArray = ApiService::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
+        $modelAsArray = ApiRequest::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
         return $this->getFromSingleModelAsArray($modelAsArray, $dtoClassName);
     }
 
@@ -57,7 +57,7 @@ class DtoFactory
      */
     public function getFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): array
     {
-        $modelsAsArrays = ApiService::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
+        $modelsAsArrays = ApiRequest::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
         return $this->getFromModelsAsArrays($modelsAsArrays, $dtoClassName);
     }
 
