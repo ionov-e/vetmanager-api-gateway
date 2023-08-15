@@ -75,7 +75,7 @@ class ApiConnection
      */
     public function getModelById(string $modelKeyInResponse, string $modelRouteKey, int $modelId): array
     {
-        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, $modelId, 'GET')
+        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'GET', $modelRouteKey, $modelId)
             ->getModels($modelKeyInResponse);
     }
 
@@ -91,7 +91,7 @@ class ApiConnection
             throw new VetmanagerApiGatewayRequestException($e->getMessage());
         }
 
-        return (new ApiRequest($this->guzzleClient, $this->baseApiUrl, $pathUrl, 'GET'))->getModels($modelKeyInResponse);
+        return (new ApiRequest($this->guzzleClient, $this->baseApiUrl, 'GET', $pathUrl))->getModels($modelKeyInResponse);
     }
 
     /** Вернет массив с моделями в виде массивов
@@ -101,7 +101,7 @@ class ApiConnection
     public function getModelsWithQueryBuilder(string $modelKeyInResponse, string $modelRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
         $pagedQuery = $builder->paginate($maxLimitOfReturnedModels, $pageNumber);
-        return  ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, 0, 'GET', pagedQuery: $pagedQuery)
+        return  ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'GET', $modelRouteKey, pagedQuery: $pagedQuery)
             ->getModelsUsingMultipleRequests($modelKeyInResponse, $maxLimitOfReturnedModels);
     }
 
@@ -111,7 +111,7 @@ class ApiConnection
      */
     public function getModelsWithPagedQuery(string $modelKeyInResponse, string $modelRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, 0, 'GET', pagedQuery: $pagedQuery)
+        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'GET', $modelRouteKey, pagedQuery: $pagedQuery)
             ->getModelsUsingMultipleRequests($modelKeyInResponse, $maxLimitOfReturnedModels);
     }
 
@@ -120,7 +120,7 @@ class ApiConnection
      */
     public function post(string $modelRouteKey, string $modelKeyInResponse, array $data): array
     {
-        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, 0, 'POST', $data)
+        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'POST', $modelRouteKey, data: $data)
             ->getModels($modelKeyInResponse);
     }
 
@@ -129,14 +129,14 @@ class ApiConnection
      */
     public function put(string $modelRouteKey, string $modelKeyInResponse, int $modelId, array $data): array
     {
-        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, $modelId, 'PUT', $data)
+        return ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'PUT', $modelRouteKey, $modelId, $data)
             ->getModels($modelKeyInResponse);
     }
 
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
     public function delete(string $modelRouteKey, int $modelId): void
     {
-        ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, $modelRouteKey, $modelId, 'DELETE')
+        ApiRequest::constructorWithUrlGettingFromModelIdAndRoute($this->guzzleClient, $this->baseApiUrl, 'DELETE', $modelRouteKey, $modelId)
             ->getResponseAsArray();
         // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
     }

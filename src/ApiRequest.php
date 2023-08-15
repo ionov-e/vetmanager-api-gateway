@@ -23,8 +23,8 @@ class ApiRequest
     public function __construct(
         private readonly Client      $guzzleClient,
         private readonly string      $baseApiUrl,
-        private readonly string      $pathUrl,
         private readonly string      $method,
+        private readonly string      $pathUrl,
         private readonly array       $data = [],
         private readonly ?PagedQuery $pagedQuery = null
     )
@@ -35,9 +35,9 @@ class ApiRequest
     public static function constructorWithUrlGettingFromModelIdAndRoute(
         Client      $guzzleClient,
         string      $baseApiUrl,
+        string      $method,
         string      $modelRouteKey,
         int         $modelId = 0,
-        string      $method,
         array       $data = [],
         ?PagedQuery $pagedQuery = null
     ): self
@@ -45,8 +45,8 @@ class ApiRequest
         return new self(
             $guzzleClient,
             $baseApiUrl,
-            self::getPathUrlForGuzzleRequest($modelRouteKey, $modelId),
             $method,
+            self::getPathUrlForGuzzleRequest($modelRouteKey, $modelId),
             $data,
             $pagedQuery
         );
