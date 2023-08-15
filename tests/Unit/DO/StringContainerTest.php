@@ -5,30 +5,12 @@ namespace VetmanagerApiGateway\Unit\DO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use VetmanagerApiGateway\DO\StringContainer;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-#[CoversClass(StringContainer::class)]
+#[CoversClass(ToString::class)]
 class StringContainerTest extends TestCase
 {
-    public static function dataProviderForStingOrNull(): array
-    {
-        return [
-            [null, null],
-            ['Hello1', 'Hello1'],
-        ];
-    }
-
-    #[DataProvider('dataProviderForStingOrNull')]
-    public function testStringOrNullMethod(?string $forConstructor, ?string $expected, string $messageInCaseOfError = ''): void
-    {
-        $this->assertEquals(
-            $expected,
-            StringContainer::fromStringOrNull($forConstructor)->stringOrNull,
-            $messageInCaseOfError
-        );
-    }
-
     public static function dataProviderForSting(): array
     {
         return [
@@ -42,24 +24,26 @@ class StringContainerTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            StringContainer::fromStringOrNull($stringOrNull)->string,
+            ToString::fromStringOrNull($stringOrNull)->getStringEvenIfNullGiven(),
             $messageInCaseOfError
         );
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function testStringOrThrowIfNullMethod(): void
     {
-        $this->assertEquals('Hello1', StringContainer::fromStringOrNull('Hello1')->stringOrThrowIfNull);
+        $this->assertEquals('Hello1', ToString::fromStringOrNull('Hello1')->getStringOrThrowIfNull());
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull(null)->stringOrThrowIfNull;
+        ToString::fromStringOrNull(null)->getStringOrThrowIfNull();
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function testNonEmptyStringMethod(): void
     {
-        $this->assertEquals('Hello1', StringContainer::fromStringOrNull('Hello1')->nonEmptyString);
+        $this->assertEquals('Hello1', ToString::fromStringOrNull('Hello1')->getNonEmptyStringOrThrow());
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull('')->nonEmptyString;
+        ToString::fromStringOrNull('')->getNonEmptyStringOrThrow();
         $this->expectException(VetmanagerApiGatewayResponseException::class);
-        StringContainer::fromStringOrNull(null)->nonEmptyString;
+        ToString::fromStringOrNull(null)->getNonEmptyStringOrThrow();
     }
 }

@@ -1,45 +1,48 @@
 <?php
 
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Otis22\VetmanagerRestApi\Headers\Auth\ApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ByApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ByServiceApiKey;
-use Otis22\VetmanagerRestApi\Headers\Auth\ServiceName;
-use Otis22\VetmanagerRestApi\Headers\WithAuth;
-use Otis22\VetmanagerRestApi\Headers\WithAuthAndParams;
-use Otis22\VetmanagerRestApi\Model;
-use Otis22\VetmanagerRestApi\Query\Builder;
-use Otis22\VetmanagerRestApi\Query\PagedQuery;
-use Otis22\VetmanagerRestApi\URI\OnlyModel;
-use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
-use Otis22\VetmanagerRestApi\URI\WithId;
-use Psr\Http\Message\ResponseInterface;
-use VetmanagerApiGateway\DO\Enum\ApiRoute;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestUrlDomainException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseEmptyException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 final class ApiGateway
 {
+    private ActiveRecordFactory $activeRecordFactory;
+
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
     public function __construct(
-        public readonly string               $subDomain,
-        public readonly string               $apiUrl,
-        protected Client                     $guzzleClient,
-        protected WithAuthAndParams|WithAuth $allHeaders
+        public readonly string         $subDomain,
+        public readonly string         $baseApiUrl,
+        private readonly ApiConnection $apiService,
     )
     {
     }
 
-    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
-    public static function fromDomainAndServiceNameAndApiKey(
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param Client $guzzleClient Должны быть добавлены и хедеры, и базовый юрл
+     */
+    public static function fromGuzzle(
+        string $subDomain,
+        string $baseApiUrl,
+        Client $guzzleClient
+    ): self
+    {
+        return new self(
+            $subDomain,
+            $baseApiUrl,
+            new ApiConnection($guzzleClient, $baseApiUrl)
+        );
+    }
+
+    /** @throws VetmanagerApiGatewayRequestException */
+    public static function fromSubdomainAndServiceNameAndApiKey(
         string $subDomain,
         string $serviceName,
         string $apiKey,
@@ -47,324 +50,188 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
-
-        $guzzleClient = new Client(
-            [
-                'base_uri' => $baseApiUrl,
-                'http_errors' => false,
-                'verify' => false,
-            ]
-        );
-
-        $allHeaders = new WithAuthAndParams(
-            new ByServiceApiKey(
-                new ServiceName($serviceName),
-                new ApiKey($apiKey)
-            ),
-            [
-                'X-REST-TIME-ZONE' => $timezone,
-            ]
-        );
-
-        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
+        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndServiceNameAndApiKey($baseApiUrl, $subDomain, $serviceName, $apiKey, $timezone);
     }
 
-    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
-    public static function fromDomainAndApiKey(
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
+    public static function fromFullUrlAndServiceNameAndApiKey(
+        string $baseApiUrl,
+        string $subDomain,
+        string $serviceName,
+        string $apiKey,
+        string $timezone = '+03:00'
+    ): self
+    {
+        return self::fromGuzzle(
+            $subDomain,
+            $baseApiUrl,
+            ApiConnection::getGuzzleClientForServiceNameAndApiKey($baseApiUrl, $serviceName, $apiKey, $timezone)
+        );
+    }
+
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @throws VetmanagerApiGatewayRequestException
+     */
+    public static function fromSubdomainAndApiKey(
         string $subDomain,
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = self::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndApiKey($subDomain, $baseApiUrl, $apiKey, $timezone);
+    }
 
-        $guzzleClient = new Client(
-            [
-                'base_uri' => $baseApiUrl,
-                'http_errors' => false,
-            ]
+    /**
+     * @param string $subDomain Лишь субдомен сервера, типа: "three"
+     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     */
+    public static function fromFullUrlAndApiKey(
+        string $subDomain,
+        string $baseApiUrl,
+        string $apiKey,
+        string $timezone = '+03:00'
+    ): self
+    {
+        return self::fromGuzzle(
+            $subDomain,
+            $baseApiUrl,
+            ApiConnection::getGuzzleClientForApiKey($baseApiUrl, $apiKey, $timezone)
         );
-
-        $allHeaders = new WithAuthAndParams(
-            new ByApiKey(new ApiKey($apiKey)),
-            [
-                'X-REST-TIME-ZONE' => $timezone,
-            ]
-        );
-
-        return new self($subDomain, $baseApiUrl, $guzzleClient, $allHeaders);
     }
 
-    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
-    private static function getApiUrlFromSubdomainForProdOrTest(string $subDomain, bool $isProduction): string
+    private function getActiveRecordFactory(): ActiveRecordFactory
     {
-        try {
-            return ($isProduction)
-                ? \Otis22\VetmanagerUrl\url($subDomain)->asString()
-                : \Otis22\VetmanagerUrl\url_test_env($subDomain)->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestUrlDomainException($e->getMessage());
-        }
-    }
-
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithId(ApiRoute $apiRouteKey, int $modelId): array
-    {
-        return $this->getModelsInnerContentsFromApi('GET', $apiRouteKey, $modelId);
-    }
-
-    /**
-     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
-    {
-        $apiDataContents = $this->getWithGetParametersAsString($apiRouteKey, $getParameters);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiRouteKey);
-    }
-
-    /**
-     * @param string $getParameters То, что после знака "?" в строке запроса. Например: 'client_id=133'
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithGetParametersAsString(ApiRoute $apiRouteKey, string $getParameters): array
-    {
-        try {
-            $url = (new RestApiPrefix())->asString() . $apiRouteKey->value . '?' . $getParameters;
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
+        if (!isset ($this->activeRecordFactory)) {
+            $this->activeRecordFactory = new ActiveRecordFactory($this->apiService, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         }
 
-        $response = $this->getResponseFromGuzzleClient('GET', $url);
-        return $this->getDataContentsFromResponseOrThrowOnFail($response);
+        return $this->activeRecordFactory;
     }
 
-    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public function getAdmission(): Facade\Admission
     {
-        $apiDataContents = $this->getWithQueryBuilder($apiRouteKey, $builder, $maxLimitOfReturnedModels, $pageNumber);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiRouteKey);
+        return new Facade\Admission($this->getActiveRecordFactory());
     }
 
-    /**
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @param int $pageNumber При использовании пагинации
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getWithQueryBuilder(ApiRoute $apiRouteKey, Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
+    public function getBreed(): Facade\Breed
     {
-        $pagedQuery = $this->getPagedQueryFromQueryBuilder($builder, $maxLimitOfReturnedModels, $pageNumber);
-        return self::getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
+        return new Facade\Breed($this->getActiveRecordFactory());
     }
 
-    private function getPagedQueryFromQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels, int $pageNumber): PagedQuery
+    public function getCity(): Facade\City
     {
-        return $builder->paginate($maxLimitOfReturnedModels, $pageNumber);
+        return new Facade\City($this->getActiveRecordFactory());
     }
 
-    /**
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     * @psalm-suppress InvalidReturnType, InvalidReturnStatement Без понятия почему не прекращает жаловаться
-     */
-    public function getWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getCityType(): Facade\CityType
     {
-        $modelResponseKeyInJson = $apiRouteKey->getApiModelResponseKey();
-        $arrayOfModelsWithTheirContents = [];
-
-        do {
-            $modelDataContents = $this->getModelsDataContentsUsingPagedQueryWithOneRequest($apiRouteKey, $pagedQuery);
-            if (!isset($modelDataContents[$modelResponseKeyInJson]) || !is_array($modelDataContents[$modelResponseKeyInJson])) {
-                /** @psalm-suppress PossiblyInvalidCast */
-                throw new VetmanagerApiGatewayResponseException(
-                    "В Json под ключом '$modelResponseKeyInJson' должна быть строка"
-                );
-            }
-            $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelDataContents[$modelResponseKeyInJson]);
-            $pagedQuery->next();
-        } while (
-            (int)$modelDataContents['totalCount'] < $maxLimitOfReturnedModels &&
-            count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels
-        );
-
-        return [
-            'totalCount' => $modelDataContents['totalCount'],
-            $apiRouteKey->getApiModelResponseKey() => $arrayOfModelsWithTheirContents
-        ];
+        return new Facade\CityType($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    private function getModelsDataContentsUsingPagedQueryWithOneRequest(ApiRoute $apiRouteKey, PagedQuery $pagedQuery): array
+    public function getClient(): Facade\Client
     {
-        $url = $this->getUrlForGuzzleRequest($apiRouteKey);
-        $response = $this->getResponseFromGuzzleClient('GET', $url, pagedQuery: $pagedQuery);
-        return $this->getDataContentsFromResponseOrThrowOnFail($response);
+        return new Facade\Client($this->getActiveRecordFactory());
     }
 
-
-    /** Вернет в виде массива либо содержимое модели, либо массив нескольких моделей с такими массивами
-     * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function getContentsWithPagedQuery(ApiRoute $apiRouteKey, PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
+    public function getClinic(): Facade\Clinic
     {
-        $apiDataContents = $this->getWithPagedQuery($apiRouteKey, $pagedQuery, $maxLimitOfReturnedModels);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiRouteKey);
+        return new Facade\Clinic($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function post(ApiRoute $apiRouteKey, array $data): array
+    public function getComboManualItem(): Facade\ComboManualItem
     {
-        return $this->getModelsInnerContentsFromApi('POST', $apiRouteKey, data: $data);
+        return new Facade\ComboManualItem($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function put(ApiRoute $apiRouteKey, int $modelId, array $data): array
+    public function getComboManualName(): Facade\ComboManualName
     {
-        return $this->getModelsInnerContentsFromApi('PUT', $apiRouteKey, $modelId, $data);
+        return new Facade\ComboManualName($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    public function delete(ApiRoute $apiRouteKey, int $modelId): void
+    public function getGood(): Facade\Good
     {
-        $this->getDataContentsFromResponseFromApi('DELETE', $apiRouteKey, $modelId);
-        // Будет возвращаться только ID, который был удален, поэтому игнорируем. При неудаче все равно исключение кидает
+        return new Facade\Good($this->getActiveRecordFactory());
     }
 
-
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    private function getModelsInnerContentsFromApi(string $method, ApiRoute $apiRouteKey, int $modelId = 0, array $data = []): array
+    public function getGoodGroup(): Facade\GoodGroup
     {
-        $apiDataContents = $this->getDataContentsFromResponseFromApi($method, $apiRouteKey, $modelId, $data);
-        return $this->getModelsContentsFromApiResponseDataElement($apiDataContents, $apiRouteKey);
+        return new Facade\GoodGroup($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayException - общее родительское исключение
-     * @throws VetmanagerApiGatewayResponseEmptyException|VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
-     */
-    private function getDataContentsFromResponseFromApi(string $method, ApiRoute $apiRouteKey, int $modelId = 0, array $data = []): array
+    public function getGoodSaleParam(): Facade\GoodSaleParam
     {
-        $url = $this->getUrlForGuzzleRequest($apiRouteKey, $modelId);
-        $response = $this->getResponseFromGuzzleClient($method, $url, $data);
-        return $this->getDataContentsFromResponseOrThrowOnFail($response);
+        return new Facade\GoodSaleParam($this->getActiveRecordFactory());
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
-    private function getUrlForGuzzleRequest(ApiRoute $apiRouteKey, int $modelId = 0): string
+    public function getInvoice(): Facade\Invoice
     {
-        $modelKey = $apiRouteKey->value;
-        $uri = ($modelId) ? new WithId(new Model($modelKey), $modelId) : new OnlyModel(new Model($modelKey));
-
-        try {
-            return $uri->asString();
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
+        return new Facade\Invoice($this->getActiveRecordFactory());
     }
 
-    /**
-     * @param array $data Только для POST/PUT методов
-     * @throws VetmanagerApiGatewayRequestException
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getResponseFromGuzzleClient(string $method, string $url, array $data = [], ?PagedQuery $pagedQuery = null): ResponseInterface
+    public function getInvoiceDocument(): Facade\InvoiceDocument
     {
-        $options = $this->getOptionsForGuzzleRequest($data, $pagedQuery);
-        try {
-            return $this->guzzleClient->request($method, $url, $options);
-        } catch (GuzzleException $e) {
-            throw new VetmanagerApiGatewayResponseException($e->getMessage());
-        }
+        return new Facade\InvoiceDocument($this->getActiveRecordFactory());
     }
 
-    /**
-     * @return array{headers: array<string, mixed>, body?: false|string, query?: array<string, mixed>}
-     * @throws VetmanagerApiGatewayRequestException
-     */
-    private function getOptionsForGuzzleRequest(array $data = [], ?PagedQuery $pagedQuery = null): array
+    public function getMedicalCard(): Facade\MedicalCard
     {
-        $options = ['headers' => $this->allHeaders->asKeyValue()];
-
-        if ($data) {
-            $options['body'] = json_encode($data);
-        }
-
-        try {
-            if ($pagedQuery) {
-                $options['query'] = $pagedQuery->asKeyValue();
-            }
-        } catch (\Exception $e) {
-            throw new VetmanagerApiGatewayRequestException($e->getMessage());
-        }
-
-        return $options;
+        return new Facade\MedicalCard($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayResponseEmptyException
-     * @throws VetmanagerApiGatewayResponseException
-     * @psalm-suppress RedundantCastGivenDocblockType
-     */
-    private function getDataContentsFromResponseOrThrowOnFail(ResponseInterface $response): array
+    public function getMedicalCardAsVaccination(): Facade\MedicalCardAsVaccination
     {
-        $contents = json_decode($response->getBody()->getContents(), true);
-
-        if (empty($contents) || !isset($contents['data'])) {
-            throw new VetmanagerApiGatewayResponseEmptyException('Пустой ответ апи');
-        }
-
-        if (!filter_var($contents['success'], FILTER_VALIDATE_BOOLEAN)) {
-            throw new VetmanagerApiGatewayResponseException(
-                $contents['message'] ? (string)$contents['message'] : 'Неизвестная ошибка работы с апи'
-            );
-        }
-        /** @var array{data: array, success: bool, message?: string} $contents */
-
-        return (array)$contents['data'];
+        return new Facade\MedicalCardAsVaccination($this->getActiveRecordFactory());
     }
 
-    /**
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    private function getModelsContentsFromApiResponseDataElement(array $apiDataContents, ApiRoute $apiRouteKey): array
+    public function getMedicalCardByClient(): Facade\MedicalCardByClient
     {
-        $modelKey = $apiRouteKey->getApiModelResponseKey();
+        return new Facade\MedicalCardByClient($this->getActiveRecordFactory());
+    }
 
-        if (!isset($apiDataContents[$modelKey])) {
-            /** @psalm-suppress PossiblyInvalidCast Бредовое предупреждение (типа не строка возможно) */
-            throw new VetmanagerApiGatewayResponseException("Не найден ключ модели '$modelKey' в JSON ответе от АПИ");
-        }
+    public function getPet(): Facade\Pet
+    {
+        return new Facade\Pet($this->getActiveRecordFactory());
+    }
 
-        return $apiDataContents[$modelKey];
+    public function getPetType(): Facade\PetType
+    {
+        return new Facade\PetType($this->getActiveRecordFactory());
+    }
+
+    public function getProperty(): Facade\Property
+    {
+        return new Facade\Property($this->getActiveRecordFactory());
+    }
+
+    public function getRole(): Facade\Role
+    {
+        return new Facade\Role($this->getActiveRecordFactory());
+    }
+
+    public function getStreet(): Facade\Street
+    {
+        return new Facade\Street($this->getActiveRecordFactory());
+    }
+
+    public function getUnit(): Facade\Unit
+    {
+        return new Facade\Unit($this->getActiveRecordFactory());
+    }
+
+    public function getUser(): Facade\User
+    {
+        return new Facade\User($this->getActiveRecordFactory());
+    }
+
+    public function getUserPosition(): Facade\UserPosition
+    {
+        return new Facade\UserPosition($this->getActiveRecordFactory());
     }
 }

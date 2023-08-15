@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DO;
 
-/**
- * @property-read string fullStartingWithFirst Возвращает: "Имя Отчество Фамилия". Но если чего-то не будет - вернет без этого слова и без лишних пробелов
- * @property-read string fullStartingWithLast Возвращает: "Фамилия Имя Отчество". Но если чего-то не будет - вернет без этого слова и без лишних пробелов
- * @property-read string lastPlusInitials Возвращает: "Фамилия И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек)
- * @property-read string initials Возвращает: "Ф. И. О.". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и точек)
- */
 final class FullName
 {
     public function __construct(
