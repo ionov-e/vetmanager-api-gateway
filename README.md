@@ -70,31 +70,34 @@ composer require ioncurly/vetmanager-api-gateway
 
 ### Начало работы/Конфигурация подключения <a id="header_connection" />
 
-Простыми словами, объект ApiGateway - связующее звено с работой с АПИ Ветменеджера
+Простыми словами, объект ApiGateway - связующее звено с работой с АПИ Ветменеджера. Больше ничего создавать не нужно будет
 
-#### С помощью домена и АПИ ключа
-
-```php
-$subDomain = 'kras-best';   // субдомен клиники в ветменеджер
-$apiKey = 'xXdfxfsfsdffsf'; // АПИ ключ к домену в ветменеджер
-$isProduction = true;       // рабочий или тестовый сервер будет использоваться
-$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduction);
-```
-
-#### С помощью домена, имени АПИ-сервиса и АПИ ключа
-
-Для специальных внутренних сервисов
-
-```php
-$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true);
-```
+1. С помощью субдомена и АПИ ключа
+    ```php
+    $subDomain = 'kras-best';   // субдомен клиники в ветменеджер
+    $apiKey = 'xXdfxfsfsdffsf'; // АПИ ключ к домену в ветменеджер
+    $isProduction = true;       // рабочий или тестовый сервер будет использоваться
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey($subDomain, $apiKey, $isProduction);
+    ```
+2. С помощью полного пути к серверу и АПИ ключа
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromFullUrlAndApiKey('https://xxx', 'apiKey', true);
+    ```
+3. С помощью субдомена, имени АПИ-сервиса и АПИ ключа (для специальных внутренних сервисов)
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndServiceNameAndApiKey('subDomain', 'serviceName', 'apiKey', true);
+    ```
+4. С помощью полного пути к серверу, имени АПИ-сервиса и АПИ ключа (для специальных внутренних сервисов)
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromFullUrlAndServiceNameAndApiKey('https://xxx', 'serviceName', 'apiKey', true);
+    ```
 
 ### Первоначальное получение объектов <a id="header_get" /> 
 
 Вся логика получения **Active Record** вынесена в соответсвующий **Facade**. Вот пример получения клиента по ID:
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$clientFacade = $apiGateway->getClient(); // Конечно выделения фасада в переменную лишь для наглядности
+$clientFacade = $apiGateway->getClient(); // выделение фасада в переменную лишь для наглядности
 $client = $clientFacade->getById(33);
 ```
 
@@ -103,13 +106,12 @@ $client = $clientFacade->getById(33);
 метод получения соответствующего **Active Record** по ID. Так же в **Facade** содержатся и другие методы получения (в том
 числе - через более сложные запросы - например, через фильтры).
 
-В есть **Active Records**, которые могут быть получены лишь с помощью конкретного АПИ-запроса. Например,
-MedicalCardByClient можно получить лишь по ID клиента. Недоступные методы получения в **Facade** просто не существует
+Существуют **Active Records**, которые могут быть получены лишь с помощью конкретного АПИ-запроса. Например,
+MedicalCardByClient можно получить лишь по ID клиента. Недоступные методы получения в соответствующем фасаде просто не существуют
 
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$medicalCardsByClientFacade = $apiGateway->getMedicalCardByClient();
-$medicalCards = $clientFacade->getByClientId(33);
+$medicalCards = $apiGateway->getMedicalCardByClient()->getByClientId(33);
 ```
 
 #### Получение объекта по ID <a id="get_by_id" />
@@ -138,46 +140,46 @@ if (!empty($invoices)) {
 
 Ниже перечислены 3 варианта одного и того же запроса
 
-1) Query Builder
+1) С помощью **Query Builder**
 
-[Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
+    [Ссылка на используемую библиотеку с большим количество примеров использования Builder](https://github.com/otis22/vetmanager-rest-api)
+    
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $comboManualItems = $apiGateway->getComboManualItem()->getByQueryBuilder(
+            (new Otis22\VetmanagerRestApi\Query\Builder())
+                ->where('value', '7')
+                ->where('combo_manual_id', '1'),
+            1 // Опциональный параметр - лимит возвращаемых моделей
+    );
+    ```
+2) С помощью **PagedQuery**
 
-```php
-$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$comboManualItems = $apiGateway->getComboManualItem()->getByQueryBuilder(
-        (new Otis22\VetmanagerRestApi\Query\Builder())
-            ->where('value', '7')
-            ->where('combo_manual_id', '1'),
-        1 // Опциональный параметр - лимит возвращаемых моделей
-);
-```
-2) PagedQuery
+    [Ссылка на используемую библиотеку с большим количество примеров использования PagedQuery](https://github.com/otis22/vetmanager-rest-api)
+    
+    С помощью этого объекта удобнее работать с пагинацией.
+    
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $comboManualItems = $apiGateway->getComboManualItem()->getByPagedQuery(
+            (new Otis22\VetmanagerRestApi\Query\Builder())
+                ->where('value', '7')
+                ->where('combo_manual_id', '1')
+                ->top(1) // Лимит возвращаемых моделей
+    );
+    ```
 
-[Ссылка на используемую библиотеку с большим количество примеров использования PagedQuery](https://github.com/otis22/vetmanager-rest-api)
+3) С помощью **Get Parameters** в виде строки
 
-С помощью этого объекта удобнее работать с пагинацией.
-
-```php
-$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$comboManualItems = $apiGateway->getComboManualItem()->getByPagedQuery(
-        (new Otis22\VetmanagerRestApi\Query\Builder())
-            ->where('value', '7')
-            ->where('combo_manual_id', '1')
-            ->top(1) // Лимит возвращаемых моделей
-);
-```
-
-3) Get Parameters As String
-
-Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
-и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
-
-```php
-$apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
-$comboManualItems = $apiGateway->getComboManualItem()->getByGetParametersAsString(
-        "filter=[{'property':'combo_manual_id', 'value':'1'},{'property':'value', 'value':'7'}]&limit=1"
-);
-```
+    Сюда можно передать все те же Get-параметры, используемые в коллекции Postman. Более подробно о фильтрах, сортировке
+    и т.д. здесь - [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
+    
+    ```php
+    $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
+    $comboManualItems = $apiGateway->getComboManualItem()->getByGetParametersAsString(
+            "filter=[{'property':'combo_manual_id', 'value':'1'},{'property':'value', 'value':'7'}]&limit=1"
+    );
+    ```
 
 #### Альтернативные способы получения для конкретных моделей <a id="get_by_custom" />
 
@@ -248,14 +250,14 @@ echo $updatedCity->getTitle(); // Получим "New City". Можно и др�
 
 ### Удаление моделей <a id="header_delete" />
 
-#### С помощью фасада и массива <a id="delete_with_facades" />
+#### С помощью фасада <a id="delete_with_facades" />
 
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 $apiGateway->getCity()->delete(13);
 ```
 
-#### С помощью Active Record и сеттеров <a id="delete_with_active_records" />
+#### С помощью Active Record <a id="delete_with_active_records" />
 
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
@@ -265,7 +267,7 @@ $city->delete();
 
 ### Пример представления данных модели <a id="header_dtos" />
 
-Получать каждое свойство через гет-метод. Тип возвращаемых данных показывает
+Получать каждое свойство через гет-метод. Типизация в каждом методе есть
 
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
@@ -322,13 +324,14 @@ $middleNameOfFirstMedicalCardDoctor = $firstMedicalCardDoctor?->getMiddleName();
 
 * Если нашелся кеш:
 
-2 - создать объект из этого кеша.
+    2 - создать объект из этого кеша.
+
 
 * Если не нашелся кеш:
 
-2 - сделать АПИ запрос на получение объекта
-
-3 - в кеш закинуть модель в виде массива для следующей PHP сессии
+    2 - сделать АПИ запрос на получение объекта
+    
+    3 - в кеш закинуть модель в виде массива для следующей PHP сессии
 
 #### Получение модели в виде массива
 
@@ -419,7 +422,7 @@ $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable();
 методы и связи с другими моделями доступны. А как именно при вызове метода будут получаться данные: из уже полученных данных
 или при помощи дополнительного запроса - это тоже берет на себя библиотека.
 
-Вот пример для понимания устройства. Но для использования это вовсе неважно. Для использования каждый из полученных **Active Record**
+Вот пример для понимания устройства. Но для использования это вовсе неважно. В использовании каждый из полученных **Active Record**
 идентичен:
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
