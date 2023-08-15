@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
  * @internal
@@ -39,29 +38,6 @@ class DtoFactory
             ],
             [new JsonEncoder()]
         );
-    }
-
-    /**
-     * @param class-string<AbstractDTO> $dtoClassName
-     * @throws VetmanagerApiGatewayResponseException
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function getFromApiResponseWithSingleModelAsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): AbstractDTO
-    {
-        $modelAsArray = ApiRequest::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
-        return $this->getFromSingleModelAsArray($modelAsArray, $dtoClassName);
-    }
-
-    /**
-     * @param class-string<AbstractDTO> $dtoClassName
-     * @return AbstractDTO[]
-     * @throws VetmanagerApiGatewayResponseException
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function getFromApiResponseWithMultipleModelsArray(array $apiResponse, string $modelKeyInResponse, string $dtoClassName): array
-    {
-        $modelsAsArrays = ApiRequest::getModelsFromApiResponseAsArray($apiResponse, $modelKeyInResponse);
-        return $this->getFromModelsAsArrays($modelsAsArrays, $dtoClassName);
     }
 
     /**

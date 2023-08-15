@@ -55,10 +55,10 @@ class ApiRequest
     /** @throws VetmanagerApiGatewayRequestException */
     private static function getPathUrlForGuzzleRequest(string $modelRouteKey, int $modelId = 0): string
     {
-        $uri = ($modelId) ? new WithId(new Model($modelRouteKey), $modelId) : new OnlyModel(new Model($modelRouteKey));
+        $pathUrlObject = ($modelId) ? new WithId(new Model($modelRouteKey), $modelId) : new OnlyModel(new Model($modelRouteKey));
 
         try {
-            return $uri->asString();
+            return $pathUrlObject->asString();
         } catch (Exception $e) {
             throw new VetmanagerApiGatewayRequestException("PathUrl Error. modelRouteKey = $modelRouteKey, modelId = $modelId" . $e->getMessage());
         }
@@ -68,14 +68,14 @@ class ApiRequest
     public function getModels(string $modelKeyInResponse): array
     {
         $apiResponseAsArray = $this->getResponseAsArray();
-        return self::getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
+        return $this->getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
     }
 
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
     private function getDataContents(): array
     {
         $apiResponseAsArray = $this->getResponseAsArray();
-        return self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
+        return $this->getDataContentsFromApiResponseAsArray($apiResponseAsArray);
     }
 
     /** Так же проверяет ответ
@@ -115,7 +115,7 @@ class ApiRequest
     public function getModelsUsingMultipleRequests(string $modelKeyInResponse, int $maxLimitOfReturnedModels = 100): array
     {
         $apiResponseAsArray = $this->getDataContentsUsingMultipleRequests($modelKeyInResponse, $maxLimitOfReturnedModels);
-        return self::getModelsFromApiResponseDataElement($apiResponseAsArray, $modelKeyInResponse);
+        return $this->getModelsFromApiResponseDataElement($apiResponseAsArray, $modelKeyInResponse);
     }
 
     /** Вернет весь ответ в виде массива {totalCount: int, _someModelName_: array}
@@ -128,7 +128,7 @@ class ApiRequest
 
         do {
             $apiResponseDataContents = $this->getDataContents();
-            $modelsInResponse = self::getModelsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
+            $modelsInResponse = $this->getModelsFromApiResponseDataElement($apiResponseDataContents, $modelKeyInResponse);
             $arrayOfModelsWithTheirContents = array_merge($arrayOfModelsWithTheirContents, $modelsInResponse);
             $this->pagedQuery->next();
         } while (
@@ -176,39 +176,29 @@ class ApiRequest
         return $options;
     }
 
-    private function getStandardExceptionPrefixInfo(): string
-    {
-        try {
-            $pagedQueryAsString = is_null($this->pagedQuery) ? "" : json_encode($this->pagedQuery->asKeyValue());
-        } catch (Exception $e) {
-            $pagedQueryAsString = "Исключение в 'pagedQuery->asKeyValue()': " . $e->getMessage();
-        }
-
-        return "Запрос: {$this->baseApiUrl}/{$this->pathUrl}, метод: {$this->method}, данные: " .
-            json_encode($this->data, JSON_UNESCAPED_UNICODE) . $pagedQueryAsString . "Исключение: ";
-    }
-
     /** Вернет либо массив с моделью, либо массив с такими моделями в виде массивов
      * @throws VetmanagerApiGatewayResponseException
      */
-    public static function getModelsFromApiResponseAsArray(array $apiResponseAsArray, string $modelKeyInResponse): array
+    private function getModelsFromApiResponseAsArray(array $apiResponseAsArray, string $modelKeyInResponse): array
     {
-        $dataContentsFromApiResponse = self::getDataContentsFromApiResponseAsArray($apiResponseAsArray);
-        return self::getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
+        $dataContentsFromApiResponse = $this->getDataContentsFromApiResponseAsArray($apiResponseAsArray);
+        return $this->getModelsFromApiResponseDataElement($dataContentsFromApiResponse, $modelKeyInResponse);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
-    private static function getDataContentsFromApiResponseAsArray(array $apiResponseAsArray): array
+    private function getDataContentsFromApiResponseAsArray(array $apiResponseAsArray): array
     {
         if (!isset($apiResponseAsArray['data'])) {
             throw new VetmanagerApiGatewayResponseException(
-                "В ответе от АПИ: отсутствует элемент 'data': " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
+                $this->getStandardExceptionPrefixInfo() . "В ответе отсутствует 'data': "
+                . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
             );
         }
 
         if (!is_array($apiResponseAsArray['data'])) {
             throw new VetmanagerApiGatewayResponseException(
-                "В ответе от АПИ: элемент 'data' не является массивом: " . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
+                $this->getStandardExceptionPrefixInfo() . "В ответе 'data' не является массивом: "
+                . json_encode($apiResponseAsArray, JSON_UNESCAPED_UNICODE)
             );
         }
 
@@ -216,14 +206,29 @@ class ApiRequest
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
-    private static function getModelsFromApiResponseDataElement(array $apiDataContents, string $modelKeyInResponse): array
+    private function getModelsFromApiResponseDataElement(array $apiDataContents, string $modelKeyInResponse): array
     {
         if (!isset($apiDataContents[$modelKeyInResponse])) {
             throw new VetmanagerApiGatewayResponseException(
-                "Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ: " . json_encode($apiDataContents, JSON_UNESCAPED_UNICODE)
+                $this->getStandardExceptionPrefixInfo() . "Не найден ключ модели '$modelKeyInResponse' в JSON ответе от АПИ: "
+                . json_encode($apiDataContents, JSON_UNESCAPED_UNICODE)
             );
         }
 
         return $apiDataContents[$modelKeyInResponse];
+    }
+
+    /** Текстовое начало каждого выкидываемого исключения в этом классе */
+    private function getStandardExceptionPrefixInfo(): string
+    {
+        try {
+            $pagedQueryAsString = is_null($this->pagedQuery) ? "" : ", pagedQuery: " . json_encode($this->pagedQuery->asKeyValue());
+        } catch (Exception $e) {
+            $pagedQueryAsString = ", pagedQuery->asKeyValue() Исключение: " . $e->getMessage();
+        }
+
+        $dataToSendAsString =  empty($this->data) ? "" : ", отправка: " . json_encode($this->data, JSON_UNESCAPED_UNICODE);
+
+        return "Запрос: {$this->baseApiUrl}/{$this->pathUrl}, метод: {$this->method}" . $dataToSendAsString . $pagedQueryAsString . ". Исключение: ";
     }
 }

@@ -18,17 +18,12 @@ use VetmanagerApiGateway\Facade\CityType;
 class CityTypeTest extends TestCase
 {
 
-    public static function dataProviderFullResponseAsJson(): array
+    public static function dataProviderModelsAsArraysInJson(): array
     {
         return [[
             /** @lang JSON */
             <<<'EOF'
-{
-"success": true,
-"message": "Records Retrieved Successfully",
-"data": {
-    "totalCount": "9",
-    "cityType": [
+[
         {"id": "2","title": "Деревня"},
         {"id": "3","title": "Поселок"},
         {"id": "4","title": "ПГТ"},
@@ -38,25 +33,23 @@ class CityTypeTest extends TestCase
         {"id": "9","title": "Хутор"},
         {"id": "10","title": "Агрогородок"},
         {"id": "11","title": "СНТ"}
-        ]
-    }
-}
+]
 EOF
         ]];
     }
 
     /** @throws VetmanagerApiGatewayException */
-    #[DataProvider('dataProviderFullResponseAsJson')]
-    public function testCreationFromResponseAsArray(string $json): void
+    #[DataProvider('dataProviderModelsAsArraysInJson')]
+    public function testCreationFromModelsAsArrays(string $json): void
     {
-        $apiResponseAsArray = json_decode($json, true);
+        $modelsAsArrays = json_decode($json, true);
         $apiService = new ApiConnection(new Client(), "test.test");
         $activeRecordFactory = new ActiveRecordFactory(
             $apiService,
             DtoFactory::withDefaultSerializer(),
             DtoNormalizer::withDefaultSerializer()
         );
-        $activeRecords = $activeRecordFactory->getFromApiResponseWithMultipleModelsAsArray($apiResponseAsArray, \VetmanagerApiGateway\ActiveRecord\CityType\CityType::class);
+        $activeRecords = $activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, \VetmanagerApiGateway\ActiveRecord\CityType\CityType::class);
         $this->assertContainsOnlyInstancesOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $activeRecords);
         $singleAR = $activeRecords[0];
         $this->assertInstanceOf(\VetmanagerApiGateway\ActiveRecord\CityType\CityType::class, $singleAR);

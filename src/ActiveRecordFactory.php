@@ -25,40 +25,6 @@ class ActiveRecordFactory
 
     /**
      * @param class-string<TActiveRecord> $activeRecordClass
-     * @psalm-return TActiveRecord
-     * @throws VetmanagerApiGatewayException
-     */
-    public function getFromApiResponseWithSingleModelAsArray(array $apiResponseAsArray, string $activeRecordClass): AbstractActiveRecord
-    {
-        $modelKeyInResponse = $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass);
-        $dtoClass = $activeRecordClass::getDtoClassFromActiveRecordClass($activeRecordClass);
-        $dto = $this->dtoFactory->getFromApiResponseWithSingleModelAsArray(
-            $apiResponseAsArray,
-            $modelKeyInResponse,
-            $dtoClass
-        );
-        return $this->getFromSingleDto($dto, $activeRecordClass);
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
-     * @return TActiveRecord[]
-     * @throws VetmanagerApiGatewayException
-     */
-    public function getFromApiResponseWithMultipleModelsAsArray(array $apiResponseAsArray, string $activeRecordClass): array
-    {
-        $modelKeyInResponse = $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass);
-        $dtoClass = $activeRecordClass::getDtoClassFromActiveRecordClass($activeRecordClass);
-        $dtos = $this->dtoFactory->getFromApiResponseWithMultipleModelsArray(
-            $apiResponseAsArray,
-            $modelKeyInResponse,
-            $dtoClass
-        );
-        return $this->getFromMultipleDtos($dtos, $activeRecordClass);
-    }
-
-    /**
-     * @param class-string<TActiveRecord> $activeRecordClass
      * @return TActiveRecord[]
      * @throws VetmanagerApiGatewayException
      */
