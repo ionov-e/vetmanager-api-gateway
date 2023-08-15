@@ -64,7 +64,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
     }
 
-    public function getAdmissionDateAsDateTime(): DateTime
+    public function getDateAsDateTime(): DateTime
     {
         return ToDateTime::fromFullDateTimeString($this->admission_date)->getDateTimeOrThrow();
     }
@@ -146,13 +146,13 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateFromString(string $value): static
+    public function setDateFromString(string $value): static
     {
         return self::setPropertyFluently($this, 'admission_date', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateFromDateTime(DateTime $value): static
+    public function setDateFromDateTime(DateTime $value): static
     {
         return self::setPropertyFluently($this, 'admission_date', $value->format('Y-m-d H:i:s'));
     }

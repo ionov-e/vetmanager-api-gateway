@@ -230,9 +230,9 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @inheritDoc */
-    public function getAdmissionDateAsDateTime(): DateTime
+    public function getDateAsDateTime(): DateTime
     {
-        return $this->modelDTO->getAdmissionDateAsDateTime();
+        return $this->modelDTO->getDateAsDateTime();
     }
 
     /** @inheritDoc */
@@ -325,15 +325,15 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateFromString(string $value): static
+    public function setDateFromString(string $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateFromString($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateFromString($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setAdmissionDateFromDateTime(DateTime $value): static
+    public function setDateFromDateTime(DateTime $value): static
     {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setAdmissionDateFromDateTime($value));
+        return self::setNewModelDtoFluently($this, $this->modelDTO->setDateFromDateTime($value));
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

@@ -14,7 +14,7 @@ interface AdmissionOnlyDtoInterface
     public function getId(): int;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getAdmissionDateAsDateTime(): DateTime;
+    public function getDateAsDateTime(): DateTime;
 
     /** Примеры: "На основании медкарты", "Запись из модуля, к свободному доктору, по услуге Ампутация пальцев" */
     public function getDescription(): string;
@@ -79,9 +79,9 @@ interface AdmissionOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getInvoicesSum(): ?float;
 
-    public function setAdmissionDateFromString(string $value): static;
+    public function setDateFromString(string $value): static;
 
-    public function setAdmissionDateFromDateTime(DateTime $value): static;
+    public function setDateFromDateTime(DateTime $value): static;
 
     public function setDescription(string $value): static;
 
