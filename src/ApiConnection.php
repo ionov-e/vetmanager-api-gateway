@@ -15,6 +15,7 @@ use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\URI\RestApiPrefix;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestUrlDomainException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 /**
@@ -55,7 +56,7 @@ class ApiConnection
         );
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
     public static function getApiUrlFromSubdomainForProdOrTest(string $subDomain, bool $isProduction): string
     {
         try {
@@ -64,7 +65,7 @@ class ApiConnection
                 : \Otis22\VetmanagerUrl\url_test_env($subDomain)->asString();
         } catch (\Exception $e) {
             $testOrProduction = $isProduction ? "прод" : "тест";
-            throw new VetmanagerApiGatewayRequestException(
+            throw new VetmanagerApiGatewayRequestUrlDomainException(
                 "Не получили fullUrl ($testOrProduction) для домена: $subDomain: " . $e->getMessage()
             );
         }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VetmanagerApiGateway;
 
 use GuzzleHttp\Client;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestUrlDomainException;
 
 final class ApiGateway
 {
@@ -36,7 +36,7 @@ final class ApiGateway
         );
     }
 
-    /** @throws VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayRequestUrlDomainException */
     public static function fromSubdomainAndServiceNameAndApiKey(
         string $subDomain,
         string $serviceName,
@@ -67,7 +67,7 @@ final class ApiGateway
 
     /**
      * @param string $subDomain Лишь субдомен сервера, типа: "three"
-     * @throws VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayRequestUrlDomainException
      */
     public static function fromSubdomainAndApiKey(
         string $subDomain,
