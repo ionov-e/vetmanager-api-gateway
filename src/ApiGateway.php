@@ -12,32 +12,27 @@ final class ApiGateway
     private ActiveRecordFactory $activeRecordFactory;
 
     /**
-     * @param string $subDomain Лишь субдомен сервера, типа: "three"
-     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param string $fullUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
      */
     public function __construct(
-        public readonly string         $subDomain,
-        public readonly string         $baseApiUrl,
+        public readonly string         $fullUrl,
         private readonly ApiConnection $apiService,
     )
     {
     }
 
     /**
-     * @param string $subDomain Лишь субдомен сервера, типа: "three"
-     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param string $fullUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
      * @param Client $guzzleClient Должны быть добавлены и хедеры, и базовый юрл
      */
-    public static function fromGuzzle(
-        string $subDomain,
-        string $baseApiUrl,
+    public static function fromFullUrlAndGuzzleClient(
+        string $fullUrl,
         Client $guzzleClient
     ): self
     {
         return new self(
-            $subDomain,
-            $baseApiUrl,
-            new ApiConnection($guzzleClient, $baseApiUrl)
+            $fullUrl,
+            new ApiConnection($guzzleClient, $fullUrl)
         );
     }
 
@@ -50,26 +45,23 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
-        return self::fromFullUrlAndServiceNameAndApiKey($baseApiUrl, $subDomain, $serviceName, $apiKey, $timezone);
+        $fullUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndServiceNameAndApiKey($fullUrl, $serviceName, $apiKey, $timezone);
     }
 
     /**
-     * @param string $subDomain Лишь субдомен сервера, типа: "three"
-     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param string $fullUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
      */
     public static function fromFullUrlAndServiceNameAndApiKey(
-        string $baseApiUrl,
-        string $subDomain,
+        string $fullUrl,
         string $serviceName,
         string $apiKey,
         string $timezone = '+03:00'
     ): self
     {
-        return self::fromGuzzle(
-            $subDomain,
-            $baseApiUrl,
-            ApiConnection::getGuzzleClientForServiceNameAndApiKey($baseApiUrl, $serviceName, $apiKey, $timezone)
+        return self::fromFullUrlAndGuzzleClient(
+            $fullUrl,
+            ApiConnection::getGuzzleClientForServiceNameAndApiKey($fullUrl, $serviceName, $apiKey, $timezone)
         );
     }
 
@@ -84,25 +76,22 @@ final class ApiGateway
         string $timezone = '+03:00'
     ): self
     {
-        $baseApiUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
-        return self::fromFullUrlAndApiKey($subDomain, $baseApiUrl, $apiKey, $timezone);
+        $fullUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
+        return self::fromFullUrlAndApiKey($fullUrl, $apiKey, $timezone);
     }
 
     /**
-     * @param string $subDomain Лишь субдомен сервера, типа: "three"
-     * @param string $baseApiUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
+     * @param string $fullUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
      */
     public static function fromFullUrlAndApiKey(
-        string $subDomain,
-        string $baseApiUrl,
+        string $fullUrl,
         string $apiKey,
         string $timezone = '+03:00'
     ): self
     {
-        return self::fromGuzzle(
-            $subDomain,
-            $baseApiUrl,
-            ApiConnection::getGuzzleClientForApiKey($baseApiUrl, $apiKey, $timezone)
+        return self::fromFullUrlAndGuzzleClient(
+            $fullUrl,
+            ApiConnection::getGuzzleClientForApiKey($fullUrl, $apiKey, $timezone)
         );
     }
 
