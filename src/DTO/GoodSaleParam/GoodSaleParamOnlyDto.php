@@ -148,7 +148,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function setClinicId(?string $value): static
     {
-        return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : $value);
     }
 
     public function setMarkup(?float $value): static

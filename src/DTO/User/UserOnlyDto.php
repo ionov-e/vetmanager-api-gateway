@@ -10,6 +10,7 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 {
@@ -214,11 +215,13 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return self::setPropertyFluently($this, 'email', $value);
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setPhone(?string $value): static
     {
         return self::setPropertyFluently($this, 'phone', $value);
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setCellPhone(?string $value): static
     {
         return self::setPropertyFluently($this, 'cell_phone', $value);

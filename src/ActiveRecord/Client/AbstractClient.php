@@ -17,6 +17,7 @@ use VetmanagerApiGateway\DTO\Client\ClientDtoInterface;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Facade;
 
 ///**
@@ -247,7 +248,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromString($value));
     }
 
-
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setDateRegisterFromDateTime(DateTime $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setDateRegisterFromDateTime($value));

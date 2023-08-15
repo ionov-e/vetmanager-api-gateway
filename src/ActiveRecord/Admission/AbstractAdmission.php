@@ -384,6 +384,7 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
         return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromString($value));
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setStatusFromEnum($value));

@@ -14,6 +14,7 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
 class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 {
@@ -128,6 +129,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return ToInt::fromStringOrNull($this->escorter_id)->getPositiveIntOrNullOrThrowIfNegative();
     }
 
+    /** @throws VetmanagerApiGatewayResponseException */
     public function getReceptionWriteChannel(): string
     {
         return ToString::fromStringOrNull($this->reception_write_channel)->getStringOrThrowIfNull();

@@ -10,6 +10,7 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 
 class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 {
@@ -215,6 +216,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return self::setPropertyFluently($this, 'status', $value);
     }
 
+    /** @throws VetmanagerApiGatewayInnerException */
     public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
