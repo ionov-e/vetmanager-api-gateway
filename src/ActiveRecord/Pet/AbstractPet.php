@@ -14,6 +14,7 @@ use VetmanagerApiGateway\ActiveRecord\ComboManualItem\AbstractComboManualItem;
 use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
 use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\MedicalCard\MedicalCardPlusPet;
+use VetmanagerApiGateway\ActiveRecord\MedicalCardAsVaccination\MedicalCardAsVaccination;
 use VetmanagerApiGateway\ActiveRecord\MedicalCardByClient\MedicalCardByClient;
 use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecordFactory;
@@ -467,7 +468,7 @@ abstract class AbstractPet extends AbstractActiveRecord implements PetOnlyDtoInt
         return (new Facade\MedicalCardByClient($this->activeRecordFactory))->getByClientId($this->getOwnerId());
     }
 
-    /** @return AdmissionPlusClientAndPetAndInvoices[]
+    /** @return MedicalCardAsVaccination[]
      * @throws VetmanagerApiGatewayException
      */
     public function getVaccines(): array
