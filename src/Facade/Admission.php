@@ -37,7 +37,7 @@ class Admission extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser
     {
-        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
+        return $this->protectedGetById(ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser::class, $id);
     }
 
     /**

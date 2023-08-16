@@ -6,6 +6,7 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
+use VetmanagerApiGateway\ActiveRecord\Invoice\InvoicePlusClientAndPetAndDoctorAndDocuments;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
@@ -34,7 +35,7 @@ class Invoice extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\Invoice\InvoicePlusClientAndPetAndDoctorAndDocuments
     {
-        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
+        return $this->protectedGetById(InvoicePlusClientAndPetAndDoctorAndDocuments::class, $id);
     }
 
     /**
