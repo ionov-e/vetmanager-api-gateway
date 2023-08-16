@@ -94,12 +94,12 @@ final class MedicalCardByClient extends AbstractActiveRecord implements MedicalC
 
     public static function getRouteKey(): string
     {
-        return 'medicalcards';
+        return 'medicalCards/MedicalcardsDataByClient';
     }
 
     public static function getModelKeyInResponse(): string
     {
-        return 'medicalCards/MedicalcardsDataByClient';
+        return 'medicalcards';
     }
 
     public function __construct(ActiveRecordFactory $activeRecordFactory, MedicalCardByClientDto $modelDTO)
