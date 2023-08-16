@@ -71,12 +71,12 @@ final class MedicalCardAsVaccination extends AbstractActiveRecord implements Med
 
     public static function getRouteKey(): string
     {
-        return 'medicalcards';
+        return 'medicalCards/Vaccinations';
     }
 
     public static function getModelKeyInResponse(): string
     {
-        return 'medicalCards/Vaccinations';
+        return 'medicalcards';
     }
 
     public function __construct(ActiveRecordFactory $activeRecordFactory, MedicalCardAsVaccinationDto $modelDTO)
