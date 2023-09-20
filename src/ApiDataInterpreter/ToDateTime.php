@@ -67,7 +67,7 @@ final class ToDateTime
             throw new VetmanagerApiGatewayResponseException("Не ожидали получить null");
         }
 
-        return $this->getDateTimeOrThrow();
+        return $this->dateTimeOrNull;
     }
 
     /** @throws VetmanagerApiGatewayException */

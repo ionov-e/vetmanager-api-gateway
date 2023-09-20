@@ -34,7 +34,7 @@ class InvoiceDocument extends AbstractFacade implements AllRequestsInterface
     /** @throws VetmanagerApiGatewayException */
     public function getById(int $id): ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodWithPartyInfoAndMinMax
     {
-        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
+        return $this->protectedGetById(ActiveRecord\InvoiceDocument\InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodWithPartyInfoAndMinMax::class, $id);
     }
 
     /**

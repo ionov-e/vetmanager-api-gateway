@@ -59,23 +59,19 @@ abstract class AbstractActiveRecord
         return $activeRecordClass::getDtoClass();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    /**
+     * @param class-string<AbstractActiveRecord> $activeRecordClass
+     */
     public static function getModelKeyInResponseFromActiveRecordClass(string $activeRecordClass): string
     {
-        if (!is_subclass_of($activeRecordClass, self::class)) {
-            throw new VetmanagerApiGatewayInnerException("$activeRecordClass is not a subclass of " . self::class);
-        }
-
         return $activeRecordClass::getModelKeyInResponse();
     }
 
-    /** @throws VetmanagerApiGatewayInnerException */
+    /**
+     * @param class-string<AbstractActiveRecord> $activeRecordClass
+     */
     public static function getModelRouteKeyFromActiveRecordClass(string $activeRecordClass): string
     {
-        if (!is_subclass_of($activeRecordClass, self::class)) {
-            throw new VetmanagerApiGatewayInnerException("$activeRecordClass is not a subclass of " . self::class);
-        }
-
         return $activeRecordClass::getRouteKey();
     }
 

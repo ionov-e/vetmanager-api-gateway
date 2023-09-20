@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\ActiveRecord\Admission;
 
+use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
 use VetmanagerApiGateway\ActiveRecord\Breed\BreedOnly;
 use VetmanagerApiGateway\ActiveRecord\Client\ClientOnly;
@@ -12,7 +13,6 @@ use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\UserOnly;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto;
-use VetmanagerApiGateway\Facade\PetType;
 
 final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractAdmission
 {
@@ -59,7 +59,7 @@ final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractA
     public function getPetType(): ?AbstractPetType
     {
         $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
-        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, PetType::class) : null;
+        return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, ActiveRecord\PetType\PetTypeOnly::class) : null;
     }
 
     /** @return InvoiceOnly[] */

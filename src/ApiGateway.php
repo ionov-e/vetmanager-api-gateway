@@ -16,7 +16,7 @@ final class ApiGateway
      */
     public function __construct(
         public readonly string         $fullUrl,
-        private readonly ApiConnection $apiService,
+        private readonly ApiConnection $apiConnection,
     )
     {
     }
@@ -98,7 +98,7 @@ final class ApiGateway
     private function getActiveRecordFactory(): ActiveRecordFactory
     {
         if (!isset ($this->activeRecordFactory)) {
-            $this->activeRecordFactory = new ActiveRecordFactory($this->apiService, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
+            $this->activeRecordFactory = new ActiveRecordFactory($this->apiConnection, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         }
 
         return $this->activeRecordFactory;
