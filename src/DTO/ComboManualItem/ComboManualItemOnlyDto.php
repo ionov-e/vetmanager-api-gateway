@@ -12,36 +12,36 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyDtoInterface
 {
     /**
-     * @param string|null $id
-     * @param string|null $combo_manual_id
+     * @param int|null $id
+     * @param int|null $combo_manual_id
      * @param string|null $title
      * @param string|null $value
      * @param string|null $dop_param1
      * @param string|null $dop_param2
      * @param string|null $dop_param3
-     * @param string|null $is_active
+     * @param int|null $is_active
      */
     public function __construct(
-        protected ?string $id,
-        protected ?string $combo_manual_id,
+        protected ?int $id,
+        protected ?int $combo_manual_id,
         protected ?string $title,
         protected ?string $value,
         protected ?string $dop_param1,
         protected ?string $dop_param2,
         protected ?string $dop_param3,
-        protected ?string $is_active
+        protected ?int $is_active
     )
     {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getComboManualId(): int
     {
-        return ToInt::fromStringOrNull($this->combo_manual_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->combo_manual_id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -71,12 +71,12 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
 
     public function getIsActive(): bool
     {
-        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
     public function setComboManualId(int $value): static
     {
-        return self::setPropertyFluently($this, 'combo_manual_id', $value ? (string)$value : "0");
+        return self::setPropertyFluently($this, 'combo_manual_id', $value);
     }
 
     public function setTitle(?string $value): static
@@ -106,6 +106,6 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
 
     public function setIsActive(bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_active', (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_active', (int)$value);
     }
 }

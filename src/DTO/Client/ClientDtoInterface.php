@@ -42,7 +42,7 @@ interface ClientDtoInterface
     public function getTypeId(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeId(string $value): static;
+    public function setTypeId(int $value): static;
 
     /** @return ?positive-int
      * @throws VetmanagerApiGatewayResponseException
@@ -50,13 +50,13 @@ interface ClientDtoInterface
     public function getHowFind(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setHowFind(string $value): static;
+    public function setHowFind(int $value): static;
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getBalance(): float;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setBalance(string $value): static;
+    public function setBalance(float $value): static;
 
     public function getEmail(): string;
 
@@ -74,7 +74,7 @@ interface ClientDtoInterface
     public function getCityId(): ?int;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCityId(string $value): static;
+    public function setCityId(int $value): static;
 
     /** Пустые значения переводятся в null
      * @throws VetmanagerApiGatewayResponseException
@@ -107,7 +107,7 @@ interface ClientDtoInterface
     public function getIsVip(): bool;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setIsVip(string $value): static;
+    public function setIsVip(bool $value): static;
 
     public function getLastName(): string;
 

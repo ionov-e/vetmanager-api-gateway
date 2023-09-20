@@ -18,65 +18,65 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $address
      * @param string|null $home_phone
      * @param string|null $work_phone
      * @param string|null $note
-     * @param string|null $type_id
-     * @param string|null $how_find
+     * @param int|null $type_id
+     * @param int|null $how_find
      * @param string|null $balance
      * @param string|null $email Default: ''
      * @param string|null $city
-     * @param string|null $city_id
+     * @param int|null $city_id
      * @param string|null $date_register В БД бывает дефолтное значение: '0000-00-00 00:00:00'
      * @param string|null $cell_phone
      * @param string|null $zip
      * @param string|null $registration_index
-     * @param string|null $vip
+     * @param int|null $vip
      * @param string|null $last_name
      * @param string|null $first_name
      * @param string|null $middle_name
      * @param string|null $status Default: Active
-     * @param string|null $discount
+     * @param int|null $discount
      * @param string|null $passport_series
      * @param string|null $lab_number
-     * @param string|null $street_id Default: 0
+     * @param int|null $street_id Default: 0
      * @param string|null $apartment Default: ''
-     * @param string|null $unsubscribe Default: 0
-     * @param string|null $in_blacklist Default: 0
+     * @param int|null $unsubscribe Default: 0
+     * @param int|null $in_blacklist Default: 0
      * @param string|null $last_visit_date В БД бывает дефолтное значение: '0000-00-00 00:00:00'
      * @param string|null $number_of_journal Default: ''
      * @param string|null $phone_prefix
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $address,
         protected ?string $home_phone,
         protected ?string $work_phone,
         protected ?string $note,
-        protected ?string $type_id,
-        protected ?string $how_find,
+        protected ?int $type_id,
+        protected ?int $how_find,
         protected ?string $balance,
         protected ?string $email,
         protected ?string $city,
-        protected ?string $city_id,
+        protected ?int $city_id,
         protected ?string $date_register,
         protected ?string $cell_phone,
         protected ?string $zip,
         protected ?string $registration_index,
-        protected ?string $vip,
+        protected ?int $vip,
         protected ?string $last_name,
         protected ?string $first_name,
         protected ?string $middle_name,
         protected ?string $status,
-        protected ?string $discount,
+        protected ?int $discount,
         protected ?string $passport_series,
         protected ?string $lab_number,
-        protected ?string $street_id,
+        protected ?int $street_id,
         protected ?string $apartment,
-        protected ?string $unsubscribe,
-        protected ?string $in_blacklist,
+        protected ?int $unsubscribe,
+        protected ?int $in_blacklist,
         protected ?string $last_visit_date,
         protected ?string $number_of_journal,
         protected ?string $phone_prefix
@@ -89,7 +89,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getAddress(): string
@@ -141,11 +141,11 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setTypeId(string $value): static
+    public function setTypeId(int $value): static
     {
         return self::setPropertyFluently($this, 'type_id', $value);
     }
@@ -155,11 +155,11 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getHowFind(): ?int
     {
-        return ToInt::fromStringOrNull($this->how_find)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->how_find))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setHowFind(string $value): static
+    public function setHowFind(int $value): static
     {
         return self::setPropertyFluently($this, 'how_find', $value);
     }
@@ -171,9 +171,9 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setBalance(string $value): static
+    public function setBalance(float $value): static
     {
-        return self::setPropertyFluently($this, 'balance', $value);
+        return self::setPropertyFluently($this, 'balance', (string)$value);
     }
 
     public function getEmail(): string
@@ -203,11 +203,11 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getCityId(): ?int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setCityId(string $value): static
+    public function setCityId(int $value): static
     {
         return self::setPropertyFluently($this, 'city_id', $value);
     }
@@ -270,13 +270,13 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getIsVip(): bool
     {
-        return ToBool::fromStringOrNull($this->vip)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->vip)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setIsVip(string $value): static
+    public function setIsVip(bool $value): static
     {
-        return self::setPropertyFluently($this, 'vip', $value);
+        return self::setPropertyFluently($this, 'vip', (int)$value);
     }
 
     public function getLastName(): string
@@ -334,16 +334,15 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         return self::setPropertyFluently($this, 'status', $value->value);
     }
 
-    /** @throws VetmanagerApiGatewayResponseException */
     public function getDiscount(): int
     {
-        return ToInt::fromStringOrNull($this->discount)->getIntEvenIfNullGiven();
+        return (new ToInt($this->discount))->getIntEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDiscount(int $value): static
     {
-        return self::setPropertyFluently($this, 'discount', (string)$value);
+        return self::setPropertyFluently($this, 'discount', $value);
     }
 
     public function getPassportSeries(): string
@@ -373,7 +372,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getStreetId(): ?int
     {
-        return ToInt::fromStringOrNull($this->street_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->street_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -382,7 +381,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         return self::setPropertyFluently(
             $this,
             'streetId',
-            is_null($value) ? null : (string)$value
+            is_null($value) ? null : $value
         );
     }
 
@@ -400,25 +399,25 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsUnsubscribed(): bool
     {
-        return ToBool::fromStringOrNull($this->unsubscribe)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->unsubscribe)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setUnsubscribe(bool $value): static
     {
-        return self::setPropertyFluently($this, 'unsubscribe', (string)(int)$value);
+        return self::setPropertyFluently($this, 'unsubscribe', (int)$value);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getIsBlacklisted(): bool
     {
-        return ToBool::fromStringOrNull($this->in_blacklist)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->in_blacklist)->getBoolOrThrowIfNull();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setInBlacklist(bool $value): static
     {
-        return self::setPropertyFluently($this, 'in_blacklist', (string)(int)$value);
+        return self::setPropertyFluently($this, 'in_blacklist', (int)$value);
     }
 
     /** @throws VetmanagerApiGatewayResponseException */

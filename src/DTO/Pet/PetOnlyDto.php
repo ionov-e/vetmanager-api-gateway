@@ -14,17 +14,17 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 {
     /**
-     * @param string|null $id
-     * @param string|null $owner_id
-     * @param string|null $type_id
+     * @param int|null $id
+     * @param int|null $owner_id
+     * @param int|null $type_id
      * @param string|null $alias
      * @param string|null $sex
      * @param string|null $date_register
      * @param string|null $birthday
      * @param string|null $note
-     * @param string|null $breed_id
-     * @param string|null $old_id
-     * @param string|null $color_id
+     * @param int|null $breed_id
+     * @param int|null $old_id
+     * @param int|null $color_id
      * @param string|null $deathnote
      * @param string|null $deathdate
      * @param string|null $chip_number
@@ -35,17 +35,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
      * @param string|null $edit_date
      */
     public function __construct(
-        protected ?string $id,
-        protected ?string $owner_id,
-        protected ?string $type_id,
+        protected ?int $id,
+        protected ?int $owner_id,
+        protected ?int $type_id,
         protected ?string $alias,
         protected ?string $sex,
         protected ?string $date_register,
         protected ?string $birthday,
         protected ?string $note,
-        protected ?string $breed_id,
-        protected ?string $old_id,
-        protected ?string $color_id,
+        protected ?int $breed_id,
+        protected ?int $old_id,
+        protected ?int $color_id,
         protected ?string $deathnote,
         protected ?string $deathdate,
         protected ?string $chip_number,
@@ -60,17 +60,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getOwnerId(): int
     {
-        return ToInt::fromStringOrNull($this->owner_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->owner_id))->getPositiveIntOrThrow();
     }
 
     public function getPetTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->type_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAlias(): string
@@ -115,17 +115,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getBreedId(): ?int
     {
-        return ToInt::fromStringOrNull($this->breed_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->breed_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getOldId(): ?int
     {
-        return ToInt::fromStringOrNull($this->old_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getColorId(): ?int
     {
-        return ToInt::fromStringOrNull($this->color_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->color_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDeathNote(): string
@@ -180,12 +180,12 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function setOwnerId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'owner_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'owner_id', $value);
     }
 
     public function setTypeId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'type_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'type_id', $value);
     }
 
     public function setAlias(?string $value): static
@@ -225,17 +225,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function setBreedId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'breed_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'breed_id', $value);
     }
 
     public function setOldId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'old_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'old_id', $value);
     }
 
     public function setColorId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'color_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'color_id', $value);
     }
 
     public function setDeathNote(?string $value): static

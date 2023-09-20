@@ -24,30 +24,30 @@ class PetTypeTest extends TestCase
             /** @lang JSON */
             <<<'EOF'
 {
-"id": "1",
+"id": 1,
 "title": "Кошки",
 "picture": "cat",
 "type": "cat",
 "breeds": [
     {
-        "id": "1",
+        "id": 1,
         "title": "Абиссинская ",
-        "pet_type_id": "1"
+        "pet_type_id": 1
     },
     {
-        "id": "2",
+        "id": 2,
         "title": "Австралийская дымчатая",
-        "pet_type_id": "1"
+        "pet_type_id": 1
     },
     {
-        "id": "3",
+        "id": 3,
         "title": "Азиатская кошка",
-        "pet_type_id": "1"
+        "pet_type_id": 1
     },
     {
-        "id": "4",
+        "id": 4,
         "title": "Азиатская тикинг-табби",
-        "pet_type_id": "1"
+        "pet_type_id": 1
     }
 ]
 }

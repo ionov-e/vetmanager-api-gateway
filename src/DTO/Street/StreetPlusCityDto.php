@@ -9,16 +9,16 @@ use VetmanagerApiGateway\DTO\City\CityOnlyDto;
 class StreetPlusCityDto extends StreetOnlyDto
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
-     * @param string|null $city_id
+     * @param int|null $city_id
      * @param string|null $type
      * @param CityOnlyDto $city
      */
     public function __construct(
-        protected ?string     $id,
+        protected ?int        $id,
         protected ?string     $title,
-        protected ?string     $city_id,
+        protected ?int        $city_id,
         protected ?string     $type,
         protected CityOnlyDto $city
     )

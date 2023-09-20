@@ -15,70 +15,70 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 {
     /**
-     * @param string|null $id
-     * @param string|null $doctor_id
-     * @param string|null $client_id
-     * @param string|null $pet_id
+     * @param int|null $id
+     * @param int|null $doctor_id
+     * @param int|null $client_id
+     * @param int|null $pet_id
      * @param string|null $description
      * @param string|null $percent
      * @param string|null $amount
      * @param string|null $status
      * @param string|null $invoice_date
      * @param string|null $old_id
-     * @param string|null $night
+     * @param int|null $night
      * @param string|null $increase
      * @param string|null $discount
-     * @param string|null $call
+     * @param int|null $call
      * @param string|null $paid_amount
      * @param string|null $create_date
      * @param string|null $payment_status
-     * @param string|null $clinic_id
-     * @param string|null $creator_id
-     * @param string|null $fiscal_section_id
+     * @param int|null $clinic_id
+     * @param int|null $creator_id
+     * @param int|null $fiscal_section_id
      */
     public function __construct(
-        protected ?string $id,
-        protected ?string $doctor_id,
-        protected ?string $client_id,
-        protected ?string $pet_id,
+        protected ?int $id,
+        protected ?int $doctor_id,
+        protected ?int $client_id,
+        protected ?int $pet_id,
         protected ?string $description,
         protected ?string $percent,
         protected ?string $amount,
         protected ?string $status,
         protected ?string $invoice_date,
         protected ?string $old_id,
-        protected ?string $night,
+        protected ?int $night,
         protected ?string $increase,
         protected ?string $discount,
-        protected ?string $call,
+        protected ?int $call,
         protected ?string $paid_amount,
         protected ?string $create_date,
         protected ?string $payment_status,
-        protected ?string $clinic_id,
-        protected ?string $creator_id,
-        protected ?string $fiscal_section_id
+        protected ?int $clinic_id,
+        protected ?int $creator_id,
+        protected ?int $fiscal_section_id
     )
     {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getUserId(): ?int
     {
-        return ToInt::fromStringOrNull($this->doctor_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getClientId(): int
     {
-        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->client_id))->getPositiveIntOrThrow();
     }
 
     public function getPetId(): int
     {
-        return ToInt::fromStringOrNull($this->pet_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->pet_id))->getPositiveIntOrThrow();
     }
 
     public function getDescription(): string
@@ -118,12 +118,12 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getOldId(): ?int
     {
-        return ToInt::fromStringOrNull($this->old_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getNight(): ?int
     {
-        return ToInt::fromStringOrNull($this->night)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->night))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIncrease(): float
@@ -138,7 +138,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getCallId(): ?int
     {
-        return ToInt::fromStringOrNull($this->call)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->call))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPaidAmount(): float
@@ -168,32 +168,32 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getCreatorId(): ?int
     {
-        return ToInt::fromStringOrNull($this->creator_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->creator_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFiscalSectionId(): ?int
     {
-        return ToInt::fromStringOrNull($this->fiscal_section_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->fiscal_section_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setUserId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'doctor_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'doctor_id', $value);
     }
 
     public function setClientId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'client_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'client_id', $value);
     }
 
     public function setPetId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'pet_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'pet_id', $value);
     }
 
     public function setDescription(?string $value): static
@@ -234,12 +234,12 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function setOldId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'old_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'old_id', $value);
     }
 
     public function setNight(?int $value): static
     {
-        return self::setPropertyFluently($this, 'night', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'night', $value);
     }
 
     public function setIncrease(?float $value): static
@@ -254,7 +254,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function setCallId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'call', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'call', $value);
     }
 
     public function setPaidAmount(?float $value): static
@@ -284,17 +284,17 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function setClinicId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'clinic_id', $value);
     }
 
     public function setCreatorId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'creator_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'creator_id', $value);
     }
 
     public function setFiscalSectionId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'fiscal_section_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'fiscal_section_id', $value);
     }
 
 //    /** @param array{

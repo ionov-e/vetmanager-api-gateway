@@ -13,15 +13,15 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
-     * @param string|null $city_id
+     * @param int|null $city_id
      * @param string|null $type
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
-        protected ?string $city_id,
+        protected ?int $city_id,
         protected ?string $type
     ) {
     }
@@ -31,7 +31,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     /** Default: '' */
@@ -45,7 +45,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getCityId(): int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->city_id))->getPositiveIntOrThrow();
     }
 
     /** Default: 'street'*/
@@ -69,7 +69,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setCityId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'city_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'city_id', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

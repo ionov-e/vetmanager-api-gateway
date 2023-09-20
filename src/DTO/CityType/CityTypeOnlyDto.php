@@ -13,11 +13,11 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
      */
     public function __construct(
-        public ?string $id,
+        public ?int $id,
         public ?string $title
     ) {
     }
@@ -27,7 +27,7 @@ final class CityTypeOnlyDto extends AbstractDTO implements CityTypeDtoInterface
      */
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

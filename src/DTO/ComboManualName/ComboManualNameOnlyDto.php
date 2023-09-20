@@ -12,15 +12,15 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
-     * @param string|null $is_readonly
+     * @param int|null $is_readonly
      * @param string|null $name
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
-        protected ?string $is_readonly,
+        protected ?int $is_readonly,
         protected ?string $name
     )
     {
@@ -28,7 +28,7 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -38,7 +38,7 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
 
     public function getIsReadonly(): bool
     {
-        return ToBool::fromStringOrNull($this->is_readonly)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_readonly)->getBoolOrThrowIfNull();
     }
 
     public function getName(): string
@@ -53,7 +53,7 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
 
     public function setIsReadonly(bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_readonly', (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_readonly', (int)$value);
     }
 
     public function setName(?string $value): static

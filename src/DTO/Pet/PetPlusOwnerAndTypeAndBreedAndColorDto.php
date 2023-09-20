@@ -12,17 +12,17 @@ use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
 {
     /**
-     * @param string|null $id
-     * @param string|null $owner_id
-     * @param string|null $type_id
+     * @param int|null $id
+     * @param int|null $owner_id
+     * @param int|null $type_id
      * @param string|null $alias
      * @param string|null $sex
      * @param string|null $date_register
      * @param string|null $birthday
      * @param string|null $note
-     * @param string|null $breed_id
-     * @param string|null $old_id
-     * @param string|null $color_id
+     * @param int|null $breed_id
+     * @param int|null $old_id
+     * @param int|null $color_id
      * @param string|null $deathnote
      * @param string|null $deathdate
      * @param string|null $chip_number
@@ -37,27 +37,27 @@ class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
      * @param ComboManualItemOnlyDto|null $color
      */
     public function __construct(
-        protected ?string                 $id,
-        protected ?string                 $owner_id,
-        protected ?string                 $type_id,
-        protected ?string                 $alias,
-        protected ?string                 $sex,
-        protected ?string                 $date_register,
-        protected ?string                 $birthday,
-        protected ?string                 $note,
-        protected ?string                 $breed_id,
-        protected ?string                 $old_id,
-        protected ?string                 $color_id,
-        protected ?string                 $deathnote,
-        protected ?string                 $deathdate,
-        protected ?string                 $chip_number,
-        protected ?string                 $lab_number,
-        protected ?string                 $status,
-        protected ?string                 $picture,
-        protected ?string                 $weight,
-        protected ?string                 $edit_date,
-        protected ClientOnlyDto           $owner,
-        protected ?PetTypeOnlyDto         $type = null,
+        protected ?int            $id,
+        protected ?int            $owner_id,
+        protected ?int            $type_id,
+        protected ?string         $alias,
+        protected ?string         $sex,
+        protected ?string         $date_register,
+        protected ?string         $birthday,
+        protected ?string         $note,
+        protected ?int            $breed_id,
+        protected ?int            $old_id,
+        protected ?int            $color_id,
+        protected ?string         $deathnote,
+        protected ?string         $deathdate,
+        protected ?string         $chip_number,
+        protected ?string         $lab_number,
+        protected ?string         $status,
+        protected ?string         $picture,
+        protected ?string         $weight,
+        protected ?string         $edit_date,
+        protected ClientOnlyDto   $owner,
+        protected ?PetTypeOnlyDto $type = null,
         protected ?BreedOnlyDto           $breed = null,
         protected ?ComboManualItemOnlyDto $color = null
     )

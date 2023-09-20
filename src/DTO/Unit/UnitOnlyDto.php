@@ -11,12 +11,12 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
      * @param string|null $status Default: 'active'
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
         protected ?string $status
     ) {
@@ -24,7 +24,7 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): ?string

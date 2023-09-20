@@ -183,7 +183,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getTypeId();
     }
 
-    public function setTypeId(string $value): static
+    public function setTypeId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setTypeId($value));
     }
@@ -193,7 +193,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getHowFind();
     }
 
-    public function setHowFind(string $value): static
+    public function setHowFind(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setHowFind($value));
     }
@@ -203,7 +203,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getBalance();
     }
 
-    public function setBalance(string $value): static
+    public function setBalance(float $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setBalance($value));
     }
@@ -233,7 +233,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getCityId();
     }
 
-    public function setCityId(string $value): static
+    public function setCityId(int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setCityId($value));
     }
@@ -289,7 +289,7 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return $this->modelDTO->getIsVip();
     }
 
-    public function setIsVip(string $value): static
+    public function setIsVip(bool $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setIsVip($value));
     }

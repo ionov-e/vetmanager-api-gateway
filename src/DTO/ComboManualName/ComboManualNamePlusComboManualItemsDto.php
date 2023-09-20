@@ -9,16 +9,16 @@ use VetmanagerApiGateway\DTO\ComboManualItem\ComboManualItemOnlyDto;
 class ComboManualNamePlusComboManualItemsDto extends ComboManualNameOnlyDto
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
-     * @param string|null $is_readonly
+     * @param int|null $is_readonly
      * @param string|null $name
      * @param ComboManualItemOnlyDto[] $comboManualItems
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int    $id,
         protected ?string $title,
-        protected ?string $is_readonly,
+        protected ?int    $is_readonly,
         protected ?string $name,
         protected array   $comboManualItems
     )

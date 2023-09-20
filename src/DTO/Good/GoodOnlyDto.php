@@ -15,47 +15,47 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 {
     /**
-     * @param string|null $id
-     * @param string|null $group_id
+     * @param int|null $id
+     * @param int|null $group_id
      * @param string|null $title
-     * @param string|null $unit_storage_id
-     * @param string|null $is_warehouse_account
-     * @param string|null $is_active
+     * @param int|null $unit_storage_id
+     * @param int|null $is_warehouse_account
+     * @param int|null $is_active
      * @param string|null $code
-     * @param string|null $is_call
-     * @param string|null $is_for_sale
+     * @param int|null $is_call
+     * @param int|null $is_for_sale
      * @param string|null $barcode
      * @param string|null $create_date
      * @param string|null $description
      * @param string|null $prime_cost
-     * @param string|null $category_id
+     * @param int|null $category_id
      */
     public function __construct(
-        protected ?string $id,
-        protected ?string $group_id,
+        protected ?int $id,
+        protected ?int $group_id,
         protected ?string $title,
-        protected ?string $unit_storage_id,
-        protected ?string $is_warehouse_account,
-        protected ?string $is_active,
+        protected ?int $unit_storage_id,
+        protected ?int $is_warehouse_account,
+        protected ?int $is_active,
         protected ?string $code,
-        protected ?string $is_call,
-        protected ?string $is_for_sale,
+        protected ?int $is_call,
+        protected ?int $is_for_sale,
         protected ?string $barcode,
         protected ?string $create_date,
         protected ?string $description,
         protected ?string $prime_cost,
-        protected ?string $category_id
+        protected ?int $category_id
     ) {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getGroupId(): ?int
     {
-        return ToInt::fromStringOrNull($this->group_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->group_id))->getPositiveIntOrNullOrThrowIfNegative();
 
     }
 
@@ -66,17 +66,17 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getUnitId(): ?int
     {
-        return ToInt::fromStringOrNull($this->unit_storage_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->unit_storage_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsWarehouseAccount(): bool
     {
-        return ToBool::fromStringOrNull($this->is_warehouse_account)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_warehouse_account)->getBoolOrThrowIfNull();
     }
 
     public function getIsActive(): bool
     {
-        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
     public function getCode(): string
@@ -86,12 +86,12 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getIsCall(): bool
     {
-        return ToBool::fromStringOrNull($this->is_call)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_call)->getBoolOrThrowIfNull();
     }
 
     public function getIsForSale(): bool
     {
-        return ToBool::fromStringOrNull($this->is_for_sale)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_for_sale)->getBoolOrThrowIfNull();
     }
 
     public function getBarcode(): string
@@ -116,12 +116,12 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getCategoryId(): ?int
     {
-        return ToInt::fromStringOrNull($this->category_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->category_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setGroupId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'group_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'group_id', $value);
     }
 
     public function setTitle(?string $value): static
@@ -131,17 +131,17 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function setUnitStorageId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'unit_storage_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'unit_storage_id', $value);
     }
 
     public function setIsWarehouseAccount(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_warehouse_account', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_warehouse_account', is_null($value) ? null : (int)$value);
     }
 
     public function setIsActive(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (int)$value);
     }
 
     public function setCode(?string $value): static
@@ -151,12 +151,12 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function setIsCall(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_call', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_call', is_null($value) ? null : (int)$value);
     }
 
     public function setIsForSale(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_for_sale', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_for_sale', is_null($value) ? null : (int)$value);
     }
 
     public function setBarcode(?string $value): static
@@ -186,7 +186,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function setCategoryId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'category_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'category_id', $value);
     }
 
 //    /** @param array{

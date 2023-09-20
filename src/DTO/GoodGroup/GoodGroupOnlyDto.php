@@ -13,26 +13,26 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
-     * @param string|null $is_service Default: 0
+     * @param int|null $is_service Default: 0
      * @param string|null $markup
-     * @param string|null $is_show_in_vaccines Default: 0
-     * @param string|null $price_id
+     * @param int|null $is_show_in_vaccines Default: 0
+     * @param int|null $price_id
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
-        protected ?string $is_service,
+        protected ?int $is_service,
         protected ?string $markup,
-        protected ?string $is_show_in_vaccines,
-        protected ?string $price_id
+        protected ?int $is_show_in_vaccines,
+        protected ?int $price_id
     ) {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -42,7 +42,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getIsService(): bool
     {
-        return ToBool::fromStringOrNull($this->is_service)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_service)->getBoolOrThrowIfNull();
     }
 
     public function getMarkup(): ?float
@@ -53,12 +53,12 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getIsShowInVaccines(): bool
     {
-        return ToBool::fromStringOrNull($this->is_show_in_vaccines)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_show_in_vaccines)->getBoolOrThrowIfNull();
     }
 
     public function getPriceId(): ?int
     {
-        return ToInt::fromStringOrNull($this->price_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->price_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setTitle(?string $value): static
@@ -68,7 +68,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function setIsService(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_service', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_service',is_null($value) ? null : (int)$value);
     }
 
     public function setMarkup(?float $value): static
@@ -78,12 +78,12 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function setIsShowInVaccines(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_show_in_vaccines', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_show_in_vaccines', (int)$value);
     }
 
     public function setPriceId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'price_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'price_id', $value);
     }
 
 //    /** @param array{

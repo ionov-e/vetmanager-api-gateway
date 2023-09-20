@@ -15,49 +15,49 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $last_name
      * @param string|null $first_name
      * @param string|null $middle_name
      * @param string|null $login
      * @param string|null $passwd
-     * @param string|null $position_id
+     * @param int|null $position_id
      * @param string|null $email
      * @param string|null $phone Default: ''
      * @param string|null $cell_phone Default: ''
      * @param string|null $address
-     * @param string|null $role_id
-     * @param string|null $is_active Default: 0
-     * @param string|null $calc_percents Default:
+     * @param int|null $role_id
+     * @param int|null $is_active Default: 0
+     * @param int|null $calc_percents Default:
      * @param string|null $nickname
      * @param string|null $youtrack_login Не должен существовать, но на тестовом есть
      * @param string|null $youtrack_password Не должен существовать, но на тестовом есть
      * @param string|null $last_change_pwd_date
-     * @param string|null $is_limited Default: 0
+     * @param int|null $is_limited Default: 0
      * @param string|null $carrotquest_id
      * @param string|null $sip_number
      * @param string|null $user_inn
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $last_name,
         protected ?string $first_name,
         protected ?string $middle_name,
         protected ?string $login,
         protected ?string $passwd,
-        protected ?string $position_id,
+        protected ?int $position_id,
         protected ?string $email,
         protected ?string $phone,
         protected ?string $cell_phone,
         protected ?string $address,
-        protected ?string $role_id,
-        protected ?string $is_active,
-        protected ?string $calc_percents,
+        protected ?int $role_id,
+        protected ?int $is_active,
+        protected ?int $calc_percents,
         protected ?string $nickname,
         protected ?string $youtrack_login = null,
         protected ?string $youtrack_password = null,
         protected ?string $last_change_pwd_date,
-        protected ?string $is_limited,
+        protected ?int $is_limited,
         protected ?string $carrotquest_id,
         protected ?string $sip_number,
         protected ?string $user_inn
@@ -67,7 +67,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getLastName(): string
@@ -97,7 +97,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getPositionId(): int
     {
-        return ToInt::fromStringOrNull($this->position_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->position_id))->getPositiveIntOrThrow();
     }
 
     public function getEmail(): string
@@ -122,17 +122,17 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getRoleId(): ?int
     {
-        return ToInt::fromStringOrNull($this->role_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->role_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsActive(): bool
     {
-        return ToBool::fromStringOrNull($this->is_active)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_active)->getBoolOrThrowIfNull();
     }
 
     public function getIsPercentCalculated(): bool
     {
-        return ToBool::fromStringOrNull($this->calc_percents)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->calc_percents)->getBoolOrThrowIfNull();
     }
 
     public function getNickname(): string
@@ -162,7 +162,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function getIsLimited(): bool
     {
-        return ToBool::fromStringOrNull($this->is_limited)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->is_limited)->getBoolOrThrowIfNull();
     }
 
     public function getCarrotQuestId(): string
@@ -207,7 +207,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function setPositionId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'position_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'position_id', $value);
     }
 
     public function setEmail(?string $value): static
@@ -234,12 +234,12 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function setRoleId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'role_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'role_id', $value);
     }
 
     public function setIsActive(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_active', is_null($value) ? null : (int)$value);
     }
 
     public function setCalcPercents(?float $value): static
@@ -274,7 +274,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
 
     public function setIsLimited(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_limited', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'is_limited', is_null($value) ? null : (int)$value);
     }
 
     public function setCarrotQuestId(?string $value): static

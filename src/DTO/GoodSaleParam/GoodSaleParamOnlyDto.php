@@ -12,30 +12,30 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoInterface
 {
     /**
-     * @param string|null $id
-     * @param string|null $good_id Default: 0
+     * @param int|null $id
+     * @param int|null $good_id Default: 0
      * @param string|null $price
-     * @param string|null $coefficient Default: 1
-     * @param string|null $unit_sale_id Default: 0
+     * @param int|null $coefficient Default: 1
+     * @param int|null $unit_sale_id Default: 0
      * @param string|null $min_price
      * @param string|null $max_price
      * @param string|null $barcode
      * @param string|null $status Default: 'active'
-     * @param string|null $clinic_id Default: 0
+     * @param int|null $clinic_id Default: 0
      * @param string|null $markup
      * @param string|null $price_formation Default: 'fixed'
      */
     public function __construct(
-        protected ?string $id,
-        protected ?string $good_id,
+        protected ?int $id,
+        protected ?int $good_id,
         protected ?string $price,
-        protected ?string $coefficient,
-        protected ?string $unit_sale_id,
+        protected ?int $coefficient,
+        protected ?int $unit_sale_id,
         protected ?string $min_price,
         protected ?string $max_price,
         protected ?string $barcode,
         protected ?string $status,
-        protected ?string $clinic_id,
+        protected ?int $clinic_id,
         protected ?string $markup,
         protected ?string $price_formation
     ) {
@@ -43,12 +43,12 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getGoodId(): ?int
     {
-        return ToInt::fromStringOrNull($this->good_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->good_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPrice(): ?float
@@ -63,7 +63,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getUnitSaleId(): ?int
     {
-        return ToInt::fromStringOrNull($this->unit_sale_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->unit_sale_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMinPrice(): ?float
@@ -88,7 +88,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMarkup(): ?float
@@ -118,7 +118,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function setUnitSaleId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'unit_sale_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'unit_sale_id', $value);
     }
 
     public function setMinPrice(?float $value): static

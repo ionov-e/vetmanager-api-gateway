@@ -12,20 +12,20 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $name
-     * @param string|null $super
+     * @param int|null $super
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $name,
-        protected ?string $super
+        protected ?int $super
     ) {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getName(): string
@@ -35,7 +35,7 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 
     public function getIsSuper(): bool
     {
-        return ToBool::fromStringOrNull($this->super)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->super)->getBoolOrThrowIfNull();
     }
 
     public function setName(string $value): static
@@ -45,7 +45,7 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 
     public function setIsSuper(bool $value): static
     {
-        return self::setPropertyFluently($this, 'super', (string)(int)$value);
+        return self::setPropertyFluently($this, 'super', (int)$value);
     }
 
 //    /** @param array{

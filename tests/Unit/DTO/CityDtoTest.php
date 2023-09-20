@@ -23,9 +23,9 @@ class CityDtoTest extends TestCase
                 /** @lang JSON */
                 <<<'EOF'
 {
-    "id": "255",
+    "id": 255,
     "title": "city_001",
-    "type_id": "1"
+    "type_id": 1
 }
 EOF
                 , "getId", 255]

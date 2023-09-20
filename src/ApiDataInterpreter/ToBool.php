@@ -12,11 +12,7 @@ class ToBool
     {
     }
 
-    /**
-     * @param ?string $boolAsStringOrNull Строка содержащая null или bool (Например: '13.13')
-     *
-     * @throws VetmanagerApiGatewayResponseException
-     */
+    /** @throws VetmanagerApiGatewayResponseException */
     public static function fromStringOrNull(?string $boolAsStringOrNull): self
     {
         if (is_null($boolAsStringOrNull)) {
@@ -30,6 +26,20 @@ class ToBool
         }
 
         throw new VetmanagerApiGatewayResponseException("Ожидали null или bool (даже если 'on', 'yes', ..), а получили: $boolAsStringOrNull");
+    }
+
+    /** @throws VetmanagerApiGatewayResponseException */
+    public static function fromIntOrNull(?int $boolAsIntOrNull): self
+    {
+        if (is_null($boolAsIntOrNull)) {
+            return new self(null);
+        }
+
+        if ($boolAsIntOrNull === 0 || $boolAsIntOrNull === 1) {
+            return new self((bool) $boolAsIntOrNull);
+        }
+
+        throw new VetmanagerApiGatewayResponseException("Ожидали null или int (в виде 0 или 1), а получили: $boolAsIntOrNull");
     }
 
     public function getBoolOrNull(): ?bool

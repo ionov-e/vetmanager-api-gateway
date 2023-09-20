@@ -13,12 +13,12 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
      * @param string|null $admission_length
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
         protected ?string $admission_length
     ) {
@@ -26,7 +26,7 @@ class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInte
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): ?string

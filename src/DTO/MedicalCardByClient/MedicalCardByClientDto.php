@@ -16,7 +16,7 @@ use VetmanagerApiGateway\DTO\Pet\SexEnum;
 final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByClientDtoInterface
 {
     /**
-     * @param string|null $medical_card_id
+     * @param int|null $medical_card_id
      * @param string|null $date_edit
      * @param string|null $diagnos
      * @param string|null $doctor_id
@@ -25,16 +25,16 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param string|null $recomendation
      * @param string|null $weight
      * @param string|null $temperature
-     * @param string|null $meet_result_id
-     * @param string|null $admission_type
-     * @param string|null $pet_id
+     * @param int|null $meet_result_id
+     * @param int|null $admission_type
+     * @param int|null $pet_id
      * @param string|null $alias
      * @param string|null $birthday
      * @param string|null $sex
      * @param string|null $note
      * @param string|null $pet_type
      * @param string|null $breed
-     * @param string|null $client_id
+     * @param int|null $client_id
      * @param string|null $first_name
      * @param string|null $last_name
      * @param string|null $middle_name
@@ -48,7 +48,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param string|null $admission_type_title
      */
     public function __construct(
-        protected ?string $medical_card_id,
+        protected ?int $medical_card_id,
         protected ?string $date_edit,
         protected ?string $diagnos,
         protected ?string $doctor_id,
@@ -57,16 +57,16 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         protected ?string $recomendation,
         protected ?string $weight,
         protected ?string $temperature,
-        protected ?string $meet_result_id,
-        protected ?string $admission_type,
-        protected ?string $pet_id,
+        protected ?int $meet_result_id,
+        protected ?int $admission_type,
+        protected ?int $pet_id,
         protected ?string $alias,
         protected ?string $birthday,
         protected ?string $sex,
         protected ?string $note,
         protected ?string $pet_type,
         protected ?string $breed,
-        protected ?string $client_id,
+        protected ?int $client_id,
         protected ?string $first_name,
         protected ?string $last_name,
         protected ?string $middle_name,
@@ -75,7 +75,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         protected ?string $doctor_first_name,
         protected ?string $doctor_last_name,
         protected ?string $doctor_middle_name,
-        protected ?string $editable,
+        protected ?int $editable,
         protected ?string $meet_result_title,
         protected ?string $admission_type_title
     ) {
@@ -104,7 +104,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getUserId(): ?int
     {
-        return ToInt::fromStringOrNull($this->doctor_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStatusAsString(): string
@@ -139,17 +139,17 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getMeetResultId(): ?int
     {
-        return ToInt::fromStringOrNull($this->meet_result_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->meet_result_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAdmissionTypeId(): ?int
     {
-        return ToInt::fromStringOrNull($this->admission_type)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->admission_type))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPetId(): int
     {
-        return ToInt::fromStringOrNull($this->pet_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->pet_id))->getPositiveIntOrThrow();
     }
 
     public function getPetAlias(): string
@@ -194,7 +194,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getClientId(): ?int
     {
-        return ToInt::fromStringOrNull($this->client_id)->getPositiveIntOrThrow();
+        return (new ToInt($this->client_id))->getPositiveIntOrThrow();
     }
 
     public function getFirstName(): string
@@ -239,7 +239,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getIsEditable(): bool
     {
-        return ToBool::fromStringOrNull($this->editable)->getBoolOrThrowIfNull();
+        return ToBool::fromIntOrNull($this->editable)->getBoolOrThrowIfNull();
     }
 
     public function getMeetResultTitle(): string
@@ -269,7 +269,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function setUserId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'doctor_id', (string)$value);
+        return self::setPropertyFluently($this, 'doctor_id', $value);
     }
 
     public function setStatusFromString(?string $value): static
@@ -304,17 +304,17 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function setMeetResultId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'meet_result_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'meet_result_id', $value);
     }
 
     public function setAdmissionTypeId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'admission_type', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'admission_type', $value);
     }
 
     public function setPetId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'pet_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'pet_id', $value);
     }
 
     public function setPetAlias(?string $value): static
@@ -359,7 +359,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function setClientId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'client_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'client_id', $value);
     }
 
     public function setFirstName(?string $value): static
@@ -404,7 +404,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function setIsEditable(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'editable', is_null($value) ? null : (string)(int)$value);
+        return self::setPropertyFluently($this, 'editable', is_null($value) ? null : (int)$value);
     }
 
     public function setMeetResultTitle(?string $value): static

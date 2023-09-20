@@ -10,32 +10,32 @@ use VetmanagerApiGateway\DTO\Unit\UnitOnlyDto;
 class GoodSaleParamPlusUnitAndGoodDto extends GoodSaleParamOnlyDto
 {
     /**
-     * @param string|null $id
-     * @param string|null $good_id
+     * @param int|null $id
+     * @param int|null $good_id
      * @param string|null $price
-     * @param string|null $coefficient
-     * @param string|null $unit_sale_id
+     * @param int|null $coefficient
+     * @param int|null $unit_sale_id
      * @param string|null $min_price
      * @param string|null $max_price
      * @param string|null $barcode
      * @param string|null $status
-     * @param string|null $clinic_id
+     * @param int|null $clinic_id
      * @param string|null $markup
      * @param string|null $price_formation
      * @param UnitOnlyDto|null $unitSale
      * @param GoodOnlyDto $good
      */
     public function __construct(
-        protected ?string      $id,
-        protected ?string      $good_id,
+        protected ?int         $id,
+        protected ?int         $good_id,
         protected ?string      $price,
-        protected ?string      $coefficient,
-        protected ?string      $unit_sale_id,
+        protected ?int         $coefficient,
+        protected ?int         $unit_sale_id,
         protected ?string      $min_price,
         protected ?string      $max_price,
         protected ?string      $barcode,
         protected ?string      $status,
-        protected ?string      $clinic_id,
+        protected ?int         $clinic_id,
         protected ?string      $markup,
         protected ?string      $price_formation,
         protected ?UnitOnlyDto $unitSale,

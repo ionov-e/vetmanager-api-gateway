@@ -11,24 +11,24 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $property_name
      * @param string|null $property_value
      * @param string|null $property_title
-     * @param string|null $clinic_id
+     * @param int|null $clinic_id
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $property_name,
         protected ?string $property_value,
         protected ?string $property_title,
-        protected ?string $clinic_id
+        protected ?int $clinic_id
     ) {
     }
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getName(): ?string
@@ -48,7 +48,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return ToInt::fromStringOrNull($this->clinic_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setName(?string $value): static
@@ -68,7 +68,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function setClinicId(?int $value): static
     {
-        return self::setPropertyFluently($this, 'clinic_id', is_null($value) ? null : (string)$value);
+        return self::setPropertyFluently($this, 'clinic_id', $value);
     }
 
 //    /** @param array{

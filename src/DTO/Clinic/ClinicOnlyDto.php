@@ -11,15 +11,15 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $title
      * @param string|null $address
      * @param string|null $phone
-     * @param string|null $city_id
+     * @param int|null $city_id
      * @param string|null $start_time
      * @param string|null $end_time
      * @param string|null $internet_address
-     * @param string|null $guest_client_id
+     * @param int|null $guest_client_id
      * @param string|null $time_zone
      * @param string|null $logo_url
      * @param string|null $status
@@ -28,15 +28,15 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
      * @param string|null $email
      */
     public function __construct(
-        protected ?string $id,
+        protected ?int $id,
         protected ?string $title,
         protected ?string $address,
         protected ?string $phone,
-        protected ?string $city_id,
+        protected ?int $city_id,
         protected ?string $start_time,
         protected ?string $end_time,
         protected ?string $internet_address,
-        protected ?string $guest_client_id,
+        protected ?int $guest_client_id,
         protected ?string $time_zone,
         protected ?string $logo_url,
         protected ?string $status,
@@ -48,7 +48,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->id)->getPositiveIntOrThrow();
+        return (new ToInt($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -68,7 +68,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getCityId(): ?int
     {
-        return ToInt::fromStringOrNull($this->city_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStartTime(): string
@@ -88,7 +88,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getGuestClientId(): ?int
     {
-        return ToInt::fromStringOrNull($this->guest_client_id)->getPositiveIntOrNullOrThrowIfNegative();
+        return (new ToInt($this->guest_client_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getTimeZone(): string
@@ -138,7 +138,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function setCityId(int $value): static
     {
-        return self::setPropertyFluently($this, 'city_id', (string)$value);
+        return self::setPropertyFluently($this, 'city_id', $value);
     }
 
     public function setStartTime(?string $value): static
@@ -158,7 +158,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function setGuestClientId(int $value): static
     {
-        return self::setPropertyFluently($this, 'guest_client_id', $value ? (string)$value : null);
+        return self::setPropertyFluently($this, 'guest_client_id', $value ? $value : null);
     }
 
     public function setTimeZone(?string $value): static

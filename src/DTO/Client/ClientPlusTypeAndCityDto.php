@@ -10,33 +10,33 @@ use VetmanagerApiGateway\DTO\ClientType\ClientTypeOnlyDto;
 class ClientPlusTypeAndCityDto extends ClientOnlyDto
 {
     /**
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $address
      * @param string|null $home_phone
      * @param string|null $work_phone
      * @param string|null $note
-     * @param string|null $type_id
-     * @param string|null $how_find
+     * @param int|null $type_id
+     * @param int|null $how_find
      * @param string|null $balance
      * @param string|null $email
      * @param string|null $city
-     * @param string|null $city_id
+     * @param int|null $city_id
      * @param string|null $date_register
      * @param string|null $cell_phone
      * @param string|null $zip
      * @param string|null $registration_index
-     * @param string|null $vip
+     * @param int|null $vip
      * @param string|null $last_name
      * @param string|null $first_name
      * @param string|null $middle_name
      * @param string|null $status
-     * @param string|null $discount
+     * @param int|null $discount
      * @param string|null $passport_series
      * @param string|null $lab_number
-     * @param string|null $street_id
+     * @param int|null $street_id
      * @param string|null $apartment
-     * @param string|null $unsubscribe
-     * @param string|null $in_blacklist
+     * @param int|null $unsubscribe
+     * @param int|null $in_blacklist
      * @param string|null $last_visit_date
      * @param string|null $number_of_journal
      * @param string|null $phone_prefix
@@ -44,33 +44,33 @@ class ClientPlusTypeAndCityDto extends ClientOnlyDto
      * @param ClientTypeOnlyDto|null $client_type_data
      */
     public function __construct(
-        protected ?string            $id,
-        protected ?string            $address,
-        protected ?string            $home_phone,
-        protected ?string            $work_phone,
-        protected ?string            $note,
-        protected ?string            $type_id,
-        protected ?string            $how_find,
-        protected ?string            $balance,
-        protected ?string            $email,
-        protected ?string            $city,
-        protected ?string            $city_id,
-        protected ?string            $date_register,
-        protected ?string            $cell_phone,
+        protected ?int    $id,
+        protected ?string $address,
+        protected ?string $home_phone,
+        protected ?string $work_phone,
+        protected ?string $note,
+        protected ?int    $type_id,
+        protected ?int    $how_find,
+        protected ?string $balance,
+        protected ?string $email,
+        protected ?string $city,
+        protected ?int         $city_id,
+        protected ?string      $date_register,
+        protected ?string      $cell_phone,
         protected ?string            $zip,
         protected ?string            $registration_index,
-        protected ?string            $vip,
+        protected ?int               $vip,
         protected ?string            $last_name,
         protected ?string            $first_name,
         protected ?string            $middle_name,
         protected ?string            $status,
-        protected ?string            $discount,
+        protected ?int               $discount,
         protected ?string            $passport_series,
         protected ?string            $lab_number,
-        protected ?string            $street_id,
+        protected ?int               $street_id,
         protected ?string            $apartment,
-        protected ?string            $unsubscribe,
-        protected ?string            $in_blacklist,
+        protected ?int               $unsubscribe,
+        protected ?int               $in_blacklist,
         protected ?string            $last_visit_date,
         protected ?string            $number_of_journal,
         protected ?string            $phone_prefix,
