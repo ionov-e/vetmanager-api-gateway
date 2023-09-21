@@ -22,7 +22,11 @@ class ApiGatewayTest extends TestCase
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
         $dotenv->load();
-        $apiGateway = ApiGateway::fromSubdomainAndApiKey($_ENV['TEST_SUBDOMAIN_1'], $_ENV['TEST_API_KEY_1'], false);
+        $apiGateway = ApiGateway::fromSubdomainAndApiKey(
+            $_ENV['TEST_SUBDOMAIN_1'],
+            $_ENV['TEST_API_KEY_1'],
+            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+        );
         $this->assertInstanceOf(ApiGateway::class, $apiGateway);
         return $apiGateway;
     }
