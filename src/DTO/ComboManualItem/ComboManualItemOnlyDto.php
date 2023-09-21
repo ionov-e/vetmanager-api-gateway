@@ -12,36 +12,36 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $combo_manual_id
+     * @param int|string|null $id
+     * @param int|string|null $combo_manual_id
      * @param string|null $title
      * @param string|null $value
      * @param string|null $dop_param1
      * @param string|null $dop_param2
      * @param string|null $dop_param3
-     * @param int|null $is_active
+     * @param int|string|null $is_active
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $combo_manual_id,
-        protected ?string $title,
-        protected ?string $value,
-        protected ?string $dop_param1,
-        protected ?string $dop_param2,
-        protected ?string $dop_param3,
-        protected ?int $is_active
+        protected int|string|null $id,
+        protected int|string|null $combo_manual_id,
+        protected ?string         $title,
+        protected ?string         $value,
+        protected ?string         $dop_param1,
+        protected ?string         $dop_param2,
+        protected ?string         $dop_param3,
+        protected int|string|null $is_active
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getComboManualId(): int
     {
-        return (new ToInt($this->combo_manual_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->combo_manual_id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

@@ -11,12 +11,13 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\MedicalCard\StatusEnum;
 use VetmanagerApiGateway\DTO\Pet\SexEnum;
 
 final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByClientDtoInterface
 {
     /**
-     * @param int|null $medical_card_id
+     * @param int|string|null $medical_card_id
      * @param string|null $date_edit
      * @param string|null $diagnos
      * @param string|null $doctor_id
@@ -25,16 +26,16 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param string|null $recomendation
      * @param string|null $weight
      * @param string|null $temperature
-     * @param int|null $meet_result_id
-     * @param int|null $admission_type
-     * @param int|null $pet_id
+     * @param int|string|null $meet_result_id
+     * @param int|string|null $admission_type
+     * @param int|string|null $pet_id
      * @param string|null $alias
      * @param string|null $birthday
      * @param string|null $sex
      * @param string|null $note
      * @param string|null $pet_type
      * @param string|null $breed
-     * @param int|null $client_id
+     * @param int|string|null $client_id
      * @param string|null $first_name
      * @param string|null $last_name
      * @param string|null $middle_name
@@ -48,37 +49,38 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param string|null $admission_type_title
      */
     public function __construct(
-        protected ?int $medical_card_id,
-        protected ?string $date_edit,
-        protected ?string $diagnos,
-        protected ?string $doctor_id,
-        protected ?string $medical_card_status,
-        protected ?string $healing_process,
-        protected ?string $recomendation,
-        protected ?string $weight,
-        protected ?string $temperature,
-        protected ?int $meet_result_id,
-        protected ?int $admission_type,
-        protected ?int $pet_id,
-        protected ?string $alias,
-        protected ?string $birthday,
-        protected ?string $sex,
-        protected ?string $note,
-        protected ?string $pet_type,
-        protected ?string $breed,
-        protected ?int $client_id,
-        protected ?string $first_name,
-        protected ?string $last_name,
-        protected ?string $middle_name,
-        protected ?string $phone,
-        protected ?string $doctor_nickname,
-        protected ?string $doctor_first_name,
-        protected ?string $doctor_last_name,
-        protected ?string $doctor_middle_name,
-        protected ?int $editable,
-        protected ?string $meet_result_title,
-        protected ?string $admission_type_title
-    ) {
+        protected int|string|null $medical_card_id,
+        protected ?string         $date_edit,
+        protected ?string         $diagnos,
+        protected ?string         $doctor_id,
+        protected ?string         $medical_card_status,
+        protected ?string         $healing_process,
+        protected ?string         $recomendation,
+        protected ?string         $weight,
+        protected ?string         $temperature,
+        protected int|string|null $meet_result_id,
+        protected int|string|null $admission_type,
+        protected int|string|null $pet_id,
+        protected ?string         $alias,
+        protected ?string         $birthday,
+        protected ?string         $sex,
+        protected ?string         $note,
+        protected ?string         $pet_type,
+        protected ?string         $breed,
+        protected int|string|null $client_id,
+        protected ?string         $first_name,
+        protected ?string         $last_name,
+        protected ?string         $middle_name,
+        protected ?string         $phone,
+        protected ?string         $doctor_nickname,
+        protected ?string         $doctor_first_name,
+        protected ?string         $doctor_last_name,
+        protected ?string         $doctor_middle_name,
+        protected int|string|null $editable,
+        protected ?string         $meet_result_title,
+        protected ?string         $admission_type_title
+    )
+    {
     }
 
     public function getId(): int
@@ -104,7 +106,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getUserId(): ?int
     {
-        return (new ToInt($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStatusAsString(): string
@@ -112,9 +114,9 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return $this->medical_card_status;
     }
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\MedicalCard\StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
-        return \VetmanagerApiGateway\DTO\MedicalCard\StatusEnum::from($this->medical_card_status);
+        return StatusEnum::from($this->medical_card_status);
     }
 
     public function getDescription(): string
@@ -139,17 +141,17 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getMeetResultId(): ?int
     {
-        return (new ToInt($this->meet_result_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->meet_result_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAdmissionTypeId(): ?int
     {
-        return (new ToInt($this->admission_type))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->admission_type))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPetId(): int
     {
-        return (new ToInt($this->pet_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->pet_id))->getPositiveIntOrThrow();
     }
 
     public function getPetAlias(): string
@@ -184,7 +186,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getPetTypeTitle(): string
     {
-        return  ToString::fromStringOrNull($this->pet_type)->getStringEvenIfNullGiven();
+        return ToString::fromStringOrNull($this->pet_type)->getStringEvenIfNullGiven();
     }
 
     public function getBreedTitle(): string
@@ -194,7 +196,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getClientId(): ?int
     {
-        return (new ToInt($this->client_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->client_id))->getPositiveIntOrThrow();
     }
 
     public function getFirstName(): string
@@ -277,7 +279,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return self::setPropertyFluently($this, 'medical_card_status', $value);
     }
 
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'medical_card_status', $value->value);
     }

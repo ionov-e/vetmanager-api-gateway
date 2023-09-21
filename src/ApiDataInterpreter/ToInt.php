@@ -12,6 +12,16 @@ class ToInt
     {
     }
 
+    /**  @throws VetmanagerApiGatewayResponseException */
+    public static function fromIntOrStringOrNull(null|int|string $intAsStringOrNull): self
+    {
+        if (is_int($intAsStringOrNull)) {
+            return new self($intAsStringOrNull);
+        }
+
+        return self::fromStringOrNull($intAsStringOrNull);
+    }
+
     /**
      * @param ?string $intAsStringOrNull Строка содержащая null или int (Например: '13')
      *

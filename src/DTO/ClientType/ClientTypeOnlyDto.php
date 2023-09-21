@@ -11,19 +11,19 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $title
+        protected int|string|null $id,
+        protected ?string         $title
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

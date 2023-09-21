@@ -40,7 +40,7 @@ interface GoodSaleParamOnlyDtoInterface
     public function getBarcode(): string;
 
     /** Default: 'active' */
-    public function getStatus(): \VetmanagerApiGateway\DTO\GoodSaleParam\StatusEnum;
+    public function getStatus(): StatusEnum;
 
     /** @return ?positive-int
      * @throws VetmanagerApiGatewayResponseException

@@ -43,7 +43,7 @@ interface InvoiceOnlyDtoInterface
     /** @throws VetmanagerApiGatewayResponseException */
     public function getStatusAsString(): string;
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Invoice\StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
 
     /** @throws VetmanagerApiGatewayResponseException */
     public function getInvoiceDateAsString(): string;
@@ -135,7 +135,7 @@ interface InvoiceOnlyDtoInterface
     /** @throws VetmanagerApiGatewayInnerException */
     public function setStatusFromString(?string $value): static;
 
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setInvoiceDateFromString(?string $value): static;

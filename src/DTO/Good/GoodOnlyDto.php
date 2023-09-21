@@ -15,47 +15,48 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $group_id
+     * @param int|string|null $id
+     * @param int|string|null $group_id
      * @param string|null $title
-     * @param int|null $unit_storage_id
-     * @param int|null $is_warehouse_account
-     * @param int|null $is_active
+     * @param int|string|null $unit_storage_id
+     * @param int|string|null $is_warehouse_account
+     * @param int|string|null $is_active
      * @param string|null $code
-     * @param int|null $is_call
-     * @param int|null $is_for_sale
+     * @param int|string|null $is_call
+     * @param int|string|null $is_for_sale
      * @param string|null $barcode
      * @param string|null $create_date
      * @param string|null $description
      * @param string|null $prime_cost
-     * @param int|null $category_id
+     * @param int|string|null $category_id
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $group_id,
-        protected ?string $title,
-        protected ?int $unit_storage_id,
-        protected ?int $is_warehouse_account,
-        protected ?int $is_active,
-        protected ?string $code,
-        protected ?int $is_call,
-        protected ?int $is_for_sale,
-        protected ?string $barcode,
-        protected ?string $create_date,
-        protected ?string $description,
-        protected ?string $prime_cost,
-        protected ?int $category_id
-    ) {
+        protected int|string|null $id,
+        protected int|string|null $group_id,
+        protected ?string         $title,
+        protected int|string|null $unit_storage_id,
+        protected int|string|null $is_warehouse_account,
+        protected int|string|null $is_active,
+        protected ?string         $code,
+        protected int|string|null $is_call,
+        protected int|string|null $is_for_sale,
+        protected ?string         $barcode,
+        protected ?string         $create_date,
+        protected ?string         $description,
+        protected ?string         $prime_cost,
+        protected int|string|null $category_id
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getGroupId(): ?int
     {
-        return (new ToInt($this->group_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->group_id))->getPositiveIntOrNullOrThrowIfNegative();
 
     }
 
@@ -66,7 +67,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getUnitId(): ?int
     {
-        return (new ToInt($this->unit_storage_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->unit_storage_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsWarehouseAccount(): bool
@@ -116,7 +117,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
 
     public function getCategoryId(): ?int
     {
-        return (new ToInt($this->category_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->category_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setGroupId(?int $value): static

@@ -13,17 +13,18 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
-     * @param int|null $city_id
+     * @param int|string|null $city_id
      * @param string|null $type
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $title,
-        protected ?int $city_id,
-        protected ?string $type
-    ) {
+        protected int|string|null $id,
+        protected ?string         $title,
+        protected int|string|null $city_id,
+        protected ?string         $type
+    )
+    {
     }
 
     /** @return positive-int
@@ -31,7 +32,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     /** Default: '' */
@@ -45,7 +46,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
      */
     public function getCityId(): int
     {
-        return (new ToInt($this->city_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->city_id))->getPositiveIntOrThrow();
     }
 
     /** Default: 'street'*/

@@ -13,22 +13,22 @@ use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlusClientAndPetAndInvoicesDto
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $admission_date
      * @param string|null $description
-     * @param int|null $client_id
-     * @param int|null $patient_id
-     * @param int|null $user_id
-     * @param int|null $type_id
+     * @param int|string|null $client_id
+     * @param int|string|null $patient_id
+     * @param int|string|null $user_id
+     * @param int|string|null $type_id
      * @param string|null $admission_length
      * @param string|null $status
-     * @param int|null $clinic_id
-     * @param int|null $direct_direction
-     * @param int|null $creator_id
+     * @param int|string|null $clinic_id
+     * @param int|string|null $direct_direction
+     * @param int|string|null $creator_id
      * @param string|null $create_date
-     * @param int|null $escorter_id
+     * @param int|string|null $escorter_id
      * @param string|null $reception_write_channel
-     * @param int|null $is_auto_create
+     * @param int|string|null $is_auto_create
      * @param string|null $invoices_sum
      * @param ClientOnlyDto|null $client
      * @param PetAdditionalPlusTypeAndBreedDto|null $pet
@@ -37,22 +37,22 @@ class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlu
      * @param ComboManualItemOnlyDto|null $admission_type_data
      */
     public function __construct(
-        protected ?int                              $id,
+        protected int|string|null $id,
         protected ?string                           $admission_date,
         protected ?string                           $description,
-        protected ?int                              $client_id,
-        protected ?int                              $patient_id,
-        protected ?int                              $user_id,
-        protected ?int                              $type_id,
+        protected int|string|null $client_id,
+        protected int|string|null $patient_id,
+        protected int|string|null $user_id,
+        protected int|string|null $type_id,
         protected ?string                           $admission_length,
         protected ?string                           $status,
-        protected ?int                              $clinic_id,
-        protected ?int                              $direct_direction,
-        protected ?int                              $creator_id,
+        protected int|string|null $clinic_id,
+        protected int|string|null $direct_direction,
+        protected int|string|null $creator_id,
         protected ?string                           $create_date,
-        protected ?int                              $escorter_id,
+        protected int|string|null $escorter_id,
         protected ?string                           $reception_write_channel,
-        protected ?int                              $is_auto_create,
+        protected int|string|null $is_auto_create,
         protected ?string                           $invoices_sum,
         protected ?ClientOnlyDto                    $client = null,
         protected ?PetAdditionalPlusTypeAndBreedDto $pet = null,

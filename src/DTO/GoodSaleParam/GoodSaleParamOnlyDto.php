@@ -12,43 +12,44 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $good_id Default: 0
+     * @param int|string|null $id
+     * @param int|string|null $good_id Default: 0
      * @param string|null $price
-     * @param int|null $coefficient Default: 1
-     * @param int|null $unit_sale_id Default: 0
+     * @param int|string|null $coefficient Default: 1
+     * @param int|string|null $unit_sale_id Default: 0
      * @param string|null $min_price
      * @param string|null $max_price
      * @param string|null $barcode
      * @param string|null $status Default: 'active'
-     * @param int|null $clinic_id Default: 0
+     * @param int|string|null $clinic_id Default: 0
      * @param string|null $markup
      * @param string|null $price_formation Default: 'fixed'
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $good_id,
-        protected ?string $price,
-        protected ?int $coefficient,
-        protected ?int $unit_sale_id,
-        protected ?string $min_price,
-        protected ?string $max_price,
-        protected ?string $barcode,
-        protected ?string $status,
-        protected ?int $clinic_id,
-        protected ?string $markup,
-        protected ?string $price_formation
-    ) {
+        protected int|string|null $id,
+        protected int|string|null $good_id,
+        protected ?string         $price,
+        protected int|string|null $coefficient,
+        protected int|string|null $unit_sale_id,
+        protected ?string         $min_price,
+        protected ?string         $max_price,
+        protected ?string         $barcode,
+        protected ?string         $status,
+        protected int|string|null $clinic_id,
+        protected ?string         $markup,
+        protected ?string         $price_formation
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getGoodId(): ?int
     {
-        return (new ToInt($this->good_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->good_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPrice(): ?float
@@ -63,7 +64,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function getUnitSaleId(): ?int
     {
-        return (new ToInt($this->unit_sale_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->unit_sale_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMinPrice(): ?float
@@ -81,14 +82,14 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return ToString::fromStringOrNull($this->barcode)->getStringEvenIfNullGiven();
     }
 
-    public function getStatus(): \VetmanagerApiGateway\DTO\GoodSaleParam\StatusEnum
+    public function getStatus(): StatusEnum
     {
         return StatusEnum::from($this->status);
     }
 
     public function getClinicId(): ?int
     {
-        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getMarkup(): ?float
@@ -143,7 +144,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
 
     public function setStatusFromEnum(StatusEnum $value): static
     {
-        return self::setPropertyFluently($this, 'status', $value->value); 
+        return self::setPropertyFluently($this, 'status', $value->value);
     }
 
     public function setClinicId(?string $value): static

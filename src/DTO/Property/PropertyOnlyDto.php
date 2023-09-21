@@ -11,24 +11,25 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $property_name
      * @param string|null $property_value
      * @param string|null $property_title
-     * @param int|null $clinic_id
+     * @param int|string|null $clinic_id
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $property_name,
-        protected ?string $property_value,
-        protected ?string $property_title,
-        protected ?int $clinic_id
-    ) {
+        protected int|string|null $id,
+        protected ?string         $property_name,
+        protected ?string         $property_value,
+        protected ?string         $property_title,
+        protected int|string|null $clinic_id
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getName(): ?string
@@ -48,7 +49,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setName(?string $value): static

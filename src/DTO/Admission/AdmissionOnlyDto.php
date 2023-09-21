@@ -19,49 +19,49 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $admission_date Пример "2020-12-31 17:51:18". Может быть: "0000-00-00 00:00:00" - перевожу в null
      * @param string|null $description
-     * @param int|null $client_id
-     * @param int|null $patient_id
-     * @param int|null $user_id
-     * @param int|null $type_id
+     * @param int|string|null $client_id
+     * @param int|string|null $patient_id
+     * @param int|string|null $user_id
+     * @param int|string|null $type_id
      * @param string|null $admission_length Примеры: "00:15:00", "00:00:00" (последнее перевожу в null)
      * @param string|null $status
-     * @param int|null $clinic_id
-     * @param int|null $direct_direction
-     * @param int|null $creator_id
+     * @param int|string|null $clinic_id
+     * @param int|string|null $direct_direction
+     * @param int|string|null $creator_id
      * @param string|null $create_date Приходит: "2015-07-08 06:43:44", но бывает и "0000-00-00 00:00:00". Последнее переводится в null
-     * @param int|null $escorter_id Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать
+     * @param int|string|null $escorter_id Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать
      * @param string|null $reception_write_channel
-     * @param int|null $is_auto_create
+     * @param int|string|null $is_auto_create
      * @param string|null $invoices_sum Default: 0.0000000000
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $admission_date,
-        protected ?string $description,
-        protected ?int $client_id,
-        protected ?int $patient_id,
-        protected ?int $user_id,
-        protected ?int $type_id,
-        protected ?string $admission_length,
-        protected ?string $status,
-        protected ?int $clinic_id,
-        protected ?int $direct_direction,
-        protected ?int $creator_id,
-        protected ?string $create_date,
-        protected ?int $escorter_id,
-        protected ?string $reception_write_channel,
-        protected ?int $is_auto_create,
-        protected ?string $invoices_sum,
+        protected int|string|null $id,
+        protected ?string         $admission_date,
+        protected ?string         $description,
+        protected int|string|null $client_id,
+        protected int|string|null $patient_id,
+        protected int|string|null $user_id,
+        protected int|string|null $type_id,
+        protected ?string         $admission_length,
+        protected ?string         $status,
+        protected int|string|null $clinic_id,
+        protected int|string|null $direct_direction,
+        protected int|string|null $creator_id,
+        protected ?string         $create_date,
+        protected int|string|null $escorter_id,
+        protected ?string         $reception_write_channel,
+        protected int|string|null $is_auto_create,
+        protected ?string         $invoices_sum,
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getDateAsDateTime(): DateTime
@@ -76,22 +76,22 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getClientId(): ?int
     {
-        return (new ToInt($this->client_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->client_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPetId(): ?int
     {
-        return (new ToInt($this->patient_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->patient_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getUserId(): ?int
     {
-        return (new ToInt($this->user_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->user_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getTypeId(): ?int
     {
-        return (new ToInt($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAdmissionLengthAsDateInterval(): ?DateInterval
@@ -106,7 +106,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsDirectDirection(): bool
@@ -116,7 +116,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getCreatorId(): ?int
     {
-        return (new ToInt($this->creator_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->creator_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getCreateDateAsDateTime(): DateTime
@@ -126,7 +126,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
 
     public function getEscortId(): ?int
     {
-        return (new ToInt($this->escorter_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->escorter_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayResponseException */

@@ -11,20 +11,21 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
-     * @param int|null $pet_type_id
+     * @param int|string|null $pet_type_id
      */
     public function __construct(
-        public ?int $id,
-        public ?string $title,
-        public ?int $pet_type_id
-    ) {
+        public int|string|null $id,
+        public ?string         $title,
+        public int|string|null $pet_type_id
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -34,7 +35,7 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
 
     public function getPetTypeId(): int
     {
-        return (new ToInt($this->pet_type_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->pet_type_id))->getPositiveIntOrThrow();
     }
 
     public function setTitle(?string $value): static

@@ -73,7 +73,7 @@ interface PetOnlyDtoInterface
 
     public function getStatusAsString(): ?string;
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Pet\StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
 
     /** Datatype: longblob */
     public function getPicture(): string;
@@ -139,7 +139,7 @@ interface PetOnlyDtoInterface
     public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setPicture(?string $value): static;

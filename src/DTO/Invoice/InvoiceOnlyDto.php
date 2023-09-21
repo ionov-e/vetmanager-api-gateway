@@ -15,70 +15,70 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $doctor_id
-     * @param int|null $client_id
-     * @param int|null $pet_id
+     * @param int|string|null $id
+     * @param int|string|null $doctor_id
+     * @param int|string|null $client_id
+     * @param int|string|null $pet_id
      * @param string|null $description
      * @param string|null $percent
      * @param string|null $amount
      * @param string|null $status
      * @param string|null $invoice_date
      * @param string|null $old_id
-     * @param int|null $night
+     * @param int|string|null $night
      * @param string|null $increase
      * @param string|null $discount
-     * @param int|null $call
+     * @param int|string|null $call
      * @param string|null $paid_amount
      * @param string|null $create_date
      * @param string|null $payment_status
-     * @param int|null $clinic_id
-     * @param int|null $creator_id
-     * @param int|null $fiscal_section_id
+     * @param int|string|null $clinic_id
+     * @param int|string|null $creator_id
+     * @param int|string|null $fiscal_section_id
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $doctor_id,
-        protected ?int $client_id,
-        protected ?int $pet_id,
-        protected ?string $description,
-        protected ?string $percent,
-        protected ?string $amount,
-        protected ?string $status,
-        protected ?string $invoice_date,
-        protected ?string $old_id,
-        protected ?int $night,
-        protected ?string $increase,
-        protected ?string $discount,
-        protected ?int $call,
-        protected ?string $paid_amount,
-        protected ?string $create_date,
-        protected ?string $payment_status,
-        protected ?int $clinic_id,
-        protected ?int $creator_id,
-        protected ?int $fiscal_section_id
+        protected int|string|null $id,
+        protected int|string|null $doctor_id,
+        protected int|string|null $client_id,
+        protected int|string|null $pet_id,
+        protected ?string         $description,
+        protected ?string         $percent,
+        protected ?string         $amount,
+        protected ?string         $status,
+        protected ?string         $invoice_date,
+        protected ?string         $old_id,
+        protected int|string|null $night,
+        protected ?string         $increase,
+        protected ?string         $discount,
+        protected int|string|null $call,
+        protected ?string         $paid_amount,
+        protected ?string         $create_date,
+        protected ?string         $payment_status,
+        protected int|string|null $clinic_id,
+        protected int|string|null $creator_id,
+        protected int|string|null $fiscal_section_id
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getUserId(): ?int
     {
-        return (new ToInt($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->doctor_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getClientId(): int
     {
-        return (new ToInt($this->client_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->client_id))->getPositiveIntOrThrow();
     }
 
     public function getPetId(): int
     {
-        return (new ToInt($this->pet_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->pet_id))->getPositiveIntOrThrow();
     }
 
     public function getDescription(): string
@@ -101,9 +101,9 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return ToString::fromStringOrNull($this->status)->getStringOrThrowIfNull();
     }
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Invoice\StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
-        return \VetmanagerApiGateway\DTO\Invoice\StatusEnum::from($this->status);
+        return StatusEnum::from($this->status);
     }
 
     public function getInvoiceDateAsString(): string
@@ -118,12 +118,12 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getOldId(): ?int
     {
-        return (new ToInt($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getNight(): ?int
     {
-        return (new ToInt($this->night))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->night))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIncrease(): float
@@ -138,7 +138,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getCallId(): ?int
     {
-        return (new ToInt($this->call))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->call))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPaidAmount(): float
@@ -168,17 +168,17 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
 
     public function getClinicId(): ?int
     {
-        return (new ToInt($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->clinic_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getCreatorId(): ?int
     {
-        return (new ToInt($this->creator_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->creator_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFiscalSectionId(): ?int
     {
-        return (new ToInt($this->fiscal_section_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->fiscal_section_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setUserId(?int $value): static
@@ -217,7 +217,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Invoice\StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }

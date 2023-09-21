@@ -9,48 +9,48 @@ use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
 class InvoiceDocumentOnlyDto extends AbstractInvoiceDocumentOnlyDto
 {
     /**
-     * @param int|null $id
-     * @param int|null $document_id
-     * @param int|null $good_id
+     * @param int|string|null $id
+     * @param int|string|null $document_id
+     * @param int|string|null $good_id
      * @param string|null $quantity
      * @param string|null $price
-     * @param int|null $responsible_user_id
-     * @param int|null $is_default_responsible
-     * @param int|null $sale_param_id
-     * @param int|null $tag_id
+     * @param int|string|null $responsible_user_id
+     * @param int|string|null $is_default_responsible
+     * @param int|string|null $sale_param_id
+     * @param int|string|null $tag_id
      * @param string|null $discount_type
-     * @param int|null $discount_document_id
+     * @param int|string|null $discount_document_id
      * @param string|null $discount_percent
      * @param string|null $default_price
      * @param string|null $create_date
      * @param string|null $discount_cause
-     * @param int|null $fixed_discount_id
-     * @param int|null $fixed_discount_percent
-     * @param int|null $fixed_increase_id
-     * @param int|null $fixed_increase_percent
+     * @param int|string|null $fixed_discount_id
+     * @param int|string|null $fixed_discount_percent
+     * @param int|string|null $fixed_increase_id
+     * @param int|string|null $fixed_increase_percent
      * @param string|null $prime_cost
      */
     public function __construct(
-        protected ?int    $id,
-        protected ?int    $document_id,
-        protected ?int    $good_id,
-        protected ?string $quantity,
-        protected ?string $price,
-        protected ?int    $responsible_user_id,
-        protected ?int    $is_default_responsible,
-        protected ?int    $sale_param_id,
-        protected ?int    $tag_id,
-        protected ?string $discount_type,
-        protected ?int    $discount_document_id,
-        protected ?string $discount_percent,
-        protected ?string $default_price,
-        protected ?string $create_date,
-        protected ?string $discount_cause,
-        protected ?int    $fixed_discount_id,
-        protected ?int    $fixed_discount_percent,
-        protected ?int    $fixed_increase_id,
-        protected ?int    $fixed_increase_percent,
-        protected ?string $prime_cost
+        protected int|string|null $id,
+        protected int|string|null $document_id,
+        protected int|string|null $good_id,
+        protected ?string         $quantity,
+        protected ?string         $price,
+        protected int|string|null $responsible_user_id,
+        protected int|string|null $is_default_responsible,
+        protected int|string|null $sale_param_id,
+        protected int|string|null $tag_id,
+        protected ?string         $discount_type,
+        protected int|string|null $discount_document_id,
+        protected ?string         $discount_percent,
+        protected ?string         $default_price,
+        protected ?string         $create_date,
+        protected ?string         $discount_cause,
+        protected int|string|null $fixed_discount_id,
+        protected int|string|null $fixed_discount_percent,
+        protected int|string|null $fixed_increase_id,
+        protected int|string|null $fixed_increase_percent,
+        protected ?string         $prime_cost
     )
     {
         parent::__construct(

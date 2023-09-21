@@ -12,23 +12,23 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
-     * @param int|null $is_readonly
+     * @param int|string|null $is_readonly
      * @param string|null $name
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $title,
-        protected ?int $is_readonly,
-        protected ?string $name
+        protected int|string|null $id,
+        protected ?string         $title,
+        protected int|string|null $is_readonly,
+        protected ?string         $name
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

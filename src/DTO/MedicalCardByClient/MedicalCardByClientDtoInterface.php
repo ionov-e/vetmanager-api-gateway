@@ -3,6 +3,7 @@
 namespace VetmanagerApiGateway\DTO\MedicalCardByClient;
 
 use DateTime;
+use VetmanagerApiGateway\DTO\MedicalCard\StatusEnum;
 use VetmanagerApiGateway\DTO\Pet\SexEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
@@ -31,7 +32,7 @@ interface MedicalCardByClientDtoInterface
     public function getStatusAsString(): string;
 
     /** Default: 'active' */
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\MedicalCard\StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
 
     /** Может быть просто строка, а может HTML-блок */
     public function getDescription(): string;
@@ -138,7 +139,7 @@ interface MedicalCardByClientDtoInterface
     public function setStatusFromString(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\MedicalCard\StatusEnum $value): static;
+    public function setStatusFromEnum(StatusEnum $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setDescription(?string $value): static;

@@ -12,17 +12,17 @@ use VetmanagerApiGateway\DTO\PetType\PetTypeOnlyDto;
 class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
 {
     /**
-     * @param int|null $id
-     * @param int|null $owner_id
-     * @param int|null $type_id
+     * @param int|string|null $id
+     * @param int|string|null $owner_id
+     * @param int|string|null $type_id
      * @param string|null $alias
      * @param string|null $sex
      * @param string|null $date_register
      * @param string|null $birthday
      * @param string|null $note
-     * @param int|null $breed_id
-     * @param int|null $old_id
-     * @param int|null $color_id
+     * @param int|string|null $breed_id
+     * @param int|string|null $old_id
+     * @param int|string|null $color_id
      * @param string|null $deathnote
      * @param string|null $deathdate
      * @param string|null $chip_number
@@ -37,17 +37,17 @@ class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
      * @param ComboManualItemOnlyDto|null $color
      */
     public function __construct(
-        protected ?int            $id,
-        protected ?int            $owner_id,
-        protected ?int            $type_id,
+        protected int|string|null $id,
+        protected int|string|null $owner_id,
+        protected int|string|null $type_id,
         protected ?string         $alias,
         protected ?string         $sex,
         protected ?string         $date_register,
         protected ?string         $birthday,
         protected ?string         $note,
-        protected ?int            $breed_id,
-        protected ?int            $old_id,
-        protected ?int            $color_id,
+        protected int|string|null $breed_id,
+        protected int|string|null $old_id,
+        protected int|string|null $color_id,
         protected ?string         $deathnote,
         protected ?string         $deathdate,
         protected ?string         $chip_number,

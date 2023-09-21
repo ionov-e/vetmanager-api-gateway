@@ -11,22 +11,23 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class PetTypeOnlyDto extends AbstractDTO implements PetTypeOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
      * @param string|null $picture
      * @param string|null $type
      */
     public function __construct(
-        public ?int $id,
-        public ?string $title,
-        public ?string $picture,
-        public ?string $type
-    ) {
+        public int|string|null $id,
+        public ?string         $title,
+        public ?string         $picture,
+        public ?string         $type
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string

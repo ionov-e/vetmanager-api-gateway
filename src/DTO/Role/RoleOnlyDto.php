@@ -12,20 +12,21 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $name
-     * @param int|null $super
+     * @param int|string|null $super
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $name,
-        protected ?int $super
-    ) {
+        protected int|string|null $id,
+        protected ?string         $name,
+        protected int|string|null $super
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getName(): string

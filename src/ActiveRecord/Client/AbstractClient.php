@@ -45,7 +45,7 @@ use VetmanagerApiGateway\Facade;
 // * @property int $discount Default: 0
 // * @property string $passportSeries
 // * @property string $labNumber
-// * @property ?int $streetId
+// * @property int|string|null $streetId
 // * @property string $apartment Default: ''
 // * @property bool $isUnsubscribed Default: False
 // * @property bool $isBlacklisted Default: False

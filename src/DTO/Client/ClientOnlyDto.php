@@ -18,68 +18,68 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $address
      * @param string|null $home_phone
      * @param string|null $work_phone
      * @param string|null $note
-     * @param int|null $type_id
-     * @param int|null $how_find
+     * @param int|string|null $type_id
+     * @param int|string|null $how_find
      * @param string|null $balance
      * @param string|null $email Default: ''
      * @param string|null $city
-     * @param int|null $city_id
+     * @param int|string|null $city_id
      * @param string|null $date_register В БД бывает дефолтное значение: '0000-00-00 00:00:00'
      * @param string|null $cell_phone
      * @param string|null $zip
      * @param string|null $registration_index
-     * @param int|null $vip
+     * @param int|string|null $vip
      * @param string|null $last_name
      * @param string|null $first_name
      * @param string|null $middle_name
      * @param string|null $status Default: Active
-     * @param int|null $discount
+     * @param int|string|null $discount
      * @param string|null $passport_series
      * @param string|null $lab_number
-     * @param int|null $street_id Default: 0
+     * @param int|string|null $street_id Default: 0
      * @param string|null $apartment Default: ''
-     * @param int|null $unsubscribe Default: 0
-     * @param int|null $in_blacklist Default: 0
+     * @param int|string|null $unsubscribe Default: 0
+     * @param int|string|null $in_blacklist Default: 0
      * @param string|null $last_visit_date В БД бывает дефолтное значение: '0000-00-00 00:00:00'
      * @param string|null $number_of_journal Default: ''
      * @param string|null $phone_prefix
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $address,
-        protected ?string $home_phone,
-        protected ?string $work_phone,
-        protected ?string $note,
-        protected ?int $type_id,
-        protected ?int $how_find,
-        protected ?string $balance,
-        protected ?string $email,
-        protected ?string $city,
-        protected ?int $city_id,
-        protected ?string $date_register,
-        protected ?string $cell_phone,
-        protected ?string $zip,
-        protected ?string $registration_index,
-        protected ?int $vip,
-        protected ?string $last_name,
-        protected ?string $first_name,
-        protected ?string $middle_name,
-        protected ?string $status,
-        protected ?int $discount,
-        protected ?string $passport_series,
-        protected ?string $lab_number,
-        protected ?int $street_id,
-        protected ?string $apartment,
-        protected ?int $unsubscribe,
-        protected ?int $in_blacklist,
-        protected ?string $last_visit_date,
-        protected ?string $number_of_journal,
-        protected ?string $phone_prefix
+        protected int|string|null $id,
+        protected ?string         $address,
+        protected ?string         $home_phone,
+        protected ?string         $work_phone,
+        protected ?string         $note,
+        protected int|string|null $type_id,
+        protected int|string|null $how_find,
+        protected ?string         $balance,
+        protected ?string         $email,
+        protected ?string         $city,
+        protected int|string|null $city_id,
+        protected ?string         $date_register,
+        protected ?string         $cell_phone,
+        protected ?string         $zip,
+        protected ?string         $registration_index,
+        protected int|string|null $vip,
+        protected ?string         $last_name,
+        protected ?string         $first_name,
+        protected ?string         $middle_name,
+        protected ?string         $status,
+        protected int|string|null $discount,
+        protected ?string         $passport_series,
+        protected ?string         $lab_number,
+        protected int|string|null $street_id,
+        protected ?string         $apartment,
+        protected int|string|null $unsubscribe,
+        protected int|string|null $in_blacklist,
+        protected ?string         $last_visit_date,
+        protected ?string         $number_of_journal,
+        protected ?string         $phone_prefix
     )
     {
     }
@@ -89,7 +89,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getAddress(): string
@@ -141,7 +141,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getTypeId(): ?int
     {
-        return (new ToInt($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -155,7 +155,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getHowFind(): ?int
     {
-        return (new ToInt($this->how_find))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->how_find))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -203,7 +203,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getCityId(): ?int
     {
-        return (new ToInt($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -336,7 +336,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
 
     public function getDiscount(): int
     {
-        return (new ToInt($this->discount))->getIntEvenIfNullGiven();
+        return (ToInt::fromIntOrStringOrNull($this->discount))->getIntEvenIfNullGiven();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -372,7 +372,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
      */
     public function getStreetId(): ?int
     {
-        return (new ToInt($this->street_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->street_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */
@@ -429,7 +429,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
     /** @throws VetmanagerApiGatewayException */
     public function setLastVisitDateFromSting(?string $value): static
     {
-        return self::setPropertyFluently($this,'last_visit_date', $value);
+        return self::setPropertyFluently($this, 'last_visit_date', $value);
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

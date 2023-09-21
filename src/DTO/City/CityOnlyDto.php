@@ -15,12 +15,12 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
     /**
      * @param int|string|null $id
      * @param string|null $title
-     * @param int|null $type_id Default: 1
+     * @param int|string|null $type_id Default: 1
      */
     public function __construct(
-        protected mixed $id,
-        protected ?string $title,
-        protected ?int $type_id
+        protected int|string|null $id,
+        protected ?string         $title,
+        protected int|string|null $type_id
     )
     {
     }
@@ -30,7 +30,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getId(): int
     {
-        return (new ToInt((int) $this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull((int)$this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -49,7 +49,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
      */
     public function getTypeId(): int
     {
-        return (new ToInt($this->type_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->type_id))->getPositiveIntOrThrow();
     }
 
     /** @throws VetmanagerApiGatewayInnerException */

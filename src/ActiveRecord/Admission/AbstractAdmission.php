@@ -38,7 +38,7 @@ use VetmanagerApiGateway\Facade;
 // * @property bool $isDirectDirection Насколько я понял, означает: 'Прием без планирования'
 // * @property ?positive-int $creatorId
 // * @property ?DateTime $createDate
-// * @property ?int $escortId Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see UserOnly}. Какой-то врач-помощник что ли. Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать
+// * @property int|string|null $escortId Тут судя по коду, можно привязать еще одного доктора, т.е. ID от {@see UserOnly}. Какой-то врач-помощник что ли. Кроме "0" другие значения искал - не нашел. Думаю передумали реализовывать
 // * @property string $receptionWriteChannel Искал по всем БД: находил только "vetmanager" и "" или null (редко. Пустые перевожу в null)
 // * @property bool $isAutoCreate
 // * @property float $invoicesSum Default: 0.0000000000

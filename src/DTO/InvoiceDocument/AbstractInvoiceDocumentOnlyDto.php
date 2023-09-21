@@ -16,66 +16,66 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements InvoiceDocumentOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $document_id
-     * @param int|null $good_id
-     * @param int|null $responsible_user_id
-     * @param int|null $is_default_responsible
-     * @param int|null $sale_param_id
-     * @param int|null $tag_id
+     * @param int|string|null $id
+     * @param int|string|null $document_id
+     * @param int|string|null $good_id
+     * @param int|string|null $responsible_user_id
+     * @param int|string|null $is_default_responsible
+     * @param int|string|null $sale_param_id
+     * @param int|string|null $tag_id
      * @param string|null $discount_type
-     * @param int|null $discount_document_id
+     * @param int|string|null $discount_document_id
      * @param string|null $discount_percent
      * @param string|null $default_price
      * @param string|null $create_date
      * @param string|null $discount_cause
-     * @param int|null $fixed_discount_id
-     * @param int|null $fixed_discount_percent
-     * @param int|null $fixed_increase_id
-     * @param int|null $fixed_increase_percent
+     * @param int|string|null $fixed_discount_id
+     * @param int|string|null $fixed_discount_percent
+     * @param int|string|null $fixed_increase_id
+     * @param int|string|null $fixed_increase_percent
      * @param string|null $prime_cost
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $document_id,
-        protected ?int $good_id,
-        protected ?int $responsible_user_id,
-        protected ?int $is_default_responsible,
-        protected ?int $sale_param_id,
-        protected ?int $tag_id,
-        protected ?string $discount_type,
-        protected ?int $discount_document_id,
-        protected ?string $discount_percent,
-        protected ?string $default_price,
-        protected ?string $create_date,
-        protected ?string $discount_cause,
-        protected ?int $fixed_discount_id,
-        protected ?int $fixed_discount_percent,
-        protected ?int $fixed_increase_id,
-        protected ?int $fixed_increase_percent,
-        protected ?string $prime_cost
+        protected int|string|null $id,
+        protected int|string|null $document_id,
+        protected int|string|null $good_id,
+        protected int|string|null $responsible_user_id,
+        protected int|string|null $is_default_responsible,
+        protected int|string|null $sale_param_id,
+        protected int|string|null $tag_id,
+        protected ?string         $discount_type,
+        protected int|string|null $discount_document_id,
+        protected ?string         $discount_percent,
+        protected ?string         $default_price,
+        protected ?string         $create_date,
+        protected ?string         $discount_cause,
+        protected int|string|null $fixed_discount_id,
+        protected int|string|null $fixed_discount_percent,
+        protected int|string|null $fixed_increase_id,
+        protected int|string|null $fixed_increase_percent,
+        protected ?string         $prime_cost
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getInvoiceId(): int
     {
-        return (new ToInt($this->document_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->document_id))->getPositiveIntOrThrow();
     }
 
     public function getGoodId(): int
     {
-        return (new ToInt($this->good_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->good_id))->getPositiveIntOrThrow();
     }
 
     public function getResponsibleUserId(): ?int
     {
-        return (new ToInt($this->responsible_user_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->responsible_user_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getIsDefaultResponsible(): bool
@@ -85,12 +85,12 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
 
     public function getSaleParamId(): int
     {
-        return (new ToInt($this->sale_param_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->sale_param_id))->getPositiveIntOrThrow();
     }
 
     public function getTagId(): ?int
     {
-        return (new ToInt($this->tag_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->tag_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDiscountTypeAsString(): ?string
@@ -105,7 +105,7 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
 
     public function getDiscountDocumentId(): ?int
     {
-        return (new ToInt($this->discount_document_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->discount_document_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDiscountPercent(): ?float
@@ -135,22 +135,22 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
 
     public function getFixedDiscountId(): ?int
     {
-        return (new ToInt($this->fixed_discount_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->fixed_discount_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedDiscountPercent(): ?int
     {
-        return (new ToInt($this->fixed_discount_percent))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->fixed_discount_percent))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedIncreaseId(): ?int
     {
-        return (new ToInt($this->fixed_increase_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->fixed_increase_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getFixedIncreasePercent(): ?int
     {
-        return (new ToInt($this->fixed_increase_percent))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->fixed_increase_percent))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getPrimeCost(): float

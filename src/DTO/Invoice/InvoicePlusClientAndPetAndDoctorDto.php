@@ -11,51 +11,51 @@ use VetmanagerApiGateway\DTO\User\UserOnlyDto;
 class InvoicePlusClientAndPetAndDoctorDto extends InvoiceOnlyDto
 {
     /**
-     * @param int|null $id
-     * @param int|null $doctor_id
-     * @param int|null $client_id
-     * @param int|null $pet_id
+     * @param int|string|null $id
+     * @param int|string|null $doctor_id
+     * @param int|string|null $client_id
+     * @param int|string|null $pet_id
      * @param string|null $description
      * @param string|null $percent
      * @param string|null $amount
      * @param string|null $status
      * @param string|null $invoice_date
      * @param string|null $old_id
-     * @param int|null $night
+     * @param int|string|null $night
      * @param string|null $increase
      * @param string|null $discount
-     * @param int|null $call
+     * @param int|string|null $call
      * @param string|null $paid_amount
      * @param string|null $create_date
      * @param string|null $payment_status
-     * @param int|null $clinic_id
-     * @param int|null $creator_id
-     * @param int|null $fiscal_section_id
+     * @param int|string|null $clinic_id
+     * @param int|string|null $creator_id
+     * @param int|string|null $fiscal_section_id
      * @param ClientOnlyDto $client
      * @param PetAdditionalPlusTypeAndBreedDto $pet
      * @param UserOnlyDto $doctor
      */
     public function __construct(
-        protected ?int          $id,
-        protected ?int          $doctor_id,
-        protected ?int          $client_id,
-        protected ?int                             $pet_id,
+        protected int|string|null $id,
+        protected int|string|null $doctor_id,
+        protected int|string|null $client_id,
+        protected int|string|null $pet_id,
         protected ?string                          $description,
         protected ?string                          $percent,
         protected ?string                          $amount,
         protected ?string                          $status,
         protected ?string                          $invoice_date,
         protected ?string                          $old_id,
-        protected ?int                             $night,
+        protected int|string|null $night,
         protected ?string                          $increase,
         protected ?string                          $discount,
-        protected ?int                             $call,
+        protected int|string|null $call,
         protected ?string                          $paid_amount,
         protected ?string                          $create_date,
         protected ?string                          $payment_status,
-        protected ?int                             $clinic_id,
-        protected ?int                             $creator_id,
-        protected ?int                             $fiscal_section_id,
+        protected int|string|null $clinic_id,
+        protected int|string|null $creator_id,
+        protected int|string|null $fiscal_section_id,
         protected ClientOnlyDto                    $client,
         protected PetAdditionalPlusTypeAndBreedDto $pet,
         protected UserOnlyDto                      $doctor

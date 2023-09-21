@@ -13,26 +13,27 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
-     * @param int|null $is_service Default: 0
+     * @param int|string|null $is_service Default: 0
      * @param string|null $markup
-     * @param int|null $is_show_in_vaccines Default: 0
-     * @param int|null $price_id
+     * @param int|string|null $is_show_in_vaccines Default: 0
+     * @param int|string|null $price_id
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $title,
-        protected ?int $is_service,
-        protected ?string $markup,
-        protected ?int $is_show_in_vaccines,
-        protected ?int $price_id
-    ) {
+        protected int|string|null $id,
+        protected ?string         $title,
+        protected int|string|null $is_service,
+        protected ?string         $markup,
+        protected int|string|null $is_show_in_vaccines,
+        protected int|string|null $price_id
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -58,7 +59,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function getPriceId(): ?int
     {
-        return (new ToInt($this->price_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->price_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function setTitle(?string $value): static
@@ -68,7 +69,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
 
     public function setIsService(?bool $value): static
     {
-        return self::setPropertyFluently($this, 'is_service',is_null($value) ? null : (int)$value);
+        return self::setPropertyFluently($this, 'is_service', is_null($value) ? null : (int)$value);
     }
 
     public function setMarkup(?float $value): static

@@ -11,15 +11,15 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $title
      * @param string|null $address
      * @param string|null $phone
-     * @param int|null $city_id
+     * @param int|string|null $city_id
      * @param string|null $start_time
      * @param string|null $end_time
      * @param string|null $internet_address
-     * @param int|null $guest_client_id
+     * @param int|string|null $guest_client_id
      * @param string|null $time_zone
      * @param string|null $logo_url
      * @param string|null $status
@@ -28,27 +28,28 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
      * @param string|null $email
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $title,
-        protected ?string $address,
-        protected ?string $phone,
-        protected ?int $city_id,
-        protected ?string $start_time,
-        protected ?string $end_time,
-        protected ?string $internet_address,
-        protected ?int $guest_client_id,
-        protected ?string $time_zone,
-        protected ?string $logo_url,
-        protected ?string $status,
-        protected ?string $telegram,
-        protected ?string $whatsapp,
-        protected ?string $email
-    ) {
+        protected int|string|null $id,
+        protected ?string         $title,
+        protected ?string         $address,
+        protected ?string         $phone,
+        protected int|string|null $city_id,
+        protected ?string         $start_time,
+        protected ?string         $end_time,
+        protected ?string         $internet_address,
+        protected int|string|null $guest_client_id,
+        protected ?string         $time_zone,
+        protected ?string         $logo_url,
+        protected ?string         $status,
+        protected ?string         $telegram,
+        protected ?string         $whatsapp,
+        protected ?string         $email
+    )
+    {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getTitle(): string
@@ -68,7 +69,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getCityId(): ?int
     {
-        return (new ToInt($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->city_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getStartTime(): string
@@ -88,7 +89,7 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
 
     public function getGuestClientId(): ?int
     {
-        return (new ToInt($this->guest_client_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->guest_client_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getTimeZone(): string
@@ -101,9 +102,9 @@ final class ClinicOnlyDto extends AbstractDTO implements ClinicOnlyDtoInterface
         return ToString::fromStringOrNull($this->logo_url)->getStringEvenIfNullGiven();
     }
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
-        return \VetmanagerApiGateway\DTO\Clinic\StatusEnum::from($this->status);
+        return StatusEnum::from($this->status);
     }
 
     public function getTelegram(): string

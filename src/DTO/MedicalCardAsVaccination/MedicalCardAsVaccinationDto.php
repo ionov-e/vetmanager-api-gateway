@@ -14,51 +14,51 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCardAsVaccinationDtoInterface
 {
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @param string|null $name
-     * @param int|null $pet_id
+     * @param int|string|null $pet_id
      * @param string|null $date
      * @param string|null $date_nexttime
-     * @param int|null $vaccine_id
+     * @param int|string|null $vaccine_id
      * @param string|null $birthday
      * @param string|null $birthday_at_time
-     * @param int|null $medcard_id
-     * @param int|null $doza_type_id
+     * @param int|string|null $medcard_id
+     * @param int|string|null $doza_type_id
      * @param string|null $doza_value
-     * @param int|null $sale_param_id
-     * @param int|null $vaccine_type
+     * @param int|string|null $sale_param_id
+     * @param int|string|null $vaccine_type
      * @param string|null $vaccine_description
      * @param string|null $vaccine_type_title
-     * @param int|null $next_admission_id
+     * @param int|string|null $next_admission_id
      * @param string|null $next_visit_time
      * @param string|null $pet_age_at_time_vaccination
      */
     public function __construct(
-        protected ?int $id,
-        protected ?string $name,
-        protected ?int $pet_id,
-        protected ?string $date,
-        protected ?string $date_nexttime,
-        protected ?int $vaccine_id,
-        protected ?string $birthday,
-        protected ?string $birthday_at_time,
-        protected ?int $medcard_id,
-        protected ?int $doza_type_id,
-        protected ?string $doza_value,
-        protected ?int $sale_param_id,
-        protected ?int $vaccine_type,
-        protected ?string $vaccine_description,
-        protected ?string $vaccine_type_title,
-        protected ?int $next_admission_id,
-        protected ?string $next_visit_time,
-        protected ?string $pet_age_at_time_vaccination
+        protected int|string|null $id,
+        protected ?string         $name,
+        protected int|string|null $pet_id,
+        protected ?string         $date,
+        protected ?string         $date_nexttime,
+        protected int|string|null $vaccine_id,
+        protected ?string         $birthday,
+        protected ?string         $birthday_at_time,
+        protected int|string|null $medcard_id,
+        protected int|string|null $doza_type_id,
+        protected ?string         $doza_value,
+        protected int|string|null $sale_param_id,
+        protected int|string|null $vaccine_type,
+        protected ?string         $vaccine_description,
+        protected ?string         $vaccine_type_title,
+        protected int|string|null $next_admission_id,
+        protected ?string         $next_visit_time,
+        protected ?string         $pet_age_at_time_vaccination
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getName(): string
@@ -68,7 +68,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getPetId(): int
     {
-        return (new ToInt($this->pet_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->pet_id))->getPositiveIntOrThrow();
     }
 
     public function getDateAsString(): ?string
@@ -93,7 +93,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getGoodId(): ?int
     {
-        return (new ToInt($this->vaccine_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->vaccine_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getBirthdayAsString(): ?string
@@ -113,12 +113,12 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getMedicalCardId(): int
     {
-        return (new ToInt($this->medcard_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->medcard_id))->getPositiveIntOrThrow();
     }
 
     public function getDoseTypeId(): int
     {
-        return (new ToInt($this->doza_type_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->doza_type_id))->getPositiveIntOrThrow();
     }
 
     public function getDoseValue(): ?float
@@ -128,12 +128,12 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getSaleParamId(): int
     {
-        return (new ToInt($this->sale_param_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->sale_param_id))->getPositiveIntOrThrow();
     }
 
     public function getVaccineTypeId(): ?int
     {
-        return (new ToInt($this->vaccine_type))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->vaccine_type))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getVaccineDescription(): ?string
@@ -148,7 +148,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
 
     public function getNextAdmissionId(): ?int
     {
-        return (new ToInt($this->next_admission_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->next_admission_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getNextVisitTimeAsString(): ?string

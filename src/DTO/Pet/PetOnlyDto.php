@@ -14,17 +14,17 @@ use VetmanagerApiGateway\DTO\AbstractDTO;
 class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 {
     /**
-     * @param int|null $id
-     * @param int|null $owner_id
-     * @param int|null $type_id
+     * @param int|string|null $id
+     * @param int|string|null $owner_id
+     * @param int|string|null $type_id
      * @param string|null $alias
      * @param string|null $sex
      * @param string|null $date_register
      * @param string|null $birthday
      * @param string|null $note
-     * @param int|null $breed_id
-     * @param int|null $old_id
-     * @param int|null $color_id
+     * @param int|string|null $breed_id
+     * @param int|string|null $old_id
+     * @param int|string|null $color_id
      * @param string|null $deathnote
      * @param string|null $deathdate
      * @param string|null $chip_number
@@ -35,42 +35,42 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
      * @param string|null $edit_date
      */
     public function __construct(
-        protected ?int $id,
-        protected ?int $owner_id,
-        protected ?int $type_id,
-        protected ?string $alias,
-        protected ?string $sex,
-        protected ?string $date_register,
-        protected ?string $birthday,
-        protected ?string $note,
-        protected ?int $breed_id,
-        protected ?int $old_id,
-        protected ?int $color_id,
-        protected ?string $deathnote,
-        protected ?string $deathdate,
-        protected ?string $chip_number,
-        protected ?string $lab_number,
-        protected ?string $status,
-        protected ?string $picture,
-        protected ?string $weight,
-        protected ?string $edit_date
+        protected int|string|null $id,
+        protected int|string|null $owner_id,
+        protected int|string|null $type_id,
+        protected ?string         $alias,
+        protected ?string         $sex,
+        protected ?string         $date_register,
+        protected ?string         $birthday,
+        protected ?string         $note,
+        protected int|string|null $breed_id,
+        protected int|string|null $old_id,
+        protected int|string|null $color_id,
+        protected ?string         $deathnote,
+        protected ?string         $deathdate,
+        protected ?string         $chip_number,
+        protected ?string         $lab_number,
+        protected ?string         $status,
+        protected ?string         $picture,
+        protected ?string         $weight,
+        protected ?string         $edit_date
     )
     {
     }
 
     public function getId(): int
     {
-        return (new ToInt($this->id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
     public function getOwnerId(): int
     {
-        return (new ToInt($this->owner_id))->getPositiveIntOrThrow();
+        return (ToInt::fromIntOrStringOrNull($this->owner_id))->getPositiveIntOrThrow();
     }
 
     public function getPetTypeId(): ?int
     {
-        return (new ToInt($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->type_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getAlias(): string
@@ -115,17 +115,17 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
 
     public function getBreedId(): ?int
     {
-        return (new ToInt($this->breed_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->breed_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getOldId(): ?int
     {
-        return (new ToInt($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->old_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getColorId(): ?int
     {
-        return (new ToInt($this->color_id))->getPositiveIntOrNullOrThrowIfNegative();
+        return (ToInt::fromIntOrStringOrNull($this->color_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
     public function getDeathNote(): string
@@ -153,7 +153,7 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return $this->status;
     }
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Pet\StatusEnum
+    public function getStatusAsEnum(): StatusEnum
     {
         return StatusEnum::from($this->status);
     }
@@ -263,7 +263,7 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setStatusFromEnum(\VetmanagerApiGateway\DTO\Pet\StatusEnum $value): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
         return self::setPropertyFluently($this, 'status', $value->value);
     }

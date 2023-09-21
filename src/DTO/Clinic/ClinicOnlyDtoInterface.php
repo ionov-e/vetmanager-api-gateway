@@ -42,7 +42,7 @@ interface ClinicOnlyDtoInterface
     /** Default: '' */
     public function getLogoUrl(): string;
 
-    public function getStatusAsEnum(): \VetmanagerApiGateway\DTO\Clinic\StatusEnum;
+    public function getStatusAsEnum(): StatusEnum;
 
     /** Default: '' */
     public function getTelegram(): string;

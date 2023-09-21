@@ -16,7 +16,7 @@ use VetmanagerApiGateway\Facade;
 ///**
 // * @property-read GoodGroupOnlyDto $originalDto
 // * @property string $title
-// * @property ?int $priceId
+// * @property int|string|null $priceId
 // * @property bool $isService Default: false
 // * @property ?float $markup
 // * @property bool $isShowInVaccines Default: false
