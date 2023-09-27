@@ -85,7 +85,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getId(): int
     {
-        return ToInt::fromStringOrNull($this->medical_card_id)->getPositiveIntOrThrow();
+        return ToInt::fromIntOrStringOrNull($this->medical_card_id)->getPositiveIntOrThrow();
     }
 
     public function getDateEditAsString(): ?string
