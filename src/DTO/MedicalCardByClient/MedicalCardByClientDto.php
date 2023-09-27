@@ -20,7 +20,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param int|string|null $medical_card_id
      * @param string|null $date_edit
      * @param string|null $diagnos
-     * @param string|null $doctor_id
+     * @param int|string|null $doctor_id
      * @param string|null $medical_card_status
      * @param string|null $healing_process
      * @param string|null $recomendation
@@ -44,7 +44,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
      * @param string|null $doctor_first_name
      * @param string|null $doctor_last_name
      * @param string|null $doctor_middle_name
-     * @param string|null $editable
+     * @param int|string|null $editable
      * @param string|null $meet_result_title
      * @param string|null $admission_type_title
      */
@@ -52,7 +52,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         protected int|string|null $medical_card_id,
         protected ?string         $date_edit,
         protected ?string         $diagnos,
-        protected ?string         $doctor_id,
+        protected int|string|null $doctor_id,
         protected ?string         $medical_card_status,
         protected ?string         $healing_process,
         protected ?string         $recomendation,

@@ -15,7 +15,7 @@ class MedicalCardPlusPetDto extends MedicalCardOnlyDto
      * @param string|null $date_edit
      * @param string|null $diagnos
      * @param string|null $recomendation
-     * @param string|null $invoice
+     * @param int|string|null $invoice
      * @param int|string|null $admission_type
      * @param string|null $weight
      * @param string|null $temperature
@@ -39,7 +39,7 @@ class MedicalCardPlusPetDto extends MedicalCardOnlyDto
         protected ?string         $date_edit,
         protected ?string         $diagnos,
         protected ?string         $recomendation,
-        protected ?string         $invoice,
+        protected int|string|null $invoice,
         protected int|string|null $admission_type,
         protected ?string         $weight,
         protected ?string         $temperature,
