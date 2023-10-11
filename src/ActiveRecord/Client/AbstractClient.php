@@ -13,6 +13,7 @@ use VetmanagerApiGateway\ActiveRecord\MedicalCardByClient\MedicalCardByClient;
 use VetmanagerApiGateway\ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DO\FullName;
+use VetmanagerApiGateway\DO\FullPhone;
 use VetmanagerApiGateway\DTO\Client\ClientDtoInterface;
 use VetmanagerApiGateway\DTO\Client\ClientOnlyDto;
 use VetmanagerApiGateway\DTO\Client\StatusEnum;
@@ -453,6 +454,11 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
 
     /** Вернет пустую строку если ничего */
     abstract function getClientTypeTitle(): string;
+
+    public function getFullPhone(): FullPhone
+    {
+        return (new FullPhone($this->getPhonePrefix(), $this->getCellPhone(), '(___)-__-__-__'));
+    }
 
     /** @return MedicalCardByClient[]
      * @throws VetmanagerApiGatewayException
