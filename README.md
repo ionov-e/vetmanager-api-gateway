@@ -418,12 +418,12 @@ $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable();
 
 Для большинства моделей АПИ Ветменджер кроме запрашиваемой модели отдает и содержимое других связанных моделей.
 Это также зависит от вида запроса - например, при запросе по ID обычно приходит наибольшее число связанных моделей.
-Для пользователя этой библиотеки это скрыто - в любом случае вне зависимости от какой вида **Active Record** получен - все
+Для пользователя этой библиотеки это скрыто: в любом случае вне зависимости от какой вида **Active Record** получен - все
 методы и связи с другими моделями доступны. А как именно при вызове метода будут получаться данные: из уже полученных данных
 или при помощи дополнительного запроса - это тоже берет на себя библиотека.
 
 Вот пример для понимания устройства. Но для использования это вовсе неважно. В использовании каждый из полученных **Active Record**
-идентичен:
+идентичен (так как обладают одним и тем же набором доступных методов, которые просто реализованы по-разному):
 ```php
 $apiGateway = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true);
 /** @var VetmanagerApiGateway\Facade\Client $clientFacade Содержит методы связанные с моделью для осуществления АПИ-запросов и созданию Active Records */
@@ -432,4 +432,25 @@ $clientFacade = $apiGateway->getClient();
 $clients = $clientFacade->getAll(); 
 /** @var VetmanagerApiGateway\ActiveRecord\Client\ClientPlusTypeAndCity $client Содержит в себе DTO для моделей Client, Client Type, City */
 $client = $clientFacade->getById(33); 
+```
+
+## Разработка
+
+1.  Копируем файл окружения из примера
+    ```bash
+    cp .env.example .env
+    ```
+2.  Заполняем `.env`
+3.  Устанавливаем библиотеки
+    ```bash
+    docker compose run php-fpm composer install
+    ```
+4.  Запуск юнит-тестов
+    ```bash
+    docker compose run php-fpm composer unit-tests
+    ```
+
+Можно запускать другие команды, примеры можно посмотреть в `composer.json` в разделе `scripts`. Например:
+```bash
+docker compose run php-fpm composer style-check
 ```
