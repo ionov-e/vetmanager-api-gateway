@@ -12,8 +12,10 @@ use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayOverduePaymentException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayUnauthorizedException;
 
 /**
  * @internal
@@ -80,20 +82,32 @@ class ApiRequest
 
     /** Так же проверяет ответ
      * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException
+     * @throws VetmanagerApiGatewayOverduePaymentException
+     * @throws VetmanagerApiGatewayUnauthorizedException
      */
     public function getResponseAsArray(): array
     {
         $response = $this->getResponse();
 
         $apiResponseAsArray = json_decode($response->getBody()->getContents(), true);
+        $responseStatus = $response->getStatusCode();
 
-        if (!in_array($response->getStatusCode(), [200, 201])) {
+        if (!in_array($responseStatus, [200, 201])) {
+            $errorMessage = $this->getMessageFromApiResponseAsArray($apiResponseAsArray);
+
+            if ($responseStatus === 401) {
+                if (str_contains($errorMessage, 'Tariff expired')) {
+                    // В этом случае получаем: "Authorization failed. Tariff expired"
+                    throw new VetmanagerApiGatewayOverduePaymentException($errorMessage);
+                }
+
+                // Если неправильный ключ получаем: "Authorization failed".
+                throw new VetmanagerApiGatewayUnauthorizedException($errorMessage);
+            }
+
             throw new VetmanagerApiGatewayResponseException(
-                $this->getStandardExceptionPrefixInfo()
-                . "Получили статус: "
-                . $response->getStatusCode()
-                . ". С сообщением: "
-                . $this->getMessageFromApiResponseAsArray($apiResponseAsArray)
+                $this->getStandardExceptionPrefixInfo() . "Получили статус: "
+                . $response->getStatusCode() . ". С сообщением: $errorMessage"
             );
         }
 

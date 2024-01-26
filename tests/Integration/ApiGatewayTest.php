@@ -13,6 +13,7 @@ use VetmanagerApiGateway\DTO\Client\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayUnauthorizedException;
 
 #[CoversClass(ApiGateway::class)]
 class ApiGatewayTest extends TestCase
@@ -29,6 +30,20 @@ class ApiGatewayTest extends TestCase
         );
         $this->assertInstanceOf(ApiGateway::class, $apiGateway);
         return $apiGateway;
+    }
+
+    /** @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayException */
+    public function testExceptionCauseOfWrongApiKey()
+    {
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
+        $dotenv->load();
+        $apiGateway = ApiGateway::fromSubdomainAndApiKey(
+            $_ENV['TEST_SUBDOMAIN_1'],
+            'WRONG_API_KEY',
+            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+        );
+        $this->expectException(VetmanagerApiGatewayUnauthorizedException::class);
+        $apiGateway->getClient()->getAll();
     }
 
     #[Depends('testFromDomainAndApiKey')]
