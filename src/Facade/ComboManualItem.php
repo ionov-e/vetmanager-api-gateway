@@ -169,6 +169,11 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
             1
         );
 
+        if (empty($comboManualItems)) {
+            $exceptionMessage = "Non existing ComboManual '$comboManualValue' with id:'$comboManualId'";
+            throw new VetmanagerApiGatewayException($exceptionMessage);
+        }
+
         return $comboManualItems[0];
     }
 }
