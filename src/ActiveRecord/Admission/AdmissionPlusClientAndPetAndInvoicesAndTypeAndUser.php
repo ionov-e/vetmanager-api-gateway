@@ -45,20 +45,20 @@ final class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUser extends AbstractA
 
     public function getPet(): ?PetOnly
     {
-        return $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()
+        return ($this->modelDTO->getPetAdditionalPlusTypeAndBreedDto())
             ? new PetOnly($this->activeRecordFactory, $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto())
             : null;
     }
 
     public function getPetBreed(): ?AbstractBreed
     {
-        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getBreedOnlyDto();
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()?->getBreedOnlyDto();
         return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, BreedOnly::class) : null;
     }
 
     public function getPetType(): ?AbstractPetType
     {
-        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()->getPetTypeOnlyDto();
+        $dto = $this->modelDTO->getPetAdditionalPlusTypeAndBreedDto()?->getPetTypeOnlyDto();
         return $dto ? $this->activeRecordFactory->getFromSingleDto($dto, ActiveRecord\PetType\PetTypeOnly::class) : null;
     }
 
