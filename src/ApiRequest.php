@@ -122,7 +122,9 @@ class ApiRequest
 
     private function getMessageFromApiResponseAsArray(array $apiResponseAsArray): string
     {
-        return (string)$apiResponseAsArray['message'] ?? '---Не было сообщения---';
+        return isset($apiResponseAsArray['message'])
+            ? (string)$apiResponseAsArray['message']
+            : '---Не было сообщения---';
     }
 
     /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
@@ -147,7 +149,7 @@ class ApiRequest
             $this->pagedQuery->next();
         } while (
             (int)$apiResponseDataContents['totalCount'] < $maxLimitOfReturnedModels &&
-            count($arrayOfModelsWithTheirContents) == $maxLimitOfReturnedModels
+            count($arrayOfModelsWithTheirContents) === $maxLimitOfReturnedModels
         );
 
         return [
