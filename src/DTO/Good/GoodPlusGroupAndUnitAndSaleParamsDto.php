@@ -8,7 +8,7 @@ use VetmanagerApiGateway\DTO\GoodGroup\GoodGroupOnlyDto;
 use VetmanagerApiGateway\DTO\GoodSaleParam\GoodSaleParamOnlyDto;
 use VetmanagerApiGateway\DTO\Unit\UnitOnlyDto;
 
-final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDTO
+final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDto
 {
     /**
      * @param int|string|null $id
