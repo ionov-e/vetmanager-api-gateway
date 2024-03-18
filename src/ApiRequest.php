@@ -12,6 +12,8 @@ use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use Otis22\VetmanagerRestApi\URI\OnlyModel;
 use Otis22\VetmanagerRestApi\URI\WithId;
 use Psr\Http\Message\ResponseInterface;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayOverduePaymentException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
@@ -66,14 +68,14 @@ class ApiRequest
         }
     }
 
-    /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayException */
     public function getModels(string $modelKeyInResponse): array
     {
         $apiResponseAsArray = $this->getResponseAsArray();
         return $this->getModelsFromApiResponseAsArray($apiResponseAsArray, $modelKeyInResponse);
     }
 
-    /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayException */
     private function getDataContents(): array
     {
         $apiResponseAsArray = $this->getResponseAsArray();
@@ -81,9 +83,7 @@ class ApiRequest
     }
 
     /** Так же проверяет ответ
-     * @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayResponseException
-     * @throws VetmanagerApiGatewayOverduePaymentException
-     * @throws VetmanagerApiGatewayUnauthorizedException
+     * @throws VetmanagerApiGatewayException
      */
     public function getResponseAsArray(): array
     {
@@ -101,8 +101,15 @@ class ApiRequest
                     throw new VetmanagerApiGatewayOverduePaymentException($errorMessage);
                 }
 
+                if (str_contains($errorMessage, 'Request not available')) {
+                    // В этом случае получаем: "Request not available for this service"
+                    throw new VetmanagerApiGatewayInnerException(
+                        "Закрыт доступ к: {$this->pathUrl} ({$this->method}): $errorMessage"
+                    );
+                }
+
                 // Если неправильный ключ получаем: "Authorization failed".
-                throw new VetmanagerApiGatewayUnauthorizedException($errorMessage);
+                throw new VetmanagerApiGatewayUnauthorizedException("{$this->baseApiUrl} {$this->pathUrl} ({$this->method}): $errorMessage");
             }
 
             throw new VetmanagerApiGatewayResponseException(
@@ -127,7 +134,7 @@ class ApiRequest
             : '---Не было сообщения---';
     }
 
-    /** @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException */
+    /** @throws VetmanagerApiGatewayException */
     public function getModelsUsingMultipleRequests(string $modelKeyInResponse, int $maxLimitOfReturnedModels = 100): array
     {
         $apiResponseAsArray = $this->getDataContentsUsingMultipleRequests($modelKeyInResponse, $maxLimitOfReturnedModels);
@@ -136,7 +143,7 @@ class ApiRequest
 
     /** Вернет весь ответ в виде массива {totalCount: int, _someModelName_: array}
      * @param int $maxLimitOfReturnedModels Ограничение по количеству возвращаемых моделей
-     * @throws VetmanagerApiGatewayResponseException|VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayException
      */
     private function getDataContentsUsingMultipleRequests(string $modelKeyInResponse, int $maxLimitOfReturnedModels = 100): array
     {
