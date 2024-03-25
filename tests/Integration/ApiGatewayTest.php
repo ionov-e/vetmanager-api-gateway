@@ -21,9 +21,9 @@ class ApiGatewayTest extends TestCase
     public function testFromDomainAndApiKey()
     {
         $apiGateway = ApiGateway::fromSubdomainAndApiKey(
-            $_SERVER['TEST_SUBDOMAIN_1'],
-            $_SERVER['TEST_API_KEY_1'],
-            filter_var($_SERVER['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+            $_ENV['TEST_SUBDOMAIN_1'],
+            $_ENV['TEST_API_KEY_1'],
+            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
         );
         $this->assertInstanceOf(ApiGateway::class, $apiGateway);
         return $apiGateway;
@@ -33,9 +33,9 @@ class ApiGatewayTest extends TestCase
     public function testExceptionCauseOfWrongApiKey()
     {
         $apiGateway = ApiGateway::fromSubdomainAndApiKey(
-            $_SERVER['TEST_SUBDOMAIN_1'],
+            $_ENV['TEST_SUBDOMAIN_1'],
             'WRONG_API_KEY',
-            filter_var($_SERVER['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
         );
         $this->expectException(VetmanagerApiGatewayUnauthorizedException::class);
         $apiGateway->getClient()->getAll();
