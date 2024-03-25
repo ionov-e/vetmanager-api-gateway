@@ -16,6 +16,8 @@ jobs:
           extensions: mbstring
           ini-values: max_execution_time=600, memory_limit=-1
           coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache composer dependencies
         uses: actions/cache@v2
