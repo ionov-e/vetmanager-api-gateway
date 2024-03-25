@@ -3,7 +3,7 @@ name: CI
 on: [push, workflow_dispatch]
 
 jobs:
-  psalm:
+  build:
     name: psalm
     runs-on: ubuntu-latest
     steps:
@@ -13,17 +13,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
-          extensions: mbstring
+          extensions: http, mbstring
           ini-values: max_execution_time=600, memory_limit=-1
           coverage: none
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
 
       - name: Run composer install
         run: composer install -n --prefer-dist
@@ -31,8 +25,14 @@ jobs:
       - name: Validate composer.json
         run: composer validate
 
-      - name: Run Unit Tests
-        run: composer unit-tests
+      - name: Run Tests (Unit only)
+        run: composer test-unit
+
+      - name: Run Tests (Integration only)
+        env:
+          TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
+          TEST_DOMAIN_NAME: ${{ secrets.TEST_DOMAIN_NAME }}
+        run: composer test-integration
 
       - name: Run CS Fixer
         run: composer style-fix

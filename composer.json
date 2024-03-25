@@ -41,8 +41,9 @@
     }
   ],
   "scripts": {
-    "unit-tests": "vendor/bin/phpunit tests",
-    "integration-tests": "vendor/bin/phpunit --testdox tests/Integration/ ",
+    "test-all": "vendor/bin/phpunit tests",
+    "test-unit": "vendor/bin/phpunit --testdox tests/Unit/",
+    "test-integration": "vendor/bin/phpunit --testdox tests/Integration/",
     "style-check": "vendor/bin/php-cs-fixer fix src --dry-run",
     "style-fix": "vendor/bin/php-cs-fixer fix src",
     "psalm": "vendor/bin/psalm",

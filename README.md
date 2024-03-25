@@ -447,7 +447,7 @@ $client = $clientFacade->getById(33);
     ```
 4.  Запуск юнит-тестов
     ```bash
-    docker compose run php-fpm composer unit-tests
+    docker compose run php-fpm composer test-unit
     ```
 
 Можно запускать другие команды, примеры можно посмотреть в `composer.json` в разделе `scripts`. Например:
