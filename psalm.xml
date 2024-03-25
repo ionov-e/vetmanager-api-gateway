@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="3"
+        errorLevel="7"
         resolveFromConfigFile="true"
         findUnusedCode="false"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,6 +21,11 @@
                 <directory name="src/DTO" />
             </errorLevel>
         </PropertyNotSetInConstructor>
+        <MissingTemplateParam>
+            <errorLevel type="suppress">
+                <directory name="src/Facade"/>
+            </errorLevel>
+        </MissingTemplateParam>
     </issueHandlers>
 
 </psalm>

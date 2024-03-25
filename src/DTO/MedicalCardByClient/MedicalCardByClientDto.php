@@ -111,7 +111,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
 
     public function getStatusAsString(): string
     {
-        return $this->medical_card_status;
+        return $this->medical_card_status ?? '';
     }
 
     public function getStatusAsEnum(): StatusEnum

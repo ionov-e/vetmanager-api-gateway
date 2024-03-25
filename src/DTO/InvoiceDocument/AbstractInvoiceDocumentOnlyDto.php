@@ -153,7 +153,7 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
         return (ToInt::fromIntOrStringOrNull($this->fixed_increase_percent))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getPrimeCost(): float
+    public function getPrimeCost(): float|null
     {
         return ToFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
     }

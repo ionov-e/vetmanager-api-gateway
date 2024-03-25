@@ -126,12 +126,12 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return (ToInt::fromIntOrStringOrNull($this->night))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getIncrease(): float
+    public function getIncrease(): float|null
     {
         return ToFloat::fromStringOrNull($this->increase)->getNonZeroFloatOrNull();
     }
 
-    public function getDiscount(): float
+    public function getDiscount(): float|null
     {
         return ToFloat::fromStringOrNull($this->discount)->getNonZeroFloatOrNull();
     }
@@ -141,7 +141,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return (ToInt::fromIntOrStringOrNull($this->call))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getPaidAmount(): float
+    public function getPaidAmount(): float|null
     {
         return ToFloat::fromStringOrNull($this->paid_amount)->getNonZeroFloatOrNull();
     }

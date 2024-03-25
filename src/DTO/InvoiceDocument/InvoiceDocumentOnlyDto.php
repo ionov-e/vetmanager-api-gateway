@@ -81,7 +81,7 @@ class InvoiceDocumentOnlyDto extends AbstractInvoiceDocumentOnlyDto
         return ToFloat::fromStringOrNull((string)$this->quantity)->getNonZeroFloatOrNull();
     }
 
-    public function getPrice(): float
+    public function getPrice(): float|null
     {
         return ToFloat::fromStringOrNull((string)$this->price)->getNonZeroFloatOrNull();
     }

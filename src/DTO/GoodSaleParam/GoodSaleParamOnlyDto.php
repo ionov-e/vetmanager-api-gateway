@@ -57,7 +57,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return ToFloat::fromStringOrNull($this->price)->getNonZeroFloatOrNull();
     }
 
-    public function getCoefficient(): float
+    public function getCoefficient(): float|null
     {
         return ToFloat::fromStringOrNull($this->coefficient)->getNonZeroFloatOrNull();
     }

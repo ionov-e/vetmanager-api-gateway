@@ -64,12 +64,12 @@ interface InvoiceOnlyDtoInterface
     /** Примеры: "0.0000000000"
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getIncrease(): float;
+    public function getIncrease(): float|null;
 
     /** Примеры: "0.0000000000", "3.0000000000"
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getDiscount(): float;
+    public function getDiscount(): float|null;
 
     /** @return ?positive-int DB default: '0' - переводим в null. В БД не видел 0/null
      * @throws VetmanagerApiGatewayResponseException
@@ -79,7 +79,7 @@ interface InvoiceOnlyDtoInterface
     /** Примеры: '0.0000000000', "240.0000000000"
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getPaidAmount(): float;
+    public function getPaidAmount(): float|null;
 
     /** DB default: '0000-00-00 00:00:00'
      * @throws VetmanagerApiGatewayResponseException

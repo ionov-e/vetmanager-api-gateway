@@ -6,7 +6,6 @@ namespace VetmanagerApiGateway\Facade;
 use Otis22\VetmanagerRestApi\Query\Builder;
 use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord;
-use VetmanagerApiGateway\ActiveRecord\Admission\AdmissionPlusClientAndPetAndInvoices;
 use VetmanagerApiGateway\ActiveRecord\Breed\AbstractBreed;
 use VetmanagerApiGateway\ActiveRecord\Breed\ListEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
@@ -91,7 +90,7 @@ class Breed extends AbstractFacade implements AllRequestsInterface
     }
 
     /**
-     * @return AdmissionPlusClientAndPetAndInvoices[]
+     * @return ActiveRecord\Breed\AbstractBreed[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPetTypeId(int $petTypeId, int $maxLimit = 100): array

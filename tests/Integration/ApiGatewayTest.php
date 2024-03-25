@@ -2,7 +2,6 @@
 
 namespace VetmanagerApiGateway\Integration;
 
-use Dotenv\Dotenv;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
@@ -21,12 +20,10 @@ class ApiGatewayTest extends TestCase
     /** @throws VetmanagerApiGatewayRequestException */
     public function testFromDomainAndApiKey()
     {
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
-        $dotenv->load();
         $apiGateway = ApiGateway::fromSubdomainAndApiKey(
-            $_ENV['TEST_SUBDOMAIN_1'],
-            $_ENV['TEST_API_KEY_1'],
-            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+            getenv('TEST_SUBDOMAIN_1'),
+            getenv('TEST_API_KEY_1'),
+            filter_var(getenv('IS_PROD_SUBDOMAIN'), FILTER_VALIDATE_BOOL)
         );
         $this->assertInstanceOf(ApiGateway::class, $apiGateway);
         return $apiGateway;
@@ -35,12 +32,10 @@ class ApiGatewayTest extends TestCase
     /** @throws VetmanagerApiGatewayRequestException|VetmanagerApiGatewayException */
     public function testExceptionCauseOfWrongApiKey()
     {
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
-        $dotenv->load();
         $apiGateway = ApiGateway::fromSubdomainAndApiKey(
-            $_ENV['TEST_SUBDOMAIN_1'],
+            getenv('TEST_SUBDOMAIN_1'),
             'WRONG_API_KEY',
-            filter_var($_ENV['IS_PROD_SUBDOMAIN'], FILTER_VALIDATE_BOOL)
+            filter_var(getenv('IS_PROD_SUBDOMAIN'), FILTER_VALIDATE_BOOL)
         );
         $this->expectException(VetmanagerApiGatewayUnauthorizedException::class);
         $apiGateway->getClient()->getAll();

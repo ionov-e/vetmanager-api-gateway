@@ -8,7 +8,6 @@ use Otis22\VetmanagerRestApi\Query\PagedQuery;
 use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
@@ -112,7 +111,8 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getFromMultipleModelsAsArray($modelsAsArrays, $activeRecordClass);
     }
 
-    /** @psalm-return TActiveRecord
+    /**
+     * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
     public function protectedGetNewEmpty(): AbstractActiveRecord
@@ -120,7 +120,9 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getEmpty(static::getBasicActiveRecord());
     }
 
-    /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+    /**
+     * Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+     *
      * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
@@ -138,7 +140,9 @@ abstract class AbstractFacade
         return $this->activeRecordFactory->getFromSingleModelAsArray($createdModelAsArray, $activeRecordClass);
     }
 
-    /** Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+    /**
+     * Отправка на сервер модели и возвращение от сервера модели в виде Active Record
+     *
      * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
@@ -158,7 +162,6 @@ abstract class AbstractFacade
     /**
      * @throws VetmanagerApiGatewayRequestException
      * @throws VetmanagerApiGatewayResponseException
-     * @throws VetmanagerApiGatewayInnerException
      */
     public function delete(int $id): void
     {

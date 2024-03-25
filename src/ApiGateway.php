@@ -9,7 +9,7 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayRequestUrlDomainException
 
 final class ApiGateway
 {
-    private ActiveRecordFactory $activeRecordFactory;
+    private ?ActiveRecordFactory $activeRecordFactory = null;
 
     /**
      * @param string $fullUrl Полный юрл сервера, типа: "https://three.test.kube-dev.vetmanager.cloud"
@@ -97,7 +97,7 @@ final class ApiGateway
 
     private function getActiveRecordFactory(): ActiveRecordFactory
     {
-        if (!isset ($this->activeRecordFactory)) {
+        if (is_null($this->activeRecordFactory)) {
             $this->activeRecordFactory = new ActiveRecordFactory($this->apiConnection, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         }
 
