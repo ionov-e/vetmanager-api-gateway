@@ -110,7 +110,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
         return ToString::fromStringOrNull($this->description)->getStringEvenIfNullGiven();
     }
 
-    public function getPrimeCost(): float
+    public function getPrimeCost(): float|null
     {
         return ToFloat::fromStringOrNull($this->prime_cost)->getNonZeroFloatOrNull();
     }

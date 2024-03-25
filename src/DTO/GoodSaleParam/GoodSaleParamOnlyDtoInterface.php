@@ -24,7 +24,7 @@ interface GoodSaleParamOnlyDtoInterface
     /** Default: 1
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getCoefficient(): float;
+    public function getCoefficient(): float|null;
 
     /** @return ?positive-int
      * @throws VetmanagerApiGatewayResponseException

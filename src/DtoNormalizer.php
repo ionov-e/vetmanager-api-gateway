@@ -39,27 +39,43 @@ class DtoNormalizer
     }
 
 
-    /** Возвращает модель в виде массива
+    /**
+     * Возвращает модель в виде массива
+     *
+     * @return \ArrayObject|array|null|scalar
      * @throws VetmanagerApiGatewayInnerException
+     *
      */
-    public function getAsArray(AbstractDTO $modelDto): array
+    public function getAsArray(AbstractDTO $modelDto)
     {
         try {
-            return $this->serializer->normalize($modelDto, context: [AbstractNormalizer::IGNORED_ATTRIBUTES => ['propertiesSet']]);
+            $return = $this->serializer->normalize($modelDto, context: [AbstractNormalizer::IGNORED_ATTRIBUTES => ['propertiesSet']]);
+            if (is_array($return)) {
+                return $return;
+            }
         } catch (ExceptionInterface $ex) {
-            throw new VetmanagerApiGatewayInnerException("Не получилось получить в виде массива объект класса: " . $modelDto::class . ". Exception: " . $ex->getMessage());
+            $messageFromException = ". Exception: " . $ex->getMessage();
         }
+        $additionalInfo = $messageFromException ?? '';
+        throw new VetmanagerApiGatewayInnerException("Не получилось получить в виде массива объект класса: " . $modelDto::class . $additionalInfo);
     }
 
-    /** Возвращает модель в виде массива с только записанными клиентом данными (через сеттеры)
+    /**
+     * Возвращает модель в виде массива с только записанными клиентом данными (через сеттеры)
+     *
      * @throws VetmanagerApiGatewayInnerException
      */
     public function getAsArrayWithSetPropertiesOnly(AbstractDTO $modelDto): array
     {
         try {
-            return $this->serializer->normalize($modelDto, context: [AbstractNormalizer::ATTRIBUTES => $modelDto->getPropertiesSet()]);
+            $return = $this->serializer->normalize($modelDto, context: [AbstractNormalizer::ATTRIBUTES => $modelDto->getPropertiesSet()]);
+            if (is_array($return)) {
+                return $return;
+            }
         } catch (ExceptionInterface $ex) {
-            throw new VetmanagerApiGatewayInnerException("Не получилось получить в виде массива (только set свойства) объект класса: " . $modelDto::class . ". Exception: " . $ex->getMessage());
+            $messageFromException = ". Exception: " . $ex->getMessage();
         }
+        $additionalInfo = $messageFromException ?? '';
+        throw new VetmanagerApiGatewayInnerException("Не получилось получить в виде массива (только set свойства) объект класса: " . $modelDto::class . $additionalInfo);
     }
 }

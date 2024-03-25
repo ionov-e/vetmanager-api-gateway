@@ -80,6 +80,6 @@ final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDto
     /** @return GoodSaleParamOnlyDto[] */
     public function getGoodSaleParamsOnlyDtos(): array
     {
-        return $this->goodSaleParams;
+        return !empty($this->goodSaleParams) ? $this->goodSaleParams : [];
     }
 }

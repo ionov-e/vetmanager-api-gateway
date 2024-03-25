@@ -85,12 +85,12 @@ class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlu
         );
     }
 
-    public function getAdmissionTypeDto(): ComboManualItemOnlyDto
+    public function getAdmissionTypeDto(): ComboManualItemOnlyDto|null
     {
         return $this->admission_type_data;
     }
 
-    public function getUserDto(): UserOnlyDto
+    public function getUserDto(): UserOnlyDto|null
     {
         return $this->doctor_data;
     }

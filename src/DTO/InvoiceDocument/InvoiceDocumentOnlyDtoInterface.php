@@ -27,7 +27,7 @@ interface InvoiceDocumentOnlyDtoInterface
     public function getQuantity(): ?float;
 
     /** @throws VetmanagerApiGatewayResponseException */
-    public function getPrice(): float;
+    public function getPrice(): float|null;
 
     /** @return ?positive-int Default: '0'
      * @throws VetmanagerApiGatewayResponseException
@@ -95,7 +95,7 @@ interface InvoiceDocumentOnlyDtoInterface
     /** Default: "0.0000000000"
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getPrimeCost(): float;
+    public function getPrimeCost(): float|null;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setInvoiceId(?int $value): static;

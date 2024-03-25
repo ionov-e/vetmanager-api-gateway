@@ -57,7 +57,7 @@ interface GoodOnlyDtoInterface
     /** Default: '0.0000000000'
      * @throws VetmanagerApiGatewayResponseException
      */
-    public function getPrimeCost(): float;
+    public function getPrimeCost(): float|null;
 
     /** @return ?positive-int
      * @throws VetmanagerApiGatewayResponseException

@@ -151,7 +151,7 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
 
     public function getStatusAsString(): string
     {
-        return $this->status;
+        return $this->status ?? '';
     }
 
     public function getStatusAsEnum(): StatusEnum
