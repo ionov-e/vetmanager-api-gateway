@@ -95,9 +95,9 @@ final class ApiGateway
         );
     }
 
-    private function getActiveRecordFactory(): ActiveRecordFactory|null
+    private function getActiveRecordFactory(): ActiveRecordFactory
     {
-        if (!is_null($this->activeRecordFactory)) {
+        if (is_null($this->activeRecordFactory)) {
             $this->activeRecordFactory = new ActiveRecordFactory($this->apiConnection, DtoFactory::withDefaultSerializer(), DtoNormalizer::withDefaultSerializer());
         }
 
