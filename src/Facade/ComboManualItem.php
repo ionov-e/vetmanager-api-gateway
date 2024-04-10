@@ -9,6 +9,7 @@ use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\ActiveRecord\ComboManualItem\ListEnum;
 use VetmanagerApiGateway\DTO\ComboManualName\NameEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInconsistencyException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class ComboManualItem extends AbstractFacade implements AllRequestsInterface
@@ -92,7 +93,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
     /**
      * @param int $typeId Например, значение из медкарты: {@see AbstractMedicalCard::admissionTypeId}
      * @param int $comboManualIdOfAdmissionType Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
-     * @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException
      */
     public function getByAdmissionTypeId(int $typeId, int $comboManualIdOfAdmissionType = 0): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
@@ -106,7 +107,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
     /**
      * @param int $resultId Скорее всего тут будет значение из медкарты: {@see AbstractMedicalCard::meetResultId}
      * @param int $comboManualIdOfAdmissionResult Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
-     * @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException
      */
     public function getByAdmissionResultId(int $resultId, int $comboManualIdOfAdmissionResult = 0): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
@@ -120,7 +121,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
     /**
      * @param int $colorId Например: {@see PetOnlyDto::colorId}. По факту это value из таблицы combo_manual_items
      * @param int $comboManualIdOfPetColors Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
-     * @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException
      */
     public function getByPetColorId(int $colorId, int $comboManualIdOfPetColors = 0): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
@@ -134,7 +135,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
     /**
      * @param int $vaccineTypeId vaccine_type из таблицы vaccine_pets
      * @param int $comboManualIdOfVaccineTypes Если не ввести этот параметр - метод подставит самостоятельно ID с помощью отдельного АПИ-запроса
-     * @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException
      */
     public function getByVaccineTypeId(int $vaccineTypeId, int $comboManualIdOfVaccineTypes = 0): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
@@ -145,7 +146,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
         return $this->getOneByValueAndComboManualName((string)$vaccineTypeId, NameEnum::VaccinationType);
     }
 
-    /** @throws VetmanagerApiGatewayException Родительское исключение */
+    /** @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException */
     public function getOneByValueAndComboManualName(string $comboManualValue, NameEnum $comboManualName): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
         $comboManualId = $this->getComboManualIdFromComboManualName($comboManualName);
@@ -159,7 +160,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
         return (new ComboManualName($this->activeRecordFactory))->getIdByNameAsEnum($comboManualName);
     }
 
-    /** @throws VetmanagerApiGatewayException */
+    /** @throws VetmanagerApiGatewayInconsistencyException|VetmanagerApiGatewayException */
     private function getOneByValueAndComboManualId(string $comboManualValue, int $comboManualId): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
         $comboManualItems = $this->getByQueryBuilder(
@@ -170,8 +171,8 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
         );
 
         if (empty($comboManualItems)) {
-            $exceptionMessage = "Non existing ComboManual '$comboManualValue' with id:'$comboManualId'";
-            throw new VetmanagerApiGatewayException($exceptionMessage);
+            $exceptionMessage = "No ComboManualItem (value:'$comboManualValue',id:'$comboManualId')";
+            throw new VetmanagerApiGatewayInconsistencyException($exceptionMessage);
         }
 
         return $comboManualItems[0];

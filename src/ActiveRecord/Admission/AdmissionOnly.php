@@ -12,6 +12,7 @@ use VetmanagerApiGateway\ActiveRecord\User\UserPlusPositionAndRole;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Admission\AdmissionOnlyDto;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInconsistencyException;
 use VetmanagerApiGateway\Facade;
 
 final class AdmissionOnly extends AbstractAdmission
@@ -37,7 +38,11 @@ final class AdmissionOnly extends AbstractAdmission
     /** @throws VetmanagerApiGatewayException */
     public function getAdmissionType(): ?ComboManualItemPlusComboManualName
     {
-        return $this->getTypeId() ? (new Facade\ComboManualItem($this->activeRecordFactory))->getById($this->getTypeId()) : null;
+        try {
+            return $this->getTypeId() ? (new Facade\ComboManualItem($this->activeRecordFactory))->getByAdmissionTypeId($this->getTypeId()) : null;
+        } catch (VetmanagerApiGatewayInconsistencyException $e) {
+            return null;
+        }
     }
 
     /** @throws VetmanagerApiGatewayException */
