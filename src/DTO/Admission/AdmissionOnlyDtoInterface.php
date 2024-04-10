@@ -34,7 +34,8 @@ interface AdmissionOnlyDtoInterface
      */
     public function getUserId(): ?int;
 
-    /** @return ?positive-int
+    /**
+     * @return ?positive-int ID типа приема. ID - value из ComboManualItem (у которого 'combo_manual_id' будет ID от ComboManualName c name 'admission_type'). У этого ComboManualItem в title будет например: "Вакцинация"
      * @throws VetmanagerApiGatewayResponseException
      */
     public function getTypeId(): ?int;

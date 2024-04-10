@@ -446,6 +446,7 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
 
     abstract public function getUser(): ?AbstractUser;
 
+    /** Вернет тип приема. Например: "Вакцинация" */
     abstract public function getAdmissionType(): ?AbstractComboManualItem;
 
     abstract public function getClient(): ?AbstractClient;
