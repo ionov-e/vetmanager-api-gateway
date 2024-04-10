@@ -480,4 +480,10 @@ abstract class AbstractAdmission extends AbstractActiveRecord implements Admissi
     {
         return $this->getClientId() ? (new Facade\Admission($this->activeRecordFactory))->getByClientId($this->getClientId()) : [];
     }
+
+    /** Вернет название типа. Например: "Вакцинация"  */
+    public function getTypeTitle(): ?string
+    {
+        return $this->getAdmissionType()?->getTitle();
+    }
 }
