@@ -98,7 +98,7 @@ class ApiRequest
             if ($responseStatus === 401) {
                 if (str_contains($errorMessage, 'Tariff expired')) {
                     // В этом случае получаем: "Authorization failed. Tariff expired"
-                    throw new VetmanagerApiGatewayOverduePaymentException($errorMessage);
+                    throw new VetmanagerApiGatewayOverduePaymentException("{$this->pathUrl}: $errorMessage");
                 }
 
                 if (str_contains($errorMessage, 'Request not available')) {
