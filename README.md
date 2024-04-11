@@ -406,13 +406,12 @@ $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable();
 
 * **Symfony Serializer** - Для создания DTO из массива данных (десериализованный JSON) и обртного процесса (норамализации)
 * **Guzzle HTTP client** - Для всех используемых запросов
-* **vetmanager-rest-api** - Помощник с АПИ Ветменджера
+* **vetmanager-rest-api** - Помощник с Query-запросами АПИ Ветменджера
 
 
   Только при разработке:
 * **PSALM**
 * **PHPUnit**
-* **vlucas/phpdotenv** - файлы окружения для интеграционного теста
 
 #### Внутренние особенности
 
