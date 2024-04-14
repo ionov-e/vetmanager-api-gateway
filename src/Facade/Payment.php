@@ -12,20 +12,20 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Payment extends AbstractFacade implements AllRequestsInterface #TODO
 {
-    /** @return class-string<ActiveRecord\Invoice\InvoiceOnly> */
-    static public function getBasicActiveRecord(): string
+    /** @return class-string<ActiveRecord\Payment\PaymentOnly> */
+    public static function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Invoice\InvoiceOnly::class;
+        return ActiveRecord\Payment\PaymentOnly::class;
     }
 
     /** @inheritDoc */
-    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Invoice\AbstractInvoice
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Payment\AbstractPayment
     {
         return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
     }
 
     /** @inheritDoc
-     * @return ActiveRecord\Invoice\AbstractInvoice[]
+     * @return ActiveRecord\Payment\AbstractPayment[]
      */
     public function fromMultipleModelsAsArrays(array $modelsAsArray): array
     {
@@ -71,19 +71,19 @@ class Payment extends AbstractFacade implements AllRequestsInterface #TODO
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getNewEmpty(): ActiveRecord\Invoice\InvoiceOnly
+    public function getNewEmpty(): ActiveRecord\Payment\PaymentOnly
     {
         return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Invoice\InvoiceOnly
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Payment\PaymentOnly
     {
         return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Invoice\InvoiceOnly
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Payment\PaymentOnly
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }

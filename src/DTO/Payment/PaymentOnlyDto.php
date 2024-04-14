@@ -2,6 +2,7 @@
 
 namespace VetmanagerApiGateway\DTO\Payment;
 
+use DateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
 use VetmanagerApiGateway\DTO\AbstractDTO;
@@ -98,14 +99,20 @@ class PaymentOnlyDto extends AbstractDTO
         return $this->create_date;
     }
 
-    public function getCreateDateAsDateTime(): ?DateTime
+    /**
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getCreateDateAsDateTime(): DateTime
     {
         return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }
 
-    public function getPayedUser(): int|string|null
+    /** @return positive-int В БД по дефолту 0, но не видел такого
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getPayedUser(): int
     {
-        return $this->payed_user;
+        return (ToInt::fromIntOrStringOrNull($this->payed_user))->getPositiveIntOrThrow();
     }
 
     public function getDescription(): ?string
