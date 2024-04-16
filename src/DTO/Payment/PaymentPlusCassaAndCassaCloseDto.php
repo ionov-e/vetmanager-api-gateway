@@ -21,7 +21,7 @@ class PaymentPlusCassaAndCassaCloseDto extends PaymentOnlyDto
      * @param string|null $payment_type
      * @param int|string|null $invoice_id
      * @param int|string|null $parent_id
-     * @param CassaOnlyDto $cassa
+     * @param CassaOnlyDto|null $cassa
      * @param CassaCloseOnlyDto|null $cassaclose
      */
     public function __construct(
@@ -36,7 +36,7 @@ class PaymentPlusCassaAndCassaCloseDto extends PaymentOnlyDto
         public ?string            $payment_type,
         public int|string|null    $invoice_id,
         public int|string|null    $parent_id,
-        public CassaOnlyDto $cassa,
+        public ?CassaOnlyDto $cassa,
         public ?CassaCloseOnlyDto $cassaclose
     )
     {
