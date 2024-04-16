@@ -4,123 +4,119 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\CassaClose;
 
+use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToFloat;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\Payment\StatusEnum;
 
-/**
- *
- *
- * CREATE TABLE `cassaclose` (
- * `id` int NOT NULL AUTO_INCREMENT,
- * `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
- * `id_cassa` int NOT NULL,
- * `status` enum('exec','save','deleted') NOT NULL DEFAULT 'save',
- * `closed_user_id` int DEFAULT '0',
- * `amount` decimal(25,10) DEFAULT NULL,
- * `amount_cashless` decimal(25,10) NOT NULL DEFAULT '0.0000000000',
- * PRIMARY KEY (`id`),
- * KEY `fk_id_cassa_closedcassa` (`id_cassa`),
- * KEY `fk_closed_user_id_closedcassa` (`closed_user_id`),
- * CONSTRAINT `fk_closed_user_id_closedcassa` FOREIGN KEY (`closed_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
- * CONSTRAINT `fk_id_cassa_closedcassa` FOREIGN KEY (`id_cassa`) REFERENCES `cassa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
- * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
- */
-class CassaCloseOnlyDto extends AbstractDTO
+class CassaCloseOnlyDto extends AbstractDTO implements CassaCloseOnlyDtoInterface
 {
     /**
      * @param int|string|null $id
      * @param string|null $date
-     * @param int|string|null $idCassa
+     * @param int|string|null $id_cassa
      * @param string|null $status
-     * @param int|string|null $closedUserId
+     * @param int|string|null $closed_user_id
      * @param string|null $amount
-     * @param string|null $amountCashless
+     * @param string|null $amount_cashless
      */
     public function __construct(
         public int|string|null $id,
         public ?string         $date,
-        public int|string|null $idCassa,
+        public int|string|null $id_cassa,
         public ?string         $status,
-        public int|string|null $closedUserId,
+        public int|string|null $closed_user_id,
         public ?string         $amount,
-        public ?string         $amountCashless
+        public ?string         $amount_cashless
     )
     {
     }
 
-    public function getId(): int|string|null
+    public function getId(): int
     {
-        return $this->id;
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
-    public function getDate(): ?string
+    public function getDateAsString(): string
     {
-        return $this->date;
+        return (ToString::fromStringOrNull($this->date))->getStringOrThrowIfNull();
     }
 
-    public function getCassaId(): int|string|null
+    public function getDateAsDateTime(): DateTime
     {
-        return $this->idCassa;
+        return ToDateTime::fromOnlyDateString($this->date)->getDateTimeOrThrow();
     }
 
-    public function getStatus(): ?string
+    public function getCassaId(): int
     {
-        return $this->status;
+        return (ToInt::fromIntOrStringOrNull($this->id_cassa))->getPositiveIntOrThrow();
     }
 
-    public function getClosedUserId(): int|string|null
+    public function getStatusAsString(): string
     {
-        return $this->closedUserId;
+        return (ToString::fromStringOrNull($this->status))->getStringOrThrowIfNull();
     }
 
-    public function getAmount(): ?string
+    public function getStatusAsEnum(): StatusEnum
     {
-        return $this->amount;
+        return StatusEnum::from($this->status);
     }
 
-    public function getAmountCashless(): ?string
+    public function getClosedUserId(): int
     {
-        return $this->amountCashless;
+        return (ToInt::fromIntOrStringOrNull($this->closed_user_id))->getPositiveIntOrThrow();
     }
 
-    public function setId(int|string|null $id): static
+    public function getAmount(): float
     {
-        $this->id = $id;
-        return $this;
+        return (float)$this->amount;
     }
 
-    public function setDate(?string $date): static
+    public function getAmountCashless(): float
     {
-        $this->date = $date;
-        return $this;
+        return ToFloat::fromStringOrNull($this->amount_cashless)->getFloatOrThrowIfNull();
     }
 
-    public function setCassaId(int|string|null $idCassa): static
+    public function setDateFromString(string $value): static
     {
-        $this->idCassa = $idCassa;
-        return $this;
+        return self::setPropertyFluently($this, 'date', $value);
     }
 
-    public function setStatus(?string $status): static
+    public function setDateFromDateTime(DateTime $value): static
     {
-        $this->status = $status;
-        return $this;
+        return self::setPropertyFluently($this, 'date', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setClosedUserId(int|string|null $closedUserId): static
+    public function setCassaId(int $value): static
     {
-        $this->closedUserId = $closedUserId;
-        return $this;
+        return self::setPropertyFluently($this, 'id_cassa', $value);
     }
 
-    public function setAmount(?string $amount): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        $this->amount = $amount;
-        return $this;
+        return self::setPropertyFluently($this, 'status', $value->value);
     }
 
-    public function setAmountCashless(?string $amountCashless): static
+    public function setStatusFromString(string $value): static
     {
-        $this->amountCashless = $amountCashless;
-        return $this;
+        return self::setPropertyFluently($this, 'status', $value);
+    }
+
+    public function setClosedUserId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'closed_user_id', $value);
+    }
+
+    public function setAmount(?float $value): static
+    {
+        return self::setPropertyFluently($this, 'amount', is_null($value) ? null : (string)$value);
+    }
+
+    public function setAmountCashless(float $value): static
+    {
+        return self::setPropertyFluently($this, 'amount_cashless', (string)$value);
     }
 }

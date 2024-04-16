@@ -1,7 +1,8 @@
 <?php
 
-namespace VetmanagerApiGateway\DTO\Payment;
+declare(strict_types=1);
 
+namespace VetmanagerApiGateway\DTO\Payment;
 
 use VetmanagerApiGateway\DTO\Cassa\CassaOnlyDto;
 use VetmanagerApiGateway\DTO\CassaClose\CassaCloseOnlyDto;
@@ -54,7 +55,7 @@ class PaymentPlusCassaAndCassaCloseDto extends PaymentOnlyDto
         );
     }
 
-    public function getCassa(): ?CassaOnlyDto
+    public function getCassa(): CassaOnlyDto
     {
         return $this->cassa;
     }

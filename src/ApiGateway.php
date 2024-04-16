@@ -114,6 +114,16 @@ final class ApiGateway
         return new Facade\Breed($this->getActiveRecordFactory());
     }
 
+    public function getCassa(): Facade\Cassa
+    {
+        return new Facade\Cassa($this->getActiveRecordFactory());
+    }
+
+    public function getCassaClose(): Facade\CassaClose
+    {
+        return new Facade\CassaClose($this->getActiveRecordFactory());
+    }
+
     public function getCity(): Facade\City
     {
         return new Facade\City($this->getActiveRecordFactory());
@@ -182,6 +192,11 @@ final class ApiGateway
     public function getMedicalCardByClient(): Facade\MedicalCardByClient
     {
         return new Facade\MedicalCardByClient($this->getActiveRecordFactory());
+    }
+
+    public function getPayment(): Facade\Payment
+    {
+        return new Facade\Payment($this->getActiveRecordFactory());
     }
 
     public function getPet(): Facade\Pet

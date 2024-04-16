@@ -1,38 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VetmanagerApiGateway\DTO\Payment;
 
 use DateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
 use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
-use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 
-/**
- * CREATE TABLE `payment` (
- * `id` int NOT NULL AUTO_INCREMENT,
- * `amount` decimal(25,10) DEFAULT NULL,
- * `status` enum('exec','save','deleted') DEFAULT NULL,
- * `cassa_id` int NOT NULL,
- * `cassaclose_id` int DEFAULT NULL,
- * `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- * `payed_user` int NOT NULL DEFAULT '0',
- * `description` varchar(255) NOT NULL DEFAULT '',
- * `payment_type` varchar(50) NOT NULL DEFAULT 'cash',
- * `invoice_id` int NOT NULL DEFAULT '0',
- * `parent_id` int NOT NULL DEFAULT '0',
- * PRIMARY KEY (`id`),
- * KEY `fk_payment_cassa` (`cassa_id`),
- * KEY `fk_payment_cassaclose` (`cassaclose_id`),
- * KEY `i_payment_create_date` (`create_date`),
- * KEY `i_payment_invoice` (`invoice_id`),
- * CONSTRAINT `fk_payment_cassaclose` FOREIGN KEY (`cassaclose_id`) REFERENCES `cassaclose` (`id`) ON UPDATE CASCADE,
- * CONSTRAINT `fk_payment_cassaclose_to_users` FOREIGN KEY (`cassaclose_id`) REFERENCES `cassaclose` (`id`) ON DELETE SET NULL
- * ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPRESSED
- */
-class PaymentOnlyDto extends AbstractDTO
+class PaymentOnlyDto extends AbstractDTO implements PaymentOnlyDtoInterface
 {
+    /**
+     * @param int|string|null $id
+     * @param string|null $amount
+     * @param string|null $status
+     * @param int|string|null $cassa_id
+     * @param int|string|null $cassaclose_id
+     * @param string|null $create_date
+     * @param int|string|null $payed_user
+     * @param string|null $description
+     * @param string|null $payment_type
+     * @param int|string|null $invoice_id
+     * @param int|string|null $parent_id
+     */
     public function __construct(
         public int|string|null $id,
         public ?string         $amount,
@@ -49,166 +41,138 @@ class PaymentOnlyDto extends AbstractDTO
     {
     }
 
-    /**
-     * @return positive-int
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getId(): int
     {
         return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
-    /** Бывают отрицательные значения. Пример "1982.0000000000", "-100.0000000000" */
     public function getAmount(): float
     {
         return (float)$this->amount;
     }
 
-    /** В БД предусмотрено, что может быть Null. На практике не видел Null */
     public function getStatusAsString(): ?string
     {
         return $this->status;
     }
 
-    /** В БД предусмотрено, что может быть Null. На практике не видел Null */
     public function getStatusAsEnum(): ?StatusEnum
     {
         return $this->status ? StatusEnum::from($this->status) : null;
     }
 
-    /**
-     * @return positive-int В БД Not Null
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getCassaId(): int
     {
         return (ToInt::fromIntOrStringOrNull($this->cassa_id))->getPositiveIntOrThrow();
     }
 
-    /**
-     * @return ?positive-int Может быть Null
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getCassaCloseId(): int|null
     {
         return (ToInt::fromIntOrStringOrNull($this->cassaclose_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function getCreateDateAsString(): ?string
+    public function getCreateDateAsString(): string
     {
-        return $this->create_date;
+        return (ToString::fromStringOrNull($this->create_date))->getStringOrThrowIfNull();
     }
 
-    /**
-     * @throws VetmanagerApiGatewayResponseException
-     */
     public function getCreateDateAsDateTime(): DateTime
     {
         return ToDateTime::fromOnlyDateString($this->create_date)->getDateTimeOrThrow();
     }
 
-    /** @return positive-int В БД по дефолту 0, но не видел такого
-     * @throws VetmanagerApiGatewayResponseException
-     */
-    public function getPayedUser(): int
+    public function getPayedUserId(): int
     {
         return (ToInt::fromIntOrStringOrNull($this->payed_user))->getPositiveIntOrThrow();
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
-        return $this->description;
+        return (ToString::fromStringOrNull($this->description))->getStringEvenIfNullGiven();
     }
 
-    public function getPaymentType(): ?string
+    public function getPaymentTypeAsString(): string
     {
-        return $this->payment_type;
+        return (ToString::fromStringOrNull($this->payment_type))->getStringOrThrowIfNull();
     }
 
-    public function getInvoiceId(): int|string|null
+    public function getPaymentTypeAsEnum(): PaymentEnum
     {
-        return $this->invoice_id;
+        return PaymentEnum::from($this->payment_type);
     }
 
-    public function getParentId(): int|string|null
+    public function getInvoiceId(): int|null
     {
-        return $this->parent_id;
+        return (ToInt::fromIntOrStringOrNull($this->invoice_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-
-    public function setId(int|string|null $id): static
+    public function getParentId(): int|null
     {
-        $this->id = $id;
-        return $this;
+        return (ToInt::fromIntOrStringOrNull($this->parent_id))->getPositiveIntOrNullOrThrowIfNegative();
     }
 
-    public function setAmount(?string $amount): static
+    public function setAmount(?float $value): static
     {
-        $this->amount = $amount;
-        return $this;
+        return self::setPropertyFluently($this, 'amount', $value);
     }
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
     public function setStatusFromString(?string $value): static
     {
         return self::setPropertyFluently($this, 'status', $value);
     }
 
-    /**
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function setStatusFromEnum(StatusEnum $value): static
+    public function setStatusFromEnum(?StatusEnum $value): static
     {
-        return self::setPropertyFluently($this, 'status', $value->value);
+        return self::setPropertyFluently($this, 'status', $value?->value);
     }
 
-    public function setCassaId(int|string|null $cassa_id): static
+    public function setCassaId(int $value): static
     {
-        $this->cassa_id = $cassa_id;
-        return $this;
+        return self::setPropertyFluently($this, 'cassa_id', $value);
     }
 
-    public function setCassaCloseId(int|string|null $cassaclose_id): static
+    public function setCassaCloseId(int|null $value): static
     {
-        $this->cassaclose_id = $cassaclose_id;
-        return $this;
+        return self::setPropertyFluently($this, 'cassaclose_id', $value);
     }
 
-    public function setCreateDate(?string $create_date): static
+    public function setCreateDateFromString(string $value): static
     {
-        $this->create_date = $create_date;
-        return $this;
+        return self::setPropertyFluently($this, 'create_date', $value);
     }
 
-    public function setPayedUser(int|string|null $payed_user): static
+    public function setCreateDateFromDateTime(DateTime $value): static
     {
-        $this->payed_user = $payed_user;
-        return $this;
+        return self::setPropertyFluently($this, 'create_date', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setDescription(?string $description): static
+    public function setPayedUserId(int $value): static
     {
-        $this->description = $description;
-        return $this;
+        return self::setPropertyFluently($this, 'payed_user', $value);
     }
 
-    public function setPaymentType(?string $payment_type): static
+    public function setDescription(string $value): static
     {
-        $this->payment_type = $payment_type;
-        return $this;
+        return self::setPropertyFluently($this, 'description', $value);
     }
 
-    public function setInvoiceId(int|string|null $invoice_id): static
+    public function setPaymentTypeFromString(?string $value): static
     {
-        $this->invoice_id = $invoice_id;
-        return $this;
+        return self::setPropertyFluently($this, 'payment_type', $value);
     }
 
-    public function setParentId(int|string|null $parent_id): static
+    public function setPaymentTypeFromEnum(?PaymentEnum $value): static
     {
-        $this->parent_id = $parent_id;
-        return $this;
+        return self::setPropertyFluently($this, 'payment_type', $value?->value);
+    }
+
+    public function setInvoiceId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'invoice_id', $value);
+    }
+
+    public function setParentId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'parent_id', $value);
     }
 }

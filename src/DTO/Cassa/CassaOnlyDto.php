@@ -4,32 +4,15 @@ declare(strict_types=1);
 
 namespace VetmanagerApiGateway\DTO\Cassa;
 
+use DateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToBool;
+use VetmanagerApiGateway\ApiDataInterpreter\ToDateTime;
+use VetmanagerApiGateway\ApiDataInterpreter\ToInt;
+use VetmanagerApiGateway\ApiDataInterpreter\ToString;
 use VetmanagerApiGateway\DTO\AbstractDTO;
+use VetmanagerApiGateway\DTO\Payment\StatusEnum;
 
-/**
- * CREATE TABLE `cassa` (
- * `id` int NOT NULL AUTO_INCREMENT,
- * `title` varchar(255) DEFAULT NULL,
- * `assigned_user_id` int NOT NULL,
- * `inventarization_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- * `client_cass` tinyint(1) DEFAULT '0',
- * `main_cassa` tinyint NOT NULL DEFAULT '0',
- * `is_blocked` int NOT NULL DEFAULT '0',
- * `has_unfinished_docs` int NOT NULL DEFAULT '0',
- * `status` enum('active','deactivated','deleted') NOT NULL DEFAULT 'active',
- * `clinic_id` int NOT NULL DEFAULT '0',
- * `summa_cash` decimal(25,10) NOT NULL DEFAULT '0.0000000000',
- * `summa_cashless` decimal(25,10) NOT NULL DEFAULT '0.0000000000',
- * `is_system` int NOT NULL DEFAULT '0',
- * `show_in_cashflow` int NOT NULL DEFAULT '1',
- * `type` enum('bank','safe','operating') NOT NULL DEFAULT 'safe',
- * `cashless_to_cassa_id` int NOT NULL DEFAULT '0',
- * PRIMARY KEY (`id`),
- * UNIQUE KEY `pk_cassa_title1` (`title`),
- * KEY `i_cassa_clinic_id` (`clinic_id`)
- * ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3
- */
-class CassaOnlyDto extends AbstractDTO
+class CassaOnlyDto extends AbstractDTO implements CassaOnlyDtoInterface
 {
     /**
      * @param int|string|null $id
@@ -37,17 +20,17 @@ class CassaOnlyDto extends AbstractDTO
      * @param int|string|null $assigned_user_id
      * @param string|null $inventarization_date
      * @param int|string|null $client_cass
-     * @param int|string|null $mainCassa
-     * @param int|string|null $isBlocked
-     * @param int|string|null $hasUnfinishedDocs
+     * @param int|string|null $main_cassa
+     * @param int|string|null $is_blocked
+     * @param int|string|null $has_unfinished_docs
      * @param string|null $status
-     * @param int|string|null $clinicId
-     * @param string|null $summaCash
-     * @param string|null $summaCashless
-     * @param int|string|null $isSystem
-     * @param int|string|null $showInCashflow
+     * @param int|string|null $clinic_id
+     * @param string|null $summa_cash
+     * @param string|null $summa_cashless
+     * @param int|string|null $is_system
+     * @param int|string|null $show_in_cashflow
      * @param string|null $type
-     * @param int|string|null $cashlessToCassaId
+     * @param int|string|null $cashless_to_cassa_id
      */
     public function __construct(
         public int|string|null $id,
@@ -55,194 +38,209 @@ class CassaOnlyDto extends AbstractDTO
         public int|string|null $assigned_user_id,
         public ?string         $inventarization_date,
         public int|string|null $client_cass,
-        public int|string|null $mainCassa,
-        public int|string|null $isBlocked,
-        public int|string|null $hasUnfinishedDocs,
+        public int|string|null $main_cassa,
+        public int|string|null $is_blocked,
+        public int|string|null $has_unfinished_docs,
         public ?string         $status,
-        public int|string|null $clinicId,
-        public ?string         $summaCash,
-        public ?string         $summaCashless,
-        public int|string|null $isSystem,
-        public int|string|null $showInCashflow,
+        public int|string|null $clinic_id,
+        public ?string         $summa_cash,
+        public ?string         $summa_cashless,
+        public int|string|null $is_system,
+        public int|string|null $show_in_cashflow,
         public ?string         $type,
-        public int|string|null $cashlessToCassaId
+        public int|string|null $cashless_to_cassa_id
     )
     {
     }
 
-    public function getId(): int|string|null
+    public function getId(): int
     {
-        return $this->id;
+        return (ToInt::fromIntOrStringOrNull($this->id))->getPositiveIntOrThrow();
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
-        return $this->title;
+        return (ToString::fromStringOrNull($this->title))->getStringEvenIfNullGiven();
     }
 
-    public function getAssignedUserid(): int|string|null
+    public function getAssignedUserId(): int
     {
-        return $this->assigned_user_id;
+        return (ToInt::fromIntOrStringOrNull($this->assigned_user_id))->getPositiveIntOrThrow();
     }
 
-    public function getInventarizationDate(): ?string
+    public function getInventarizationDateAsString(): string
     {
-        return $this->inventarization_date;
+        return (ToString::fromStringOrNull($this->inventarization_date))->getStringOrThrowIfNull();
     }
 
-    public function getClientCass(): int|string|null
+    public function getInventarizationDateAsDateTime(): DateTime
     {
-        return $this->client_cass;
+        return ToDateTime::fromOnlyDateString($this->inventarization_date)->getDateTimeOrThrow();
     }
 
-    public function getMainCassa(): int|string|null
+    public function getIsClientCassa(): ?bool
     {
-        return $this->mainCassa;
+        return ToBool::fromIntOrNull($this->client_cass)->getBoolOrNull();
     }
 
-    public function getIsBlocked(): int|string|null
+    public function getIsMainCassa(): bool
     {
-        return $this->isBlocked;
+        return ToBool::fromIntOrNull($this->main_cassa)->getBoolOrThrowIfNull();
     }
 
-    public function getHasUnfinishedDocs(): int|string|null
+    public function getIsBlocked(): bool
     {
-        return $this->hasUnfinishedDocs;
+        return ToBool::fromIntOrNull($this->is_blocked)->getBoolOrThrowIfNull();
     }
 
-    public function getStatus(): ?string
+    public function getHasUnfinishedDocs(): bool
     {
-        return $this->status;
+        return ToBool::fromIntOrNull($this->has_unfinished_docs)->getBoolOrThrowIfNull();
     }
 
-    public function getClinicId(): int|string|null
+    public function getStatusAsString(): string
     {
-        return $this->clinicId;
+        return (ToString::fromStringOrNull($this->status))->getStringOrThrowIfNull();
     }
 
-    public function getSummaCash(): ?string
+    public function getStatusAsEnum(): StatusEnum
     {
-        return $this->summaCash;
+        return StatusEnum::from($this->status);
     }
 
-    public function getSummaCashless(): ?string
+    public function getClinicId(): int
     {
-        return $this->summaCashless;
+        return (ToInt::fromIntOrStringOrNull($this->clinic_id))->getPositiveIntOrThrow();
     }
 
-    public function getIsSystem(): int|string|null
+    public function getSummaCash(): float
     {
-        return $this->isSystem;
+        return (float)$this->summa_cash;
     }
 
-    public function getShowInCashflow(): int|string|null
+    public function getSummaCashless(): float
     {
-        return $this->showInCashflow;
+        return (float)$this->summa_cashless;
     }
 
-    public function getType(): ?string
+    public function getIsSystem(): bool
     {
-        return $this->type;
+        return ToBool::fromIntOrNull($this->is_system)->getBoolOrThrowIfNull();
     }
 
-    public function getCashlessToCassaId(): int|string|null
+    public function getShowInCashFlow(): bool
     {
-        return $this->cashlessToCassaId;
+        return ToBool::fromIntOrNull($this->show_in_cashflow)->getBoolOrThrowIfNull();
     }
 
-    public function setId(int|string|null $id): static
+    public function getTypeAsString(): string
     {
-        $this->id = $id;
-        return $this;
+        return (ToString::fromStringOrNull($this->type))->getStringOrThrowIfNull();
     }
 
-    public function setTitle(?string $title): static
+    public function getTypeAsEnum(): TypeEnum
     {
-        $this->title = $title;
-        return $this;
+        return TypeEnum::from($this->type);
     }
 
-    public function setAssignedUserid(int|string|null $assigned_user_id): static
+    public function getCashlessToCassaId(): int
     {
-        $this->assigned_user_id = $assigned_user_id;
-        return $this;
+        return (ToInt::fromIntOrStringOrNull($this->cashless_to_cassa_id))->getPositiveIntOrThrow();
     }
 
-    public function setInventarizationDate(?string $inventarization_date): static
+    public function setTitle(?string $value): static
     {
-        $this->inventarization_date = $inventarization_date;
-        return $this;
+        return self::setPropertyFluently($this, 'title', $value);
     }
 
-    public function setClientCass(int|string|null $client_cass): static
+    public function setAssignedUserId(int $value): static
     {
-        $this->client_cass = $client_cass;
-        return $this;
+        return self::setPropertyFluently($this, 'assigned_user_id', $value);
     }
 
-    public function setMainCassa(int|string|null $mainCassa): static
+    public function setInventarizationDateFromString(string $value): static
     {
-        $this->mainCassa = $mainCassa;
-        return $this;
+        return self::setPropertyFluently($this, 'inventarization_date', $value);
     }
 
-    public function setIsBlocked(int|string|null $isBlocked): static
+    public function setInventarizationDateFromDateTime(DateTime $value): static
     {
-        $this->isBlocked = $isBlocked;
-        return $this;
+        return self::setPropertyFluently($this, 'inventarization_date', $value->format('Y-m-d H:i:s'));
     }
 
-    public function setHasUnfinishedDocs(int|string|null $hasUnfinishedDocs): static
+    public function setIsClientCassa(?bool $value): static
     {
-        $this->hasUnfinishedDocs = $hasUnfinishedDocs;
-        return $this;
+        if (is_null($value)) {
+            $valueToWrite = null;
+        } else {
+            $valueToWrite = $value ? 1 : 0;
+        }
+
+        return self::setPropertyFluently($this, 'client_cass', $valueToWrite);
     }
 
-    public function setStatus(?string $status): static
+    public function setMainCassa(bool $value): static
     {
-        $this->status = $status;
-        return $this;
+        return self::setPropertyFluently($this, 'main_cassa', $value ? 1 : 0);
     }
 
-    public function setClinicId(int|string|null $clinicId): static
+    public function setIsBlocked(bool $value): static
     {
-        $this->clinicId = $clinicId;
-        return $this;
+        return self::setPropertyFluently($this, 'is_blocked', $value ? 1 : 0);
     }
 
-    public function setSummaCash(?string $summaCash): static
+    public function setHasUnfinishedDocs(bool $value): static
     {
-        $this->summaCash = $summaCash;
-        return $this;
+        return self::setPropertyFluently($this, 'has_unfinished_docs', $value ? 1 : 0);
     }
 
-    public function setSummaCashless(?string $summaCashless): static
+    public function setStatusFromEnum(StatusEnum $value): static
     {
-        $this->summaCashless = $summaCashless;
-        return $this;
+        return self::setPropertyFluently($this, 'status', $value->value);
     }
 
-    public function setIsSystem(int|string|null $isSystem): static
+    public function setStatusFromString(string $value): static
     {
-        $this->isSystem = $isSystem;
-        return $this;
+        return self::setPropertyFluently($this, 'status', $value);
     }
 
-    public function setShowInCashflow(int|string|null $showInCashflow): static
+    public function setClinicId(int $value): static
     {
-        $this->showInCashflow = $showInCashflow;
-        return $this;
+        return self::setPropertyFluently($this, 'clinic_id', $value);
     }
 
-    public function setType(?string $type): static
+    public function setSummaCash(float $value): static
     {
-        $this->type = $type;
-        return $this;
+        return self::setPropertyFluently($this, 'summa_cash', (string)$value);
     }
 
-    public function setCashlessToCassaId(int|string|null $cashlessToCassaId): static
+    public function setSummaCashless(float $value): static
     {
-        $this->cashlessToCassaId = $cashlessToCassaId;
-        return $this;
+        return self::setPropertyFluently($this, 'summa_cashless', (string)$value);
+    }
+
+    public function setIsSystem(bool $value): static
+    {
+        return self::setPropertyFluently($this, 'is_system', $value ? 1 : 0);
+    }
+
+    public function setShowInCashFlow(bool $value): static
+    {
+        return self::setPropertyFluently($this, 'show_in_cashflow', $value ? 1 : 0);
+    }
+
+    public function setTypeFromEnum(TypeEnum $value): static
+    {
+        return self::setPropertyFluently($this, 'type', $value->value);
+    }
+
+    public function setTypeFromString(?string $value): static
+    {
+        return self::setPropertyFluently($this, 'type', $value);
+    }
+
+    public function setCashlessToCassaId(int $value): static
+    {
+        return self::setPropertyFluently($this, 'cashless_to_cassa_id', $value);
     }
 }

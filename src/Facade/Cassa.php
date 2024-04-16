@@ -9,22 +9,22 @@ use VetmanagerApiGateway\ActiveRecord;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
-class Payment extends AbstractFacade implements AllRequestsInterface
+class Cassa extends AbstractFacade implements AllRequestsInterface
 {
-    /** @return class-string<ActiveRecord\Payment\PaymentOnly> */
-    public static function getBasicActiveRecord(): string
+    /** @return class-string<ActiveRecord\Cassa\Cassa> */
+    static public function getBasicActiveRecord(): string
     {
-        return ActiveRecord\Payment\PaymentOnly::class;
+        return ActiveRecord\Cassa\Cassa::class;
     }
 
     /** @inheritDoc */
-    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Payment\AbstractPayment
+    public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\Cassa\Cassa
     {
         return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, self::getBasicActiveRecord());
     }
 
     /** @inheritDoc
-     * @return ActiveRecord\Payment\AbstractPayment[]
+     * @return ActiveRecord\Cassa\Cassa[]
      */
     public function fromMultipleModelsAsArrays(array $modelsAsArray): array
     {
@@ -32,57 +32,57 @@ class Payment extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Payment\PaymentPlusCassaAndCassaClose
+    public function getById(int $id): ActiveRecord\Cassa\Cassa
     {
-        return $this->protectedGetById(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $id);
+        return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
 
-    /**
-     * @return ActiveRecord\Payment\PaymentPlusCassaAndCassaClose[]
+    /** @return ActiveRecord\Cassa\Cassa[]
      * @throws VetmanagerApiGatewayException
      */
     public function getAll(int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetAll(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $maxLimitOfReturnedModels);
+        return $this->protectedGetAll(ActiveRecord\Cassa\Cassa::class, $maxLimitOfReturnedModels);
     }
 
-    /**
-     * @return ActiveRecord\Payment\PaymentPlusCassaAndCassaClose[]
+    /** @return ActiveRecord\Cassa\Cassa[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByPagedQuery(PagedQuery $pagedQuery, int $maxLimitOfReturnedModels = 100): array
     {
-        return $this->protectedGetByPagedQuery(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $pagedQuery, $maxLimitOfReturnedModels);
+        return $this->protectedGetByPagedQuery(ActiveRecord\Cassa\Cassa::class, $pagedQuery, $maxLimitOfReturnedModels);
     }
 
-    /** @return ActiveRecord\Payment\PaymentPlusCassaAndCassaClose[]
+    /** @return ActiveRecord\Cassa\Cassa[]
      * @throws VetmanagerApiGatewayException
      */
     public function getByQueryBuilder(Builder $builder, int $maxLimitOfReturnedModels = 100, int $pageNumber = 0): array
     {
-        return $this->protectedGetByQueryBuilder(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
+        return $this->protectedGetByQueryBuilder(ActiveRecord\Cassa\Cassa::class, $builder, $maxLimitOfReturnedModels, $pageNumber);
     }
 
-    /** @throws VetmanagerApiGatewayException */
+    /** @return ActiveRecord\Cassa\Cassa[]
+     * @throws VetmanagerApiGatewayException
+     */
     public function getByGetParametersAsString(string $getParameters): array
     {
-        return $this->protectedGetByGetParametersAsString(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $getParameters);
+        return $this->protectedGetByGetParametersAsString(ActiveRecord\Cassa\Cassa::class, $getParameters);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getNewEmpty(): ActiveRecord\Payment\PaymentOnly
+    public function getNewEmpty(): ActiveRecord\Cassa\Cassa
     {
         return $this->protectedGetNewEmpty();
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Payment\PaymentOnly
+    public function createNewUsingArray(array $modelAsArray): ActiveRecord\Cassa\Cassa
     {
         return $this->protectedCreateNewUsingArray($modelAsArray);
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Payment\PaymentOnly
+    public function updateUsingIdAndArray(int $id, array $modelAsArray): ActiveRecord\Cassa\Cassa
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
