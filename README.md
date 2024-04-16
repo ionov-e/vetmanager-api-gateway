@@ -10,7 +10,7 @@
 5) удобство для реализации кеширования: возможность предоставление модели в виде массива, и создание модели из массива;
 6) унификация работы с моделями вне зависимости от способа получения.
 
-[Используется в основе библиотека для составление Query для АПИ-запросов Vetmanager](https://github.com/otis22/vetmanager-rest-api) -
+[Используется в основе библиотека для составления Query для АПИ-запросов Vetmanager](https://github.com/otis22/vetmanager-rest-api) -
 тут же документация к использованию классов для сложных АПИ-запросов: Builder и PagedQuery
 
 [Vetmanager REST API Docs](https://help.vetmanager.cloud/article/3029)
@@ -369,8 +369,8 @@ $clientAsArray = $apiGateway->getClient()->getById(13)->getAsArray();
 $clientFullName = VetmanagerApiGateway\ApiGateway::fromSubdomainAndApiKey('subDomain', 'apiKey', true)->getClient()->getById(9)->getFullName();
 echo $clientFullName->getFullStartingWithFirst();// Возвращает: "Имя Отчество Фамилия"
 echo $clientFullName->getFullStartingWithLast(); // Возвращает: "Фамилия Имя Отчество"
-echo $clientFullName->getInitials();             // Возвращает: "Фамилия И. О."
-echo $clientFullName->getLastPlusInitials();     // Возвращает: "Ф. И. О."
+echo $clientFullName->getLastPlusInitials();     // Возвращает: "Фамилия И. О."
+echo $clientFullName->getInitials();             // Возвращает: "Ф. И. О."
 ```
 
 Если, предположим, отчества не будет, то каждый из методов просто пропустит слово без создания лишних пробелов, точек и
@@ -404,7 +404,8 @@ $bool3 = $apiGateway->getClinic()->getById(13)->getIsOnlineSigningUpAvailable();
 
 #### Используемые библиотеки
 
-* **Symfony Serializer** - Для создания DTO из массива данных (десериализованный JSON) и обртного процесса (норамализации)
+* **Symfony Serializer** - Для создания DTO из массива данных (десериализованный JSON) и обратного процесса (
+  нормализации)
 * **Guzzle HTTP client** - Для всех используемых запросов
 * **vetmanager-rest-api** - Помощник с Query-запросами АПИ Ветменджера
 
