@@ -245,6 +245,11 @@ final class Clinic extends AbstractActiveRecord implements ClinicOnlyDtoInterfac
         return (new FullPhone($phonePrefix ?? '', $this->getPhone(), $phoneMask ?? ''));
     }
 
+    public function getPhoneDisguisedWithAsterisksAndLastThreeDigits(): string
+    {
+        return '******' . substr($this->getPhone(), -3);
+    }
+
     /** @throws VetmanagerApiGatewayException */
     public function getIsOnlineSigningUpAvailable(): bool
     {

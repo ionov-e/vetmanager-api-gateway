@@ -460,6 +460,11 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return (new FullPhone($this->getPhonePrefix(), $this->getCellPhone(), '(___)-__-__-__'));
     }
 
+    public function getCellPhoneDisguisedWithAsterisksAndLastThreeDigits(): string
+    {
+        return '******' . substr($this->getCellPhone(), -3);
+    }
+
     /** @return MedicalCardByClient[]
      * @throws VetmanagerApiGatewayException
      */
