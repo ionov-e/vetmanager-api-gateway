@@ -66,6 +66,20 @@ class FullNameTest extends TestCase
         ];
     }
 
+    public static function casesProviderForDisguisedType1(): array
+    {
+        return [
+            ['Имя', 'Отчество', 'Фамилия', 'Имя От** Фа**'],
+            ['Имя', 'Отчество', '', 'Имя От**'],
+            ['Имя', '', 'Фамилия', 'Имя Фа**'],
+            ['', 'Отчество', 'Фамилия', 'От** Фа**'],
+            ['', '', 'Фамилия', 'Фа**'],
+            ['Имя', '', '', 'Имя'],
+            ['', 'Отчество', '', 'От**'],
+            ['', '', '', ''],
+        ];
+    }
+
     #[DataProvider('casesProviderForFullStartingWithLast')]
     public function testFullStartingWithLast(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
     {
@@ -102,6 +116,16 @@ class FullNameTest extends TestCase
         $this->assertEquals(
             $expected,
             (new FullName($first, $middle, $last))->getInitials(),
+            $errorMessage
+        );
+    }
+
+    #[DataProvider('casesProviderForDisguisedType1')]
+    public function testAsDisguisedType1(string $first, string $middle, string $last, string $expected, string $errorMessage = ''): void
+    {
+        $this->assertEquals(
+            $expected,
+            (new FullName($first, $middle, $last))->getAsDisguisedType1(),
             $errorMessage
         );
     }

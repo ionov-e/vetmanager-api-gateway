@@ -69,6 +69,21 @@ final class FullName
         );
     }
 
+    /** Возвращает: "Фамилия Им** От**". Но если чего-то не будет - вернет без этого слова и без лишних пробелов (и звездочек) */
+    public function getAsDisguisedType1(): string
+    {
+        return $this->getAsStringSeperatedBySpaces(
+            $this->first,
+            $this->getFirstTwoLettersPlusTwoAsterisks($this->middle),
+            $this->getFirstTwoLettersPlusTwoAsterisks($this->last),
+        );
+    }
+
+    private function getFirstTwoLettersPlusTwoAsterisks(?string $string): string
+    {
+        return ($string) ? mb_substr($string, 0, 2) . '**' : '';
+    }
+
     private function addItemToStringSeperatedBySpaces(?string $carry, ?string $item): string
     {
         if (empty($item)) {
