@@ -86,4 +86,14 @@ class Payment extends AbstractFacade implements AllRequestsInterface
     {
         return $this->protectedUpdateUsingIdAndArray($id, $modelAsArray);
     }
+
+    /**
+     * @return ActiveRecord\Payment\AbstractPayment[]
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getByInvoiceId(int $invoiceId, string $additionalGetParameters = ''): array
+    {
+        $additionalGetParametersWithAmpersandOrNothing = $additionalGetParameters ? "&{$additionalGetParameters}" : '';
+        return $this->getByGetParametersAsString("invoice_id={$invoiceId}{$additionalGetParametersWithAmpersandOrNothing}");
+    }
 }

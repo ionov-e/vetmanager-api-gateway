@@ -11,6 +11,7 @@ use VetmanagerApiGateway\ActiveRecord\Client\AbstractClient;
 use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
 use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
 use VetmanagerApiGateway\ActiveRecord\InvoiceDocument\AbstractInvoiceDocument;
+use VetmanagerApiGateway\ActiveRecord\Payment\AbstractPayment;
 use VetmanagerApiGateway\ActiveRecord\Pet\AbstractPet;
 use VetmanagerApiGateway\ActiveRecord\PetType\AbstractPetType;
 use VetmanagerApiGateway\ActiveRecord\User\AbstractUser;
@@ -20,6 +21,7 @@ use VetmanagerApiGateway\DTO\Invoice\InvoiceOnlyDtoInterface;
 use VetmanagerApiGateway\DTO\Invoice\PaymentStatusEnum;
 use VetmanagerApiGateway\DTO\Invoice\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
+use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 use VetmanagerApiGateway\Facade;
 
 abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOnlyDtoInterface, CreatableInterface, DeletableInterface
@@ -330,6 +332,16 @@ abstract class AbstractInvoice extends AbstractActiveRecord implements InvoiceOn
     public function setFiscalSectionId(?int $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setFiscalSectionId($value));
+    }
+
+    /**
+     * @return AbstractPayment[]
+     * @throws VetmanagerApiGatewayResponseException
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getPayments(): array
+    {
+        return (new Facade\Payment($this->activeRecordFactory))->getByInvoiceId($this->getId());
     }
 
     abstract public function getClient(): AbstractClient;

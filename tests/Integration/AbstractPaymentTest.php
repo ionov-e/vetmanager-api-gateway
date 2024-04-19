@@ -33,4 +33,23 @@ class AbstractPaymentTest extends TestCase
         $this->assertIsInt($activeRecord->getCassaId());
         $this->assertInstanceOf(VetmanagerApiGateway\ActiveRecord\Cassa\Cassa::class, $activeRecord->getCassa());
     }
+
+    /**
+     * @throws VetmanagerApiGatewayRequestException
+     * @throws VetmanagerApiGatewayException
+     */
+    public function testGetByInvoiceId(): void
+    {
+        $randomInvoiceId = 1;
+        $activeRecords = $this->apiGateway->getPayment()->getByInvoiceId($randomInvoiceId);
+
+        if (empty($activeRecords)) {
+            $this->markTestSkipped('Заглушка: может случиться, что на сервере нет у Счета Оплат. Но ниже строки работали');
+        }
+
+        $activeRecord = $activeRecords[0];
+        $this->assertIsString($activeRecord->getDescription());
+        $this->assertIsInt($activeRecord->getCassaId());
+        $this->assertInstanceOf(VetmanagerApiGateway\ActiveRecord\Cassa\Cassa::class, $activeRecord->getCassa());
+    }
 }

@@ -10,6 +10,8 @@ use VetmanagerApiGateway\ActiveRecord\Cassa\Cassa;
 use VetmanagerApiGateway\ActiveRecord\CassaClose\AbstractCassaClose;
 use VetmanagerApiGateway\ActiveRecord\CreatableInterface;
 use VetmanagerApiGateway\ActiveRecord\DeletableInterface;
+use VetmanagerApiGateway\ActiveRecord\Invoice\AbstractInvoice;
+use VetmanagerApiGateway\ActiveRecord\User\AbstractUser;
 use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Payment\PaymentEnum;
 use VetmanagerApiGateway\DTO\Payment\PaymentOnlyDto;
@@ -273,5 +275,25 @@ abstract class AbstractPayment extends AbstractActiveRecord implements PaymentOn
         return $this->getParentId()
             ? (new Facade\Payment($this->activeRecordFactory))->getById($this->getParentId())
             : null;
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayResponseException
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getInvoice(): ?AbstractInvoice
+    {
+        return $this->getInvoiceId()
+            ? (new Facade\Invoice($this->activeRecordFactory))->getById($this->getInvoiceId())
+            : null;
+    }
+
+    /**
+     * @throws VetmanagerApiGatewayException
+     * @throws VetmanagerApiGatewayResponseException
+     */
+    public function getPayedUser(): AbstractUser
+    {
+        return (new Facade\User($this->activeRecordFactory))->getById($this->getPayedUserId());
     }
 }
