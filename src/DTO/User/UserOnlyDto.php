@@ -30,8 +30,6 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
      * @param int|string|null $is_active Default: 0
      * @param int|string|null $calc_percents Default:
      * @param string|null $nickname
-     * @param string|null $youtrack_login Не должен существовать, но на тестовом есть
-     * @param string|null $youtrack_password Не должен существовать, но на тестовом есть
      * @param string|null $last_change_pwd_date
      * @param int|string|null $is_limited Default: 0
      * @param string|null $carrotquest_id
@@ -54,8 +52,6 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         protected int|string|null $is_active,
         protected int|string|null $calc_percents,
         protected ?string         $nickname,
-        protected ?string         $youtrack_login = null,
-        protected ?string         $youtrack_password = null,
         protected ?string         $last_change_pwd_date,
         protected int|string|null $is_limited,
         protected ?string         $carrotquest_id,
@@ -138,16 +134,6 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
     public function getNickname(): string
     {
         return ToString::fromStringOrNull($this->nickname)->getStringEvenIfNullGiven();
-    }
-
-    public function getYoutrackLogin(): string
-    {
-        return ToString::fromStringOrNull($this->youtrack_login)->getStringEvenIfNullGiven();
-    }
-
-    public function getYoutrackPassword(): string
-    {
-        return ToString::fromStringOrNull($this->youtrack_password)->getStringEvenIfNullGiven();
     }
 
     public function getLastChangePwdDateAsString(): ?string
@@ -250,16 +236,6 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
     public function setNickname(?string $value): static
     {
         return self::setPropertyFluently($this, 'nickname', $value);
-    }
-
-    public function setYoutrackLogin(?string $value): static
-    {
-        return self::setPropertyFluently($this, 'youtrack_login', $value);
-    }
-
-    public function setYoutrackPassword(?string $value): static
-    {
-        return self::setPropertyFluently($this, 'youtrack_password', $value);
     }
 
     public function setLastChangePwdDateFromString(?string $value): static

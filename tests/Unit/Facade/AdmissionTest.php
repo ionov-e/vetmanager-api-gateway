@@ -120,8 +120,6 @@ class AdmissionTest extends TestCase
         "is_active": 1,
         "calc_percents": 1,
         "nickname": "admin",
-        "youtrack_login": "",
-        "youtrack_password": "",
         "last_change_pwd_date": "0000-00-00",
         "is_limited": 0,
         "carrotquest_id": "petstorys:1",

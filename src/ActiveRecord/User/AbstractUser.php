@@ -186,18 +186,6 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     }
 
     /** @inheritDoc */
-    public function getYoutrackLogin(): string
-    {
-        return $this->modelDTO->getYoutrackLogin();
-    }
-
-    /** @inheritDoc */
-    public function getYoutrackPassword(): string
-    {
-        return $this->modelDTO->getYoutrackPassword();
-    }
-
-    /** @inheritDoc */
     public function getLastChangePwdDateAsString(): ?string
     {
         return $this->modelDTO->getLastChangePwdDateAsString();
@@ -313,18 +301,6 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
     public function setNickname(?string $value): static
     {
         return self::setNewModelDtoFluently($this, $this->modelDTO->setNickname($value));
-    }
-
-    /** @inheritDoc */
-    public function setYoutrackLogin(?string $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setYoutrackLogin($value));
-    }
-
-    /** @inheritDoc */
-    public function setYoutrackPassword(?string $value): static
-    {
-        return self::setNewModelDtoFluently($this, $this->modelDTO->setYoutrackPassword($value));
     }
 
     /** @inheritDoc */

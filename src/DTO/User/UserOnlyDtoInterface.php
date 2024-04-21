@@ -43,10 +43,6 @@ interface UserOnlyDtoInterface
 
     public function getNickname(): string;
 
-    public function getYoutrackLogin(): string;
-
-    public function getYoutrackPassword(): string;
-
     public function getLastChangePwdDateAsString(): ?string;
 
     /** @throws VetmanagerApiGatewayResponseException */
@@ -101,16 +97,6 @@ interface UserOnlyDtoInterface
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setNickname(?string $value): static;
-
-    /** Не уверен, что существует поле на продакшене
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function setYoutrackLogin(?string $value): static;
-
-    /** Не уверен, что существует поле на продакшене
-     * @throws VetmanagerApiGatewayInnerException
-     */
-    public function setYoutrackPassword(?string $value): static;
 
     /** @throws VetmanagerApiGatewayInnerException */
     public function setLastChangePwdDateFromString(?string $value): static;

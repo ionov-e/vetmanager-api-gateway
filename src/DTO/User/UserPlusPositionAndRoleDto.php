@@ -25,8 +25,6 @@ final class UserPlusPositionAndRoleDto extends UserOnlyDto
      * @param int|string|null $is_active
      * @param int|string|null $calc_percents
      * @param string|null $nickname
-     * @param string|null $youtrack_login
-     * @param string|null $youtrack_password
      * @param string|null $last_change_pwd_date
      * @param int|string|null $is_limited
      * @param string|null $carrotquest_id
@@ -51,8 +49,6 @@ final class UserPlusPositionAndRoleDto extends UserOnlyDto
         protected int|string|null $is_active,
         protected int|string|null $calc_percents,
         protected ?string             $nickname,
-        protected ?string             $youtrack_login,
-        protected ?string             $youtrack_password,
         protected ?string             $last_change_pwd_date,
         protected int|string|null $is_limited,
         protected ?string             $carrotquest_id,
@@ -78,8 +74,6 @@ final class UserPlusPositionAndRoleDto extends UserOnlyDto
             $is_active,
             $calc_percents,
             $nickname,
-            $youtrack_login,
-            $youtrack_password,
             $last_change_pwd_date,
             $is_limited,
             $carrotquest_id,
