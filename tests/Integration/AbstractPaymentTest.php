@@ -28,6 +28,11 @@ class AbstractPaymentTest extends TestCase
     public function testActiveRecord(): void
     {
         $activeRecords = $this->apiGateway->getPayment()->getAll();
+
+        if (empty($activeRecords)) {
+            $this->markTestSkipped('Заглушка: может случиться, что на сервере нет Счетов вообще. Но ниже строки работали');
+        }
+
         $activeRecord = $activeRecords[0];
         $this->assertIsString($activeRecord->getDescription());
         $this->assertIsInt($activeRecord->getCassaId());
