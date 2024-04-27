@@ -32,7 +32,7 @@ class UserPosition extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\UserPosition\UserPosition
+    public function getById(int $id): ?ActiveRecord\UserPosition\UserPosition
     {
         return $this->protectedGetById(ActiveRecord\UserPosition\UserPosition::class, $id);
     }

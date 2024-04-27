@@ -37,6 +37,21 @@ class ActiveRecordFactory
     }
 
     /**
+     * Used for get by ID method (if ID is nonexistent - array will be empty)
+     * @param class-string<TActiveRecord> $activeRecordClass
+     * @psalm-return ?TActiveRecord
+     * @throws VetmanagerApiGatewayException
+     */
+    public function getFromSingleModelAsArrayButNullIfFromEmptyArray(array $modelAsArray, string $activeRecordClass): ?AbstractActiveRecord
+    {
+        if (empty($modelAsArray)) {
+            return null;
+        }
+
+        return $this->getFromSingleModelAsArray($modelAsArray, $activeRecordClass);
+    }
+
+    /**
      * @param class-string<TActiveRecord> $activeRecordClass
      * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException

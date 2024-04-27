@@ -40,12 +40,12 @@ abstract class AbstractFacade
      * @psalm-return TActiveRecord
      * @throws VetmanagerApiGatewayException
      */
-    protected function protectedGetById(string $activeRecordClass, int $id): AbstractActiveRecord
+    protected function protectedGetById(string $activeRecordClass, int $id): ?AbstractActiveRecord
     {
         $modelKeyInResponse = $activeRecordClass::getModelKeyInResponseFromActiveRecordClass($activeRecordClass);
         $modelRouteKey = $activeRecordClass::getModelRouteKeyFromActiveRecordClass($activeRecordClass);
         $modelAsArray = $this->activeRecordFactory->apiService->getModelById($modelKeyInResponse, $modelRouteKey, $id);
-        return $this->activeRecordFactory->getFromSingleModelAsArray($modelAsArray, $activeRecordClass);
+        return $this->activeRecordFactory->getFromSingleModelAsArrayButNullIfFromEmptyArray($modelAsArray, $activeRecordClass);
     }
 
     /**

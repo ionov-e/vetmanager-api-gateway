@@ -32,7 +32,7 @@ class Role extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Role\Role
+    public function getById(int $id): ?ActiveRecord\Role\Role
     {
         return $this->protectedGetById(ActiveRecord\Role\Role::class, $id);
     }

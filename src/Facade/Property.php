@@ -32,7 +32,7 @@ class Property extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Property\Property
+    public function getById(int $id): ?ActiveRecord\Property\Property
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }

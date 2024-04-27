@@ -9,5 +9,5 @@ use VetmanagerApiGateway\ActiveRecord\AbstractActiveRecord;
 interface RequestGetByIdInterface
 {
     /** Получение модели (используя ID модели) по АПИ Get-запросу */
-    public function getById(int $id): AbstractActiveRecord;
+    public function getById(int $id): ?AbstractActiveRecord;
 }

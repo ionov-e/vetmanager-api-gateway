@@ -57,4 +57,15 @@ class AbstractPaymentTest extends TestCase
         $this->assertIsInt($activeRecord->getCassaId());
         $this->assertInstanceOf(VetmanagerApiGateway\ActiveRecord\Cassa\Cassa::class, $activeRecord->getCassa());
     }
+
+    /**
+     * @throws VetmanagerApiGatewayException
+     * @throws \VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException
+     */
+    public function testGetByIdWithNonExistingId(): void
+    {
+        $nonExistingId = 999999;
+        $activeRecord = $this->apiGateway->getPayment()->getById($nonExistingId);
+        $this->assertNull($activeRecord);
+    }
 }

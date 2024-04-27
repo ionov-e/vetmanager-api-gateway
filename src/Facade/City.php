@@ -32,7 +32,7 @@ class City extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\City\City
+    public function getById(int $id): ?ActiveRecord\City\City
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }

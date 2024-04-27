@@ -32,7 +32,7 @@ class Pet extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor
+    public function getById(int $id): ?ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor
     {
         return $this->protectedGetById(ActiveRecord\Pet\PetPlusOwnerAndTypeAndBreedAndColor::class, $id);
     }

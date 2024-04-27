@@ -32,7 +32,7 @@ class Unit extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Unit\Unit
+    public function getById(int $id): ?ActiveRecord\Unit\Unit
     {
         return $this->protectedGetById(ActiveRecord\Unit\Unit::class, $id);
     }

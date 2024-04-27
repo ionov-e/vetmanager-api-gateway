@@ -32,7 +32,7 @@ class GoodSaleParam extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\GoodSaleParam\GoodSaleParamPlusUnitAndGood
+    public function getById(int $id): ?ActiveRecord\GoodSaleParam\GoodSaleParamPlusUnitAndGood
     {
         return $this->protectedGetById(ActiveRecord\GoodSaleParam\GoodSaleParamPlusUnitAndGood::class, $id);
     }

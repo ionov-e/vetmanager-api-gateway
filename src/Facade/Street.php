@@ -33,7 +33,7 @@ class Street extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Street\StreetPlusCity
+    public function getById(int $id): ?ActiveRecord\Street\StreetPlusCity
     {
         return $this->protectedGetById(ActiveRecord\Street\StreetPlusCity::class, $id);
     }

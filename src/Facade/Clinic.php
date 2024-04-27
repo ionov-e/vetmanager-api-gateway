@@ -32,7 +32,7 @@ class Clinic extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Clinic\Clinic
+    public function getById(int $id): ?ActiveRecord\Clinic\Clinic
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }

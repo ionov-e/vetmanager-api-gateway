@@ -35,7 +35,7 @@ class Client extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ClientPlusTypeAndCity
+    public function getById(int $id): ?ClientPlusTypeAndCity
     {
         return $this->protectedGetById(ClientPlusTypeAndCity::class, $id);
     }

@@ -33,7 +33,7 @@ class Invoice extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Invoice\InvoicePlusClientAndPetAndDoctorAndDocuments
+    public function getById(int $id): ?ActiveRecord\Invoice\InvoicePlusClientAndPetAndDoctorAndDocuments
     {
         return $this->protectedGetById(InvoicePlusClientAndPetAndDoctorAndDocuments::class, $id);
     }

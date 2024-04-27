@@ -32,7 +32,7 @@ class Payment extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\Payment\PaymentPlusCassaAndCassaClose
+    public function getById(int $id): ?ActiveRecord\Payment\PaymentPlusCassaAndCassaClose
     {
         return $this->protectedGetById(ActiveRecord\Payment\PaymentPlusCassaAndCassaClose::class, $id);
     }

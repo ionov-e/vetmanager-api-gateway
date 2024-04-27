@@ -32,7 +32,7 @@ class MedicalCardAsVaccination extends AbstractFacade implements AllRequestsInte
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\MedicalCardAsVaccination\MedicalCardAsVaccination
+    public function getById(int $id): ?ActiveRecord\MedicalCardAsVaccination\MedicalCardAsVaccination
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }

@@ -35,7 +35,7 @@ class ComboManualItem extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
+    public function getById(int $id): ?ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName
     {
         return $this->protectedGetById(ActiveRecord\ComboManualItem\ComboManualItemPlusComboManualName::class, $id);
     }

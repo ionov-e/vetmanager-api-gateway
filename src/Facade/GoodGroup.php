@@ -32,7 +32,7 @@ class GoodGroup extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\GoodGroup\GoodGroup
+    public function getById(int $id): ?ActiveRecord\GoodGroup\GoodGroup
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }

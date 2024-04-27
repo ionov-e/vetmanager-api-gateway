@@ -32,7 +32,7 @@ class CassaClose extends AbstractFacade implements AllRequestsInterface
     }
 
     /** @throws VetmanagerApiGatewayException */
-    public function getById(int $id): ActiveRecord\CassaClose\AbstractCassaClose
+    public function getById(int $id): ?ActiveRecord\CassaClose\AbstractCassaClose
     {
         return $this->protectedGetById(self::getBasicActiveRecord(), $id);
     }
