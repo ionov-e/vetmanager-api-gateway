@@ -94,7 +94,7 @@ class Pet extends AbstractFacade implements AllRequestsInterface
     {
         return $this->getByQueryBuilder(
             (new Builder())
-                ->where('owner_id', (string)$$clientId)
+                ->where('owner_id', (string)$clientId)
                 ->where('status', \VetmanagerApiGateway\DTO\Pet\StatusEnum::Alive->value)
         );
     }
