@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    name: psalm
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
