@@ -487,3 +487,11 @@ docker compose run php-fpm composer psalm
 ```bash
 docker compose run php-fpm composer psalm-json
 ```
+
+### Анализ кода с SonarQube
+
+Проект интегрирован с [SonarCloud](https://sonarcloud.io/) для непрерывного анализа качества кода.
+
+Анализ кода автоматически запускается при:
+- push в ветку `master`
+- при создании Pull Request через GitHub Actions.

@@ -9,4 +9,6 @@
 /psalm-report.json
 /tools/phpunit.phar
 /vendor/
+/coverage.xml
+/test-results.xml
 

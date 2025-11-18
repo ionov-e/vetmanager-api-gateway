@@ -43,6 +43,7 @@
     "test-all": "vendor/bin/phpunit tests",
     "test-unit": "vendor/bin/phpunit --testdox tests/Unit/",
     "test-integration": "vendor/bin/phpunit --testdox tests/Integration/",
+    "test-coverage": "vendor/bin/phpunit --coverage-clover=coverage.xml --log-junit=test-results.xml tests",
     "style-check": "vendor/bin/php-cs-fixer fix src --dry-run",
     "style-fix": "vendor/bin/php-cs-fixer fix src",
     "psalm": "vendor/bin/psalm",
