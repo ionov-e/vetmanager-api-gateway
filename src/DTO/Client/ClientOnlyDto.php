@@ -80,8 +80,7 @@ class ClientOnlyDto extends AbstractDTO implements ClientDtoInterface
         protected ?string         $last_visit_date,
         protected ?string         $number_of_journal,
         protected ?string         $phone_prefix
-    )
-    {
+    ) {
     }
 
     /** @return positive-int

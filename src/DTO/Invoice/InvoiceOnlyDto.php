@@ -57,8 +57,7 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         protected int|string|null $clinic_id,
         protected int|string|null $creator_id,
         protected int|string|null $fiscal_section_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -297,31 +296,31 @@ class InvoiceOnlyDto extends AbstractDTO implements InvoiceOnlyDtoInterface
         return self::setPropertyFluently($this, 'fiscal_section_id', $value);
     }
 
-//    /** @param array{
-//     *     id: string,
-//     *     doctor_id: ?numeric-string,
-//     *     client_id: numeric-string,
-//     *     pet_id: numeric-string,
-//     *     description: string,
-//     *     percent: ?string,
-//     *     amount: ?string,
-//     *     status: string,
-//     *     invoice_date: string,
-//     *     old_id: ?numeric-string,
-//     *     night: numeric-string,
-//     *     increase: ?string,
-//     *     discount: ?string,
-//     *     call: numeric-string,
-//     *     paid_amount: string,
-//     *     create_date: string,
-//     *     payment_status: string,
-//     *     clinic_id: numeric-string,
-//     *     creator_id: ?numeric-string,
-//     *     fiscal_section_id: numeric-string,
-//     *     client?: array,
-//     *     pet?: array,
-//     *     doctor?: array,
-//     *     invoiceDocuments?: array
-//     *  } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: string,
+    //     *     doctor_id: ?numeric-string,
+    //     *     client_id: numeric-string,
+    //     *     pet_id: numeric-string,
+    //     *     description: string,
+    //     *     percent: ?string,
+    //     *     amount: ?string,
+    //     *     status: string,
+    //     *     invoice_date: string,
+    //     *     old_id: ?numeric-string,
+    //     *     night: numeric-string,
+    //     *     increase: ?string,
+    //     *     discount: ?string,
+    //     *     call: numeric-string,
+    //     *     paid_amount: string,
+    //     *     create_date: string,
+    //     *     payment_status: string,
+    //     *     clinic_id: numeric-string,
+    //     *     creator_id: ?numeric-string,
+    //     *     fiscal_section_id: numeric-string,
+    //     *     client?: array,
+    //     *     pet?: array,
+    //     *     doctor?: array,
+    //     *     invoiceDocuments?: array
+    //     *  } $originalDataArray
+    //     */
 }

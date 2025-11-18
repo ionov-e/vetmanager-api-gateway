@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway;
@@ -19,8 +20,7 @@ class ActiveRecordFactory
         public readonly ApiConnection $apiService,
         public readonly DtoFactory    $dtoFactory,
         public readonly DtoNormalizer $dtoNormalizer
-    )
-    {
+    ) {
     }
 
     /**
@@ -31,7 +31,7 @@ class ActiveRecordFactory
     public function getFromMultipleModelsAsArray(array $modelsAsArray, string $activeRecordClass): array
     {
         return array_map(
-            fn(array $modelAsArray): AbstractActiveRecord => $this->getFromSingleModelAsArray($modelAsArray, $activeRecordClass),
+            fn (array $modelAsArray): AbstractActiveRecord => $this->getFromSingleModelAsArray($modelAsArray, $activeRecordClass),
             $modelsAsArray
         );
     }
@@ -69,9 +69,10 @@ class ActiveRecordFactory
      * @throws VetmanagerApiGatewayException
      */
     public function getFromSingleModelAsArrayAndDtoClass(
-        array $modelAsArray, string $activeRecordClass, string $dtoClass
-    ): AbstractActiveRecord
-    {
+        array $modelAsArray,
+        string $activeRecordClass,
+        string $dtoClass
+    ): AbstractActiveRecord {
         $dto = $this->dtoFactory->getFromSingleModelAsArray($modelAsArray, $dtoClass);
         return $this->getFromSingleDto($dto, $activeRecordClass);
     }
@@ -84,7 +85,7 @@ class ActiveRecordFactory
     public function getFromMultipleDtos(array $modelDTOs, string $activeRecordClass): array
     {
         return array_map(
-            fn(AbstractDTO $modelDTO): AbstractActiveRecord => $this->getFromSingleDto($modelDTO, $activeRecordClass),
+            fn (AbstractDTO $modelDTO): AbstractActiveRecord => $this->getFromSingleDto($modelDTO, $activeRecordClass),
             $modelDTOs
         );
     }

@@ -21,8 +21,7 @@ class PetTypePlusBreedsDto extends PetTypeOnlyDto
         public ?string         $picture,
         public ?string         $type,
         public array           $breeds,
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $title,

@@ -45,8 +45,7 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
         protected ?string         $description,
         protected ?string         $prime_cost,
         protected int|string|null $category_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -190,24 +189,24 @@ class GoodOnlyDto extends AbstractDTO implements GoodOnlyDtoInterface
         return self::setPropertyFluently($this, 'category_id', $value);
     }
 
-//    /** @param array{
-//     *     id: numeric-string,
-//     *     group_id: ?numeric-string,
-//     *     title: string,
-//     *     unit_storage_id: ?numeric-string,
-//     *     is_warehouse_account: string,
-//     *     is_active: string,
-//     *     code: ?string,
-//     *     is_call: string,
-//     *     is_for_sale: string,
-//     *     barcode: ?string,
-//     *     create_date: string,
-//     *     description: string,
-//     *     prime_cost: string,
-//     *     category_id: ?numeric-string,
-//     *     group?: array,
-//     *     unitStorage?: array,
-//     *     goodSaleParams?: array
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: numeric-string,
+    //     *     group_id: ?numeric-string,
+    //     *     title: string,
+    //     *     unit_storage_id: ?numeric-string,
+    //     *     is_warehouse_account: string,
+    //     *     is_active: string,
+    //     *     code: ?string,
+    //     *     is_call: string,
+    //     *     is_for_sale: string,
+    //     *     barcode: ?string,
+    //     *     create_date: string,
+    //     *     description: string,
+    //     *     prime_cost: string,
+    //     *     category_id: ?numeric-string,
+    //     *     group?: array,
+    //     *     unitStorage?: array,
+    //     *     goodSaleParams?: array
+    //     * } $originalDataArray
+    //     */
 }

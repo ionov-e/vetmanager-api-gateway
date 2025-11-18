@@ -40,8 +40,7 @@ class GoodSaleParamPlusUnitAndGoodDto extends GoodSaleParamOnlyDto
         protected ?string         $price_formation,
         protected ?UnitOnlyDto    $unitSale,
         protected GoodOnlyDto     $good
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $good_id,

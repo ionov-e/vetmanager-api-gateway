@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -13,7 +14,7 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 class Invoice extends AbstractFacade implements AllRequestsInterface
 {
     /** @return class-string<ActiveRecord\Invoice\InvoiceOnly> */
-    static public function getBasicActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\Invoice\InvoiceOnly::class;
     }

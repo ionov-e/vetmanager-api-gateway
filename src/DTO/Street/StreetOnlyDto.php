@@ -23,8 +23,7 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
         protected ?string         $title,
         protected int|string|null $city_id,
         protected ?string         $type
-    )
-    {
+    ) {
     }
 
     /** @return positive-int
@@ -85,16 +84,16 @@ class StreetOnlyDto extends AbstractDTO implements StreetOnlyDtoInterface
         return self::setPropertyFluently($this, 'type', $value->value);
     }
 
-//    /** @param array{
-//     *     "id": string,
-//     *     "title": string,
-//     *     "city_id": string,
-//     *     "type": string,
-//     *     "city"?: array{
-//     *              "id": string,
-//     *              "title": ?string,
-//     *              "type_id": ?string
-//     *     }
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "title": string,
+    //     *     "city_id": string,
+    //     *     "type": string,
+    //     *     "city"?: array{
+    //     *              "id": string,
+    //     *              "title": ?string,
+    //     *              "type_id": ?string
+    //     *     }
+    //     * } $originalDataArray
+    //     */
 }

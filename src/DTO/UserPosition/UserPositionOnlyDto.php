@@ -21,8 +21,7 @@ class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInte
         protected int|string|null $id,
         protected ?string         $title,
         protected ?string         $admission_length
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -60,10 +59,10 @@ class UserPositionOnlyDto extends AbstractDTO implements UserPositionOnlyDtoInte
         return self::setPropertyFluently($this, 'admission_length', $value->format('H:i:s'));
     }
 
-//    /** @param array{
-//     *     id: string,
-//     *     title: string,
-//     *     admission_length: string
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: string,
+    //     *     title: string,
+    //     *     admission_length: string
+    //     * } $originalDataArray
+    //     */
 }

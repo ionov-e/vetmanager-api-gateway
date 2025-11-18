@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -24,7 +25,7 @@ abstract class AbstractFacade
     /** Дефолтный Active Record с самым минимальным DTO (без вложенных DTO)
      * @return class-string<AbstractActiveRecord>
      */
-    abstract static public function getBasicActiveRecord(): string;
+    abstract public static function getBasicActiveRecord(): string;
 
     /** @throws VetmanagerApiGatewayException */
     abstract public function fromSingleModelAsArray(array $modelAsArray): AbstractActiveRecord;

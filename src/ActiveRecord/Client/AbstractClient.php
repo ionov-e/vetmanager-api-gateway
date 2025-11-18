@@ -450,10 +450,10 @@ abstract class AbstractClient extends AbstractActiveRecord implements ClientDtoI
         return self::setNewModelDtoFluently($this, $this->modelDTO->setPhonePrefix($value));
     }
 
-    abstract function getCity(): ?City;
+    abstract public function getCity(): ?City;
 
     /** Вернет пустую строку если ничего */
-    abstract function getClientTypeTitle(): string;
+    abstract public function getClientTypeTitle(): string;
 
     public function getFullPhone(): FullPhone
     {

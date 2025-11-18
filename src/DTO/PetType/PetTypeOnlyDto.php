@@ -21,8 +21,7 @@ class PetTypeOnlyDto extends AbstractDTO implements PetTypeOnlyDtoInterface
         public ?string         $title,
         public ?string         $picture,
         public ?string         $type
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -60,11 +59,11 @@ class PetTypeOnlyDto extends AbstractDTO implements PetTypeOnlyDtoInterface
         return self::setPropertyFluently($this, 'type', $value);
     }
 
-//    /** @param array{
-//     *     id: string,
-//     *     title: string,
-//     *     picture: string,
-//     *     type: ?string,
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: string,
+    //     *     title: string,
+    //     *     picture: string,
+    //     *     type: ?string,
+    //     * } $originalDataArray
+    //     */
 }

@@ -49,7 +49,7 @@ final class AdmissionPlusClientAndPetAndInvoices extends AbstractAdmission
 
     public function getClient(): ?ClientOnly
     {
-        return $this->modelDTO->getClientOnlyDto() ? new ClientOnly($this->activeRecordFactory, $this->modelDTO->getClientOnlyDto())  : null;
+        return $this->modelDTO->getClientOnlyDto() ? new ClientOnly($this->activeRecordFactory, $this->modelDTO->getClientOnlyDto()) : null;
     }
 
     public function getPet(): ?PetOnly

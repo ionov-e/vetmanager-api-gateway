@@ -79,8 +79,7 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         protected int|string|null $editable,
         protected ?string         $meet_result_title,
         protected ?string         $admission_type_title
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -419,37 +418,37 @@ final class MedicalCardByClientDto extends AbstractDTO implements MedicalCardByC
         return self::setPropertyFluently($this, 'admission_type_title', $value);
     }
 
-//    /** @param array{
-//     *     medical_card_id: numeric-string,
-//     *     date_edit: ?string,
-//     *     diagnos: string,
-//     *     doctor_id: numeric-string,
-//     *     medical_card_status: string,
-//     *     healing_process: ?string,
-//     *     recomendation: string,
-//     *     weight: ?string,
-//     *     temperature: ?string,
-//     *     meet_result_id: numeric-string,
-//     *     admission_type: ?string,
-//     *     pet_id: numeric-string,
-//     *     alias: string,
-//     *     birthday: ?string,
-//     *     sex: string,
-//     *     note: string,
-//     *     pet_type: string,
-//     *     breed: string,
-//     *     client_id: numeric-string,
-//     *     first_name: string,
-//     *     last_name: string,
-//     *     middle_name: string,
-//     *     phone: string,
-//     *     doctor_nickname: string,
-//     *     doctor_first_name: string,
-//     *     doctor_last_name: string,
-//     *     doctor_middle_name: string,
-//     *     editable: string,
-//     *     meet_result_title: string,
-//     *     admission_type_title: string
-//     *    } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     medical_card_id: numeric-string,
+    //     *     date_edit: ?string,
+    //     *     diagnos: string,
+    //     *     doctor_id: numeric-string,
+    //     *     medical_card_status: string,
+    //     *     healing_process: ?string,
+    //     *     recomendation: string,
+    //     *     weight: ?string,
+    //     *     temperature: ?string,
+    //     *     meet_result_id: numeric-string,
+    //     *     admission_type: ?string,
+    //     *     pet_id: numeric-string,
+    //     *     alias: string,
+    //     *     birthday: ?string,
+    //     *     sex: string,
+    //     *     note: string,
+    //     *     pet_type: string,
+    //     *     breed: string,
+    //     *     client_id: numeric-string,
+    //     *     first_name: string,
+    //     *     last_name: string,
+    //     *     middle_name: string,
+    //     *     phone: string,
+    //     *     doctor_nickname: string,
+    //     *     doctor_first_name: string,
+    //     *     doctor_last_name: string,
+    //     *     doctor_middle_name: string,
+    //     *     editable: string,
+    //     *     meet_result_title: string,
+    //     *     admission_type_title: string
+    //     *    } $originalDataArray
+    //     */
 }

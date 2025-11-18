@@ -19,7 +19,6 @@ use VetmanagerApiGateway\ActiveRecordFactory;
 use VetmanagerApiGateway\DTO\Invoice\InvoicePlusClientAndPetAndDoctorWithDocumentsDto;
 
 final class InvoicePlusClientAndPetAndDoctorAndDocuments extends AbstractInvoice
-
 {
     public static function getDtoClass(): string
     {

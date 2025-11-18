@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -13,7 +14,7 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 class PetType extends AbstractFacade implements AllRequestsInterface
 {
     /** @return class-string<ActiveRecord\PetType\PetTypeOnly> */
-    static public function getBasicActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\PetType\PetTypeOnly::class;
     }

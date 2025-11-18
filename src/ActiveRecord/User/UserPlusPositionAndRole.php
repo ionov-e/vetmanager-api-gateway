@@ -23,14 +23,14 @@ final class UserPlusPositionAndRole extends AbstractUser
         $this->modelDTO = $modelDTO;
     }
 
-    function getRole(): ?Role
+    public function getRole(): ?Role
     {
         return $this->modelDTO->getRoleOnlyDto() ?
             $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getRoleOnlyDto(), Role::class)
             : null;
     }
 
-    function getUserPosition(): UserPosition
+    public function getUserPosition(): UserPosition
     {
         return $this->activeRecordFactory->getFromSingleDto($this->modelDTO->getUserPositionOnlyDto(), UserPosition::class);
     }

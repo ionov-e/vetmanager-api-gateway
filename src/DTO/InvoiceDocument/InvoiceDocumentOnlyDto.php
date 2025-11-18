@@ -51,8 +51,7 @@ class InvoiceDocumentOnlyDto extends AbstractInvoiceDocumentOnlyDto
         protected int|string|null $fixed_increase_id,
         protected int|string|null $fixed_increase_percent,
         protected ?string         $prime_cost
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $document_id,
@@ -96,36 +95,36 @@ class InvoiceDocumentOnlyDto extends AbstractInvoiceDocumentOnlyDto
         return self::setPropertyFluently($this, 'price', is_null($value) ? null : (string)$value);
     }
 
-//    /** @param array{
-//     *     id: numeric-string,
-//     *     document_id: string,
-//     *     good_id: string,
-//     *     quantity: ?int|numeric-string,
-//     *     price: numeric|numeric-string,
-//     *     responsible_user_id: string,
-//     *     is_default_responsible: string,
-//     *     sale_param_id: string,
-//     *     tag_id: string,
-//     *     discount_type: ?string,
-//     *     discount_document_id: ?string,
-//     *     discount_percent: ?string,
-//     *     default_price: ?string,
-//     *     create_date: string,
-//     *     discount_cause: ?string,
-//     *     fixed_discount_id: string,
-//     *     fixed_discount_percent: string,
-//     *     fixed_increase_id: string,
-//     *     fixed_increase_percent: string,
-//     *     prime_cost: string,
-//     *     goodSaleParam?: array,
-//     *     document?: array,
-//     *     good?: array,
-//     *     party_info?: array,
-//     *     min_price?: float,
-//     *     max_price?: float,
-//     *     min_price_percent?: float,
-//     *     max_price_percent?: float
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: numeric-string,
+    //     *     document_id: string,
+    //     *     good_id: string,
+    //     *     quantity: ?int|numeric-string,
+    //     *     price: numeric|numeric-string,
+    //     *     responsible_user_id: string,
+    //     *     is_default_responsible: string,
+    //     *     sale_param_id: string,
+    //     *     tag_id: string,
+    //     *     discount_type: ?string,
+    //     *     discount_document_id: ?string,
+    //     *     discount_percent: ?string,
+    //     *     default_price: ?string,
+    //     *     create_date: string,
+    //     *     discount_cause: ?string,
+    //     *     fixed_discount_id: string,
+    //     *     fixed_discount_percent: string,
+    //     *     fixed_increase_id: string,
+    //     *     fixed_increase_percent: string,
+    //     *     prime_cost: string,
+    //     *     goodSaleParam?: array,
+    //     *     document?: array,
+    //     *     good?: array,
+    //     *     party_info?: array,
+    //     *     min_price?: float,
+    //     *     max_price?: float,
+    //     *     min_price_percent?: float,
+    //     *     max_price_percent?: float
+    //     * } $originalDataArray
+    //     */
 
 }

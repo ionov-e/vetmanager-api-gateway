@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -9,11 +10,11 @@ use VetmanagerApiGateway\Exception\VetmanagerApiGatewayException;
 class MedicalCardByClient extends AbstractFacade
 {
     /** @return class-string<ActiveRecord\MedicalCardByClient\MedicalCardByClient> */
-    static public function getBasicActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\MedicalCardByClient\MedicalCardByClient::class;
     }
-    
+
     /** @inheritDoc */
     public function fromSingleModelAsArray(array $modelAsArray): ActiveRecord\MedicalCardByClient\MedicalCardByClient
     {

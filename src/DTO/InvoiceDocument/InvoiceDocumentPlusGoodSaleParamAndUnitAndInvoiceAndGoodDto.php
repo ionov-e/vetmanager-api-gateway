@@ -60,8 +60,7 @@ class InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodDto extends Abstra
         protected InvoiceOnlyDto       $document,
         protected GoodOnlyDto          $good,
         protected GoodSaleParamOnlyDto $goodSaleParam
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $document_id,

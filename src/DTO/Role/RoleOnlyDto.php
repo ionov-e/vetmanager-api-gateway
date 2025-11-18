@@ -20,8 +20,7 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
         protected int|string|null $id,
         protected ?string         $name,
         protected int|string|null $super
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -49,10 +48,10 @@ final class RoleOnlyDto extends AbstractDTO implements RoleOnlyDtoInterface
         return self::setPropertyFluently($this, 'super', (int)$value);
     }
 
-//    /** @param array{
-//     *     "id": numeric-string,
-//     *     "name": string,
-//     *     "super": string,
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": numeric-string,
+    //     *     "name": string,
+    //     *     "super": string,
+    //     * } $originalDataArray
+    //     */
 }

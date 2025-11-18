@@ -19,8 +19,7 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
         protected int|string|null $id,
         protected ?string         $title,
         protected ?string         $status
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -58,10 +57,10 @@ class UnitOnlyDto extends AbstractDTO implements UnitOnlyDtoInterface
         return self::setPropertyFluently($this, 'status', $value->value);
     }
 
-//    /** @param array{
-//     *     "id": string,
-//     *     "title": string,
-//     *     "status": string,
-//     * }
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "title": string,
+    //     *     "status": string,
+    //     * }
+    //     */
 }

@@ -59,8 +59,7 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
         protected ?string         $diagnos_text,
         protected ?string         $diagnos_type_text,
         protected int|string|null $clinic_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -300,30 +299,30 @@ class MedicalCardOnlyDto extends AbstractDTO implements MedicalCardOnlyDtoInterf
         return self::setPropertyFluently($this, 'clinic_id', $value);
     }
 
-//    /** @param array{
-//     *     id: numeric-string,
-//     *     patient_id: numeric-string,
-//     *     date_create: string,
-//     *     date_edit: ?string,
-//     *     diagnos: string,
-//     *     recomendation: string,
-//     *     invoice: ?string,
-//     *     admission_type: ?string,
-//     *     weight: ?string,
-//     *     temperature: ?string,
-//     *     meet_result_id: numeric-string,
-//     *     description: string,
-//     *     next_meet_id: numeric-string,
-//     *     doctor_id: numeric-string,
-//     *     creator_id: numeric-string,
-//     *     status: string,
-//     *     calling_id: numeric-string,
-//     *     admission_id: numeric-string,
-//     *     diagnos_text: ?string,
-//     *     diagnos_type_text: ?string,
-//     *     clinic_id: numeric-string,
-//     *     patient?: array
-//     *    } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: numeric-string,
+    //     *     patient_id: numeric-string,
+    //     *     date_create: string,
+    //     *     date_edit: ?string,
+    //     *     diagnos: string,
+    //     *     recomendation: string,
+    //     *     invoice: ?string,
+    //     *     admission_type: ?string,
+    //     *     weight: ?string,
+    //     *     temperature: ?string,
+    //     *     meet_result_id: numeric-string,
+    //     *     description: string,
+    //     *     next_meet_id: numeric-string,
+    //     *     doctor_id: numeric-string,
+    //     *     creator_id: numeric-string,
+    //     *     status: string,
+    //     *     calling_id: numeric-string,
+    //     *     admission_id: numeric-string,
+    //     *     diagnos_text: ?string,
+    //     *     diagnos_type_text: ?string,
+    //     *     clinic_id: numeric-string,
+    //     *     patient?: array
+    //     *    } $originalDataArray
+    //     */
 
 }

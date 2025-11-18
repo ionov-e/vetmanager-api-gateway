@@ -57,8 +57,7 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         protected ?string         $carrotquest_id,
         protected ?string         $sip_number,
         protected ?string         $user_inn
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -268,29 +267,29 @@ class UserOnlyDto extends AbstractDTO implements UserOnlyDtoInterface
         return self::setPropertyFluently($this, 'user_inn', $value);
     }
 
-//    /** @param array{
-//     *     "id": string,
-//     *     "last_name": string,
-//     *     "first_name": string,
-//     *     "middle_name": string,
-//     *     "login": string,
-//     *     "passwd": string,
-//     *     "position_id": string,
-//     *     "email": string,
-//     *     "phone": string,
-//     *     "cell_phone": string,
-//     *     "address": string,
-//     *     "role_id": ?string,
-//     *     "is_active": string,
-//     *     "calc_percents": string,
-//     *     "nickname": ?string,
-//     *     "last_change_pwd_date": string,
-//     *     "is_limited": string,
-//     *     "carrotquest_id": ?string,
-//     *     "sip_number": ?string,
-//     *     "user_inn": string,
-//     *     "position"?: array,
-//     *     "role"?: array
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "last_name": string,
+    //     *     "first_name": string,
+    //     *     "middle_name": string,
+    //     *     "login": string,
+    //     *     "passwd": string,
+    //     *     "position_id": string,
+    //     *     "email": string,
+    //     *     "phone": string,
+    //     *     "cell_phone": string,
+    //     *     "address": string,
+    //     *     "role_id": ?string,
+    //     *     "is_active": string,
+    //     *     "calc_percents": string,
+    //     *     "nickname": ?string,
+    //     *     "last_change_pwd_date": string,
+    //     *     "is_limited": string,
+    //     *     "carrotquest_id": ?string,
+    //     *     "sip_number": ?string,
+    //     *     "user_inn": string,
+    //     *     "position"?: array,
+    //     *     "role"?: array
+    //     * } $originalDataArray
+    //     */
 }

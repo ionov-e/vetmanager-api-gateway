@@ -27,8 +27,7 @@ class ComboManualItemPlusComboManualNameDto extends ComboManualItemOnlyDto
         protected ?string                $dop_param3,
         protected int|string|null $is_active,
         protected ComboManualItemOnlyDto $comboManualName
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $combo_manual_id,

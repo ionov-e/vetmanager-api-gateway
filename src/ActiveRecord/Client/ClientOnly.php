@@ -22,13 +22,13 @@ class ClientOnly extends AbstractClient
     }
 
     /** @throws VetmanagerApiGatewayException */
-    function getCity(): ?City
+    public function getCity(): ?City
     {
         return $this->getCityId() ? (new Facade\City($this->activeRecordFactory))->getById($this->getCityId()) : null;
     }
 
     /** @throws VetmanagerApiGatewayException */
-    function getClientTypeTitle(): string
+    public function getClientTypeTitle(): string
     {
         return (new Facade\Client($this->activeRecordFactory))->getById($this->getId())->getClientTypeTitle();
     }

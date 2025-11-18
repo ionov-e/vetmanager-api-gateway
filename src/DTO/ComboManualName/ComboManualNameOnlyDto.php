@@ -22,8 +22,7 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
         protected ?string         $title,
         protected int|string|null $is_readonly,
         protected ?string         $name
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -61,12 +60,12 @@ class ComboManualNameOnlyDto extends AbstractDTO implements ComboManualNameOnlyD
         return self::setPropertyFluently($this, 'name', $value);
     }
 
-//    /** @param array{
-//     *       id: string,
-//     *       title: string,
-//     *       is_readonly: string,
-//     *       name: string,
-//     *       comboManualItems?: array
-//     *   } $originalDataArray 'comboManualItems' не используем
-//     */
+    //    /** @param array{
+    //     *       id: string,
+    //     *       title: string,
+    //     *       is_readonly: string,
+    //     *       name: string,
+    //     *       comboManualItems?: array
+    //     *   } $originalDataArray 'comboManualItems' не используем
+    //     */
 }

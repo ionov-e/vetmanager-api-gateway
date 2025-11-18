@@ -60,8 +60,7 @@ class PetPlusOwnerAndTypeAndBreedAndColorDto extends PetOnlyDto
         protected ?PetTypeOnlyDto $type = null,
         protected ?BreedOnlyDto           $breed = null,
         protected ?ComboManualItemOnlyDto $color = null
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $owner_id,

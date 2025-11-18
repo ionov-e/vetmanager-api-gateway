@@ -52,8 +52,7 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         protected int|string|null $next_admission_id,
         protected ?string         $next_visit_time,
         protected ?string         $pet_age_at_time_vaccination
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -246,25 +245,25 @@ final class MedicalCardAsVaccinationDto extends AbstractDTO implements MedicalCa
         return self::setPropertyFluently($this, 'next_visit_time', $value);
     }
 
-//    /** @param array{
-//     *     id: numeric-string,
-//     *     name: string,
-//     *     pet_id: numeric-string,
-//     *     date: string,
-//     *     date_nexttime: string,
-//     *     vaccine_id: numeric-string,
-//     *     birthday: ?string,
-//     *     birthday_at_time: string,
-//     *     medcard_id: numeric-string,
-//     *     doza_type_id: numeric-string,
-//     *     doza_value: string,
-//     *     sale_param_id: numeric-string,
-//     *     vaccine_type: string,
-//     *     vaccine_description: string,
-//     *     vaccine_type_title: string,
-//     *     next_admission_id: numeric-string,
-//     *     next_visit_time: string,
-//     *     pet_age_at_time_vaccination: string
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: numeric-string,
+    //     *     name: string,
+    //     *     pet_id: numeric-string,
+    //     *     date: string,
+    //     *     date_nexttime: string,
+    //     *     vaccine_id: numeric-string,
+    //     *     birthday: ?string,
+    //     *     birthday_at_time: string,
+    //     *     medcard_id: numeric-string,
+    //     *     doza_type_id: numeric-string,
+    //     *     doza_value: string,
+    //     *     sale_param_id: numeric-string,
+    //     *     vaccine_type: string,
+    //     *     vaccine_description: string,
+    //     *     vaccine_type_title: string,
+    //     *     next_admission_id: numeric-string,
+    //     *     next_visit_time: string,
+    //     *     pet_age_at_time_vaccination: string
+    //     * } $originalDataArray
+    //     */
 }

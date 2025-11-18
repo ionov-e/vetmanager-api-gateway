@@ -21,8 +21,7 @@ class StreetPlusCityDto extends StreetOnlyDto
         protected int|string|null $city_id,
         protected ?string         $type,
         protected CityOnlyDto     $city
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $title,

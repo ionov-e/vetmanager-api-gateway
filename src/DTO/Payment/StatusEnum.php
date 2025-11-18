@@ -10,4 +10,3 @@ enum StatusEnum: string
     case Save = 'save';
     case Deleted = 'deleted';
 }
-

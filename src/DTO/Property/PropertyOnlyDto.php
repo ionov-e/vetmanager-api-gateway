@@ -23,8 +23,7 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
         protected ?string         $property_value,
         protected ?string         $property_title,
         protected int|string|null $clinic_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -72,12 +71,12 @@ class PropertyOnlyDto extends AbstractDTO implements PropertyOnlyDtoInterface
         return self::setPropertyFluently($this, 'clinic_id', $value);
     }
 
-//    /** @param array{
-//     *     "id": string,
-//     *     "property_name": string,
-//     *     "property_value": string,
-//     *     "property_title": ?string,
-//     *     "clinic_id": string
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "property_name": string,
+    //     *     "property_value": string,
+    //     *     "property_title": ?string,
+    //     *     "clinic_id": string
+    //     * } $originalDataArray
+    //     */
 }

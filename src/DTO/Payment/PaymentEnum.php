@@ -10,4 +10,3 @@ enum PaymentEnum: string
     case Cashless = 'cashless';
     case Combined = 'combined';
 }
-

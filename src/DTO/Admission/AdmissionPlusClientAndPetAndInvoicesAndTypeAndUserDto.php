@@ -59,8 +59,7 @@ class AdmissionPlusClientAndPetAndInvoicesAndTypeAndUserDto extends AdmissionPlu
         protected array                             $invoices = [],
         public ?UserOnlyDto                         $doctor_data = null,
         public ?ComboManualItemOnlyDto              $admission_type_data = null
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $admission_date,

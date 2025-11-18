@@ -19,8 +19,7 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
         public int|string|null $id,
         public ?string         $title,
         public int|string|null $pet_type_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -48,11 +47,11 @@ class BreedOnlyDto extends AbstractDTO implements BreedOnlyDtoInterface
         return self::setPropertyFluently($this, 'pet_type_id', is_null($value) ? null : $value);
     }
 
-//    /** @param array{
-//     *       id: string,
-//     *       title: string,
-//     *       pet_type_id: string,
-//     *       petType?: array
-//     *   }
-//     */
+    //    /** @param array{
+    //     *       id: string,
+    //     *       title: string,
+    //     *       pet_type_id: string,
+    //     *       petType?: array
+    //     *   }
+    //     */
 }
