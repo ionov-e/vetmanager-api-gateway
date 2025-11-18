@@ -436,6 +436,8 @@ $client = $clientFacade->getById(33);
 
 ## Разработка
 
+### Первый запуск
+
 1.  Копируем файл окружения из примера
     ```bash
     cp .env.example .env
@@ -445,12 +447,43 @@ $client = $clientFacade->getById(33);
     ```bash
     docker compose run php-fpm composer install
     ```
-4.  Запуск юнит-тестов
-    ```bash
-    docker compose run php-fpm composer test-unit
-    ```
+### Проверка тестов
 
-Можно запускать другие команды, примеры можно посмотреть в `composer.json` в разделе `scripts`. Например:
+Запуск всех тестов (юнит и интеграционные)
+```bash
+docker compose run php-fpm composer test-all
+```
+
+Запуск юнит-тестов
+```bash
+docker compose run php-fpm composer test-unit
+```
+
+Запуск интеграционных-тестов (будут вызовы к АПИ Ветменджер - токен и домен должны быть в .env)
+```bash
+docker compose run php-fpm composer test-integration
+```
+
+### Проверка стиля кода
+
+Проверка стиля кода без исправления (dry-run)
 ```bash
 docker compose run php-fpm composer style-check
+```
+
+Исправление стиля кода автоматически
+```bash
+docker compose run php-fpm composer style-fix
+```
+
+### Статический анализ кода
+
+Запуск Psalm для статического анализа кода
+```bash
+docker compose run php-fpm composer psalm
+```
+
+Запуск Psalm с выводом отчета в JSON файл
+```bash
+docker compose run php-fpm composer psalm-json
 ```
