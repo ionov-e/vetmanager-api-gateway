@@ -17,8 +17,7 @@ final class ApiGateway
     public function __construct(
         public readonly string         $fullUrl,
         private readonly ApiConnection $apiConnection,
-    )
-    {
+    ) {
     }
 
     /**
@@ -28,8 +27,7 @@ final class ApiGateway
     public static function fromFullUrlAndGuzzleClient(
         string $fullUrl,
         Client $guzzleClient
-    ): self
-    {
+    ): self {
         return new self(
             $fullUrl,
             new ApiConnection($guzzleClient, $fullUrl)
@@ -43,8 +41,7 @@ final class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self
-    {
+    ): self {
         $fullUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
         return self::fromFullUrlAndServiceNameAndApiKey($fullUrl, $serviceName, $apiKey, $timezone);
     }
@@ -57,8 +54,7 @@ final class ApiGateway
         string $serviceName,
         string $apiKey,
         string $timezone = '+03:00'
-    ): self
-    {
+    ): self {
         return self::fromFullUrlAndGuzzleClient(
             $fullUrl,
             ApiConnection::getGuzzleClientForServiceNameAndApiKey($fullUrl, $serviceName, $apiKey, $timezone)
@@ -74,8 +70,7 @@ final class ApiGateway
         string $apiKey,
         bool   $isProduction,
         string $timezone = '+03:00'
-    ): self
-    {
+    ): self {
         $fullUrl = ApiConnection::getApiUrlFromSubdomainForProdOrTest($subDomain, $isProduction);
         return self::fromFullUrlAndApiKey($fullUrl, $apiKey, $timezone);
     }
@@ -87,8 +82,7 @@ final class ApiGateway
         string $fullUrl,
         string $apiKey,
         string $timezone = '+03:00'
-    ): self
-    {
+    ): self {
         return self::fromFullUrlAndGuzzleClient(
             $fullUrl,
             ApiConnection::getGuzzleClientForApiKey($fullUrl, $apiKey, $timezone)

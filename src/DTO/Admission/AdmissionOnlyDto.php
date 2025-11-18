@@ -55,8 +55,7 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         protected ?string         $reception_write_channel,
         protected int|string|null $is_auto_create,
         protected ?string         $invoices_sum,
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -265,30 +264,30 @@ class AdmissionOnlyDto extends AbstractDTO implements AdmissionOnlyDtoInterface
         return self::setPropertyFluently($this, 'invoices_sum', is_null($value) ? null : (string)$value);
     }
 
-//    /** @param array{
-//     *          id: numeric-string,
-//     *          admission_date: string,
-//     *          description: string,
-//     *          client_id: numeric-string,
-//     *          patient_id: numeric-string,
-//     *          user_id: numeric-string,
-//     *          type_id: numeric-string,
-//     *          admission_length: string,
-//     *          status: ?string,
-//     *          clinic_id: numeric-string,
-//     *          direct_direction: string,
-//     *          creator_id: numeric-string,
-//     *          create_date: string,
-//     *          escorter_id: ?numeric-string,
-//     *          reception_write_channel: ?string,
-//     *          is_auto_create: string,
-//     *          invoices_sum: string,
-//     *          client: array,
-//     *          pet?: array,
-//     *          wait_time?: string,
-//     *          invoices?: array,
-//     *          doctor_data?: array,
-//     *          admission_type_data?: array
-//     *     } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *          id: numeric-string,
+    //     *          admission_date: string,
+    //     *          description: string,
+    //     *          client_id: numeric-string,
+    //     *          patient_id: numeric-string,
+    //     *          user_id: numeric-string,
+    //     *          type_id: numeric-string,
+    //     *          admission_length: string,
+    //     *          status: ?string,
+    //     *          clinic_id: numeric-string,
+    //     *          direct_direction: string,
+    //     *          creator_id: numeric-string,
+    //     *          create_date: string,
+    //     *          escorter_id: ?numeric-string,
+    //     *          reception_write_channel: ?string,
+    //     *          is_auto_create: string,
+    //     *          invoices_sum: string,
+    //     *          client: array,
+    //     *          pet?: array,
+    //     *          wait_time?: string,
+    //     *          invoices?: array,
+    //     *          doctor_data?: array,
+    //     *          admission_type_data?: array
+    //     *     } $originalDataArray
+    //     */
 }

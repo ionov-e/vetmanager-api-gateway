@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -12,7 +13,7 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 class GoodGroup extends AbstractFacade implements AllRequestsInterface
 {
     /** @return class-string<ActiveRecord\GoodGroup\GoodGroup> */
-    static public function getBasicActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\GoodGroup\GoodGroup::class;
     }

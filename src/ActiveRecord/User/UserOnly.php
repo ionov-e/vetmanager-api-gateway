@@ -25,7 +25,7 @@ final class UserOnly extends AbstractUser
     }
 
     /** @throws VetmanagerApiGatewayException */
-    function getRole(): ?Role
+    public function getRole(): ?Role
     {
         return $this->modelDTO->getRoleId() ?
             (new Facade\Role($this->activeRecordFactory))->getById($this->getRoleId())
@@ -33,7 +33,7 @@ final class UserOnly extends AbstractUser
     }
 
     /** @throws VetmanagerApiGatewayException */
-    function getUserPosition(): UserPosition
+    public function getUserPosition(): UserPosition
     {
         return (new Facade\UserPosition($this->activeRecordFactory))->getById($this->getPositionId());
     }

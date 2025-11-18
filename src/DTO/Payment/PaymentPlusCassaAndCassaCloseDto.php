@@ -38,8 +38,7 @@ class PaymentPlusCassaAndCassaCloseDto extends PaymentOnlyDto
         public int|string|null    $parent_id,
         public ?CassaOnlyDto $cassa,
         public ?CassaCloseOnlyDto $cassaclose
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $amount,

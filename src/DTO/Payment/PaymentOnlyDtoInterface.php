@@ -2,7 +2,6 @@
 
 namespace VetmanagerApiGateway\DTO\Payment;
 
-
 use DateTime;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;

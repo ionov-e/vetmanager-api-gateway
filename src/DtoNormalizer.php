@@ -22,7 +22,7 @@ class DtoNormalizer
 
     public static function withDefaultSerializer(): self
     {
-        return new self (self::getDefaultSerializerForNormalization());
+        return new self(self::getDefaultSerializerForNormalization());
     }
 
     /** Используется при normalize методе. Может использоваться при сериализации */
@@ -35,7 +35,8 @@ class DtoNormalizer
             ],
             [
                 new JsonEncoder(),
-            ]);
+            ]
+        );
     }
 
 

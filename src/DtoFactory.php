@@ -25,7 +25,7 @@ class DtoFactory
 
     public static function withDefaultSerializer(): self
     {
-        return new self (self::getDefaultSerializerForDenormalization());
+        return new self(self::getDefaultSerializerForDenormalization());
     }
 
     /** Используется при denormalize методе. Может использоваться при сериализации */
@@ -49,7 +49,7 @@ class DtoFactory
     public function getFromModelsAsArrays(array $listOfMultipleDtosAsArrays, string $dtoClass): array
     {
         return array_map(
-            fn(array $singleDtoAsArray): AbstractDTO => $this->getFromSingleModelAsArray($singleDtoAsArray, $dtoClass),
+            fn (array $singleDtoAsArray): AbstractDTO => $this->getFromSingleModelAsArray($singleDtoAsArray, $dtoClass),
             $listOfMultipleDtosAsArrays
         );
     }

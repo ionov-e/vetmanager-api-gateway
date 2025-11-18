@@ -69,8 +69,7 @@ class InvoiceDocumentPlusGoodSaleParamAndUnitAndInvoiceAndGoodWithPartyInfoAndMi
         protected float                $max_price,
         protected float                $min_price_percent,
         protected float                $max_price_percent
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $document_id,

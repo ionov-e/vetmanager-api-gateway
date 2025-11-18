@@ -19,8 +19,7 @@ final class BreedPlusPetTypeDto extends BreedOnlyDto
         public ?string         $title,
         public int|string|null $pet_type_id,
         public PetTypeOnlyDto  $petType
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $title,

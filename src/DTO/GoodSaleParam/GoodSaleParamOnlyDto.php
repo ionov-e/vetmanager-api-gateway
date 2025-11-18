@@ -38,8 +38,7 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         protected int|string|null $clinic_id,
         protected ?string         $markup,
         protected ?string         $price_formation
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -167,21 +166,21 @@ class GoodSaleParamOnlyDto extends AbstractDTO implements GoodSaleParamOnlyDtoIn
         return self::setPropertyFluently($this, 'price_formation', $value->value);
     }
 
-//    /** @param array{
-//     *     id: numeric-string,
-//     *     good_id: numeric-string,
-//     *     price: ?string,
-//     *     coefficient: string,
-//     *     unit_sale_id: numeric-string,
-//     *     min_price: ?string,
-//     *     max_price: ?string,
-//     *     barcode: ?string,
-//     *     status: string,
-//     *     clinic_id: numeric-string,
-//     *     markup: string,
-//     *     price_formation: ?string,
-//     *     unitSale?: array,
-//     *     good?: array
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     id: numeric-string,
+    //     *     good_id: numeric-string,
+    //     *     price: ?string,
+    //     *     coefficient: string,
+    //     *     unit_sale_id: numeric-string,
+    //     *     min_price: ?string,
+    //     *     max_price: ?string,
+    //     *     barcode: ?string,
+    //     *     status: string,
+    //     *     clinic_id: numeric-string,
+    //     *     markup: string,
+    //     *     price_formation: ?string,
+    //     *     unitSale?: array,
+    //     *     good?: array
+    //     * } $originalDataArray
+    //     */
 }

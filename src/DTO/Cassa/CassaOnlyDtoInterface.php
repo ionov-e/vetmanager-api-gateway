@@ -2,7 +2,6 @@
 
 namespace VetmanagerApiGateway\DTO\Cassa;
 
-
 use DateTime;
 use VetmanagerApiGateway\DTO\Payment\StatusEnum;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;

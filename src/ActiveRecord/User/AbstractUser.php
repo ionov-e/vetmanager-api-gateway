@@ -344,7 +344,7 @@ abstract class AbstractUser extends AbstractActiveRecord implements UserOnlyDtoI
         return new FullName($this->getFirstName(), $this->getMiddleName(), $this->getLastName());
     }
 
-    abstract function getRole(): ?Role;
+    abstract public function getRole(): ?Role;
 
-    abstract function getUserPosition(): UserPosition;
+    abstract public function getUserPosition(): UserPosition;
 }

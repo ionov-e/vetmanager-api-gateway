@@ -54,8 +54,7 @@ abstract class AbstractInvoiceDocumentOnlyDto extends AbstractDTO implements Inv
         protected int|string|null $fixed_increase_id,
         protected int|string|null $fixed_increase_percent,
         protected ?string         $prime_cost
-    )
-    {
+    ) {
     }
 
     public function getId(): int

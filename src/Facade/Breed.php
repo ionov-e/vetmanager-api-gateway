@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -14,7 +15,7 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 class Breed extends AbstractFacade implements AllRequestsInterface
 {
     /** @return class-string<ActiveRecord\Breed\BreedOnly> */
-    static public function getBasicActiveRecord(): string
+    public static function getBasicActiveRecord(): string
     {
         return ActiveRecord\Breed\BreedOnly::class;
     }

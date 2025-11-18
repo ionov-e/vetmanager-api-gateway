@@ -49,8 +49,7 @@ class CassaOnlyDto extends AbstractDTO implements CassaOnlyDtoInterface
         public int|string|null $show_in_cashflow,
         public ?string         $type,
         public int|string|null $cashless_to_cassa_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int

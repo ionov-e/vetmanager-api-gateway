@@ -2,7 +2,6 @@
 
 namespace VetmanagerApiGateway\DTO\ComboManualItem;
 
-
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayInnerException;
 use VetmanagerApiGateway\Exception\VetmanagerApiGatewayResponseException;
 

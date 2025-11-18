@@ -21,8 +21,7 @@ class ComboManualNamePlusComboManualItemsDto extends ComboManualNameOnlyDto
         protected int|string|null $is_readonly,
         protected ?string         $name,
         protected array           $comboManualItems
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $title,

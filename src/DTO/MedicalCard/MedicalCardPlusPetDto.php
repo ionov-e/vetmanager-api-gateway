@@ -55,8 +55,7 @@ class MedicalCardPlusPetDto extends MedicalCardOnlyDto
         protected ?string         $diagnos_type_text,
         protected int|string|null $clinic_id,
         protected ?PetOnlyDto     $patient
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $patient_id,

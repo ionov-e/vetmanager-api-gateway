@@ -21,8 +21,7 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
         protected int|string|null $id,
         protected ?string         $title,
         protected int|string|null $type_id
-    )
-    {
+    ) {
     }
 
     /** @return positive-int
@@ -57,10 +56,10 @@ final class CityOnlyDto extends AbstractDTO implements CityDtoInterface
     {
         return self::setPropertyFluently($this, 'type_id', $value);
     }
-//    /** @param array{
-//     *     "id": string,
-//     *     "title": string,
-//     *     "type_id": string,
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "title": string,
+    //     *     "type_id": string,
+    //     * } $originalDataArray
+    //     */
 }

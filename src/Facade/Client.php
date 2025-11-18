@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VetmanagerApiGateway\Facade;
@@ -13,7 +14,6 @@ use VetmanagerApiGateway\Facade\Interface\AllRequestsInterface;
 
 class Client extends AbstractFacade implements AllRequestsInterface
 {
-
     /** @return class-string<ActiveRecord\Client\ClientOnly> */
     public static function getBasicActiveRecord(): string
     {

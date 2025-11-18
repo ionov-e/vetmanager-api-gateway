@@ -62,8 +62,7 @@ class InvoicePlusClientAndPetAndDoctorWithDocumentsDto extends InvoicePlusClient
         protected PetAdditionalPlusTypeAndBreedDto $pet,
         protected UserOnlyDto                      $doctor,
         protected array                            $invoiceDocuments
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $doctor_id,

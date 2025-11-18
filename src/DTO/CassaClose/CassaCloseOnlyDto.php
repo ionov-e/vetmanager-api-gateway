@@ -31,8 +31,7 @@ class CassaCloseOnlyDto extends AbstractDTO implements CassaCloseOnlyDtoInterfac
         public int|string|null $closed_user_id,
         public ?string         $amount,
         public ?string         $amount_cashless
-    )
-    {
+    ) {
     }
 
     public function getId(): int

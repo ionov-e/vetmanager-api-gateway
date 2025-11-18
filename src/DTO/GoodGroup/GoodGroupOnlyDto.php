@@ -27,8 +27,7 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
         protected ?string         $markup,
         protected int|string|null $is_show_in_vaccines,
         protected int|string|null $price_id
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -87,13 +86,13 @@ class GoodGroupOnlyDto extends AbstractDTO implements GoodGroupOnlyDtoInterface
         return self::setPropertyFluently($this, 'price_id', $value);
     }
 
-//    /** @param array{
-//     *     "id": string,
-//     *     "title": string,
-//     *     "is_service": string,
-//     *     "markup": ?string,
-//     *     "is_show_in_vaccines": string,
-//     *     "price_id": ?string
-//     * } $originalDataArray
-//     */
+    //    /** @param array{
+    //     *     "id": string,
+    //     *     "title": string,
+    //     *     "is_service": string,
+    //     *     "markup": ?string,
+    //     *     "is_show_in_vaccines": string,
+    //     *     "price_id": ?string
+    //     * } $originalDataArray
+    //     */
 }

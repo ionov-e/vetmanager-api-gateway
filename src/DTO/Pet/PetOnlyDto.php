@@ -54,8 +54,7 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         protected ?string         $picture,
         protected ?string         $weight,
         protected ?string         $edit_date
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -288,31 +287,31 @@ class PetOnlyDto extends AbstractDTO implements PetOnlyDtoInterface
         return self::setPropertyFluently($this, 'edit_date', $value->format('Y-m-d H:i:s'));
     }
 
-//    /**
-//     * @param array{
-//     *          id: numeric-string,
-//     *          owner_id: ?numeric-string,
-//     *          type_id: ?numeric-string,
-//     *          alias: string,
-//     *          sex: ?string,
-//     *          date_register: string,
-//     *          birthday: ?string,
-//     *          note: string,
-//     *          breed_id: ?numeric-string,
-//     *          old_id: ?numeric-string,
-//     *          color_id: ?numeric-string,
-//     *          deathnote: ?string,
-//     *          deathdate: ?string,
-//     *          chip_number: string,
-//     *          lab_number: string,
-//     *          status: string,
-//     *          picture: ?string,
-//     *          weight: ?string,
-//     *          edit_date: string,
-//     *          owner?: array,
-//     *          type?: array,
-//     *          breed?: array,
-//     *          color?: array
-//     * } $originalDataArray
-//     */
+    //    /**
+    //     * @param array{
+    //     *          id: numeric-string,
+    //     *          owner_id: ?numeric-string,
+    //     *          type_id: ?numeric-string,
+    //     *          alias: string,
+    //     *          sex: ?string,
+    //     *          date_register: string,
+    //     *          birthday: ?string,
+    //     *          note: string,
+    //     *          breed_id: ?numeric-string,
+    //     *          old_id: ?numeric-string,
+    //     *          color_id: ?numeric-string,
+    //     *          deathnote: ?string,
+    //     *          deathdate: ?string,
+    //     *          chip_number: string,
+    //     *          lab_number: string,
+    //     *          status: string,
+    //     *          picture: ?string,
+    //     *          weight: ?string,
+    //     *          edit_date: string,
+    //     *          owner?: array,
+    //     *          type?: array,
+    //     *          breed?: array,
+    //     *          color?: array
+    //     * } $originalDataArray
+    //     */
 }

@@ -54,8 +54,7 @@ class PetAdditionalPlusTypeAndBreedDto extends PetOnlyDto
         protected ?string         $edit_date,
         protected ?PetTypeOnlyDto $pet_type_data = null,
         protected ?BreedOnlyDto   $breed_data = null
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $owner_id,

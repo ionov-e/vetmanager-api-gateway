@@ -37,8 +37,7 @@ class PaymentOnlyDto extends AbstractDTO implements PaymentOnlyDtoInterface
         public ?string         $payment_type,
         public int|string|null $invoice_id,
         public int|string|null $parent_id,
-    )
-    {
+    ) {
     }
 
     public function getId(): int

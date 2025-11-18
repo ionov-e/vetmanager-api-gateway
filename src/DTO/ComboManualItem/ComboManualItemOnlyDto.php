@@ -30,8 +30,7 @@ class ComboManualItemOnlyDto extends AbstractDTO implements ComboManualItemOnlyD
         protected ?string         $dop_param2,
         protected ?string         $dop_param3,
         protected int|string|null $is_active
-    )
-    {
+    ) {
     }
 
     public function getId(): int

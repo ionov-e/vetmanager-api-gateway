@@ -31,8 +31,7 @@ class ApiRequest
         private readonly string      $pathUrl,
         private readonly array       $data = [],
         private readonly ?PagedQuery $pagedQuery = null
-    )
-    {
+    ) {
     }
 
     /** @throws VetmanagerApiGatewayRequestException */
@@ -44,8 +43,7 @@ class ApiRequest
         int         $modelId = 0,
         array       $data = [],
         ?PagedQuery $pagedQuery = null
-    ): self
-    {
+    ): self {
         return new self(
             $guzzleClient,
             $baseApiUrl,

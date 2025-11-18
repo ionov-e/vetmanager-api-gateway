@@ -20,12 +20,12 @@ class ClientPlusTypeAndCity extends AbstractClient
         return ClientPlusTypeAndCityDto::class;
     }
 
-    function getCity(): ?City
+    public function getCity(): ?City
     {
         return $this->modelDTO->getCityDto() ? new City($this->activeRecordFactory, $this->modelDTO->getCityDto()) : null;
     }
 
-    function getClientTypeTitle(): string
+    public function getClientTypeTitle(): string
     {
         $clientType = $this->modelDTO->getClientTypeDto();
         return $clientType ? $clientType->getTitle() : "";

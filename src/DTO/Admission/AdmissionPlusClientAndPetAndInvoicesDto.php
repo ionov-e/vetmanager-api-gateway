@@ -53,8 +53,7 @@ class AdmissionPlusClientAndPetAndInvoicesDto extends AdmissionOnlyDto
         protected ?ClientOnlyDto                    $client = null,
         protected ?PetAdditionalPlusTypeAndBreedDto $pet = null,
         protected array                             $invoices = []
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $admission_date,

@@ -47,8 +47,7 @@ final class GoodPlusGroupAndUnitAndSaleParamsDto extends GoodOnlyDto
         protected ?GoodGroupOnlyDto $group,
         protected ?UnitOnlyDto      $unitStorage,
         protected ?array            $goodSaleParams
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $group_id,

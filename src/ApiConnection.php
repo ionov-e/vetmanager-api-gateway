@@ -29,8 +29,7 @@ class ApiConnection
     public function __construct(
         private readonly Client $guzzleClient,
         private readonly string $baseApiUrl
-    )
-    {
+    ) {
     }
 
     public static function getGuzzleClientForServiceNameAndApiKey(string $baseApiUrl, string $serviceName, string $apiKey, string $timezone): Client

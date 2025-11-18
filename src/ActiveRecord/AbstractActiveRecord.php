@@ -16,8 +16,7 @@ abstract class AbstractActiveRecord
     public function __construct(
         protected ActiveRecordFactory $activeRecordFactory,
         protected AbstractDTO $modelDTO
-    )
-    {
+    ) {
     }
 
     /** @return class-string<AbstractDTO> */

@@ -17,8 +17,7 @@ class ClientTypeOnlyDto extends AbstractDTO implements ClientTypeOnlyDtoInterfac
     public function __construct(
         protected int|string|null $id,
         protected ?string         $title
-    )
-    {
+    ) {
     }
 
     public function getId(): int

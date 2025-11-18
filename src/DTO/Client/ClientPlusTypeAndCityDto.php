@@ -76,8 +76,7 @@ class ClientPlusTypeAndCityDto extends ClientOnlyDto
         protected ?string            $phone_prefix,
         protected ?CityOnlyDto       $city_data,
         protected ?ClientTypeOnlyDto $client_type_data
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $address,

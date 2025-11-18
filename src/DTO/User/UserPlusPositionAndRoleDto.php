@@ -56,8 +56,7 @@ final class UserPlusPositionAndRoleDto extends UserOnlyDto
         protected ?string             $user_inn,
         protected UserPositionOnlyDto $position,
         protected ?RoleOnlyDto        $role = null
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $last_name,
