@@ -494,4 +494,14 @@ docker compose run php-fpm composer psalm-json
 
 Анализ кода автоматически запускается при:
 - push в ветку `master`
-- при создании Pull Request через GitHub Actions.
+- при создании Pull Request через GitHub Actions
+
+#### Генерация отчетов покрытия кода
+
+Отчеты покрытия кода генерируются автоматически в GitHub Actions workflow. Если нужно сгенерировать отчеты локально для проверки:
+
+```bash
+docker compose run php-fpm composer test-coverage
+```
+
+Это создаст файлы `coverage.xml` и `test-results.xml`, которые будут использованы при автоматическом анализе в GitHub Actions.
