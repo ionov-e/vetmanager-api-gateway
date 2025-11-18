@@ -2,6 +2,14 @@
 
 ![Vetmanager Logo](https://vetmanager.ru/wp-content/themes/vetmanager/images/headerLogo.svg)
 
+[![CI](https://github.com/ionov-e/vetmanager-api-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/ionov-e/vetmanager-api-gateway/actions/workflows/ci.yml)
+[![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=ionov-e_vetmanager-api-gateway&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ionov-e_vetmanager-api-gateway)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ionov-e_vetmanager-api-gateway&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ionov-e_vetmanager-api-gateway)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ionov-e_vetmanager-api-gateway&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ionov-e_vetmanager-api-gateway)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ionov-e_vetmanager-api-gateway&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=ionov-e_vetmanager-api-gateway)
+[![PHP Version](https://img.shields.io/badge/PHP-8.1+-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](https://spdx.org/licenses/GPL-3.0-or-later.html)
+
 Помощник для работы с АПИ Ветменеджера. Берет на себя:
 1) авторизация;
 2) получение данных и представление их в виде объектов и типизированных свойств этих объектов;
