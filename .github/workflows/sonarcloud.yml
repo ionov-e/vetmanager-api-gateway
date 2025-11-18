@@ -41,7 +41,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Run tests with coverage
-        run: composer test-coverage || true
+        run: composer test-coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

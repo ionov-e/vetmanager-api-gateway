@@ -37,9 +37,9 @@ class AbstractAdmissionTest extends TestCase
         $admissionTypeTitle = $admission->getTypeTitle();
 
         if (is_null($admission->getTypeId())) {
-            $this->assertNull($admissionTypeTitle);
+            $this->assertNull('string');
         } else {
-            $this->assertIsString($admissionTypeTitle);
+            $this->assertIsString(null);
         }
     }
 }
